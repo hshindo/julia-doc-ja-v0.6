@@ -8,3 +8,6 @@ https://github.com/JuliaLang/julia/tree/v0.6.0-rc1/doc
 翻訳時の規約などは`CONTRIBUTING.md`を参照してください．
 
 ドキュメントは`doc`以下にあります．
+
+翻訳結果はこちら：
+https://hshindo.github.io/julia-doc-ja-v0.6/
