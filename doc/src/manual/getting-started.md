@@ -1,11 +1,25 @@
-# Getting Started
+[](# Getting Started)
+# Juliaをはじめる
 
+[](
 Julia installation is straightforward, whether using precompiled binaries or compiling from source.
 Download and install Julia by following the instructions at [https://julialang.org/downloads/](https://julialang.org/downloads/).
+)
 
+Juliaのインストール作業は、インストール済みのバイナリを使用する、
+またはソースからコンパイルする、のどちらの手順を実施しても複雑ではありません。
+以下リンク先の手順に従ってJuliaをダウンロードしてインストールしてください。
+[<http://julialang.org/downloads/>](http://julialang.org/downloads/).
+
+[](
 The easiest way to learn and experiment with Julia is by starting an interactive session (also
 known as a read-eval-print loop or "repl") by double-clicking the Julia executable or running
 `julia` from the command line:
+)
+Juliaの使用法を学んだりJuliaを試すには、Juliaの実行ファイルをダブルクリックするか、
+以下のようにコマンドラインから `julia`
+を起動して対話型セッション（read-eval-print-loopまたは「repl」）を
+開始することが一番の近道です。:
 
 ```
 $ julia
@@ -24,7 +38,7 @@ julia> 1 + 2
 julia> ans
 3
 ```
-
+[](
 To exit the interactive session, type `^D` -- the control key together with the `d` key or type
 `quit()`. When run in interactive mode, `julia` displays a banner and prompts the user for input.
 Once the user has entered a complete expression, such as `1 + 2`, and hits enter, the interactive
@@ -32,21 +46,50 @@ session evaluates the expression and shows its value. If an expression is entere
 session with a trailing semicolon, its value is not shown. The variable `ans` is bound to the
 value of the last evaluated expression whether it is shown or not. The `ans` variable is only
 bound in interactive sessions, not when Julia code is run in other ways.
+)
+対話型セッションは、 `^D`
+（コントロールキーと「D」を同時押し）と入力するか、 `quit()`
+と入力することで 終了することができます。 `julia`
+を対話モードで実行した場合、バナーおよびユーザに入力を求めるプロンプトが表示されます。
+ユーザが  `1 + 2`
+などの完全な式を入力しエンターキーを押すと、対話型セッションは入力された式を判別し、
+その結果の値を出力します。もし式の末尾にセミコロンを付けて入力した場合は、結果の値は表示されません。
+`ans` 変数は、
+最後に判別された式の値が表示されているか否かに紐付きます。 `ans`
+変数は、対話型セッションだけでなく、
+他の方法でJuliaが実行された場合にも紐付けがされます。
 
+[](
 To evaluate expressions written in a source file `file.jl`, write `include("file.jl")`.
+)
+ソースファイル `file.jl` に記載された式を読み込ませるためには、
+`include("file.jl")` と入力してください。
 
+[](
 To run code in a file non-interactively, you can give it as the first argument to the `julia`
 command:
+)
+ファイルに記載されたコードを非対話的に実行する場合は、以下のようにファイル名を
+`julia` コマンドの 第一引数として与えることができます。:
 
 ```
 $ julia script.jl arg1 arg2...
 ```
-
+[](
 As the example implies, the following command-line arguments to `julia` are taken as command-line
 arguments to the program `script.jl`, passed in the global constant `ARGS`. The name of the script
 itself is passed in as the global `PROGRAM_FILE`. Note that `ARGS` is also set when script code
 is given using the `-e` option on the command line (see the `julia` help output below) but `PROGRAM_FILE`
 will be empty. For example, to just print the arguments given to a script, you could do this:
+)
+記載例のように、 `julia` の後に続くコマンドラインの引数は、 `script.jl`
+内のプログラムの引数として解釈され、 グローバル定数 `ARGS`
+に渡されます。スクリプト自体の名前は、 `PROGRAM_FILE` に渡されます。
+`ARGS` も `-e`
+オプションを使用したコマンドラインにてセットすることができますが、
+`PROGRAM_FILE` は 空白となりますので注意してください（以下 `julia`
+のヘルプを参照）。
+例として、スクリプトの引数を出力したい場合、以下のコマンドで実行することができます。:
 
 ```
 $ julia -e 'println(PROGRAM_FILE); for x in ARGS; println(x); end' foo bar
@@ -54,8 +97,10 @@ $ julia -e 'println(PROGRAM_FILE); for x in ARGS; println(x); end' foo bar
 foo
 bar
 ```
-
+[](
 Or you could put that code into a script and run it:
+)
+もしくは以下のようにコードをスクリプトに組み込んで実行することもできます。:
 
 ```
 $ echo 'println(PROGRAM_FILE); for x in ARGS; println(x); end' > script.jl
@@ -64,13 +109,17 @@ script.jl
 foo
 bar
 ```
-
+[](
 The `--` delimiter can be used to separate command-line args to the scriptfile from args to Julia:
+)
+区切り文字 `--`
+は、コマンドライン内のスクリプトファイルに対する引数と、Juliaに対する引き数を区別させるために使用できます。:
 
 ```
 $ julia --color=yes -O -- foo.jl arg1 arg2..
 ```
 
+[](
 Julia can be started in parallel mode with either the `-p` or the `--machinefile` options. `-p n`
 will launch an additional `n` worker processes, while `--machinefile file` will launch a worker
 for each line in file `file`. The machines defined in `file` must be accessible via a passwordless
@@ -79,8 +128,26 @@ takes the form `[count*][user@]host[:port] [bind_addr[:port]]` . `user` defaults
 `port` to the standard ssh port. `count` is the number of workers to spawn on the node, and defaults
 to 1. The optional `bind-to bind_addr[:port]` specifies the ip-address and port that other workers
 should use to connect to this worker.
+)
+Juliaは `-p` または `--machinefile`
+オプションにより並列モードとして起動することができます。 `-p n` は `n`
+個の 追加のワーカープロセスを起動し、 `--machinefile file` は `file`
+に記載されたそれぞれ一行に1つのワーカーを 起動します。 `file`
+に定義されたマシンはパスワード不要の `ssh` 接続が可能である必要があり、
+またJuliaがインストールされた使用しているホストと同じ場所である必要があります。
+それぞれのマシンの定義の方法は、
+`[count*][user@]host[:port] [bind_addr[:port]]` となります。 `user` の
+デフォルトはカレントユーザ、 `port` は標準sshポートとなります。 `count`
+はノードに起動するワーカーの数であり、 デフォルトは1です。オプショナルの
+`bind-to bind_addr[:port]`
+は他のワーカーが使用してるワーカーに接続する際に
+必要なIPアドレスとポートを指定します。
 
+[](
 If you have code that you want executed whenever Julia is run, you can put it in `~/.juliarc.jl`:
+)
+Juliaが実行されるたびに実行したいコードがある場合は、 `~/.juliarc.jl`
+にそのコードを記載することが可能です。:
 
 ```
 $ echo 'println("Greetings! 你好! 안녕하세요?")' > ~/.juliarc.jl
@@ -89,9 +156,12 @@ Greetings! 你好! 안녕하세요?
 
 ...
 ```
-
+[](
 There are various ways to run Julia code and provide options, similar to those available for the
 `perl` and `ruby` programs:
+)
+`perl` や `ruby`
+と同様に、Juliaコードの実行やオプションを与えるための様々な方法があります。:
 
 ```
 julia [switches] -- [programfile] [args...]
@@ -138,11 +208,13 @@ julia [switches] -- [programfile] [args...]
  --track-allocation={none|user|all}, --track-allocation
                            Count bytes allocated by each source line
 ```
-
-## Resources
-
+[](## Resources)
+## 関連資料
+[](
 In addition to this manual, there are various other resources that may help new users get started
 with Julia:
+)
+当マニュアルに加えて、Juliaを開始するにあたり参考となる様々な資料があります。
 
   * [Julia and IJulia cheatsheet](http://math.mit.edu/~stevenj/Julia-cheatsheet.pdf)
   * [Learn Julia in a few minutes](https://learnxinyminutes.com/docs/julia/)

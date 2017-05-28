@@ -2,8 +2,10 @@
 
 ## Manual
 
-  * [Introduction](@ref man-introduction)
-  * [Getting Started](@ref)
+[](  * [Introduction](@ref man-introduction))
+  * [はじめに](@ref man-introduction)
+[](  * [Getting Started](@ref))
+  * [Juliaをはじめる](@ref)
   * [Variables](@ref)
   * [Integers and Floating-Point Numbers](@ref)
   * [Mathematical Operations and Elementary Functions](@ref)
