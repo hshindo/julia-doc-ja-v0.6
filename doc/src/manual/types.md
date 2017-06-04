@@ -132,7 +132,7 @@ abstract types even though they have no instantiation because they are the backb
 system: they form the conceptual hierarchy which makes Julia's type system more than just a collection
 of object implementations.
 
-Recall that in [Integers and Floating-Point Numbers](@ref), we introduced a variety of concrete
+Recall that in [整数と浮動小数点数](@ref), we introduced a variety of concrete
 types of numeric values: `Int8`, `UInt8`, `Int16`, `UInt16`, `Int32`, `UInt32`, `Int64`, `UInt64`,
 `Int128`, `UInt128`, `Float16`, [`Float32`](@ref), and [`Float64`](@ref).  Although they have
 different representation sizes, `Int8`, `Int16`, `Int32`, `Int64`  and `Int128` all have in common
@@ -341,7 +341,7 @@ must be convertible to `Int`:
 julia> Foo((), 23.5, 1)
 ERROR: InexactError()
 Stacktrace:
- [1] convert(::Type{Int64}, ::Float64) at ./float.jl:679
+ [1] convert(::Type{Int64}, ::Float64) at ./float.jl:680
  [2] Foo(::Tuple{}, ::Float64, ::Int64) at ./none:2
 ```
 
@@ -645,7 +645,7 @@ ERROR: MethodError: Cannot `convert` an object of type Float64 to an object of t
 This may have arisen from a call to the constructor Point{Float64}(...),
 since type constructors fall back to convert methods.
 Stacktrace:
- [1] Point{Float64}(::Float64) at ./sysimg.jl:24
+ [1] Point{Float64}(::Float64) at ./sysimg.jl:77
 
 julia> Point{Float64}(1.0,2.0,3.0)
 ERROR: MethodError: no method matching Point{Float64}(::Float64, ::Float64, ::Float64)
@@ -1059,7 +1059,7 @@ This can be done with a simple assignment statement.
 For example, `UInt` is aliased to either `UInt32` or `UInt64` as is appropriate
 for the size of pointers on the system:
 
-```julia
+```julia-repl
 # 32-bit system:
 julia> UInt
 UInt32
@@ -1198,7 +1198,7 @@ format for displaying an object by overloading a three-argument form of `show` t
 `text/plain` MIME type as its second argument (see [Multimedia I/O](@ref)), for example:
 
 ```jldoctest polartype
-julia> Base.show{T}(io::IO, ::MIME"text/plain", z::Polar{T}) =
+julia> Base.show(io::IO, ::MIME"text/plain", z::Polar{T}) where{T} =
            print(io, "Polar{$T} complex number:\n   ", z)
 ```
 
@@ -1225,7 +1225,7 @@ Moreover, you can also define `show` methods for other MIME types in order to en
 we can define formatted HTML display of `Polar` objects, with superscripts and italics, via:
 
 ```jldoctest polartype
-julia> Base.show{T}(io::IO, ::MIME"text/html", z::Polar{T}) =
+julia> Base.show(io::IO, ::MIME"text/html", z::Polar{T}) where {T} =
            println(io, "<code>Polar{$T}</code> complex number: ",
                    z.r, " <i>e</i><sup>", z.Θ, " <i>i</i></sup>")
 ```
