@@ -2,6 +2,8 @@
 
 * line477 [数値の比較](@ref)
 * line481 [数値の比較](@ref)
+* line948 [数値の比較](@ref)
+* line951 [数値の比較](@ref)
 
 # [Multi-dimensional Arrays](@id man-multi-dim-arrays)
 
