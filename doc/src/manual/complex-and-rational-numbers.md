@@ -1,7 +1,7 @@
 # Complex and Rational Numbers
 
 Julia ships with predefined types representing both complex and rational numbers, and supports
-all standard [Mathematical Operations and Elementary Functions](@ref) on them. [Conversion and Promotion](@ref conversion-and-promotion) are defined
+all standard [算術処理と基本的な関数](@ref) on them. [Conversion and Promotion](@ref conversion-and-promotion) are defined
 so that operations on any combination of predefined numeric types, whether primitive or composite,
 behave as expected.
 
@@ -114,7 +114,7 @@ julia> angle(1 + 2im) # phase angle in radians
 As usual, the absolute value ([`abs()`](@ref)) of a complex number is its distance from zero.
 [`abs2()`](@ref) gives the square of the absolute value, and is of particular use for complex
 numbers where it avoids taking a square root. [`angle()`](@ref) returns the phase angle in radians
-(also known as the *argument* or *arg* function). The full gamut of other [Elementary Functions](@ref)
+(also known as the *argument* or *arg* function). The full gamut of other []([基本的な関数](@ref))
 is also defined for complex numbers:
 
 ```jldoctest

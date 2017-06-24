@@ -474,11 +474,11 @@ the real number line:
 
 [](
 For further discussion of how these non-finite floating-point values are ordered with respect
-to each other and other floats, see [Numeric Comparisons](@ref). By the [IEEE 754 standard](https://en.wikipedia.org/wiki/IEEE_754-2008),
+to each other and other floats, see []([数値の比較](@ref)). By the [IEEE 754 standard](https://en.wikipedia.org/wiki/IEEE_754-2008),
 these floating-point values are the results of certain arithmetic operations:
 )
 どのように非有限浮動小数点値がお互いに、およびその他の浮動値に対して順序付けられているかについては、
-[Numeric Comparisons](@ref) を参照してください。 [IEEE
+[]([数値の比較](@ref)) を参照してください。 [IEEE
 754規格](https://en.wikipedia.org/wiki/IEEE_754-2008)
 では、これらの浮動小数点値は特定の演算処理の結果として取得されます。:
 
@@ -945,10 +945,10 @@ Juliaは、特定の方や特定の変数の型に対応してリテラル0お�
 | [`one(x)`](@ref)  | `x` のリテラル1型または変数 `x` の型 |
 
 [](
-These functions are useful in [Numeric Comparisons](@ref) to avoid overhead from unnecessary
+These functions are useful in []([数値の比較](@ref)) to avoid overhead from unnecessary
 [type conversion](@ref conversion-and-promotion).
 )
-これらの関数は、 [Numeric Comparisons](@ref) 時の不要な
+これらの関数は、 []([数値の比較](@ref)) 時の不要な
 [type conversion](@ref conversion-and-promotion)の
 オーバーヘッドを回避する際に有効です。
 
