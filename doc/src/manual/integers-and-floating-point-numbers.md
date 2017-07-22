@@ -36,7 +36,7 @@ The following are Julia's primitive numeric types:
 [](  * **Integer types:**)
 
 [](| Type      | Signed? | Number of bits | Smallest value | Largest value |)
-[](|:--------- |:------- |:-------------- |:-------------- |:------------- |)
+[](|:----------------- |:------- |:-------------- |:-------------- |:------------- |)
 [](| [`Int8`](@ref)    | ✓       | 8              | -2^7           | 2^7 - 1       |)
 [](| [`UInt8`](@ref)   |         | 8              | 0              | 2^8 - 1       |)
 [](| [`Int16`](@ref)   | ✓       | 16             | -2^15          | 2^15 - 1      |)
@@ -53,7 +53,7 @@ The following are Julia's primitive numeric types:
 
 [](| Type              | Precision                                                                      | Number of bits |)
 [](|:----------------- |:------------------------------------------------------------------------------ |:-------------- |)
-[](| [`Float16`](@ref)         | [half](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)     | 16             |)
+[](| [`Float16`](@ref) | [half](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)     | 16             |)
 [](| [`Float32`](@ref) | [single](https://en.wikipedia.org/wiki/Single_precision_floating-point_format) | 32             |)
 [](| [`Float64`](@ref) | [double](https://en.wikipedia.org/wiki/Double_precision_floating-point_format) | 64             |)
 
@@ -296,14 +296,14 @@ true
 Thus, arithmetic with Julia integers is actually a form of [modular arithmetic](https://en.wikipedia.org/wiki/Modular_arithmetic).
 This reflects the characteristics of the underlying arithmetic of integers as implemented on modern
 computers. In applications where overflow is possible, explicit checking for wraparound produced
-by overflow is essential; otherwise, the `BigInt` type in [任意精度計算](@ref)
+by overflow is essential; otherwise, the [`BigInt`](@ref) type in [任意精度計算](@ref)
 is recommended instead.
 )
 このように、Juliaにおける整数の演算は、
 [合同算術](https://en.wikipedia.org/wiki/Modular_arithmetic) の
 形をとります。これは現代のコンピュータで実行される基本演算の特性を反映しています。
 オーバーフローを許容するアプリケーションでは、オーバーフローにより発生したワードラップの明示的なチェックは不可欠です。
-チェックが難しい場合は、[任意精度計算](@ref) の `BigInt`
+チェックが難しい場合は、[任意精度計算](@ref) の [`BigInt`](@ref)
 型を使用することをお勧めします。
 
 [](### Division errors)
@@ -352,10 +352,9 @@ julia> 2.5e-4
 ```
 
 [](
-The above results are all `Float64` values. Literal `Float32` values can be entered by writing
-an `f` in place of `e`:
+The above results are all [`Float64`](@ref) values. Literal [`Float32`](@ref) values can be entered by writing an `f` in place of `e`:
 )
-上記の結果は、全て `Float64` 値です。リテラル `Float32` 値は、 `f`
+上記の結果は、全て [`Float64`](@ref) 値です。リテラル [`Float32`](@ref) 値は、 `f`
 の代わりに `e` を使用することで入力が可能です。:
 
 ```jldoctest
@@ -370,9 +369,9 @@ julia> 2.5f-4
 ```
 
 [](
-Values can be converted to `Float32` easily:
+Values can be converted to [`Float32`](@ref) easily:
 )
-値は簡単に `Float32` に変換することが可能です。:
+値は簡単に [`Float32`](@ref) に変換することが可能です。:
 
 ```jldoctest
 julia> Float32(-1.5)
@@ -383,9 +382,9 @@ Float32
 ```
 
 [](
-Hexadecimal floating-point literals are also valid, but only as `Float64` values:
+Hexadecimal floating-point literals are also valid, but only as [`Float64`](@ref) values:
 )
-16進数の浮動小数点リテラルも有効ですが、 `Float64`
+16進数の浮動小数点リテラルも有効ですが、 [`Float64`](@ref)
 値としてのみ使用が可能です。:
 
 ```jldoctest
@@ -403,11 +402,11 @@ Float64
 ```
 
 [](
-Half-precision floating-point numbers are also supported (`Float16`), but they are
-implemented in software and use `Float32` for calculations.
+Half-precision floating-point numbers are also supported ([`Float16`](@ref)), but they are
+implemented in software and use [`Float32`](@ref) for calculations.
 )
-半制度浮動小数点数もサポートされていますが（ `Float16`
-）、保存形式のみとして使用が可能です。 計算時には、それらは `Float32`
+半制度浮動小数点数もサポートされていますが（ [`Float16`](@ref)
+）、保存形式のみとして使用が可能です。 計算時には、それらは [`Float32`](@ref)
 に変換されます。:
 
 ```jldoctest
@@ -565,13 +564,13 @@ julia> eps() # same as eps(Float64)
 2.220446049250313e-16
 ```
 [](
-These values are `2.0^-23` and `2.0^-52` as `Float32` and `Float64` values, respectively. The
+These values are `2.0^-23` and `2.0^-52` as [`Float32`](@ref) and [`Float64`](@ref) values, respectively. The
 [`eps()`](@ref) function can also take a floating-point value as an argument, and gives the absolute
 difference between that value and the next representable floating point value. That is, `eps(x)`
 yields a value of the same type as `x` such that `x + eps(x)` is the next representable floating-point
 value larger than `x`:
 )
-これらはそれぞれ `Float32` および `Float64` 値として `2.0^-23` および
+これらはそれぞれ [`Float32`](@ref) および [`Float64`](@ref) 値として `2.0^-23` および
 `2.0^-52` と なります。 [`eps()`](@ref)
 関数は、浮動小数点値を引数として使用したり、ある値と次の浮動小数点値との絶対差を
 得ることができます。つまり、 `eps(x)` は `x`

@@ -44,9 +44,9 @@ are supported on all primitive numeric types:
 | `x % y`    | 余り             | `rem(x,y)`と同等                       |
 
 [](
-as well as the negation on `Bool` types:
+as well as the negation on `Bool`(@ref) types:
 )
-`Bool` 型の否定形についても同様。
+`Bool`(@ref) 型の否定形についても同様。
 
 [](| Expression | Name     | Description                              |)
 [](|:---------- |:-------- |:---------------------------------------- |)
