@@ -110,11 +110,11 @@ Note that `3/4im == 3/(4*im) == -(3/4*im)`, since a literal coefficient binds mo
 division.
 )
 
-リテラル係数は除算よりも厳密に紐付けるため、 ``3/4im == 3/(4*im)== -(3/4*im)`` に注意してください。
+リテラル係数は除算よりも厳密に紐付けるため、 ``3/4im == 3/(4*im)== -(3/4*im)`` であることに注意してください。
 
 [](Standard functions to manipulate complex values are provided:)
 
-複雑な値を操作するための標準関数が定義されています。:
+複雑な値を操作するための標準関数がビルトインで定義されています。:
 
 
 
