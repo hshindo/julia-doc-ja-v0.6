@@ -210,7 +210,7 @@ However, this is *not* recommended; Use the [`complex()`](@ref) function instead
 a complex value directly from its real and imaginary parts:
 )
 
-しかしながら、これは推奨されていません。実数部および虚数部から直接複素数値を構築するのではなく、
+しかしながら、これは推奨されていません。実数部および虚数部から直接、複素数値を構築するのではなく、
 [`complex()`](@ref) 関数を使用してください。:
 
 ```jldoctest
