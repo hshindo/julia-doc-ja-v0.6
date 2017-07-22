@@ -238,18 +238,28 @@ julia> 1 + NaN*im
 1.0 + NaN*im
 ```
 
-## Rational Numbers
+[](## Rational Numbers)
 
+## 有理数
+
+[](
 Julia has a rational number type to represent exact ratios of integers. Rationals are constructed
 using the [`//`](@ref) operator:
+)
+
+Juliaには、整数の正確な比率を表す有理数型があります。有理数は [`//`](@ref) 演算子を使用して構成されます。:
 
 ```jldoctest
 julia> 2//3
 2//3
 ```
 
+[](
 If the numerator and denominator of a rational have common factors, they are reduced to lowest
 terms such that the denominator is non-negative:
+)
+
+有理数の分子と分母が共通の因数を持つ場合、分母が非負であるように最小値まで約分されます。:
 
 ```jldoctest
 julia> 6//9
@@ -265,10 +275,15 @@ julia> -4//-12
 1//3
 ```
 
+[](
 This normalized form for a ratio of integers is unique, so equality of rational values can be
 tested by checking for equality of the numerator and denominator. The standardized numerator and
 denominator of a rational value can be extracted using the [`numerator()`](@ref) and [`denominator()`](@ref)
 functions:
+)
+
+整数比に対するこの正規化された形式は固有であるため、有理数の相等は、分子と分母の相等をチェックすることで確認できます。
+有理数の標準化された分子と分母は [`numerator()`](@ref) および [`denominator()`](@ref) 関数を使用して得ることができます。:
 
 ```jldoctest
 julia> numerator(2//3)
@@ -278,8 +293,12 @@ julia> denominator(2//3)
 3
 ```
 
+[](
 Direct comparison of the numerator and denominator is generally not necessary, since the standard
 arithmetic and comparison operations are defined for rational values:
+)
+
+標準的な算術および比較演算は有利数向けに定義されているため、分子と分母の直接的な比較は通常必要ありません。:
 
 ```jldoctest
 julia> 2//3 == 6//9
@@ -307,15 +326,22 @@ julia> 6//5 / 10//7
 21//25
 ```
 
-Rationals can be easily converted to floating-point numbers:
+[](Rationals can be easily converted to floating-point numbers:)
+
+有理数は浮動小数点数に簡単に変換できます。:
 
 ```jldoctest
 julia> float(3//4)
 0.75
 ```
 
+[](
 Conversion from rational to floating-point respects the following identity for any integral values
 of `a` and `b`, with the exception of the case `a == 0` and `b == 0`:
+)
+
+有理数から浮動小数点数への変換は、 ``a==0`` および ``b==0`` の場合を除き、
+整数値 ``a`` および ``b`` の整数値の同一性を考慮します。:
 
 ```jldoctest
 julia> a = 1; b = 2;
@@ -324,7 +350,9 @@ julia> isequal(float(a//b), a/b)
 true
 ```
 
-Constructing infinite rational values is acceptable:
+[](Constructing infinite rational values is acceptable:)
+
+無限有利値を得ることができます。:
 
 ```jldoctest
 julia> 5//0
@@ -337,7 +365,9 @@ julia> typeof(ans)
 Rational{Int64}
 ```
 
-Trying to construct a [`NaN`](@ref) rational value, however, is not:
+[](Trying to construct a [`NaN`](@ref) rational value, however, is not:)
+
+しかしながら、 [`NaN`](@ref) の有利値を得ることはできません。:
 
 ```jldoctest
 julia> 0//0
@@ -347,7 +377,9 @@ Stacktrace:
  [2] //(::Int64, ::Int64) at ./rational.jl:35
 ```
 
-As usual, the promotion system makes interactions with other numeric types effortless:
+[](As usual, the promotion system makes interactions with other numeric types effortless:)
+
+これまで同様、プロモーションシステムはその他の数値型との処理を容易にします。:
 
 ```jldoctest
 julia> 3//5 + 1
