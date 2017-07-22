@@ -1,4 +1,5 @@
 [](# Complex and Rational Numbers)
+
 # 複素数と有理数
 
 [](
