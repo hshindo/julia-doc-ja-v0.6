@@ -298,7 +298,7 @@ Direct comparison of the numerator and denominator is generally not necessary, s
 arithmetic and comparison operations are defined for rational values:
 )
 
-標準的な算術および比較演算は有利数向けに定義されているため、分子と分母の直接的な比較は通常必要ありません。:
+標準的な算術および比較演算は有理数向けに定義されているため、分子と分母の直接的な比較は通常必要ありません。:
 
 ```jldoctest
 julia> 2//3 == 6//9
@@ -352,7 +352,7 @@ true
 
 [](Constructing infinite rational values is acceptable:)
 
-無限有利値を得ることができます。:
+無限有理値を得ることができます。:
 
 ```jldoctest
 julia> 5//0
@@ -367,7 +367,7 @@ Rational{Int64}
 
 [](Trying to construct a [`NaN`](@ref) rational value, however, is not:)
 
-しかしながら、 [`NaN`](@ref) の有利値を得ることはできません。:
+しかしながら、 [`NaN`](@ref) の有理値を得ることはできません。:
 
 ```jldoctest
 julia> 0//0
