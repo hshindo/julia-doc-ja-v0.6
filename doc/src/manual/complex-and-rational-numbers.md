@@ -1,9 +1,16 @@
-# Complex and Rational Numbers
+[](# Complex and Rational Numbers)
+# 複素数と有理数
 
+[](
 Julia ships with predefined types representing both complex and rational numbers, and supports
 all standard [算術処理と基本的な関数](@ref) on them. [Conversion and Promotion](@ref conversion-and-promotion) are defined
 so that operations on any combination of predefined numeric types, whether primitive or composite,
 behave as expected.
+)
+
+Juliaは、複素数および有理数を表す定義済みの型を提供し、それらに対する[算術処理と基本的な関数](@ref)をサポートしています。
+[Conversion and Promotion](@ref conversion-and-promotion)は、定義済みの数値型（プリミティブまたは複合であっても）
+が想定通りに処理されるように定義されています。
 
 ## Complex Numbers
 
