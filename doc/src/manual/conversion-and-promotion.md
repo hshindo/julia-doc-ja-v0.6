@@ -2,7 +2,7 @@
 
 Julia has a system for promoting arguments of mathematical operators to a common type, which has
 been mentioned in various other sections, including [整数と浮動小数点数](@ref),
-[Mathematical Operations and Elementary Functions](@ref), [Types](@ref man-types), and [Methods](@ref).
+[算術処理と基本的な関数](@ref), [Types](@ref man-types), and [Methods](@ref).
 In this section, we explain how this promotion system works, as well as how to extend it to new
 types and apply it to functions besides built-in mathematical operators. Traditionally, programming
 languages fall into two camps with respect to promotion of arithmetic arguments:

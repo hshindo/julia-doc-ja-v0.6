@@ -408,7 +408,7 @@ defining sophisticated behavior is typically quite simple.
 
 Perhaps the best way to tie all these pieces together is to present a real world example of a
 parametric composite type and its constructor methods. To that end, here is the (slightly modified) beginning of [`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl),
-which implements Julia's [Rational Numbers](@ref):
+which implements Julia's [有理数](@ref):
 
 ```jldoctest rational
 julia> struct OurRational{T<:Integer} <: Real
@@ -481,7 +481,7 @@ into rationals by supplying a value of `1` as the denominator.
 Following the outer constructor definitions, we have a number of methods for the [`//`](@ref)
 operator, which provides a syntax for writing rationals. Before these definitions, [`//`](@ref)
 is a completely undefined operator with only syntax and no meaning. Afterwards, it behaves just
-as described in [Rational Numbers](@ref) -- its entire behavior is defined in these few lines.
+as described in [有理数](@ref) -- its entire behavior is defined in these few lines.
 The first and most basic definition just makes `a//b` construct a `OurRational` by applying the
 `OurRational` constructor to `a` and `b` when they are integers. When one of the operands of [`//`](@ref)
 is already a rational number, we construct a new rational for the resulting ratio slightly differently;

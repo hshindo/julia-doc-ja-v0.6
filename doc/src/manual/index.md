@@ -1,16 +1,10 @@
 # The Julia Manual
 
-[](  * [Introduction](@ref man-introduction))
   * [はじめに](@ref man-introduction)
-[](  * [Getting Started](@ref))
   * [Juliaをはじめる](@ref)
-[](  * [Variables](@ref))
   * [変数](@ref)
-[](  * [Integers and Floating-Point Numbers](@ref))
 　* [整数と浮動小数点数](@ref)
-[](  * [Mathematical Operations and Elementary Functions](@ref))
 　* [算術処理と基本的な関数](@ref)
-[](  * [Complex and Rational Numbers](@ref))
 　* [複素数と有理数](@ref)
   * [Strings](@ref)
   * [Functions](@ref)

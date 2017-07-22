@@ -2,7 +2,8 @@
 
 # [はじめに](@id man-introduction)
 
-[](
+```@raw html
+<!--
 Scientific computing has traditionally required the highest performance, yet domain experts have
 largely moved to slower dynamic languages for daily work. We believe there are many good reasons
 to prefer dynamic languages for these applications, and we do not expect their use to diminish.
@@ -11,7 +12,8 @@ the performance trade-off and provide a single environment productive enough for
 efficient enough for deploying performance-intensive applications. The Julia programming language
 fills this role: it is a flexible dynamic language, appropriate for scientific and numerical computing,
 with performance comparable to traditional statically-typed languages.
-)
+-->
+```
 
 科学分野におけるプログラミングはこれまで高いパフォーマンスが
 要求されてきましたが、専門家たちは日々の仕事のために遅い動的
@@ -26,12 +28,14 @@ with performance comparable to traditional statically-typed languages.
 ログラミングに適し、これまでの静的プログラミング言語に
 匹敵するパフォーマンスを提供します。
 
-[](
+```@raw html
+<!--
 Because Julia's compiler is different from the interpreters used for languages like Python or
 R, you may find that Julia's performance is unintuitive at first. If you find that something is
 slow, we highly recommend reading through the [Performance Tips](@ref man-performance-tips) section before trying anything
 else. Once you understand how Julia works, it's easy to write code that's nearly as fast as C.
-)
+-->
+```
 
 JuliaのコンパイラはPythonやRなどに使用されている解釈プログラムとは
 異なるため、はじめは直感的な操作ができないと感じるかもしれません。
@@ -40,7 +44,8 @@ JuliaのコンパイラはPythonやRなどに使用されている解釈プロ�
 C言語を使用するのと同様のスピードで簡単にコードを入力することが
 できるでしょう。
 
-[](
+```@raw html
+<!--
 Julia features optional typing, multiple dispatch, and good performance, achieved using type inference
 and [just-in-time (JIT) compilation](https://en.wikipedia.org/wiki/Just-in-time_compilation),
 implemented using [LLVM](https://en.wikipedia.org/wiki/Low_Level_Virtual_Machine). It is multi-paradigm,
@@ -51,7 +56,8 @@ upon the lineage of mathematical programming languages, but also borrows much fr
 languages, including [Lisp](https://en.wikipedia.org/wiki/Lisp_(programming_language)), [Perl](https://en.wikipedia.org/wiki/Perl_(programming_language)),
 [Python](https://en.wikipedia.org/wiki/Python_(programming_language)), [Lua](https://en.wikipedia.org/wiki/Lua_(programming_language)),
 and [Ruby](https://en.wikipedia.org/wiki/Ruby_(programming_language)).
-)
+-->
+```
 
 Juliaの特徴として、データの型予測の使用、および[LLVM](https://en.wikipedia.org/wiki/Low_Level_Virtual_Machine)による
 [JITコンパイル](https://en.wikipedia.org/wiki/Just-in-time_compilation)
@@ -65,9 +71,11 @@ Juliaの特徴として、データの型予測の使用、および[LLVM](https
 多くの人々に支持された動的プログラミング言語も参考にしています。
 
 
-[](
+```@raw html
+<!--
 The most significant departures of Julia from typical dynamic languages are:
-)
+-->
+```
 
 [](  * The core language imposes very little; the standard library is written in Julia itself, including)
 [](  primitive operations like integer arithmetic)
@@ -92,7 +100,8 @@ Juliaが実現した、典型的な動的プログラミング言語からの最
   * C言語のような静的にコンパイルされた言語を使用しているかのような
     高いパフォーマンスを発揮します。
 
-[](
+```@raw html
+<!--
 Although one sometimes speaks of dynamic languages as being "typeless", they are definitely not:
 every object, whether primitive or user-defined, has a type. The lack of type declarations in
 most dynamic languages, however, means that one cannot instruct the compiler about the types of
@@ -100,7 +109,8 @@ values, and often cannot explicitly talk about types at all. In static languages
 hand, while one can -- and usually must -- annotate types for the compiler, types exist only at
 compile time and cannot be manipulated or expressed at run time. In Julia, types are themselves
 run-time objects, and can also be used to convey information to the compiler.
-)
+-->
+```
 
 動的プログラミング言語は「型が不要」と言われることがありますが、
 これは正しくはありません。たとえ単純なオブジェクトであったとしても、
@@ -114,7 +124,8 @@ run-time objects, and can also be used to convey information to the compiler.
 実行時のオブエクトであり、また型はコンパイラに情報を伝えるめに
 使用することも可能です。
 
-[](
+```@raw html
+<!--
 While the casual programmer need not explicitly use types or multiple dispatch, they are the core
 unifying features of Julia: functions are defined on different combinations of argument types,
 and applied by dispatching to the most specific matching definition. This model is a good fit
@@ -122,7 +133,8 @@ for mathematical programming, where it is unnatural for the first argument to "o
 as in traditional object-oriented dispatch. Operators are just functions with special notation
 -- to extend addition to new user-defined data types, you define new methods for the `+` function.
 Existing code then seamlessly applies to the new data types.
-)
+-->
+```
 
 一般的なプログラマは型やマルチティスパッチを使用する必要が
 ないかもしれませんが、関数が、異なる引数のタイプの
@@ -135,14 +147,16 @@ Existing code then seamlessly applies to the new data types.
 追加拡張するために、新しいメソッドを`+`関数に定義することができます。
 既存コードはシームレスに新しいデータ型に適用されます。
 
-[](
+```@raw html
+<!--
 Partly because of run-time type inference (augmented by optional type annotations), and partly
 because of a strong focus on performance from the inception of the project, Julia's computational
 efficiency exceeds that of other dynamic languages, and even rivals that of statically-compiled
 languages. For large scale numerical problems, speed always has been, continues to be, and probably
 always will be crucial: the amount of data being processed has easily kept pace with Moore's Law
 over the past decades.
-)
+-->
+```
 
 実行時型予測（オプションの型注釈により増大）およびこの
 プロジェクト当初からのパフォーマンス重視の姿勢により、
@@ -153,10 +167,12 @@ Juliaの計算効率は他の動的プログラミング言語や、さらには
 大規模な計算処理にとって処理速度はこれまで常に、
 そしてこれからも非常に重要です。
 
-[](
+```@raw html
+<!--
 Julia aims to create an unprecedented combination of ease-of-use, power, and efficiency in a single
 language. In addition to the above, some advantages of Julia over comparable systems include:
-)
+-->
+```
 
 
 [](  * Free and open source ([MIT licensed](https://github.com/JuliaLang/julia/blob/master/LICENSE.md)))

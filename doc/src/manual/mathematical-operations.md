@@ -1,21 +1,25 @@
 [](# Mathematical Operations and Elementary Functions)
 # 算術処理と基本的な関数
 
-[](
+```@raw html
+<!--
 Julia provides a complete collection of basic arithmetic and bitwise operators across all of its
 numeric primitive types, as well as providing portable, efficient implementations of a comprehensive
 collection of standard mathematical functions.
-)
+-->
+```
 Juliaは、基本的な数値プリミティブ型の全ての算術演算子とビット演算子だけでなく、
 可搬的かつ標準的な数学関数の効率的な実装を実現しています。
 
 [](## Arithmetic Operators)
 ## 算術演算子
 
-[](
+```@raw html
+<!--
 The following [arithmetic operators](https://en.wikipedia.org/wiki/Arithmetic#Arithmetic_operations)
 are supported on all primitive numeric types:
-)
+-->
+```
 [算術演算子](https://en.wikipedia.org/wiki/Arithmetic#Arithmetic_operations)
 は 全ての数値プリミティブ型でサポートされています。
 
@@ -43,9 +47,11 @@ are supported on all primitive numeric types:
 | `x ^ y`    | 累乗             | `x`を`y`分だけ掛ける                    |
 | `x % y`    | 余り             | `rem(x,y)`と同等                       |
 
-[](
+```@raw html
+<!--
 as well as the negation on `Bool`(@ref) types:
-)
+-->
+```
 `Bool`(@ref) 型の否定形についても同様。
 
 [](| Expression | Name     | Description                              |)
@@ -56,18 +62,22 @@ as well as the negation on `Bool`(@ref) types:
 |:---------- |:-------- |:---------------------------------------- |
 | `!x`       | 否定形    | `true`を`false` に`false`を`true`に変換する |
 
-[](
+```@raw html
+<!--
 Julia's promotion system makes arithmetic operations on mixtures of argument types "just work"
 naturally and automatically. See [Conversion and Promotion](@ref conversion-and-promotion) for details of the promotion
 system.
-)
+-->
+```
 Juliaのプロモーションシステムは、複数の引数の型を含む算術演算が自然にかつ自動的に
 動作するようにしています。プロモーションシステムの詳細については
 man-変換とプロモーションシステムを参照ください。
 
-[](
+```@raw html
+<!--
 Here are some simple examples using arithmetic operators:
-)
+-->
+```
 以下は算術演算の例です。
 
 ```jldoctest
@@ -80,21 +90,25 @@ julia> 1 - 2
 julia> 3*2/12
 0.5
 ```
-[](
+```@raw html
+<!--
 (By convention, we tend to space operators more tightly if they get applied before other nearby
 operators. For instance, we would generally write `-x + 2` to reflect that first `x` gets negated,
 and then `2` is added to that result.)
-)
+-->
+```
 （慣例的に、他の演算子が適用される場合は、スペースを開けずに記載する傾向があります。
 例えば、通常 `-x + 2` と記載しますが、これは最初に `x`
 を負の数にし、その後 `2` をその結果に足します。）
 
 [](## Bitwise Operators)
 ## ビット単位の演算子
-[](
+```@raw html
+<!--
 The following [bitwise operators](https://en.wikipedia.org/wiki/Bitwise_operation#Bitwise_operators)
 are supported on all primitive integer types:
-)
+-->
+```
 以下の[ビット単位の演算子](https://en.wikipedia.org/wiki/Bitwise_operation#Bitwise_operators)
 は 全ての数値プリミティブ型でサポートされています。
 
@@ -118,9 +132,11 @@ are supported on all primitive integer types:
 | `x >> y`    |    [算術右桁送り](https://en.wikipedia.org/wiki/Arithmetic_shift)           |
 | `x << y`    |    論理/算術左桁送り                                                         |
 
-[](
+```@raw html
+<!--
 Here are some examples with bitwise operators:
-)
+-->
+```
 以下はビット単位演算子の例です。
 
 ```jldoctest
@@ -149,12 +165,14 @@ julia> ~UInt8(123)
 [](## Updating operators)
 ## 演算子の更新
 
-[](
+```@raw html
+<!--
 Every binary arithmetic and bitwise operator also has an updating version that assigns the result
 of the operation back into its left operand. The updating version of the binary operator is formed
 by placing a `=` immediately after the operator. For example, writing `x += 3` is equivalent to
 writing `x = x + 3`:
-)
+-->
+```
 全ての二項演算子とビット単位の演算子には、被演算子の処理の結果を代入できる更新機能があります。
 二校演算子の更新機能は、演算子の後ろに `=`
 を記載することで実行できます。 例えば、 `x += 3` と記載することで
@@ -170,9 +188,11 @@ julia> x += 3
 julia> x
 4
 ```
-[](
+```@raw html
+<!--
 The updating versions of all the binary arithmetic and bitwise operators are:
-)
+-->
+```
 更新機能を持つ二項演算子とビット単位の演算子は以下の通りです。:
 
 ```
@@ -241,9 +261,11 @@ infix syntax `A ⊗ B` for Kronecker products ([`kron`](@ref)), then
 [](## Numeric Comparisons)
 ## 数値の比較
 
-[](
+```@raw html
+<!--
 Standard comparison operations are defined for all the primitive numeric types:
-)
+-->
+```
 標準的な比較演算子は、全ての数値プリミティブ型に定義されています。
 
 [](| Operator                     | Name                     |)
@@ -264,9 +286,11 @@ Standard comparison operations are defined for all the primitive numeric types:
 | [`>`](@ref)                         | 以下             |
 | [`>=`](@ref), [`≥`](@ref >=)        | 以上             |
 
-[](
+```@raw html
+<!--
 Here are some simple examples:
-)
+-->
+```
 以下は使用例です。
 
 ```jldoctest
@@ -303,10 +327,12 @@ false
 julia> 3 < -0.5
 false
 ```
-[](
+```@raw html
+<!--
 Integers are compared in the standard manner -- by comparison of bits. Floating-point numbers
 are compared according to the [IEEE 754 standard](https://en.wikipedia.org/wiki/IEEE_754-2008):
-)
+-->
+```
 整数は標準的な方法（ビットの比較）により比較されます。 浮動小数点数は
 [IEEE 754規格](https://en.wikipedia.org/wiki/IEEE_754-2008)
 に準拠して比較されます。
@@ -322,9 +348,11 @@ are compared according to the [IEEE 754 standard](https://en.wikipedia.org/wiki/
   *  `Inf` はそれ自体と等しく、 `NaN` を除く全てよりも大きいです。
   *  `-Inf` はそれ自体と等しく、 `NaN` を除く全てよりも小さいです。
 
-[](
+```@raw html
+<!--
 The last point is potentially surprising and thus worth noting:
-)
+-->
+```
 最後の記述は驚くべきものかもしれませんが、特段意味があるものではありません。
 
 ```jldoctest
@@ -340,19 +368,23 @@ false
 julia> NaN > NaN
 false
 ```
-[](
+```@raw html
+<!--
 and can cause especial headaches with [Arrays](@ref):
-)
+-->
+```
 これは、 配列[Arrays](@ref)と共に理解に苦しむものかもしれません。
 
 ```jldoctest
 julia> [1 NaN] == [1 NaN]
 false
 ```
-[](
+```@raw html
+<!--
 Julia provides additional functions to test numbers for special values, which can be useful in
 situations like hash key comparisons:
-)
+-->
+```
 Juliaは、ハッシュ値の比較など、特別な値を比較するための機能を提供します。
 
 [](| Function                | Tests if                  |)
@@ -370,9 +402,11 @@ Juliaは、ハッシュ値の比較など、特別な値を比較するための
 | [`isnan(x)`](@ref)      | `x` は数字以外であるか      　|
 
 
-[](
+```@raw html
+<!--
 [`isequal()`](@ref) considers `NaN`s equal to each other:
-)
+-->
+```
 [`isequal()`](@ref) は、 `NaN` 同士は等しいと解釈します。
 
 ```jldoctest
@@ -385,9 +419,11 @@ true
 julia> isequal(NaN, NaN32)
 true
 ```
-[](
+```@raw html
+<!--
 `isequal()` can also be used to distinguish signed zeros:
-)
+-->
+```
 `isequal()` は符号付き0を区別するためにも使用することができます。
 
 ```jldoctest
@@ -397,19 +433,23 @@ true
 julia> isequal(-0.0, 0.0)
 false
 ```
-[](
+```@raw html
+<!--
 Mixed-type comparisons between signed integers, unsigned integers, and floats can be tricky. A
 great deal of care has been taken to ensure that Julia does them correctly.
-)
+-->
+```
 符号付き整数、符号がない整数、および浮動小数点数間の複数の型の比較は注意が必要です。
 Juliaでは、このような処理を正確に実施できるよう、細心の注意が払われています。
 
-[](
+```@raw html
+<!--
 For other types, `isequal()` defaults to calling [`==()`](@ref), so if you want to define
 equality for your own types then you only need to add a [`==()`](@ref) method.  If you define
 your own equality function, you should probably define a corresponding [`hash()`](@ref) method
 to ensure that `isequal(x,y)` implies `hash(x) == hash(y)`.
-)
+-->
+```
 その他の型については、 `isequal()` はデフォルトで [`==()`](@ref) を呼び出すため、
 使用している型の等式を定義したい場合は、[`==()`](@ref)
 メソッドを追加することで定義することができます。
@@ -420,10 +460,12 @@ to ensure that `isequal(x,y)` implies `hash(x) == hash(y)`.
 [](### Chaining comparisons)
 ### 連続した比較
 
-[](
+```@raw html
+<!--
 Unlike most languages, with the [notable exception of Python](https://en.wikipedia.org/wiki/Python_syntax_and_semantics#Comparison_operators),
 comparisons can be arbitrarily chained:
-)
+-->
+```
 [Pythonのような例外](https://en.wikipedia.org/wiki/Python_syntax_and_semantics#Comparison_operators)
 を
 除いて、ほとんどの言語とは異なり、比較は任意に連続して使用することができます。
@@ -432,20 +474,24 @@ comparisons can be arbitrarily chained:
 julia> 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
 true
 ```
-[](
+```@raw html
+<!--
 Chaining comparisons is often quite convenient in numerical code. Chained comparisons use the
 `&&` operator for scalar comparisons, and the [`&`](@ref) operator for elementwise comparisons,
 which allows them to work on arrays. For example, `0 .< A .< 1` gives a boolean array whose entries
 are true where the corresponding elements of `A` are between 0 and 1.
-)
+-->
+```
 連続した比較は、数値コードで便利です。連続した比較は、スカラー比較に `&&`
 演算子を使用し、 要素単位（elementwiseの比較では配列処理を行う [`&`](@ref)
 演算子を使用します。例えば、 `0 .< A .< 1` は、 `A` に
 対応する要素が0と1の間に存在し、エントリが真であるブール値配列を返します。
 
-[](
+```@raw html
+<!--
 Note the evaluation behavior of chained comparisons:
-)
+-->
+```
 連続した比較の値の処理に注意してください。
 
 ```jldoctest
@@ -463,13 +509,15 @@ julia> v(1) > v(2) <= v(3)
 1
 false
 ```
-[](
+```@raw html
+<!--
 The middle expression is only evaluated once, rather than twice as it would be if the expression
 were written as `v(1) < v(2) && v(2) <= v(3)`. However, the order of evaluations in a chained
 comparison is undefined. It is strongly recommended not to use expressions with side effects (such
 as printing) in chained comparisons. If side effects are required, the short-circuit `&&` operator
 should be used explicitly (see [Short-Circuit Evaluation](@ref)).
-)
+-->
+```
 `v(1) < v(2) && v(2) <= v(3)`
 と記載されている場合は2度処理されるかのように
 思われるかもしれませんが、中間の式は1度だけ処理されます。しかし、連続した比較の処理順は
@@ -480,12 +528,14 @@ should be used explicitly (see [Short-Circuit Evaluation](@ref)).
 [](### Elementary Functions)
 ### 基本的な関数
 
-[](
+```@raw html
+<!--
 Julia provides a comprehensive collection of mathematical functions and operators. These mathematical
 operations are defined over as broad a class of numerical values as permit sensible definitions,
 including integers, floating-point numbers, rationals, and complex numbers,
 wherever such definitions make sense.
-)
+-->
+```
 Juliaは、包括的な数学関数および演算子を提供します。これらの数学的演算子は、
 整数、浮動小数点数、有理数、およびそれらの複合などを許容可能な定義として、
 幅広い数値クラスとして定義されています。
@@ -497,9 +547,11 @@ e.g. `sin.(A)` will compute the sine of each element of an array `A`.
 [](## Operator Precedence)
 ## 演算子の優先順位
 
-[](
+```@raw html
+<!--
 Julia applies the following order of operations, from highest precedence to lowest:
-)
+-->
+```
 Juliaは、優先順位の高いものから低いものまで、以下の処理順序を適用しています。
 
 | 累乗       | 演算子                                                                                         |
@@ -531,10 +583,12 @@ julia> Base.operator_precedence(:+=), Base.operator_precedence(:(=))  # (Note th
 [](## Numerical Conversions)
 ## 数値変換
 
-[](
+```@raw html
+<!--
 Julia supports three forms of numerical conversion, which differ in their handling of inexact
 conversions.
-)
+-->
+```
 Juliaは、不正確な変換の処理が異なる3つの形式の数値変換をサポートしています。
 
 [](  * The notation `T(x)` or `convert(T,x)` converts `x` to a value of type `T`.)
@@ -553,9 +607,11 @@ Juliaは、不正確な変換の処理が異なる3つの形式の数値変換�
   * `x % T` は、整数 `x` を、 `x` を法とする `2^n` （ `n` は `T`のビット数）に一致する整数型 `T`の値に変換します。言い換えれば、バイナリ表現は値に収まるように切り捨てられます。
   * man-端数処理関数 は、 `T`型をオプション引数として解釈します。例えば、 `round(Int,x)` は`Int(round(x))` の短縮系です。
 
-[](
+```@raw html
+<!--
 The following examples show the different forms.
-)
+-->
+```
 以下の例は異なる形式を表しています。
 
 ```jldoctest
@@ -714,11 +770,13 @@ Stacktrace:
 | [`exponent(x)`](@ref)    | `x` の2進指数                                                     |
 | [`significand(x)`](@ref) | 浮動小数点数 `x` の2進仮数        |
 
-[](
+```@raw html
+<!--
 For an overview of why functions like [`hypot()`](@ref), [`expm1()`](@ref), and [`log1p()`](@ref)
 are necessary and useful, see John D. Cook's excellent pair of blog posts on the subject: [expm1, log1p, erfc](https://www.johndcook.com/blog/2010/06/07/math-library-functions-that-seem-unnecessary/),
 and [hypot](https://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/).
-)
+-->
+```
 [`hypot()`](@ref), [`expm1()`](@ref), および [`log1p()`](@ref) などの関数が必要かつ有用な理由については、
 [expm1、 log1p、erfc](http://www.johndcook.com/blog/2010/06/07/math-library-functions-that-seem-unnecessary/)
 および
@@ -738,29 +796,35 @@ asin   acos   atan   acot   asec   acsc
 asinh  acosh  atanh  acoth  asech  acsch
 sinc   cosc   atan2
 ```
-[](
+```@raw html
+<!--
 These are all single-argument functions, with the exception of [atan2](https://en.wikipedia.org/wiki/Atan2),
 which gives the angle in [radians](https://en.wikipedia.org/wiki/Radian) between the *x*-axis
 and the point specified by its arguments, interpreted as *x* and *y* coordinates.
-)
+-->
+```
 これらはすべて引数が1つの関数ですが、
 [atan2](https://en.wikipedia.org/wiki/Atan2) は例外で、角度をx軸と引数で
 指定された点の [ラジアン](https://en.wikipedia.org/wiki/Radian)
 で表し、x座標とy座標として解釈します。
 
-[](
+```@raw html
+<!--
 Additionally, [`sinpi(x)`](@ref) and [`cospi(x)`](@ref) are provided for more accurate computations
 of [`sin(pi*x)`](@ref) and [`cos(pi*x)`](@ref) respectively.
-)
+-->
+```
 さらに、[`sinpi(x)`](@ref) および[`cospi(x)`](@ref)
 は、より正確な [`sin(pi*x)`](@ref) および [`cos(pi*x)`](@ref)
 の計算のために提供されています。
 
-[](
+```@raw html
+<!--
 In order to compute trigonometric functions with degrees instead of radians, suffix the function
 with `d`. For example, [`sind(x)`](@ref) computes the sine of `x` where `x` is specified in degrees.
 The complete list of trigonometric functions with degree variants is:
-)
+-->
+```
 ラジアンではなく角度で三角関数を計算するためには、 `d`
 を関数の末尾に付与してください。 例えば、[`sind(x)`](@ref)
 は、角度で指定された `x` の正弦を計算します。

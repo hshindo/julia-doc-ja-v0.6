@@ -1,10 +1,12 @@
 [](# Variables)
 # 変数
 
-[](
+```@raw html
+<!--
 A variable, in Julia, is a name associated (or bound) to a value. It's useful when you want to
 store a value (that you obtained after some math, for example) for later use. For example:
-)
+-->
+```
 Juliaにおける変数は、値に関連（または紐づく）する名前になります。これは、
 計算によって得た値などを後に使用するために保存する際に便利です。以下は例です。
 
@@ -26,11 +28,13 @@ julia> x = "Hello World!"
 "Hello World!"
 ```
 
-[](
+```@raw html
+<!--
 Julia provides an extremely flexible system for naming variables. Variable names are case-sensitive,
 and have no semantic meaning (that is, the language will not treat variables differently based
 on their names).
-)
+-->
+```
 Juliaでは変数名を柔軟に設定することができます。変数名は大文字と小文字が区別され、言語的な意味を持ちません。
 
 ```jldoctest
@@ -50,9 +54,11 @@ julia> UniversalDeclarationOfHumanRightsStart = "人人生而自由，在尊严�
 "人人生而自由，在尊严和权利上一律平等。"
 ```
 
-[](
+```@raw html
+<!--
 Unicode names (in UTF-8 encoding) are allowed:
-)
+-->
+```
 Unicode（UTF-8）の変数名を使用することができます。
 
 ```jldoctest
@@ -62,22 +68,26 @@ julia> δ = 0.00001
 julia> 안녕하세요 = "Hello"
 "Hello"
 ```
-[](
+```@raw html
+<!--
 In the Julia REPL and several other Julia editing environments, you can type many Unicode math
 symbols by typing the backslashed LaTeX symbol name followed by tab. For example, the variable
 name `δ` can be entered by typing `\delta`-*tab*, or even `α̂₂` by `\alpha`-*tab*-`\hat`-
 *tab*-`\_2`-*tab*. (If you find a symbol somewhere, e.g. in someone else's code,
 that you don't know how to type, the REPL help will tell you: just type `?` and
 then paste the symbol.)
-)
+-->
+```
 REPLおよび他のJuliaの編集環境では、バックスラッシュを伴うLaTex記号とタブを
 入力することで、Unicode数学記号を入力することが可能です。例えば、 変数名
 `δ` は、`\delta`-*tab* とすることで入力できます。 また、 `α̂₂`
 は、`\alpha`-*tab*-`\hat`-*tab*-`\_2`-*tab* とすることで入力できます。
 
-[](
+```@raw html
+<!--
 Julia will even let you redefine built-in constants and functions if needed:
-)
+-->
+```
 Juliaでは、必要であればビルトインの定数や関数を再定義することができます。
 
 ```jldoctest
@@ -98,15 +108,18 @@ julia> sqrt = 4
 WARNING: imported binding for sqrt overwritten in module Main
 4
 ```
-[](
+```@raw html
+<!--
 However, this is obviously not recommended to avoid potential confusion.
-)
+-->
+```
 しかし、これは混乱を避ける目的で、推奨されていません。
 
 [](## Allowed Variable Names)
 ## 使用可能な変数名
 
-[](
+```@raw html
+<!--
 Variable names must begin with a letter (A-Z or a-z), underscore, or a subset of Unicode code
 points greater than 00A0; in particular, [Unicode character categories](http://www.fileformat.info/info/unicode/category/index.htm)
 Lu/Ll/Lt/Lm/Lo/Nl (letters), Sc/So (currency and other symbols), and a few other letter-like characters
@@ -114,7 +127,8 @@ Lu/Ll/Lt/Lm/Lo/Nl (letters), Sc/So (currency and other symbols), and a few other
 digits (0-9 and other characters in categories Nd/No), as well as other Unicode code points: diacritics
 and other modifying marks (categories Mn/Mc/Me/Sk), some punctuation connectors (category Pc),
 primes, and a few other characters.
-)
+-->
+```
 変数名は、文字（AからZまたはaからz）、アンダースコア、もしくは00A0よりも大きなUnicodeの
 サブセットの符号点である必要があります。特に、[Unicode文字カテゴリ](http://www.fileformat.info/info/unicode/category/index.htm)
 のLu/Ll/Lt/Lm/Lo/Nl （文字）、
@@ -123,13 +137,15 @@ Sc/So（通貨とその他の記号）、その他の記号（Sm数学記号の�
 （発音区別符号およびその他の修飾文字（Mn/Mc/Me/Skカテゴリ）、句読点コネクタ（Pcカテゴリ）、
 プライム記号、その他の文字）を使用することができます。
 
-[](
+```@raw html
+<!--
 Operators like `+` are also valid identifiers, but are parsed specially. In some contexts, operators
 can be used just like variables; for example `(+)` refers to the addition function, and `(+) = f`
 will reassign it. Most of the Unicode infix operators (in category Sm), such as `⊕`, are parsed
 as infix operators and are available for user-defined methods (e.g. you can use `const ⊗ = kron`
 to define `⊗` as an infix Kronecker product).
-)
+-->
+```
 例えば `+`
 のような演算子も変数名として有効な識別子ですが、異なった解析がされます。ある文脈では、
 演算子は変数のように使用することができます。例えば、 `(+)`
@@ -139,9 +155,11 @@ to define `⊗` as an infix Kronecker product).
 をクロネッカー積として定義するために `const ⊗ = kron` を
 使用する等）として使用することが可能です。
 
-[](
+```@raw html
+<!--
 The only explicitly disallowed names for variables are the names of built-in statements:
-)
+-->
+```
 ビルトインステートメントの名前のみを変数名として使用することはできません
 
 ```julia-rep
@@ -162,10 +180,12 @@ Greek letters, because the former are easily accessible via some input methods.
 [](## Stylistic Conventions)
 ## 文体表記
 
-[](
+```@raw html
+<!--
 While Julia imposes few restrictions on valid names, it has become useful to adopt the following
 conventions:
-)
+-->
+```
 Juliaは変数名にいくつかの制限を設けていますが、以下の表記法を使用するのに便利になっています。
 
 [](  * Names of variables are in lower case.)

@@ -2,12 +2,14 @@
 
 # 複素数と有理数
 
-[](
+```@raw html
+<!--
 Julia ships with predefined types representing both complex and rational numbers, and supports
 all standard [算術処理と基本的な関数](@ref) on them. [Conversion and Promotion](@ref conversion-and-promotion) are defined
 so that operations on any combination of predefined numeric types, whether primitive or composite,
 behave as expected.
-)
+-->
+```
 
 Juliaは、複素数および有理数を表す定義済みの型を提供し、それらに対する[算術処理と基本的な関数](@ref)をサポートしています。
 [Conversion and Promotion](@ref conversion-and-promotion)は、定義済みの数値型（プリミティブまたはコンポジットであっても）
@@ -17,15 +19,17 @@ Juliaは、複素数および有理数を表す定義済みの型を提供し、
 
 ## 複素数
 
-[](
+```@raw html
+<!--
 The global constant [`im`](@ref) is bound to the complex number *i*, representing the principal
 square root of -1. It was deemed harmful to co-opt the name `i` for a global constant, since it
 is such a popular index variable name. Since Julia allows numeric literals to be [juxtaposed with identifiers as coefficients](@ref man-numeric-literal-coefficients),
 this binding suffices to provide convenient syntax for complex numbers, similar to the traditional
 mathematical notation:
-)
+-->
+```
 
-グローバル定数[`im`](@ref)は-1の平方根を表す複素数 *i* に紐付きます。 なぜ定数名を[`i`](@ref)としないのかというと、``i`` は一般的なインデックス変数であるため、
+グローバル定数[`im`](@ref)は-1の平方根を表す複素数 *i* に紐付きます。 なぜ定数名を `i` としないのかというと、`i` は一般的なインデックス変数であるため、
 グローバル定数にそのような名前をつけることは混乱を招くと考えられているからです。
 Juliaでは数値リテラルに[識別子を伴う係数として並置](@ref man-numeric-literal-coefficients)することができるため、従来の数学的表記法と同様に、
 複素数を使用する際に便利な構文を提供することができます。:
@@ -105,10 +109,12 @@ julia> 1 + 3/4im
 1.0 - 0.75im
 ```
 
-[](
+```@raw html
+<!--
 Note that `3/4im == 3/(4*im) == -(3/4*im)`, since a literal coefficient binds more tightly than
 division.
-)
+-->
+```
 
 リテラル係数は除算よりも厳密に紐付けるため、 ``3/4im == 3/(4*im)== -(3/4*im)`` であることに注意してください。
 
@@ -141,13 +147,15 @@ julia> angle(1 + 2im) # phase angle in radians
 1.1071487177940904
 ```
 
-[](
+```@raw html
+<!--
 As usual, the absolute value ([`abs()`](@ref)) of a complex number is its distance from zero.
 [`abs2()`](@ref) gives the square of the absolute value, and is of particular use for complex
 numbers where it avoids taking a square root. [`angle()`](@ref) returns the phase angle in radians
 (also known as the *argument* or *arg* function). The full gamut of other []([基本的な関数](@ref))
 is also defined for complex numbers:
-)
+-->
+```
 
 従来通り、複素数の絶対値 ([`abs()`](@ref)) は0からの距離を表します。
 [`abs2()`](@ref) は絶対値の2乗の値を算出します。これは平方根を避けるために使用されます。
@@ -172,11 +180,13 @@ julia> sinh(1 + 2im)
 -0.4890562590412937 + 1.4031192506220405im
 ```
 
-[](
+```@raw html
+<!--
 Note that mathematical functions typically return real values when applied to real numbers and
 complex values when applied to complex numbers. For example, [`sqrt()`](@ref) behaves differently
 when applied to `-1` versus `-1 + 0im` even though `-1 == -1 + 0im`:
-)
+-->
+```
 
 数学関数は通常、実数値に対して使用された場合は実数値を、複素数値に対して使用された場合は複素数値を返しますので注意してください。
 例えば [`sqrt()`](@ref) は、たとえ ``-1 == -1 + 0im`` であっても ``-1`` と ``-1 + 0im`` とが使用された場合では挙動が異なります。:
@@ -192,10 +202,12 @@ julia> sqrt(-1 + 0im)
 0.0 + 1.0im
 ```
 
-[](
+```@raw html
+<!--
 The [literal numeric coefficient notation](@ref man-numeric-literal-coefficients) does not work when constructing a complex number
 from variables. Instead, the multiplication must be explicitly written out:
-)
+-->
+```
 
 [数値リテラル係数表現](@ref man-numeric-literal-coefficients) は、変数から複素数を
 構成する際には機能しません。代わりに、乗算は明示的に記載される必要があります。:
@@ -205,10 +217,12 @@ julia> a = 1; b = 2; a + b*im
 1 + 2im
 ```
 
-[](
+```@raw html
+<!--
 However, this is *not* recommended; Use the [`complex()`](@ref) function instead to construct
 a complex value directly from its real and imaginary parts:
-)
+-->
+```
 
 しかしながら、これは推奨されていません。実数部および虚数部から直接、複素数値を構築するのではなく、
 [`complex()`](@ref) 関数を使用してください。:
@@ -222,10 +236,12 @@ julia> a = 1; b = 2; complex(a, b)
 
 この場合、乗算および加算を回避することができます。
 
-[](
+```@raw html
+<!--
 [`Inf`](@ref) and [`NaN`](@ref) propagate through complex numbers in the real and imaginary parts
 of a complex number as described in the [特殊な浮動小数点値](@ref) section:
-)
+-->
+```
 
 [`Inf`](@ref) および [`NaN`](@ref) は、 [特殊な浮動小数点値](@ref) に説明されているように、
 複素数の実数部と虚数部を伝えます。:
@@ -242,10 +258,12 @@ julia> 1 + NaN*im
 
 ## 有理数
 
-[](
+```@raw html
+<!--
 Julia has a rational number type to represent exact ratios of integers. Rationals are constructed
 using the [`//`](@ref) operator:
-)
+-->
+```
 
 Juliaには、整数の正確な比率を表す有理数型があります。有理数は [`//`](@ref) 演算子を使用して構成されます。:
 
@@ -254,10 +272,12 @@ julia> 2//3
 2//3
 ```
 
-[](
+```@raw html
+<!--
 If the numerator and denominator of a rational have common factors, they are reduced to lowest
 terms such that the denominator is non-negative:
-)
+-->
+```
 
 有理数の分子と分母が共通の因数を持つ場合、分母が非負であるように最小値まで約分されます。:
 
@@ -275,12 +295,14 @@ julia> -4//-12
 1//3
 ```
 
-[](
+```@raw html
+<!--
 This normalized form for a ratio of integers is unique, so equality of rational values can be
 tested by checking for equality of the numerator and denominator. The standardized numerator and
 denominator of a rational value can be extracted using the [`numerator()`](@ref) and [`denominator()`](@ref)
 functions:
-)
+-->
+```
 
 整数比に対するこの正規化された形式は固有であるため、有理数の相等は、分子と分母の相等をチェックすることで確認できます。
 有理数の標準化された分子と分母は [`numerator()`](@ref) および [`denominator()`](@ref) 関数を使用して得ることができます。:
@@ -293,10 +315,12 @@ julia> denominator(2//3)
 3
 ```
 
-[](
+```@raw html
+<!--
 Direct comparison of the numerator and denominator is generally not necessary, since the standard
 arithmetic and comparison operations are defined for rational values:
-)
+-->
+```
 
 標準的な算術および比較演算は有理数向けに定義されているため、分子と分母の直接的な比較は通常必要ありません。:
 
@@ -335,10 +359,12 @@ julia> float(3//4)
 0.75
 ```
 
-[](
+```@raw html
+<!--
 Conversion from rational to floating-point respects the following identity for any integral values
 of `a` and `b`, with the exception of the case `a == 0` and `b == 0`:
-)
+-->
+```
 
 有理数から浮動小数点数への変換は、 ``a==0`` および ``b==0`` の場合を除き、
 整数値 ``a`` および ``b`` の整数値の同一性を考慮します。:
