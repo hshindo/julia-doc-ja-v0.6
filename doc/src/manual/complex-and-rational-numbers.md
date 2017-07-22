@@ -227,7 +227,7 @@ of a complex number as described in the [特殊な浮動小数点値](@ref) sect
 )
 
 [`Inf`](@ref) および [`NaN`](@ref) は、 [特殊な浮動小数点値](@ref) に説明されているように、
-複素数の実数部と虚数部の複素数を伝えます。:
+複素数の実数部と虚数部を伝えます。:
 
 ```jldoctest
 julia> 1 + Inf*im
