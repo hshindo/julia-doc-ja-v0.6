@@ -25,8 +25,8 @@ this binding suffices to provide convenient syntax for complex numbers, similar 
 mathematical notation:
 )
 
-グローバル定数[`im`](@ref)は-1の平方根を表す複素数 *i* に紐付きます。 ``i`` は一般的なインデックス変数であるため、
-グローバル定数にそのような名前をつけることは混乱を招くと考えられてきました。
+グローバル定数[`im`](@ref)は-1の平方根を表す複素数 *i* に紐付きます。 なぜ定数名を[`i`](@ref)としないのかというと、``i`` は一般的なインデックス変数であるため、
+グローバル定数にそのような名前をつけることは混乱を招くと考えられているからです。
 Juliaでは数値リテラルに[識別子を伴う係数として並置](@ref man-numeric-literal-coefficients)することができるため、従来の数学的表記法と同様に、
 複素数を使用する際に便利な構文を提供することができます。:
 
