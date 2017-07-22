@@ -3,7 +3,7 @@
   * [はじめに](@ref man-introduction)
   * [Juliaをはじめる](@ref)
   * [変数](@ref)
-　* [整数と浮動小数点数](@ref)
+  * [整数と浮動小数点数](@ref)
 　* [算術処理と基本的な関数](@ref)
 　* [複素数と有理数](@ref)
   * [Strings](@ref)
