@@ -10,7 +10,7 @@ on implementing a custom array type.
 
 An array is a collection of objects stored in a multi-dimensional grid. In the most general case,
 an array may contain objects of type `Any`. For most computational purposes, arrays should contain
-objects of a more specific type, such as `Float64` or `Int32`.
+objects of a more specific type, such as [`Float64`](@ref) or [`Int32`](@ref).
 
 In general, unlike many other technical computing languages, Julia does not expect programs to
 be written in a vectorized style for performance. Julia's compiler uses type inference and generates
@@ -46,7 +46,7 @@ Many functions for constructing and initializing arrays are provided. In the fol
 such functions, calls with a `dims...` argument can either take a single tuple of dimension sizes
 or a series of dimension sizes passed as a variable number of arguments. Most of these functions
 also accept a first input `T`, which is the element type of the array. If the type `T` is
-omitted it will default to `Float64`.
+omitted it will default to [`Float64`](@ref).
 
 | Function                           | Description                                                                                                                                                                                                                                  |
 |:---------------------------------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -538,7 +538,7 @@ or `min.(x,y)`, for elementwise operations over arrays or mixtures of arrays and
 scalars (a [Broadcasting](@ref) operation); these have the additional advantage of
 "fusing" into a single loop when combined with other dot calls, e.g. `sin.(cos.(x))`.
 
-Also, *every* binary operator supports a []([dot version](@ref man-dot-operators))
+Also, *every* binary operator supports a [dot version](@ref man-dot-operators)
 that can be applied to arrays (and combinations of arrays and scalars) in such
 [fused broadcasting operations](@ref man-vectorized), e.g. `z .== sin.(x .* y)`.
 
@@ -585,14 +585,14 @@ julia> broadcast(+, a, b)
  1.73659  0.873631
 ```
 
-[]([Dotted operators](@ref man-dot-operators)) such as `.+` and `.*` are equivalent
+[Dotted operators](@ref man-dot-operators) such as `.+` and `.*` are equivalent
 to `broadcast` calls (except that they fuse, as described below). There is also a
 [`broadcast!()`](@ref) function to specify an explicit destination (which can also
 be accessed in a fusing fashion by `.=` assignment), and functions [`broadcast_getindex()`](@ref)
 and [`broadcast_setindex!()`](@ref) that broadcast the indices before indexing. Moreover, `f.(args...)`
 is equivalent to `broadcast(f, args...)`, providing a convenient syntax to broadcast any function
 ([dot syntax](@ref man-vectorized)). Nested "dot calls" `f.(...)` (including calls to `.+` etcetera)
-[]([automatically fuse](@ref man-dot-operators)) into a single `broadcast` call.
+[automatically fuse](@ref man-dot-operators) into a single `broadcast` call.
 
 Additionally, [`broadcast()`](@ref) is not limited to arrays (see the function documentation),
 it also handles tuples and treats any argument that is not an array, tuple or `Ref` (except for `Ptr`) as a "scalar".

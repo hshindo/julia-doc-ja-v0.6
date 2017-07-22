@@ -663,7 +663,7 @@ julia> @. X = sin(cos(Y)) # equivalent to X .= sin.(cos.(Y))
 Binary (or unary) operators like `.+` are handled with the same mechanism:
 they are equivalent to `broadcast` calls and are fused with other nested "dot" calls.
  `X .+= Y` etcetera is equivalent to `X .= X .+ Y` and results in a fused in-place assignment;
- see also []([dot operators](@ref man-dot-operators).)
+ see also [dot operators](@ref man-dot-operators).
 
 ## Further Reading
 
