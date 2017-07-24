@@ -1,5 +1,7 @@
-# [Strings](@id man-strings)
+[](# [Strings](@id man-strings))
 
+```@raw html
+<!--
 Strings are finite sequences of characters. Of course, the real trouble comes when one asks what
 a character is. The characters that English speakers are familiar with are the letters `A`, `B`,
 `C`, etc., together with numerals and common punctuation symbols. These characters are standardized
@@ -17,7 +19,11 @@ efficient as possible. In particular, you can write C-style string code to proce
 and they will work as expected, both in terms of performance and semantics. If such code encounters
 non-ASCII text, it will gracefully fail with a clear error message, rather than silently introducing
 corrupt results. When this happens, modifying the code to handle non-ASCII data is straightforward.
+-->
+```
 
+```@raw html
+<!--
 There are a few noteworthy high-level features about Julia's strings:
 
   * The built-in concrete type used for strings (and string literals) in Julia is [`String`](@ref).
@@ -38,6 +44,7 @@ There are a few noteworthy high-level features about Julia's strings:
     indexing into strings by the byte index of an encoded representation rather than by a character
     index, which cannot be implemented both efficiently and simply for variable-width encodings of
     Unicode strings.
+```
 
 ## [Characters](@id man-characters)
 
