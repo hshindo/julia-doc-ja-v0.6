@@ -1,5 +1,8 @@
-# [Strings](@id man-strings)
+[](# [Strings](@id man-strings))
+# [文字列](@id man-strings)
 
+```@raw html
+<!--
 Strings are finite sequences of characters. Of course, the real trouble comes when one asks what
 a character is. The characters that English speakers are familiar with are the letters `A`, `B`,
 `C`, etc., together with numerals and common punctuation symbols. These characters are standardized
@@ -17,7 +20,22 @@ efficient as possible. In particular, you can write C-style string code to proce
 and they will work as expected, both in terms of performance and semantics. If such code encounters
 non-ASCII text, it will gracefully fail with a clear error message, rather than silently introducing
 corrupt results. When this happens, modifying the code to handle non-ASCII data is straightforward.
+-->
+```
 
+文字列は有限の記号の連続を意味します。ここでいう記号とは一般的な意味のそれとは少し違います。
+英語話者にとって馴染みのある記号は`A`、`B`、`C`、などの文字と、アラビヤ数字や句読記号です。これらの文字は、[ASCII](https://en.wikipedia.org/wiki/ASCII) 規格
+において、0から127の番号をそれぞれ割り振られて標準化されています。もちろん、ラテン文字だけが世界で使われているわけではありません。アクセント記号やその他の変形ASCII文字や、
+英語の言語体系に関連を持つロシア語やギリシャ語、および英語の言語体系に関連を持たないアラビア語、中国語、ヘブライ語、ヒンディー語、韓国語、そして日本語などは
+それぞれ独自の文字を有しています。 [Unicode](https://en.wikipedia.org/wiki/Unicode) 規格は、ある文字が一体何なのかという複雑な問題に取り組んでおり、また、
+この問題に対処する決定的な規格として一般的に認識されています。あなたの必要に応じて、これらの複雑な問題を気にせずASCII文字だけを使用したり、非ASCIIテキストを扱う際に
+見かける様々な文字やエンコードを使用したコードを書くことができます。JuliaはASCIIテキストの取り扱いをシンプルかつ効率的にし、Unicodeの取り扱いも同様に可能な限りシンプル
+かつ効率的にします。特に、ASCIIの文字列を処理するためにC言語スタイルに文字列コードを書くことができ、パフォーマンスと乞うっ文的な意味の両面で期待通りの動作をします。
+JuliaはASCII以外のテキストが検出された場合、エラーをただ出力するのではなく、明確なエラーメッセージを出力して処理を終了します。この場合、非ASCIIデータを処理できるように
+修正することは簡単です。
+
+```@raw html
+<!--
 There are a few noteworthy high-level features about Julia's strings:
 
   * The built-in concrete type used for strings (and string literals) in Julia is [`String`](@ref).
@@ -38,7 +56,22 @@ There are a few noteworthy high-level features about Julia's strings:
     indexing into strings by the byte index of an encoded representation rather than by a character
     index, which cannot be implemented both efficiently and simply for variable-width encodings of
     Unicode strings.
+```
 
+Juliaには、文字列に関係する特筆すべき高度な機能があります。
+
+  * Juliaにおける文字列を扱うビルトインの型は [`String`](@ref) です。これは、[UTF-8](https://en.wikipedia.org/wiki/UTF-8) エンコーディング下で
+  全ての [Unicode](https://wikipedia.org/wiki/Unicode) をサポートします。 (Unicodeエンコードの変換を行うために [`transcode()`](@ref) 関数が
+  提供されていす。)
+  * すべての文字列型は抽象型 `AbstractString` のサブタイプであり、外部パッケージは追加の `AbstractString` のサブタイプ（例えばその他のエンコーディング用）
+  を定義します。文字列の引数を扱う関数を定義する場合は、任意の文字列型を使用するために `AbstractString` を型として宣言する必要があります。
+  * C言語やJavaと同様に、しかしほとんどの動的言語とは異なり、Juliaには `Char` と呼ばれる1文字を表す第1級型があります。
+  これは数値がUnicodeコードポイントを表す特殊な種類の32ビットのビット型です。
+  * Javaと同様に、文字列は不変であり、 `AbstractString` オブジェクトの値は変更できません。異なる文字列の値を作成するには、他の文字列の一部から新しい文字列を作成します。
+  * 概念的には、文字列はインデックスから文字への部分的な関数です。インデックス値によっては文字列は返されず、例外が出力されます。これは、Unicode文字列
+  の可変幅のエンコードに対して効率的かつシンプルに実装できない文字列インデックスではなく、エンコードされた表現のバイトインデックスによる文字列
+  への効率的なインデックスを可能にします。
+ 
 ## [Characters](@id man-characters)
 
 A `Char` value represents a single character: it is just a 32-bit primitive type with a special literal
