@@ -11,3 +11,6 @@ https://github.com/JuliaLang/julia/tree/v0.6.0/doc
 
 翻訳結果はこちら：
 https://hshindo.github.io/julia-doc-ja-v0.6/
+
+v0.5の翻訳結果（一部）は以下にあります．
+https://github.com/hshindo/julia-doc-ja/tree/master/doc/manual
