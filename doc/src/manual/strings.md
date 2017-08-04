@@ -56,7 +56,7 @@ There are a few noteworthy high-level features about Julia's strings:
     indexing into strings by the byte index of an encoded representation rather than by a character
     index, which cannot be implemented both efficiently and simply for variable-width encodings of
     Unicode strings.
-!-->
+-->
 ```
 
 Juliaには、文字列に関係する特筆すべき高度な機能があります。
@@ -73,12 +73,21 @@ Juliaには、文字列に関係する特筆すべき高度な機能がありま
     の可変幅のエンコードに対して効率的かつシンプルに実装できない文字列インデックスではなく、エンコードされた表現のバイトインデックスによる文字列
     への効率的なインデックスを可能にします。
 
-## [Characters](@id man-characters)
+[](## [Characters](@id man-characters))
+## [文字][@id man-characters]
 
+```@raw html
+<!--
 A `Char` value represents a single character: it is just a 32-bit primitive type with a special literal
 representation and appropriate arithmetic behaviors, whose numeric value is interpreted as a
 [Unicode code point](https://en.wikipedia.org/wiki/Code_point). Here is how `Char` values are
 input and shown:
+-->
+```
+
+`Char`値は一つの文字を表します。これは特殊なリテラル表現と適切な算術演算を持つ32ビットのビットタイプであり、
+数値は [Unicodeコードポイント](https://en.wikipedia.org/wiki/Code_point) として解釈されます。
+`Char`値の入力と表示方法は以下の通りです。:
 
 ```jldoctest
 julia> 'x'
@@ -88,7 +97,9 @@ julia> typeof(ans)
 Char
 ```
 
-You can convert a `Char` to its integer value, i.e. code point, easily:
+[](You can convert a `Char` to its integer value, i.e. code point, easily:)
+
+`Char`を整数値（コードポイント）へと簡単に変換することができます。:
 
 ```jldoctest
 julia> Int('x')
@@ -98,17 +109,32 @@ julia> typeof(ans)
 Int64
 ```
 
+```@raw html
+<!--
 On 32-bit architectures, [`typeof(ans)`](@ref) will be [`Int32`](@ref). You can convert an
 integer value back to a `Char` just as easily:
+-->
+```
+
+32ビットのアーキテクチャ上では、 [`typeof(ans)`](@ref) は [`Int32`](@ref) を返します。
+また、整数値を簡単に`Char`へと変換し直すこともできます。:
 
 ```jldoctest
 julia> Char(120)
 'x': ASCII/Unicode U+0078 (category Ll: Letter, lowercase)
 ```
 
+```@raw html
+<!--
 Not all integer values are valid Unicode code points, but for performance, the `Char()` conversion
 does not check that every character value is valid. If you want to check that each converted value
 is a valid code point, use the [`isvalid()`](@ref) function:
+-->
+```
+
+全ての整数値が有効なUnicodeコードポイントではありません。しかしパフォーマンスの為に、Juliaは`Char()`の呼び出しの際に
+引数が有効なUnicodeコードポイントであるかチェックしません。
+もし変換された値が有効なコードポイントであるか確認したい場合は、 [`isvalid()`](@ref) 関数を使用してください。:
 
 ```jldoctest
 julia> Char(0x110000)
@@ -118,6 +144,8 @@ julia> isvalid(Char, 0x110000)
 false
 ```
 
+```@raw html
+<!--
 As of this writing, the valid Unicode code points are `U+00` through `U+d7ff` and `U+e000` through
 `U+10ffff`. These have not all been assigned intelligible meanings yet, nor are they necessarily
 interpretable by applications, but all of these values are considered to be valid Unicode characters.
@@ -125,6 +153,16 @@ interpretable by applications, but all of these values are considered to be vali
 You can input any Unicode character in single quotes using `\u` followed by up to four hexadecimal
 digits or `\U` followed by up to eight hexadecimal digits (the longest valid value only requires
 six):
+-->
+```
+
+現時点では、有効なコードポイントは `U+00` から `U+d7ff`　までと `U+e000` から `U+10ffff` までとなっています。
+これら全てのコードポイントに記号が割り当てられているわけではなく、また必ずしもアプリケーションによっては解釈できないものもありますが、
+これら全てのコードポイントは有効なUnicode文字としてみなされます。
+
+シングルクオーテンションで囲まれたエリアの中では、`\u` に続けて最大4桁の16進数を入力するか、`\U`に続けて最大8桁の16進数（6桁から有効）を入力することで、
+Unicode文字を入力することができます。:
+
 
 ```jldoctest
 julia> '\u0'
@@ -140,10 +178,17 @@ julia> '\U10ffff'
 '\U10ffff': Unicode U+10ffff (category Cn: Other, not assigned)
 ```
 
+```@raw html
+<!--
 Julia uses your system's locale and language settings to determine which characters can be printed
 as-is and which must be output using the generic, escaped `\u` or `\U` input forms. In addition
 to these Unicode escape forms, all of [C's traditional escaped input forms](https://en.wikipedia.org/wiki/C_syntax#Backslash_escapes)
 can also be used:
+-->
+```
+
+Juliaは、システムのロケールと言語設定を加味して、どの文字が支障なく出力できるか、そしてどの文字が `\u` または `\U` を使用してエスケープされた状態で出力すべきか判断します。
+これらのUnicodeエスケープ方式に加えて、 [C言語のエスケープ形式](https://en.wikipedia.org/wiki/C_syntax#C¥Backslash_escapes) を用いた入力も可能です。:
 
 ```jldoctest
 julia> Int('\0')
@@ -168,7 +213,9 @@ julia> Int('\xff')
 255
 ```
 
-You can do comparisons and a limited amount of arithmetic with `Char` values:
+[](You can do comparisons and a limited amount of arithmetic with `Char` values:)
+
+`Char`値を使用して限定的な算術演算や`Char`同士の比較を行うことができます。:
 
 ```jldoctest
 julia> 'A' < 'a'
