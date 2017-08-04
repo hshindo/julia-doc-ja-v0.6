@@ -844,8 +844,11 @@ Some other useful functions include:
   * [`ind2char(str,i)`](@ref) はインデックス1からインデックス`i`までに格納されている文字数を返します。
   * [`chr2ind(str,j)`](@ref) は `str` の `j` 番目の文字が格納されているインデックスの値を返します。
 
-## [Non-Standard String Literals](@id non-standard-string-literals)
+[](## [Non-Standard String Literals](@id non-standard-string-literals))
+## 非標準文字列リテラル(@id non-standard-string-literals)
 
+```@raw html
+<!--
 There are situations when you want to construct a string or use string semantics, but the behavior
 of the standard string construct is not quite what is needed. For these kinds of situations, Julia
 provides [non-standard string literals](@ref). A non-standard string literal looks like a regular
@@ -853,6 +856,13 @@ double-quoted string literal, but is immediately prefixed by an identifier, and 
 quite like a normal string literal.  Regular expressions, byte array literals and version number
 literals, as described below, are some examples of non-standard string literals. Other examples
 are given in the [Metaprogramming](@ref) section.
+-->
+```
+
+文字列を作成したり使用したいけれども、標準の文字列構成の挙動があまり目的に合致していない場合があるかもしれません。
+そのような時のために、Juliaは [非標準文字列リテラル](@ref) を提供しています。非標準文字列リテラルは通常のダブルクオーと文字列リテラル
+と同じように見えますが、前に識別子が付されていて、通常の文字列リテラルとは異なった挙動をします。下に説明されている正規表現やバイト配列リテラル、
+バージョン番号リテラルは非標準文字列リテラルに属します。その他の非標準文字列リテラルの例は [メタプログラミング](@ref) のセクションで挙げられています。
 
 ## Regular Expressions
 
