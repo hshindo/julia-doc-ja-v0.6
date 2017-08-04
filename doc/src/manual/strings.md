@@ -234,9 +234,12 @@ julia> 'A' + 1
 'B': ASCII/Unicode U+0042 (category Lu: Letter, uppercase)
 ```
 
-## String Basics
+[](## String Basics)
+## 文字列の基礎
 
-String literals are delimited by double quotes or triple double quotes:
+[](String literals are delimited by double quotes or triple double quotes:)
+
+文字列リテラルはダブルクオーテーションまたは3つのダブルクオーテーションで区切られます。:
 
 ```jldoctest helloworldstring
 julia> str = "Hello, world.\n"
@@ -246,7 +249,9 @@ julia> """Contains "quote" characters"""
 "Contains \"quote\" characters"
 ```
 
-If you want to extract a character from a string, you index into it:
+[](If you want to extract a character from a string, you index into it:)
+
+文字列から文字を抽出する場合はその文字列にインデックスを付ける必要があります。
 
 ```jldoctest helloworldstring
 julia> str[1]
@@ -259,6 +264,8 @@ julia> str[end]
 '\n': ASCII/Unicode U+000a (category Cc: Other, control)
 ```
 
+```@raw html
+<!--
 All indexing in Julia is 1-based: the first element of any integer-indexed object is found at
 index 1. (As we will see below, this does not necessarily mean that the last element is found
 at index `n`, where `n` is the length of the string.)
@@ -266,6 +273,15 @@ at index `n`, where `n` is the length of the string.)
 In any indexing expression, the keyword `end` can be used as a shorthand for the last index (computed
 by [`endof(str)`](@ref)). You can perform arithmetic and other operations with `end`, just like
 a normal value:
+-->
+```
+
+Julia のインデックスは全て1から始まります。つまり、整数インデックスを持つオブジェクトの最初の要素のインデックスは1になります。
+（しかし、下にある例が示すように、文字列が持つ最後の要素のインデックスが文字列の長さ `n` を持つとは限りません。）
+
+どのインデックス表現でも、キーワード `end` は（[`endof(str)`](@ref) で求められる）インデックスの末尾の省略形として使うことができます。
+`end` は通常の値と同様に、算術演算やその他の処理を行うことができます。
+
 
 ```jldoctest helloworldstring
 julia> str[end-1]
@@ -275,7 +291,8 @@ julia> str[end÷2]
 ' ': ASCII/Unicode U+0020 (category Zs: Separator, space)
 ```
 
-Using an index less than 1 or greater than `end` raises an error:
+[](Using an index less than 1 or greater than `end` raises an error:)
+1未満または `end` 以上のインデックスを使用した場合、エラーが出力されます。:
 
 ```jldoctest helloworldstring
 julia> str[0]
@@ -289,14 +306,16 @@ ERROR: BoundsError: attempt to access "Hello, world.\n"
 [...]
 ```
 
-You can also extract a substring using range indexing:
+[](You can also extract a substring using range indexing:)
+範囲のインデックスを使用することで、文字列の一部分を抽出することができます。:
 
 ```jldoctest helloworldstring
 julia> str[4:9]
 "lo, wo"
 ```
 
-Notice that the expressions `str[k]` and `str[k:k]` do not give the same result:
+[](Notice that the expressions `str[k]` and `str[k:k]` do not give the same result:)
+`str[k]` と `str[k:k]` は同じ結果にならないことに留意してください。:
 
 ```jldoctest helloworldstring
 julia> str[6]
@@ -306,8 +325,15 @@ julia> str[6:6]
 ","
 ```
 
+```@raw html
+<!--
 The former is a single character value of type `Char`, while the latter is a string value that
 happens to contain only a single character. In Julia these are very different things.
+-->
+```
+
+前者の記法では一文字のみを取得することが想定されているので、前者は`Char`型です。
+Juliaでは`Char`型と`String`型はとても異なっています。
 
 ## Unicode and UTF-8
 
