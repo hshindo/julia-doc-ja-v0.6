@@ -478,9 +478,12 @@ JuliaはデフォルトでUTF-8エンコーディングを使用し、加えて�
 その他のエンコーディングとその実装方法は当ドキュメントの対象外となります。UTF-8に関するさらなる議論については、以下の[バイト配列リテラル](@ref man-byte-array-literals)
 のセクションを参照してください。 [`transcode()`](@ref) 関数は、主に外部データやライブラリを扱うために、様々なUTF-xxエンコーディング間のデータ変換を提供します。
 
-## Concatenation
+[](## Concatenation)
+## 連結
 
-One of the most common and useful string operations is concatenation:
+[](One of the most common and useful string operations is concatenation:)
+
+最も一般的で便利な文字列操作の一つが連結です。:
 
 ```jldoctest stringconcat
 julia> greet = "Hello"
@@ -493,16 +496,27 @@ julia> string(greet, ", ", whom, ".\n")
 "Hello, world.\n"
 ```
 
-Julia also provides `*` for string concatenation:
+[](Julia also provides `*` for string concatenation:)
+
+Juliaは `*` も文字列連結の記述として提供しています。
 
 ```jldoctest stringconcat
 julia> greet * ", " * whom * ".\n"
 "Hello, world.\n"
 ```
 
+```@raw html
+<!--
 While `*` may seem like a surprising choice to users of languages that provide `+` for string
 concatenation, this use of `*` has precedent in mathematics, particularly in abstract algebra.
+-->
+```
 
+`+` を文字列連結の記述としている言語の使用者にとっては Juliaが `*` をそれとするのは奇抜に見えるかもしれませんが、
+この `*` は数学、特に抽象代数学においてもこのような使われ方をしています。
+
+```@raw html
+<!--
 In mathematics, `+` usually denotes a *commutative* operation, where the order of the operands does
 not matter. An example of this is matrix addition, where `A + B == B + A` for any matrices `A` and `B`
 that have the same shape. In contrast, `*` typically denotes a *noncommutative* operation, where the
@@ -510,12 +524,30 @@ order of the operands *does* matter. An example of this is matrix multiplication
 `A * B != B * A`. As with matrix multiplication, string concatenation is noncommutative:
 `greet * whom != whom * greet`. As such, `*` is a more natural choice for an infix string concatenation
 operator, consistent with common mathematical use.
+-->
+```
 
+数学では、`+` はしばしば **可換** 演算（被演算子の順番が関係ない演算）を表します。
+例えば行列の加算は、`A + B == B + A` は `A` と `B` が同じサイズで有る限り成り立つ可換演算です。
+これに対して `*` はよく **非可換** 演算（被演算子の順番が関係 **ある** 演算）を表します。
+例えば行列の乗算は、`A * B != B * A` が基本的に成り立つ非可換演算です。
+そして文字列の連結は `greet * whom != whom * greet` が成り立つように行列の乗算と同様、非可換演算です。
+これらのことから、 文字列連結演算子としての `*` はより数学においての使われ方に準拠した、自然な選択といえます。
+
+```@raw html
+<!--
 More precisely, the set of all finite-length strings *S* together with the string concatenation operator
 `*` forms a [free monoid](https://en.wikipedia.org/wiki/Free_monoid) (*S*, `*`). The identity element
 of this set is the empty string, `""`. Whenever a free monoid is not commutative, the operation is
 typically represented as `\cdot`, `*`, or a similar symbol, rather than `+`, which as stated usually
 implies commutativity.
+-->
+```
+
+より厳密に言えば、全ての有限の長さを持つ文字列の集合 *S* と文字列連結演算子 `*` は [自由モノイド](https://en.wikipedia.org/wiki/Free_monoid) (*S*, `*`) を形成します。
+この集合の単位元は空の文字列 `""` です。 自由モノイドが非可換である時、連結演算子は、しばしば可換の状態であることを表す時に用いられる`+` よりも `\cdot` や `*` 、その他の類似した記号で表されることが多いです。
+
+
 
 ## [Interpolation](@id string-interpolation)
 
