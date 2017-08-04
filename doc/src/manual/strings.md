@@ -24,10 +24,10 @@ corrupt results. When this happens, modifying the code to handle non-ASCII data 
 ```
 
 文字列は有限の記号の連続を意味します。ここでいう記号とは一般的な意味のそれとは少し違います。
-英語話者にとって馴染みのある記号は`A`、`B`、`C`、などの文字と、アラビア数字や句読記号です。これらの文字は、[ASCII](https://en.wikipedia.org/wiki/ASCII) 規格
+英語話者にとって馴染みのある記号は`A`、`B`、`C`、などの文字と、アラビア数字や句読記号です。これらの文字は、[ASCII](https://ja.wikipedia.org/wiki/ASCII) 規格
 において、0から127の番号をそれぞれ割り振られて標準化されています。もちろん、ラテン文字だけが世界で使われているわけではありません。アクセント記号やその他の変形ASCII文字や、
 英語の言語体系に関連を持つロシア語やギリシャ語、および英語の言語体系に関連を持たないアラビア語、中国語、ヘブライ語、ヒンディー語、韓国語、そして日本語などは
-それぞれ独自の文字を有しています。 [Unicode](https://en.wikipedia.org/wiki/Unicode) 規格は、ある文字が一体何なのかという複雑な問題に取り組んでおり、また、
+それぞれ独自の文字を有しています。 [Unicode](https://ja.wikipedia.org/wiki/Unicode) 規格は、ある文字が一体何なのかという複雑な問題に取り組んでおり、また、
 この問題に対処する決定的な規格として一般的に認識されています。あなたの必要に応じて、これらの複雑な問題を気にせずASCII文字だけを使用したり、非ASCIIテキストを扱う際に
 見かける様々な文字やエンコードを使用したコードを書くことができます。JuliaはASCIIテキストの取り扱いをシンプルかつ効率的にし、Unicodeの取り扱いも同様に可能な限りシンプル
 かつ効率的にします。特に、ASCIIの文字列を処理するためにC言語スタイルに文字列コードを書くことができ、パフォーマンスと乞うっ文的な意味の両面で期待通りの動作をします。
@@ -61,8 +61,8 @@ There are a few noteworthy high-level features about Julia's strings:
 
 Juliaには、文字列に関係する特筆すべき高度な機能があります。
 
-  * Juliaにおける文字列を扱うビルトインの型は [`String`](@ref) です。これは、[UTF-8](https://en.wikipedia.org/wiki/UTF-8) エンコーディング下で
-    全ての [Unicode](https://wikipedia.org/wiki/Unicode) をサポートします。 (Unicodeエンコードの変換を行うために [`transcode()`](@ref) 関数が
+  * Juliaにおける文字列を扱うビルトインの型は [`String`](@ref) です。これは、[UTF-8](https://ja.wikipedia.org/wiki/UTF-8) エンコーディング下で
+    全ての [Unicode](https://ja.wikipedia.org/wiki/Unicode) をサポートします。 (Unicodeエンコードの変換を行うために [`transcode()`](@ref) 関数が
     提供されていす。)
   * すべての文字列型は抽象型 `AbstractString` のサブタイプであり、外部パッケージは追加の `AbstractString` のサブタイプ（例えばその他のエンコーディング用）
     を定義します。文字列の引数を扱う関数を定義する場合は、任意の文字列型を使用するために `AbstractString` を型として宣言する必要があります。
@@ -86,7 +86,7 @@ input and shown:
 ```
 
 `Char`値は一つの文字を表します。これは特殊なリテラル表現と適切な算術演算を持つ32ビットのビットタイプであり、
-数値は [Unicodeコードポイント](https://en.wikipedia.org/wiki/Code_point) として解釈されます。
+数値は [Unicodeコードポイント](https://ja.wikipedia.org/wiki/符号点) として解釈されます。
 `Char`値の入力と表示方法は以下の通りです。:
 
 ```jldoctest
@@ -188,7 +188,7 @@ can also be used:
 ```
 
 Juliaは、システムのロケールと言語設定を加味して、どの文字が支障なく出力できるか、そしてどの文字が `\u` または `\U` を使用してエスケープされた状態で出力すべきか判断します。
-これらのUnicodeエスケープ方式に加えて、 [C言語のエスケープ形式](https://en.wikipedia.org/wiki/C_syntax#C¥Backslash_escapes) を用いた入力も可能です。:
+これらのUnicodeエスケープ方式に加えて、 [C言語のエスケープ形式](https://en.wikipedia.org/wiki/C_syntax#C¥Backslash_escapes) （訳注:ウィキペディア英語版）を用いた入力も可能です。:
 
 ```jldoctest
 julia> Int('\0')
