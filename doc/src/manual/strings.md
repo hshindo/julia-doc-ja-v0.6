@@ -549,31 +549,54 @@ implies commutativity.
 
 
 
-## [Interpolation](@id string-interpolation)
+[](## [Interpolation](@id string-interpolation))
+## [補間](@id string-interpolation)
 
+```@raw html
+<!--
 Constructing strings using concatenation can become a bit cumbersome, however. To reduce the need for these
 verbose calls to [`string()`](@ref) or repeated multiplications, Julia allows interpolation into string literals
 using `$`, as in Perl:
+-->
+```
+
+しかしながら、連結を使って文字列を構成するのは少々扱いにくくなってしまうかもしれません。
+これらの冗長な [`string()`](@ref) もしくは `*` の呼び出しの機会を減らすために、JuliaはPerlのように `$` を使用して文字列リテラルに補間を行うことができます。:
 
 ```jldoctest stringconcat
 julia> "$greet, $whom.\n"
 "Hello, world.\n"
 ```
 
+```@raw html
+<!--
 This is more readable and convenient and equivalent to the above string concatenation -- the system
 rewrites this apparent single string literal into a concatenation of string literals with variables.
 
 The shortest complete expression after the `$` is taken as the expression whose value is to be
 interpolated into the string. Thus, you can interpolate any expression into a string using parentheses:
+-->
+```
+
+この方法は呼びやすくかつ便利です。システムが単一文字リテラルを変数と文字列リテラルの連結に書き換えるので、上記の文字列連結と動作は変わりません。
+
+`$` の後の最短の完全な式は、値が文字列に補間される式として解釈されます。したがって、括弧を使用して任意の式を文字列に補間することができます。:
 
 ```jldoctest
 julia> "1 + 2 = $(1 + 2)"
 "1 + 2 = 3"
 ```
 
+```@raw html
+<!--
 Both concatenation and string interpolation call [`string()`](@ref) to convert objects into string
 form. Most non-`AbstractString` objects are converted to strings closely corresponding to how
 they are entered as literal expressions:
+-->
+```
+
+補間と文字列連結はいずれもオブジェクトを文字列形式に変換するために [`string()`](@ref) を呼び出します。
+ほとんどの非 `AbstractString` オブジェクトは、どのようにリテラル表現として入力されるかに対応する文字列に変換されます。:
 
 ```jldoctest
 julia> v = [1,2,3]
@@ -586,8 +609,15 @@ julia> "v: $v"
 "v: [1, 2, 3]"
 ```
 
+```@raw html
+<!--
 [`string()`](@ref) is the identity for `AbstractString` and `Char` values, so these are interpolated
 into strings as themselves, unquoted and unescaped:
+-->
+```
+
+[`strings()`](@ref) は `AbstractString` および `Char` 値と同一です。そのため、これらはクオーテーションが付かず、
+エスケープもされずにそのまま文字列に補間されます。:
 
 ```jldoctest
 julia> c = 'x'
@@ -597,7 +627,9 @@ julia> "hi, $c"
 "hi, x"
 ```
 
-To include a literal `$` in a string literal, escape it with a backslash:
+[](To include a literal `$` in a string literal, escape it with a backslash:)
+
+文字列リテラルにリテラル　`$` を含める場合は、バックスラッシュを使ってエスケープする必要があります。
 
 ```jldoctest
 julia> print("I have \$100 in my account.\n")
