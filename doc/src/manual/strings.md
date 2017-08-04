@@ -636,24 +636,35 @@ julia> print("I have \$100 in my account.\n")
 I have $100 in my account.
 ```
 
-## Triple-Quoted String Literals
+[](## Triple-Quoted String Literals)
+## 3つのダブルクオーテーション
 
+```@raw html
+<!--
 When strings are created using triple-quotes (`"""..."""`) they have some special behavior that
 can be useful for creating longer blocks of text. First, if the opening `"""` is followed by a
 newline, the newline is stripped from the resulting string.
+-->
+```
+
+文字列が3つのダブルクオーテーション(`"""..."""`)を使用して作成される場合、長いテキストを作成するのに便利な
+特殊な動作をします。まず、始めの `"""` の後ろに改行が続いた場合、結果の文字列から改行は取り除かれます。
 
 ```julia
 """hello"""
 ```
 
-is equivalent to
+[](is equivalent to)
+
+は以下と同等です。
 
 ```julia
 """
 hello"""
 ```
 
-but
+[](but)
+しかし
 
 ```julia
 """
@@ -661,10 +672,18 @@ but
 hello"""
 ```
 
+```@raw html
+<!--
 will contain a literal newline at the beginning. Trailing whitespace is left unaltered. They can
 contain `"` symbols without escaping. Triple-quoted strings are also dedented to the level of
 the least-indented line. This is useful for defining strings within code that is indented. For
 example:
+-->
+```
+
+これは最初にリテラル改行を含みます。末尾の空白は変更されません。これらはエスケープなしで　`"` 記号を含めることができます。
+3つのダブルクオーテーションで囲まれた文字列は、最もインデントされていない行合わせでインデントします。これはインデントされたコード内
+の文字列を定義するのに便利です。例えば:
 
 ```jldoctest
 julia> str = """
@@ -674,12 +693,26 @@ julia> str = """
 "  Hello,\n  world.\n"
 ```
 
+```@raw html
+<!--
 In this case the final (empty) line before the closing `"""` sets the indentation level.
+-->
+```
 
+この場合、閉じる `"""` の前の最後の（空の）行はインデントレベルを定義します。
+
+```@raw html
+<!--
 Note that line breaks in literal strings, whether single- or triple-quoted, result in a newline
 (LF) character `\n` in the string, even if your editor uses a carriage return `\r` (CR) or CRLF
 combination to end lines. To include a CR in a string, use an explicit escape `\r`; for example,
 you can enter the literal string `"a CRLF line ending\r\n"`.
+-->
+```
+
+シングルクオートかトリプルクオートかどうかに関係なく、文字列リテラルの改行は、
+たとえあなたのエディタがキャリッジリターン `\r` (CR) またはCRLFの組み合わせを行末に使っているとしても、文字列内の改行(LF)文字 `\n` になります。
+文字列にCRを含めるためには、明示的に `\r` でエスケープを使用してください。例えば、文字列リテラル `"a CRLF line ending\r\n"` を入力することができます。
 
 ## Common Operations
 
