@@ -335,17 +335,28 @@ happens to contain only a single character. In Julia these are very different th
 前者の記法では一文字のみを取得することが想定されているので、前者は`Char`型です。
 Juliaでは`Char`型と`String`型はとても異なっています。
 
-## Unicode and UTF-8
+[](## Unicode and UTF-8)
+## UnicodeおよびUTF-8
 
+```@raw html
+<!--
 Julia fully supports Unicode characters and strings. As [discussed above](@ref man-characters), in character
 literals, Unicode code points can be represented using Unicode `\u` and `\U` escape sequences,
 as well as all the standard C escape sequences. These can likewise be used to write string literals:
+-->
+```
+
+JuliaはUnicode文字とUnicode文字列をサポートします。[上記](@ref man-characters)の通り、
+文字列リテラルでは、Unicodeコードポイントは、C言語の標準的なエスケープ方法と同様に、Unicodeは `\u` および `\U` の
+エスケープを使用することで表すことができます。これらは同様に文字列リテラルを書くために使用することができます。:
 
 ```jldoctest unicodestring
 julia> s = "\u2200 x \u2203 y"
 "∀ x ∃ y"
 ```
 
+```@raw html
+<!--
 Whether these Unicode characters are displayed as escapes or shown as special characters depends
 on your terminal's locale settings and its support for Unicode. String literals are encoded using
 the UTF-8 encoding. UTF-8 is a variable-width encoding, meaning that not all characters are encoded
@@ -354,6 +365,15 @@ in the same number of bytes. In UTF-8, ASCII characters -- i.e. those with code 
 above are encoded using multiple bytes -- up to four per character. This means that not every
 byte index into a UTF-8 string is necessarily a valid index for a character. If you index into
 a string at such an invalid byte index, an error is thrown:
+-->
+```
+
+これらのUnicode文字がエスケープとして出力されるか特殊な文字として出力されるかは、あなたの端末のロケール設定とそのUnicodeのサポート
+の状況に依存します。文字列リテラルはUTF-8エンコードを使用してエンコードされます。UTF-8は可変幅のエンコードであり、
+全ての文字が同じバイト数でエンコードされるわけではありません。UTF-8では、ASCII、つまり0x80(128)以下のコードポイントの文字は
+1バイトでASCIIとしてエンコードされ、0x80以上のコードポイントは、1文字あたり最大4バイトのマルチバイトでエンコードされます。
+これは、必ずしも全てのUTF-8文字列のインデックスバイトが文字に対して有効なインデックスではないことを意味します。
+このような無効なバイトインデックスで文字列にインデックスを付けた場合、例外が投げられます。:
 
 ```jldoctest unicodestring
 julia> s[1]
@@ -371,16 +391,34 @@ julia> s[4]
 ' ': ASCII/Unicode U+0020 (category Zs: Separator, space)
 ```
 
+```@raw html
+<!--
 In this case, the character `∀` is a three-byte character, so the indices 2 and 3 are invalid
 and the next character's index is 4; this next valid index can be computed by [`nextind(s,1)`](@ref),
 and the next index after that by `nextind(s,4)` and so on.
+-->
+```
 
+この場合、`∀` は3バイト文字であるため、インデックス2と3は無効であり、次の有効なインデックスは4になります。
+また、この場合、次の有効なインデックスは [`nextind(s,1)`](@ref) で求めることができ、その次の有効なインデックスは `nextind(s,4)`と計算でき、
+その次は...と求めることができます。
+
+```@raw html
+<!--
 Because of variable-length encodings, the number of characters in a string (given by [`length(s)`](@ref))
 is not always the same as the last index. If you iterate through the indices 1 through [`endof(s)`](@ref)
 and index into `s`, the sequence of characters returned when errors aren't thrown is the sequence
 of characters comprising the string `s`. Thus we have the identity that `length(s) <= endof(s)`,
 since each character in a string must have its own index. The following is an inefficient and
 verbose way to iterate through the characters of `s`:
+-->
+```
+
+可変長インデックスなので、文字列内の文字数（ [`length(s)`](@ref) により取得可能）は、
+常に末尾のインデックスの数と同一というわけではありません。インデックス1から [`endof(s)`](@ref) まで繰り返し処理を行い、 `s`
+にインデックスする場合、エラーが出力されなければ文字列 `s` を構成する一連の文字列が返されます。
+したがって、文字列内のそれぞれの文字は固有のインデックスを持つため、 `length(s) <= endof(s)` を使用して識別ができます。
+下の例は `s` という文字を反復処理する非効率的かつ冗長的な方法です。:
 
 ```jldoctest unicodestring
 julia> for i = 1:endof(s)
@@ -399,9 +437,16 @@ x
 y
 ```
 
+```@raw html
+<!--
 The blank lines actually have spaces on them. Fortunately, the above awkward idiom is unnecessary
 for iterating through the characters in a string, since you can just use the string as an iterable
 object, no exception handling required:
+-->
+```
+
+空白行には実際にはスペースがあります。幸運なことに反復可能なオブジェクトとして文字列を使うことができ、それにより例外処理が不要になるため、
+上の例のような冗長的な記述は不要です。:
 
 ```jldoctest unicodestring
 julia> for c in s
@@ -416,6 +461,8 @@ x
 y
 ```
 
+```@raw html
+<!--
 Julia uses the UTF-8 encoding by default, and support for new encodings can be added by packages.
 For example, the [LegacyStrings.jl](https://github.com/JuliaArchive/LegacyStrings.jl) package
 implements `UTF16String` and `UTF32String` types. Additional discussion of other encodings and
@@ -423,6 +470,13 @@ how to implement support for them is beyond the scope of this document for the t
 further discussion of UTF-8 encoding issues, see the section below on [byte array literals](@ref man-byte-array-literals).
 The [`transcode()`](@ref) function is provided to convert data between the various UTF-xx encodings,
 primarily for working with external data and libraries.
+-->
+```
+
+JuliaはデフォルトでUTF-8エンコーディングを使用し、加えてパッケージで追加できる新しいエンコーディングもサポートしています。
+例えば、[LegacyStrings.jl](https://github.com/JuliaArchive/LegacyStrings.jl) パッケージは `UTF16String` および `UTF32String` 型を実装しています。
+その他のエンコーディングとその実装方法は当ドキュメントの対象外となります。UTF-8に関するさらなる議論については、以下の[バイト配列リテラル](@ref man-byte-array-literals)
+のセクションを参照してください。 [`transcode()`](@ref) 関数は、主に外部データやライブラリを扱うために、様々なUTF-xxエンコーディング間のデータ変換を提供します。
 
 ## Concatenation
 
