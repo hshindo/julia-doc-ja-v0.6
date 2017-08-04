@@ -714,9 +714,12 @@ you can enter the literal string `"a CRLF line ending\r\n"`.
 たとえあなたのエディタがキャリッジリターン `\r` (CR) またはCRLFの組み合わせを行末に使っているとしても、文字列内の改行(LF)文字 `\n` になります。
 文字列にCRを含めるためには、明示的に `\r` でエスケープを使用してください。例えば、文字列リテラル `"a CRLF line ending\r\n"` を入力することができます。
 
-## Common Operations
+[](## Common Operations)
+## 共通処理
 
-You can lexicographically compare strings using the standard comparison operators:
+[](You can lexicographically compare strings using the standard comparison operators:)
+
+文字列を標準比較演算子を使用して比較できます。:
 
 ```jldoctest
 julia> "abracadabra" < "xylophone"
@@ -732,7 +735,13 @@ julia> "1 + 2 = 3" == "1 + 2 = $(1 + 2)"
 true
 ```
 
+```@raw html
+<!--
 You can search for the index of a particular character using the [`search()`](@ref) function:
+-->
+```
+
+[`search()`](@ref) 関数を使用して特定の文字のインデックスを検索することができます。:
 
 ```jldoctest
 julia> search("xylophone", 'x')
@@ -745,7 +754,9 @@ julia> search("xylophone", 'z')
 0
 ```
 
-You can start the search for a character at a given offset by providing a third argument:
+[](You can start the search for a character at a given offset by providing a third argument:)
+
+3番目の引数を指定することで指定されたオフセットで文字の検索をすることができます。:
 
 ```jldoctest
 julia> search("xylophone", 'o')
@@ -758,7 +769,13 @@ julia> search("xylophone", 'o', 8)
 0
 ```
 
+```@raw html
+<!--
 You can use the [`contains()`](@ref) function to check if a substring is contained in a string:
+-->
+```
+
+[`contains()`](@ref) 関数を使用して、文字列に部分文字列が含まれているか確認することができます。:
 
 ```jldoctest
 julia> contains("Hello, world.", "world")
@@ -777,11 +794,20 @@ Closest candidates are:
   contains(::AbstractString, !Matched::AbstractString) at strings/search.jl:378
 ```
 
+```@raw html
+<!--
 The last error is because `'o'` is a character literal, and [`contains()`](@ref) is a generic
 function that looks for subsequences. To look for an element in a sequence, you must use [`in()`](@ref)
 instead.
 
 Two other handy string functions are [`repeat()`](@ref) and [`join()`](@ref):
+-->
+```
+
+最後のエラーは、`'o'` が文字リテラルであり、 [`contains()`](@ref) は部分列を探す汎用関数であるために起こりました。
+文字リテラルを使って文字列ないの要素を探すためには [`in()`](@ref) を使用する必要があります。
+
+その他の2つの便利な文字列関数は [`repeat()`](@ref) および [`join()`](@ref) 関数です。:
 
 ```jldoctest
 julia> repeat(".:Z:.", 10)
@@ -791,6 +817,8 @@ julia> join(["apples", "bananas", "pineapples"], ", ", " and ")
 "apples, bananas and pineapples"
 ```
 
+```@raw html
+<!--
 Some other useful functions include:
 
   * [`endof(str)`](@ref) gives the maximal (byte) index that can be used to index into `str`.
@@ -803,6 +831,18 @@ Some other useful functions include:
   * [`ind2chr(str,i)`](@ref) gives the number of characters in `str` up to and including any at index
     `i`.
   * [`chr2ind(str,j)`](@ref) gives the index at which the `j`th character in `str` occurs.
+-->
+```
+
+その他の便利な関数を挙げておきます。:
+
+  * [`endof(str)`](@ref) は `str` へのインデックス付けに使用できる最大の（バイト）インデックスを返します。
+  * [`length(str)`](@ref) は `str` の文字数を返します。
+  * [`i = start(str)`](@ref start) は、`str` にある最初の有効なインデックス(通常は1)を返します。
+  * [`c, j = next(str,i)`](@ref next) はインデックス`i` に格納された文字とインデックス `i` 以降で最初の有効なインデックスを返します。
+    [`start()`](@ref) や [`endof()`](@ref)　を使って `str` 内の文字を反復処理することができます。
+  * [`ind2char(str,i)`](@ref) はインデックス1からインデックス`i`までに格納されている文字数を返します。
+  * [`chr2ind(str,j)`](@ref) は `str` の `j` 番目の文字が格納されているインデックスの値を返します。
 
 ## [Non-Standard String Literals](@id non-standard-string-literals)
 
