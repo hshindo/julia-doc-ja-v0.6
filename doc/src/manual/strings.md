@@ -1431,8 +1431,16 @@ in the `Pkg` module, to specify packages versions and their dependencies.
 `VersionNumber` オブジェクトは[`VERSION`](@ref) 定数に使用される他に、パッケージのバージョン
 とその依存関係を指定するために `Pkg` モジュールで広く使用されています。
 
+```@raw html
+<!--
 ## [Raw String Literals](@id man-raw-string-literals)
+-->
+```
 
+## [生文字列リテラル](@id man-raw-string-literals)
+
+```@raw html
+<!--
 Raw strings without interpolation or unescaping can be expressed with
 non-standard string literals of the form `raw"..."`. Raw string literals create
 ordinary `String` objects which contain the enclosed contents exactly as
@@ -1440,3 +1448,10 @@ entered with no interpolation or unescaping. This is useful for strings which
 contain code or markup in other languages which use `$` or `\` as special
 characters. The exception is quotation marks that still must be
 escaped, e.g. `raw"\""` is equivalent to `"\""`.
+-->
+```
+
+補間や逆エスケープのない生文字列は `raw"..."` の形の非標準文字列リテラルで表すことができます。
+生文字列リテラルは補間や逆エスケープの無い入力されたままの中身を格納している通常の `String` オブジェクトを作成します。
+これは `$` や `\`を特別な文字として扱う言語のコードやマークアップを格納する文字列を作る時に便利です。
+クオーテーションマークは例外的にエスケープする必要があります。例として、 `raw"\""` は `"\""` と等価です。
