@@ -24,7 +24,7 @@ corrupt results. When this happens, modifying the code to handle non-ASCII data 
 ```
 
 文字列は有限の記号の連続を意味します。ここでいう記号とは一般的な意味のそれとは少し違います。
-英語話者にとって馴染みのある記号は`A`、`B`、`C`、などの文字と、アラビア数字や句読記号です。これらの文字は、[ASCII](https://ja.wikipedia.org/wiki/ASCII) 規格
+英語話者にとって馴染みのある記号は `A` 、`B` 、`C` 、などの文字と、アラビア数字や句読記号です。これらの文字は、[ASCII](https://ja.wikipedia.org/wiki/ASCII) 規格
 において、0から127の番号をそれぞれ割り振られて標準化されています。もちろん、ラテン文字だけが世界で使われているわけではありません。アクセント記号やその他の変形ASCII文字や、
 英語の言語体系に関連を持つロシア語やギリシャ語、および英語の言語体系に関連を持たないアラビア語、中国語、ヘブライ語、ヒンディー語、韓国語、そして日本語などは
 それぞれ独自の文字を有しています。 [Unicode](https://ja.wikipedia.org/wiki/Unicode) 規格は、ある文字が一体何なのかという複雑な問題に取り組んでおり、また、
@@ -85,9 +85,9 @@ input and shown:
 -->
 ```
 
-`Char`値は一つの文字を表します。これは特殊なリテラル表現と適切な算術演算を持つ32ビットのビットタイプであり、
+`Char` 値は一つの文字を表します。これは特殊なリテラル表現と適切な算術演算を持つ32ビットのビットタイプであり、
 数値は [Unicodeコードポイント](https://ja.wikipedia.org/wiki/符号点) として解釈されます。
-`Char`値の入力と表示方法は以下の通りです。:
+`Char` 値の入力と表示方法は以下の通りです。:
 
 ```jldoctest
 julia> 'x'
@@ -99,7 +99,7 @@ Char
 
 [](You can convert a `Char` to its integer value, i.e. code point, easily:)
 
-`Char`を整数値（コードポイント）へと簡単に変換することができます。:
+`Char` を整数値（コードポイント）へと簡単に変換することができます。:
 
 ```jldoctest
 julia> Int('x')
@@ -117,7 +117,7 @@ integer value back to a `Char` just as easily:
 ```
 
 32ビットのアーキテクチャ上では、 [`typeof(ans)`](@ref) は [`Int32`](@ref) を返します。
-また、整数値を簡単に`Char`へと変換し直すこともできます。:
+また、整数値を簡単に `Char` へと変換し直すこともできます。:
 
 ```jldoctest
 julia> Char(120)
@@ -132,7 +132,7 @@ is a valid code point, use the [`isvalid()`](@ref) function:
 -->
 ```
 
-全ての整数値が有効なUnicodeコードポイントではありません。しかしパフォーマンスの為に、Juliaは`Char()`の呼び出しの際に
+全ての整数値が有効なUnicodeコードポイントではありません。しかしパフォーマンスの為に、Juliaは `Char()` の呼び出しの際に
 引数が有効なUnicodeコードポイントであるかチェックしません。
 もし変換された値が有効なコードポイントであるか確認したい場合は、 [`isvalid()`](@ref) 関数を使用してください。:
 
@@ -215,7 +215,7 @@ julia> Int('\xff')
 
 [](You can do comparisons and a limited amount of arithmetic with `Char` values:)
 
-`Char`値を使用して限定的な算術演算や`Char`同士の比較を行うことができます。:
+`Char` 値を使用して限定的な算術演算や `Char` 同士の比較を行うことができます。:
 
 ```jldoctest
 julia> 'A' < 'a'
@@ -332,8 +332,8 @@ happens to contain only a single character. In Julia these are very different th
 -->
 ```
 
-前者の記法では一文字のみを取得することが想定されているので、前者は`Char`型です。
-Juliaでは`Char`型と`String`型はとても異なっています。
+前者の記法では一文字のみを取得することが想定されているので、前者は `Char` 型になります。
+Juliaでは `Char` 型と `String` 型はとても異なっています。
 
 [](## Unicode and UTF-8)
 ## UnicodeおよびUTF-8
@@ -400,7 +400,7 @@ and the next index after that by `nextind(s,4)` and so on.
 ```
 
 この場合、`∀` は3バイト文字であるため、インデックス2と3は無効であり、次の有効なインデックスは4になります。
-また、この場合、次の有効なインデックスは [`nextind(s,1)`](@ref) で求めることができ、その次の有効なインデックスは `nextind(s,4)`と計算でき、
+また、この場合、次の有効なインデックスは [`nextind(s,1)`](@ref) で求めることができ、その次の有効なインデックスは `nextind(s,4)` で計算でき、
 その次は...と求めることができます。
 
 ```@raw html
@@ -513,7 +513,7 @@ concatenation, this use of `*` has precedent in mathematics, particularly in abs
 ```
 
 `+` を文字列連結の記述としている言語の使用者にとっては Juliaが `*` をそれとするのは奇抜に見えるかもしれませんが、
-この `*` は数学、特に抽象代数学においてもこのような使われ方をしています。
+この `*` の使われ方は数学、特に抽象代数学においては一般的です。
 
 ```@raw html
 <!--
@@ -531,8 +531,8 @@ operator, consistent with common mathematical use.
 例えば行列の加算は、`A + B == B + A` は `A` と `B` が同じサイズで有る限り成り立つ可換演算です。
 これに対して `*` はよく **非可換** 演算（被演算子の順番が関係 **ある** 演算）を表します。
 例えば行列の乗算は、`A * B != B * A` が基本的に成り立つ非可換演算です。
-そして文字列の連結は `greet * whom != whom * greet` が成り立つように行列の乗算と同様、非可換演算です。
-これらのことから、 文字列連結演算子としての `*` はより数学においての使われ方に準拠した、自然な選択といえます。
+そして文字列の連結は `greet * whom != whom * greet` であるように行列の乗算と同様、非可換演算です。
+これらのことから、 文字列連結演算子としての `*` はより数学においての使われ方に準拠した、自然な選択といえるでしょう。
 
 ```@raw html
 <!--
