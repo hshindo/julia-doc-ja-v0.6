@@ -1348,8 +1348,16 @@ Software Developer Absolutely, Positively Must Know About Unicode and Character
 Sets"](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/) を読んでみてください。これはUnicodeとUTF-8についての素晴らしいイントロダクションです。
 そして、おそらく理解を助けてくれるでしょう。
 
+```@raw html
+<!--
 ## [Version Number Literals](@id man-version-number-literals)
+-->
+```
 
+## [バージョン番号リテラル](@id man-version-number-literals)
+
+```@raw html
+<!--
 Version numbers can easily be expressed with non-standard string literals of the form `v"..."`.
 Version number literals create `VersionNumber` objects which follow the specifications of [semantic versioning](http://semver.org),
 and therefore are composed of major, minor and patch numeric values, followed by pre-release and
@@ -1362,6 +1370,19 @@ is equivalent to `v"0.2.0"` (with empty pre-release/build annotations), `v"2"` i
 `VersionNumber` objects are mostly useful to easily and correctly compare two (or more) versions.
 For example, the constant `VERSION` holds Julia version number as a `VersionNumber` object, and
 therefore one can define some version-specific behavior using simple statements as:
+-->
+```
+
+バージョン番号は、`v"..."` の形の非標準文字列リテラルで簡単に表現することができます。
+バージョン番号リテラルは [バージョン管理](http://semver.org) の仕様に従った `VersionNumber` オブジェクトを生成するため、
+バージョン番号リテラルはメジャー、マイナー、パッチの数値で構成され、それにプレリリース番号が続き、英数字注釈で構成されます。
+例えば、`v"0.2.1-rc1+win64` は、メジャーバージョン `0`、マイナーバージョン `1`、パッチバージョン `1`、プレリリース番号 `rc1`、
+そしてビルド `win64` へと分解できます。バージョン番号リテラルを入力するとき、メジャーバージョン番号を以外は全て任意です。
+`v"0.2"` は `v"0.2.0"`（プレリリースとビルド注釈が空白の場合）と等価です。`v"2"` は `v"2.0.0"` と等価です。
+
+`VersionNumber` オブジェクトは、2つ（またはそれ以上）のバージョンを簡単かつ正確に比較するのにとても役立ちます。
+例えば、定数 `VERSION` にはJuliaのバージョン番号が `VersionNumber` オブジェクトとして格納されているため、
+単純な文を使用して特定のバージョンに対しての動作を定義することができます。:
 
 ```julia
 if v"0.2" <= VERSION < v"0.3-"
@@ -1369,6 +1390,8 @@ if v"0.2" <= VERSION < v"0.3-"
 end
 ```
 
+```@raw html
+<!--
 Note that in the above example the non-standard version number `v"0.3-"` is used, with a trailing
 `-`: this notation is a Julia extension of the standard, and it's used to indicate a version which
 is lower than any `0.3` release, including all of its pre-releases. So in the above example the
@@ -1388,6 +1411,25 @@ scheme.
 
 Besides being used for the [`VERSION`](@ref) constant, `VersionNumber` objects are widely used
 in the `Pkg` module, to specify packages versions and their dependencies.
+-->
+```
+
+上記の例では、非標準バージョン番号 `v"0.3-""` が使用され、末尾に `-` が付いています。
+この表記は標準のJuliaの拡張機能であり、これは、全てのプレリリースを含めて `0.3` リリースより低い
+バージョンであることを示すために使用されています。従って、上記の例ではコードは安定した `0.2` バージョンでのみ実行され、
+`v"0.3.0-rc1"` などのバージョンは除外されます。不安定な（プレリリースなど） `0.2` バージョンを許容するため、
+下限チェックは次のように変更する必要があります。: `v"0.2-" <= VERSION`
+
+別の非標準バージョン番号の仕様拡張では、後続の `+` を使用してビルドバージョンの上限を表すことができます。
+例えば、`VERSION > v"0.2-rc1+" は、`0.2-rc1` 以上の全てのバージョンを指定するために使用することができ、
+`v"0.2-rc1+win64"` では `false` を返し、 `v"0.2-rc2"` では `true` を返します。
+
+このような特殊なバージョンを比較のために使用するのは有益です。
+（特に、後続の - は、必要の場合を除き、 常に上限を上限を示すために使用すべきです。）
+しかし、それらはバージョンスキームでは無効であるため、 実際のバージョン番号としては使用できません。
+
+`VersionNumber` オブジェクトは[`VERSION`](@ref) 定数に使用される他に、パッケージのバージョン
+とその依存関係を指定するために `Pkg` モジュールで広く使用されています。
 
 ## [Raw String Literals](@id man-raw-string-literals)
 
