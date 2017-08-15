@@ -864,8 +864,11 @@ are given in the [Metaprogramming](@ref) section.
 と同じように見えますが、前に識別子が付されていて、通常の文字列リテラルとは異なった挙動をします。下に説明されている正規表現やバイト配列リテラル、
 バージョン番号リテラルは非標準文字列リテラルに属します。その他の非標準文字列リテラルの例は [メタプログラミング](@ref) のセクションで挙げられています。
 
-## Regular Expressions
+[](## Regular Expressions)
+## 正規表現
 
+```@raw html
+<!--
 Julia has Perl-compatible regular expressions (regexes), as provided by the [PCRE](http://www.pcre.org/)
 library. Regular expressions are related to strings in two ways: the obvious connection is that
 regular expressions are used to find regular patterns in strings; the other connection is that
@@ -873,6 +876,14 @@ regular expressions are themselves input as strings, which are parsed into a sta
 can be used to efficiently search for patterns in strings. In Julia, regular expressions are input
 using non-standard string literals prefixed with various identifiers beginning with `r`. The most
 basic regular expression literal without any options turned on just uses `r"..."`:
+-->
+```
+
+JuliaはPerlと互換性のある [PCRE](http://www.pcre.prg/) ライブラリが提供する正規表現があります。
+正規表現は2つの点で文字列と関連しています: 決定的な関連は正規表現が文字列のパターンを見つけるために用いられる点です。
+そしてもう一つは正規表現自体が文字列として入力され、文字列のパターンを効率的に検索するために使用できるステートマシンに解析される点です。
+Juliaでは、正規表現は `r` で始まる様々な識別しの接頭辞が付いた非標準文字列リテラルを使用して入力されます。
+オプションがない最も基本的な正規表現リテラルは、`r"..."` を使用します。:
 
 ```jldoctest
 julia> r"^\s*(?:#|$)"
@@ -882,7 +893,13 @@ julia> typeof(ans)
 Regex
 ```
 
+```@raw html
+<!--
 To check if a regex matches a string, use [`ismatch()`](@ref):
+-->
+```
+
+正規表現が文字列に一致するか確認するためには、 [`ismatch()`](@ref) を使用します。:
 
 ```jldoctest
 julia> ismatch(r"^\s*(?:#|$)", "not a comment")
@@ -892,10 +909,18 @@ julia> ismatch(r"^\s*(?:#|$)", "# a comment")
 true
 ```
 
+```@raw html
+<!--
 As one can see here, [`ismatch()`](@ref) simply returns true or false, indicating whether the
 given regex matches the string or not. Commonly, however, one wants to know not just whether a
 string matched, but also *how* it matched. To capture this information about a match, use the
 [`match()`](@ref) function instead:
+-->
+```
+
+見て分かる通り、 [`ismatch()`](@ref) は単純に正規表現が文字列と一致するかどうかを示すtrueまたはfalseを返します。
+しかし一般的には、文字列が一致するかどうかではなく、どのように一致するかを知りたいと考えるかもしれません。
+一致に関する情報を得るためには、代わりに [`match()`](@ref) 関数を使用してください。:
 
 ```jldoctest
 julia> match(r"^\s*(?:#|$)", "not a comment")
@@ -904,9 +929,16 @@ julia> match(r"^\s*(?:#|$)", "# a comment")
 RegexMatch("#")
 ```
 
+```@raw html
+<!--
 If the regular expression does not match the given string, [`match()`](@ref) returns `nothing`
 -- a special value that does not print anything at the interactive prompt. Other than not printing,
 it is a completely normal value and you can test for it programmatically:
+-->
+```
+
+正規表現が文字列と一致しない場合、 [`match()`](@ref) は `nothing` を返します。
+これは対話型プロンプトで何も出力しない特別な値です。これは出力しない場合を覗き、正常な値であり、プログラムでテストすることができます。:
 
 ```julia
 m = match(r"^\s*(?:#|$)", line)
@@ -917,19 +949,33 @@ else
 end
 ```
 
+```@raw html
+<!--
 If a regular expression does match, the value returned by [`match()`](@ref) is a `RegexMatch`
 object. These objects record how the expression matches, including the substring that the pattern
 matches and any captured substrings, if there are any. This example only captures the portion
 of the substring that matches, but perhaps we want to capture any non-blank text after the comment
 character. We could do the following:
+-->
+```
+
+正規表現が一致する場合、[`match()`](@ref) によって返される値は `RegexMatch` オブジェクトとなります。
+このオブジェクトはパターンが一致する部分文字列およびもしあればキャプチャされた部分文字列を含む、どうその正規表現が一致するのかを記録します。
+この例では、部分文字列の一部だけを取得していますが、コメント文字後の空白以外のテキストを取得したい場合があるかもしれません。その場合は以下でできます。:
 
 ```jldoctest
 julia> m = match(r"^\s*(?:#\s*(.*?)\s*$|$)", "# a comment ")
 RegexMatch("# a comment ", 1="a comment")
 ```
 
+```@raw html
+<!--
 When calling [`match()`](@ref), you have the option to specify an index at which to start the
 search. For example:
+-->
+```
+
+[`match()`](@ref) を呼び出す時、どのインデックスから検索を開始するかを指定するオプションがあります。例えば:
 
 ```jldoctest
 julia> m = match(r"[0-9]","aaaa1aaaa2aaaa3",1)
@@ -942,16 +988,34 @@ julia> m = match(r"[0-9]","aaaa1aaaa2aaaa3",11)
 RegexMatch("3")
 ```
 
+```@raw html
+<!--
 You can extract the following info from a `RegexMatch` object:
 
   * the entire substring matched: `m.match`
   * the captured substrings as an array of strings: `m.captures`
   * the offset at which the whole match begins: `m.offset`
   * the offsets of the captured substrings as a vector: `m.offsets`
+-->
+```
 
+`RegexMatch` オブジェクトから次の情報を抽出することができます。:
+
+  * 全ての一致した部分文字列: `m.match`
+  * 文字列の配列としてキャプチャされた部分文字列: `m.captures`
+  * 全体の一致が始まるオフセット: `m.offset`
+  * ベクトルとしてキャプチャされた部分文字列のオフセット: `m.offsets`
+
+```@raw html
+<!--
 For when a capture doesn't match, instead of a substring, `m.captures` contains `nothing` in that
 position, and `m.offsets` has a zero offset (recall that indices in Julia are 1-based, so a zero
 offset into a string is invalid). Here is a pair of somewhat contrived examples:
+-->
+```
+
+キャプチャが一致しない場合、部分文字列の代わりに、 `m.captures` には `nothing`が格納され、 `m.offsets` には
+ゼロオフセットが格納されます。（Juliaは1ベースであり、文字列へのゼロオフセットは無効です。）例:
 
 ```jldoctest acdmatch
 julia> m = match(r"(a|b)(c)?(d)", "acd")
@@ -997,16 +1061,29 @@ julia> m.offsets
  2
 ```
 
+```@raw html
+<!--
 It is convenient to have captures returned as an array so that one can use destructuring syntax
 to bind them to local variables:
+-->
+```
+
+キャプチャが配列として返されることで、ローカル変数に紐付ける再構成構文を使うことができます。:
 
 ```jldoctest acdmatch
 julia> first, second, third = m.captures; first
 "a"
 ```
 
+```@raw html
+<!--
 Captures can also be accessed by indexing the `RegexMatch` object with the number or name of the
 capture group:
+-->
+```
+
+キャプチャグループの番号または名前と共に `RegexMatch` オブジェクトをインデックスすることで、取得した値にアクセス
+することもできます。:
 
 ```jldoctest
 julia> m=match(r"(?<hour>\d+):(?<minute>\d+)","12:45")
@@ -1019,28 +1096,52 @@ julia> m[2]
 "45"
 ```
 
+```@raw html
+<!--
 Captures can be referenced in a substitution string when using [`replace()`](@ref) by using `\n`
 to refer to the nth capture group and prefixing the subsitution string with `s`. Capture group
 0 refers to the entire match object. Named capture groups can be referenced in the substitution
 with `g<groupname>`. For example:
+-->
+```
+
+[`replace()`](@ref) 関数の引数に `\n` を含めることでn番目のキャプチャグループを参照でき、
+`s` で始まる[非標準文字列リテラル](@ref) を含めることで置換文字列でキャプチャを参照できます。
+0番目のキャプチャグループはマッチオブジェクト全体を表します。名前付きキャプチャグループは、 `g<groupname>`
+での置換で参照できます。例えば:
 
 ```jldoctest
 julia> replace("first second", r"(\w+) (?<agroup>\w+)", s"\g<agroup> \1")
 "second first"
 ```
 
+```@raw html
+<!--
 Numbered capture groups can also be referenced as `\g<n>` for disambiguation, as in:
+-->
+```
+
+番号付きキャプチャグループは、曖昧さ回避の目的上、 `\g<n>` としても参照することができます。:
 
 ```jldoctest
 julia> replace("a", r".", s"\g<0>1")
 "a1"
 ```
 
+```@raw html
+<!--
 You can modify the behavior of regular expressions by some combination of the flags `i`, `m`,
 `s`, and `x` after the closing double quote mark. These flags have the same meaning as they do
 in Perl, as explained in this excerpt from the [perlre manpage](http://perldoc.perl.org/perlre.html#Modifiers):
-
+-->
 ```
+
+閉じるダブルクオーテーションの後に、フラグ `i`、`m`、`s` 及び `x` の組み合わせによって
+正規表現の挙動を変更することができます。これらのフラグは [Perlのマニュアルページ](http://perldoc.perl.org/perlre.html#Modifiers)
+から抜粋したように、Perlで使用されるのと同じ意味を持っています。:
+
+```@raw html
+<!--
 i   Do case-insensitive pattern matching.
 
     If locale matching rules are in effect, the case map is taken
@@ -1068,9 +1169,31 @@ x   Tells the regular expression parser to ignore most whitespace
     (slightly) more readable parts. The '#' character is also
     treated as a metacharacter introducing a comment, just as in
     ordinary code.
+-->
 ```
 
+```
+i   大文字小文字を無視したパターンマッチングを行います。
+
+m   文字列を複数行として扱います。つまり、"^" や "$" が文字列の先頭と後尾にのみマッチングするのではなく、
+    どの行の頭と尻尾にもマッチングするようになります。
+
+s   文字列を一行として扱います。つまり、"." が通常マッチしない改行などさえも含めた全ての文字にマッチするようになります。
+    r""ms のようにm と sが同時に使われた場合は、"." は変わらず全ての文字にマッチし、
+    "^" や "$" はそれぞれ別々に、文字列内の新しい行の前後にマッチします。
+
+x   正規表現パーサにバックスラッシュ付きもしくは文字列クラス内の空白を除いた大部分の空白を
+    無視させます。これを使うことで正規表現を部分ごとに分けて（少しだけ）見やすくすることができます。
+    文字'#'も一般的なコードと同様にコメントを導入するメタ文字として扱われます。
+```
+
+```@raw html
+<!--
 For example, the following regex has all three flags turned on:
+-->
+```
+
+例として、以下の正規表現は3つのフラグを有効にしています。:
 
 ```jldoctest
 julia> r"a+.*b+.*?d$"ism
@@ -1080,8 +1203,15 @@ julia> match(r"a+.*b+.*?d$"ism, "Goodbye,\nOh, angry,\nBad world\n")
 RegexMatch("angry,\nBad world")
 ```
 
+```@raw html
+<!--
 Triple-quoted regex strings, of the form `r"""..."""`, are also supported (and may be convenient
 for regular expressions containing quotation marks or newlines).
+-->
+```
+
+`r"""..."""` の形で表されるトリプルクオートで囲まれた正規表現文字列もサポートされています
+（おそらくクオーテーションや改行を含んだ正規表現はこちらの方が便利かもしれません）。
 
 ## [Byte Array Literals](@id man-byte-array-literals)
 
