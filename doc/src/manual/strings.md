@@ -845,7 +845,7 @@ Some other useful functions include:
   * [`chr2ind(str,j)`](@ref) は `str` の `j` 番目の文字が格納されているインデックスの値を返します。
 
 [](## [Non-Standard String Literals](@id non-standard-string-literals))
-## 非標準文字列リテラル(@id non-standard-string-literals)
+## [非標準文字列リテラル](@id non-standard-string-literals)
 
 ```@raw html
 <!--
