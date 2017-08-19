@@ -1,8 +1,18 @@
 # [Functions](@id man-functions)
+#関数
 
+```@raw html
+<!--
 In Julia, a function is an object that maps a tuple of argument values to a return value. Julia
 functions are not pure mathematical functions, in the sense that functions can alter and be affected
 by the global state of the program. The basic syntax for defining functions in Julia is:
+-->
+```
+
+Juliaでは、関数は、引数の値のタプルを受け取り、戻り値を返すオブジェクトです。
+関数はプログラムの大域的な変数によって、関数の戻り値が変わったり、大域変数自体を変更したりします。
+そういう意味で、純粋に数学的ではありません。
+Juliaで関数を定義する基本構文は以下のようになります。
 
 ```jldoctest
 julia> function f(x,y)
@@ -11,28 +21,60 @@ julia> function f(x,y)
 f (generic function with 1 method)
 ```
 
+```@raw html
+<!--
 There is a second, more terse syntax for defining a function in Julia. The traditional function
 declaration syntax demonstrated above is equivalent to the following compact "assignment form":
+-->
+```
+
+もっと簡潔に関数を定義する第二の構文もあります。上に示したような、従来の関数を宣言する構文と、つぎのような、コンパクトな「代入形式」とは同等です。
+
+
+
 
 ```jldoctest fofxy
 julia> f(x,y) = x + y
 f (generic function with 1 method)
 ```
 
+```@raw html
+<!--
 In the assignment form, the body of the function must be a single expression, although it can
 be a compound expression (see [Compound Expressions](@ref man-compound-expressions)). Short, simple function definitions
 are common in Julia. The short function syntax is accordingly quite idiomatic, considerably reducing
 both typing and visual noise.
+-->
+```
 
+
+代入形式では、関数の本体は単一の式でなければなりませんが、その式は複合式( [複合式](@ref man-compound-expressions)を参照)でもかまいません。
+こうした短くて簡単な関数定義は、Juliaではよく使われます。短い関数構文を使うと、文字数もかなり少なくなり、見た目もすっきりして、こなれた感じのプログラムになります。
+
+```@raw html
+<!--
 A function is called using the traditional parenthesis syntax:
+-->
+```
+
+関数は、従来の括弧を使う構文で呼び出されます。
+
 
 ```jldoctest fofxy
 julia> f(2,3)
 5
 ```
 
+```@raw html
+<!--
 Without parentheses, the expression `f` refers to the function object, and can be passed around
 like any value:
+-->
+```
+
+括弧をつけない `f` という形の式は関数オブジェクトを表し、他の値と同じように受け渡しすることができます。
+
+
 
 ```jldoctest fofxy
 julia> g = f;
@@ -41,7 +83,13 @@ julia> g(2,3)
 5
 ```
 
+```@raw html
+<!--
 As with variables, Unicode can also be used for function names:
+-->
+```
+
+変数と同様に関数名にもUnicodeを使うことができます。
 
 ```jldoctest
 julia> ∑(x,y) = x + y
@@ -52,21 +100,46 @@ julia> ∑(2, 3)
 ```
 
 ## Argument Passing Behavior
+## 引数の受け渡し
 
+```@raw html
+<!--
 Julia function arguments follow a convention sometimes called "pass-by-sharing", which means that
 values are not copied when they are passed to functions. Function arguments themselves act as
 new variable *bindings* (new locations that can refer to values), but the values they refer to
 are identical to the passed values. Modifications to mutable values (such as `Array`s) made within
 a function will be visible to the caller. This is the same behavior found in Scheme, most Lisps,
 Python, Ruby and Perl, among other dynamic languages.
+-->
+```
+
+Juliaの関数の引数は、「共有渡し」とよばれる規則に従っていて、関数へ引き渡す際に、値の複写を行いません。
+関数の引数自体は、新しい変数を *束縛* し、値を参照する新しい場所のように振舞いますが、
+参照先の値は引き渡された値と同一です。
+関数内で(配列のような)可変な値を変更すると、呼び出す側にも影響します。
+こうしたふるまいは,scheme,たいていのLisp,Python,Ruby,Perl,その他の動的な言語と同じです。
+
+
+　
 
 ## The `return` Keyword
+## `return`　キーワード
 
+```@raw html
+<!--
 The value returned by a function is the value of the last expression evaluated, which, by default,
 is the last expression in the body of the function definition. In the example function, `f`, from
 the previous section this is the value of the expression `x + y`. As in C and most other imperative
 or functional languages, the `return` keyword causes a function to return immediately, providing
 an expression whose value is returned:
+-->
+```
+
+関数の返す値は、一番最後に評価された式の値で、初期設定では関数定義の本体の一番最後の式の値になります。
+例えば、前節に出てきた `f` という関数の戻り値は `x + y` の値です。
+Cなどの多くの手続き型言語や、関数型言語と同様に、`return` キーワードを使うと、その時点で値を返し、
+その式の値が返り値になります。
+
 
 ```julia
 function g(x,y)
@@ -75,8 +148,15 @@ function g(x,y)
 end
 ```
 
+```@raw html
+<!--
 Since function definitions can be entered into interactive sessions, it is easy to compare these
 definitions:
+-->
+```
+
+対話セッションでも関数の定義を入力できるので、簡単に定義の比較ができます。
+
 
 ```jldoctest
 julia> f(x,y) = x + y
@@ -95,11 +175,23 @@ julia> g(2,3)
 6
 ```
 
+```@raw html
+<!--
 Of course, in a purely linear function body like `g`, the usage of `return` is pointless since
 the expression `x + y` is never evaluated and we could simply make `x * y` the last expression
 in the function and omit the `return`. In conjunction with other control flow, however, `return`
-is of real use. Here, for example, is a function that computes the hypotenuse length of a right
+is of real use. Here, for example, is a function that  computes the hypotenuse length of a right
 triangle with sides of length `x` and `y`, avoiding overflow:
+-->
+```
+
+もちろん、`g` のようにまったく分岐のない関数で、`return` を使っても仕方がありません。
+というのも、`x + y` という式は決して評価されないので、単に `x * y` という式を最後において、
+`return` を削ればいいからです。
+けれども、実行順序を制御する場合は、`return`は有用です。
+例えば、直角三角形の斜辺を、その他の二辺 `x` ,`y`から、桁あふれをさけながら、計算する場合を考えてみましょう。
+
+
 
 ```jldoctest
 julia> function hypot(x,y)
@@ -121,17 +213,34 @@ julia> hypot(3, 4)
 5.0
 ```
 
+```@raw html
+<!--
 There are three possible points of return from this function, returning the values of three different
 expressions, depending on the values of `x` and `y`. The `return` on the last line could be omitted
 since it is the last expression.
+-->
+```
+
+この関数には、値を返す可能性のある場所が３か所ありますが、３つの異なる式のどの値を返すかは、`x` と `y` の
+値によって変わります。
+一番最後の `return` は　一番最後の式なので省略可能です。
+
 
 ## Operators Are Functions
+## 演算子も関数
 
+```@raw html
+<!--
 In Julia, most operators are just functions with support for special syntax. (The exceptions are
 operators with special evaluation semantics like `&&` and `||`. These operators cannot be functions
 since [Short-Circuit Evaluation](@ref) requires that their operands are not evaluated before evaluation
 of the operator.) Accordingly, you can also apply them using parenthesized argument lists, just
 as you would any other function:
+-->
+```
+
+
+
 
 ```jldoctest
 julia> 1 + 2 + 3
