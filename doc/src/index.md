@@ -8,7 +8,7 @@
   * [整数と浮動小数点数](@ref)
   * [算術処理と基本的な関数](@ref)
   * [複素数と有理数](@ref)
-  * [Strings](@ref man-strings)
+  * [文字列](@ref man-strings)
   * [Functions](@ref man-functions)
   * [Control Flow](@ref)
   * [Scope of Variables](@ref scope-of-variables)
