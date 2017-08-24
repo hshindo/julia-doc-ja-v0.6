@@ -74,7 +74,7 @@ Juliaには、文字列に関係する特筆すべき高度な機能がありま
     への効率的なインデックスを可能にします。
 
 [](## [Characters](@id man-characters))
-## [文字][@id man-characters]
+## [文字](@id man-characters)
 
 ```@raw html
 <!--
@@ -616,7 +616,7 @@ into strings as themselves, unquoted and unescaped:
 -->
 ```
 
-[`strings()`](@ref) は `AbstractString` および `Char` 値と同一です。そのため、これらはクオーテーションが付かず、
+[`string()`](@ref) は `AbstractString` および `Char` 値と同一です。そのため、これらはクオーテーションが付かず、
 エスケープもされずにそのまま文字列に補間されます。:
 
 ```jldoctest
@@ -841,7 +841,7 @@ Some other useful functions include:
   * [`i = start(str)`](@ref start) は、`str` にある最初の有効なインデックス(通常は1)を返します。
   * [`c, j = next(str,i)`](@ref next) はインデックス`i` に格納された文字とインデックス `i` 以降で最初の有効なインデックスを返します。
     [`start()`](@ref) や [`endof()`](@ref)　と併用することで、 `str` 内の文字を反復処理することができます。
-  * [`ind2char(str,i)`](@ref) はインデックス1からインデックス`i`までに格納されている文字数を返します。
+  * [`ind2chr(str,i)`](@ref) はインデックス1からインデックス`i`までに格納されている文字数を返します。
   * [`chr2ind(str,j)`](@ref) は `str` の `j` 番目の文字が格納されているインデックスの値を返します。
 
 [](## [Non-Standard String Literals](@id non-standard-string-literals))
@@ -860,9 +860,9 @@ are given in the [Metaprogramming](@ref) section.
 ```
 
 文字列を作成したり使用したいけれども、標準の文字列構成の挙動があまり目的に合致していない場合があるかもしれません。
-そのような時のために、Juliaは [非標準文字列リテラル](@ref) を提供しています。非標準文字列リテラルは通常のダブルクオーと文字列リテラル
+そのような時のために、Juliaは [非標準文字列リテラル](@ref non-standard-string-literals) を提供しています。非標準文字列リテラルは通常のダブルクオーと文字列リテラル
 と同じように見えますが、前に識別子が付されていて、通常の文字列リテラルとは異なった挙動をします。下で説明されている正規表現やバイト配列リテラル、
-バージョン番号リテラルは非標準文字列リテラルに属します。その他の非標準文字列リテラルの例は [メタプログラミング](@ref) のセクションで挙げられています。
+バージョン番号リテラルは非標準文字列リテラルに属します。その他の非標準文字列リテラルの例は [メタプログラミング](@ref Metaprogramming) のセクションで挙げられています。
 
 [](## Regular Expressions)
 ## 正規表現
@@ -1106,7 +1106,7 @@ with `g<groupname>`. For example:
 ```
 
 [`replace()`](@ref) 関数の引数に `\n` を含めることでn番目のキャプチャグループを参照でき、
-`s` で始まる [非標準文字列リテラル](@ref) を含めることで置換文字列でキャプチャを参照できます。
+`s` で始まる [非標準文字列リテラル](@ref non-standard-string-literals) を含めることで置換文字列でキャプチャを参照できます。
 0番目のキャプチャグループはマッチオブジェクト全体を表します。名前付きキャプチャグループは、 `g<groupname>`
 での置換で参照できます。例えば:
 
