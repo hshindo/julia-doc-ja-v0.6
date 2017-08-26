@@ -1,5 +1,5 @@
 # [Functions](@id man-functions)
-#関数
+# 関数
 
 ```@raw html
 <!--
@@ -9,7 +9,7 @@ by the global state of the program. The basic syntax for defining functions in J
 -->
 ```
 
-Juliaでは、関数は、引数の値のタプルを受け取り、戻り値を返すオブジェクトです。
+Juliaの関数は、引数の値のタプルを受け取り、戻り値を返すオブジェクトです。
 関数はプログラムの大域的な変数によって、関数の戻り値が変わったり、大域変数自体を変更したりします。
 そういう意味で、純粋に数学的ではありません。
 Juliaで関数を定義する基本構文は以下のようになります。
@@ -28,7 +28,7 @@ declaration syntax demonstrated above is equivalent to the following compact "as
 -->
 ```
 
-もっと簡潔に関数を定義する第二の構文もあります。上に示したような、従来の関数を宣言する構文と、つぎのような、コンパクトな「代入形式」とは同等です。
+もっと簡潔に関数を定義する第二の構文もあります。上に示したような、従来の関数を宣言する構文と、つぎのような、コンパクトな「代入形式」とは対等です。
 
 
 
@@ -138,7 +138,7 @@ an expression whose value is returned:
 関数の返す値は、一番最後に評価された式の値で、初期設定では関数定義の本体の一番最後の式の値になります。
 例えば、前節に出てきた `f` という関数の戻り値は `x + y` の値です。
 Cなどの多くの手続き型言語や、関数型言語と同様に、`return` キーワードを使うと、その時点で値を返し、
-その式の値が返り値になります。
+その式の値が戻り値になります。
 
 
 ```julia
@@ -185,10 +185,10 @@ triangle with sides of length `x` and `y`, avoiding overflow:
 -->
 ```
 
-もちろん、`g` のようにまったく分岐のない関数で、`return` を使っても仕方がありません。
-というのも、`x + y` という式は決して評価されないので、単に `x * y` という式を最後において、
+もちろん、`g` のように順次処理のみを行う関数で、`return` を使っても仕方がありません。
+というのも、`x + y` という式は決して評価されないので、単に `x * y` という式で終わって、
 `return` を削ればいいからです。
-けれども、実行順序を制御する場合は、`return`は有用です。
+けれども、実行順序が変化する場合に、`return`は真価を発揮します。
 例えば、直角三角形の斜辺を、その他の二辺 `x` ,`y`から、桁あふれをさけながら、計算する場合を考えてみましょう。
 
 
@@ -221,7 +221,7 @@ since it is the last expression.
 -->
 ```
 
-この関数には、値を返す可能性のある場所が３か所ありますが、３つの異なる式のどの値を返すかは、`x` と `y` の
+この関数には、値を返しうる場所が３か所ありますが、３つの異なる式のどの値が戻るかは、`x` と `y` の
 値によって変わります。
 一番最後の `return` は　一番最後の式なので省略可能です。
 
@@ -239,6 +239,8 @@ as you would any other function:
 -->
 ```
 
+Juliaの演算子の大部分は、単なる関数が、特殊な構文をサポートしているだけのものです。
+（例外は特殊な評価戦略をとる演算子で、`&&`や`||`などがあります。これらの演算子は関数たりえません。というのは、[短絡評価](@ref)は非演算数が評価されていなくても、演算の評価をおこなうからです。）なので、演算子は、他の関数と同様に、括弧でくくった引数のリストに対して、適用することがきます。
 
 
 
@@ -250,9 +252,17 @@ julia> +(1,2,3)
 6
 ```
 
+```@raw html
+<!--
 The infix form is exactly equivalent to the function application form -- in fact the former is
 parsed to produce the function call internally. This also means that you can assign and pass around
 operators such as [`+()`](@ref) and [`*()`](@ref) just like you would with other function values:
+-->
+```
+
+中置方式は関数適用方式とまったく対等です。じつのところ、中置方式は構文解析されたのちに、内部的に関数呼び出しを行っているのです。 なので、[`+()`](@ref) や [`*()`](@ref)　といった演算子も、関数を値として扱う場合と同様に、代入や受け渡し
+を、行うことができます。
+
 
 ```jldoctest
 julia> f = +;
@@ -261,11 +271,32 @@ julia> f(1,2,3)
 6
 ```
 
+```@raw html
+<!--
 Under the name `f`, the function does not support infix notation, however.
+-->
+```
+
+しかしながら、`f` のような名前の関数は、中置記法を使えません。
+
+
 
 ## Operators With Special Names
 
+## 特殊な名前の演算子
+
+
+```@raw html
+<!--
 A few special expressions correspond to calls to functions with non-obvious names. These are:
+-->
+```
+
+特殊な式で、関数呼び出しと対応づけられているが、その関数の名前が見た目からは分かりづらいものが、いくつかあります。
+
+```@raw html
+<!--
+
 
 | Expression        | Calls                  |
 |:----------------- |:---------------------- |
@@ -278,16 +309,56 @@ A few special expressions correspond to calls to functions with non-obvious name
 | `A[i]`            | [`getindex()`](@ref)   |
 | `A[i]=x`          | [`setindex!()`](@ref)  |
 
+-->
+```
+
+| 式                | 関数呼び出し            |
+|:----------------- |:---------------------- |
+| `[A B C ...]`     | [`hcat()`](@ref)       |
+| `[A; B; C; ...]`  | [`vcat()`](@ref)       |
+| `[A B; C D; ...]` | [`hvcat()`](@ref)      |
+| `A'`              | [`ctranspose()`](@ref) |
+| `A.'`             | [`transpose()`](@ref)  |
+| `1:n`             | [`colon()`](@ref)      |
+| `A[i]`            | [`getindex()`](@ref)   |
+| `A[i]=x`          | [`setindex!()`](@ref)  |
+
+
+
+```@raw html
+<!--
+
 These functions are included in the `Base.Operators` module even though they do not have operator-like
 names.
 
+-->
+```
+
+こういった関数は、`Base.Operators`　モジュールに入っています。演算子らしい名前ではありませんが。
+
+
 ## [Anonymous Functions](@id man-anonymous-functions)
+## 無名関数
+
+```@raw html
+<!--
 
 Functions in Julia are [first-class objects](https://en.wikipedia.org/wiki/First-class_citizen):
 they can be assigned to variables, and called using the standard function call syntax from the
 variable they have been assigned to. They can be used as arguments, and they can be returned as
 values. They can also be created anonymously, without being given a name, using either of these
 syntaxes:
+
+-->
+```
+
+関数は、Julia　において [第一級オブジェクト](https://en.wikipedia.org/wiki/First-class_citizen)です:
+関数は、変数に代入したり、代入した変数から標準的な構文で呼び出したりできます。
+関数の引数としても、戻り値としても使うことができます。
+また、無名、つまり、名前をつけないで、生成することができます。
+構文は、次のいづれかになります。
+
+
 
 ```jldoctest
 julia> x -> x^2 + 2x - 1
@@ -299,13 +370,34 @@ julia> function (x)
 (::#3) (generic function with 1 method)
 ```
 
+```@raw html
+<!--
+
 This creates a function taking one argument `x` and returning the value of the polynomial `x^2 +
 2x - 1` at that value. Notice that the result is a generic function, but with a compiler-generated
 name based on consecutive numbering.
 
+-->
+```
+
+このような構文で、引数が  `x` 1つ、 戻り値が多項式 `x^2 + 2x -1` になる関数が生成されます。
+こうして生成される総称関数は、コンパイラが順に番号付けした名前がつけられる点に注意しましょう。　
+
+```@raw html
+<!--
+
 The primary use for anonymous functions is passing them to functions which take other functions
 as arguments. A classic example is [`map()`](@ref), which applies a function to each value of
 an array and returns a new array containing the resulting values:
+
+-->
+```
+
+無名関数の第一の用途は、関数を引数とする別の関数に渡すことでしょう。
+古典的な例としては、[`map()`](@ref) があります。
+この関数は、 配列の各要素に関数を適用したものを、新しい配列として返します。
+
+
 
 ```jldoctest
 julia> map(round, [1.2,3.5,1.7])
@@ -315,10 +407,23 @@ julia> map(round, [1.2,3.5,1.7])
  2.0
 ```
 
+```@raw html
+<!--
+
+
 This is fine if a named function effecting the transform one wants already exists to pass as the
 first argument to [`map()`](@ref). Often, however, a ready-to-use, named function does not exist.
 In these situations, the anonymous function construct allows easy creation of a single-use function
 object without needing a name:
+
+-->
+```
+
+ 配列に与えたいような変換が、既に名前のついた関数として存在していて、[`map()`](@ref)の1番目の引数に使える場合は、問題ありません。
+ ですが、そんな名前付きの関数はなくて、すぐに使えない場合も多いでしょう。
+そんな時、無名関数は、一度使うだけの、名無しの関数オブジェクトを簡単に作る手段となります。
+
+
 
 ```jldoctest
 julia> map(x -> x^2 + 2x - 1, [1,3,-1])
@@ -328,17 +433,42 @@ julia> map(x -> x^2 + 2x - 1, [1,3,-1])
  -2
 ```
 
+```@raw html
+<!--
+
 An anonymous function accepting multiple arguments can be written using the syntax `(x,y,z)->2x+y-z`.
 A zero-argument anonymous function is written as `()->3`. The idea of a function with no arguments
 may seem strange, but is useful for "delaying" a computation. In this usage, a block of code is
 wrapped in a zero-argument function, which is later invoked by calling it as `f()`.
 
+-->
+```
+無名関数が複数の引数をとる場合はこのように書きます。`(x,y,z)->2x+y-z`
+引数が０個の場合はこう書きます。 `()->3`
+引数のない関数というのは、奇妙に感じるかもしれませんが、計算を"遅らせる"場合に便利です。
+コードのブロックを引数のない関数で囲んでおき、あとから`f()`といった形で呼び出すと、実行を遅らせることができます。
+
+
 ## Multiple Return Values
+## 複数の戻り値
+
+
+```@raw html
+<!--
 
 In Julia, one returns a tuple of values to simulate returning multiple values. However, tuples
 can be created and destructured without needing parentheses, thereby providing an illusion that
 multiple values are being returned, rather than a single tuple value. For example, the following
 function returns a pair of values:
+
+-->
+```
+
+Juliaでは、複数の値を返したい時は、疑似的に値のタプルを返します。
+しかし、タプルは括弧を使わなくても、生成したり、分解したりできるので、
+戻り値は1組のタプルというよりは、複数の値である、ととらえることができます。
+以下の例では関数は値のペアを返します。
+
 
 ```jldoctest foofunc
 julia> function foo(a,b)
@@ -347,16 +477,34 @@ julia> function foo(a,b)
 foo (generic function with 1 method)
 ```
 
+```@raw html
+<!--
+
 If you call it in an interactive session without assigning the return value anywhere, you will
 see the tuple returned:
+
+-->
+```
+
+対話セッションで戻り値を何かに代入しない場合は、タプルが返されます。
+
 
 ```jldoctest foofunc
 julia> foo(2,3)
 (5, 6)
 ```
 
+```@raw html
+<!--
+
 A typical usage of such a pair of return values, however, extracts each value into a variable.
 Julia supports simple tuple "destructuring" that facilitates this:
+
+-->
+```
+
+しかし値のペアを返す典型的な用法は、それぞれの値を抽出して別の変数に割り当てる場合でしょう。
+Juliaでは、このようにして簡単にタプルの`分割`をすることができます。
 
 ```jldoctest foofunc
 julia> x, y = foo(2,3)
@@ -369,7 +517,15 @@ julia> y
 6
 ```
 
+```@raw html
+<!--
+
 You can also return multiple values via an explicit usage of the `return` keyword:
+
+-->
+```
+キーワード `return` を使って、明示的に複数の値を返すこともできます。
+
 
 ```julia
 function foo(a,b)
@@ -377,22 +533,55 @@ function foo(a,b)
 end
 ```
 
+```@raw html
+<!--
+
 This has the exact same effect as the previous definition of `foo`.
 
+-->
+```
+
+この書き方は以前の `foo` の定義とまったく同等の効力をもちます。
+
 ## Varargs Functions
+## 可変長引数関数
+
+```@raw html
+<!--
 
 It is often convenient to be able to write functions taking an arbitrary number of arguments.
 Such functions are traditionally known as "varargs" functions, which is short for "variable number
 of arguments". You can define a varargs function by following the last argument with an ellipsis:
+
+-->
+```
+
+関数の引数が任意の個数でも受け取れると便利なことが、よくあります。
+そういった関数は伝統的に"可変長引数"関数と呼ばれます。
+"vararg"(可変長引数)は"variable number of arguments"(可変個の引数)の略です。
+可変長引数関数を定義する際には、一番後ろの引数につづけて...(省略記号)を付け加えます。
+
+
 
 ```jldoctest barfunc
 julia> bar(a,b,x...) = (a,b,x)
 bar (generic function with 1 method)
 ```
 
+```@raw html
+<!--
+
 The variables `a` and `b` are bound to the first two argument values as usual, and the variable
 `x` is bound to an iterable collection of the zero or more values passed to `bar` after its first
 two arguments:
+
+-->
+```
+
+変数 `a`,`b`には、ごく普通に、最初の2つの引数の値が束縛されます。
+変数 `x` に束縛されるのは、関数`bar`に最初の2つの引数に続けて渡された
+０個以上のイテレータ付きのコレクションです。
+
 
 ```jldoctest barfunc
 julia> bar(1,2)
@@ -408,14 +597,34 @@ julia> bar(1,2,3,4,5,6)
 (1, 2, (3, 4, 5, 6))
 ```
 
+```@raw html
+<!--
 In all these cases, `x` is bound to a tuple of the trailing values passed to `bar`.
+-->
+```
 
+以上のすべてのケースで、'x'は`bar`に渡された末尾の値のタプルが束縛されます。
+
+
+```@raw html
+<!--
 It is possible to constrain the number of values passed as a variable argument; this will be discussed
 later in [Parametrically-constrained Varargs methods](@ref).
+-->
+```
 
+
+```@raw html
+<!--
 On the flip side, it is often handy to "splice" the values contained in an iterable collection
 into a function call as individual arguments. To do this, one also uses `...` but in the function
 call instead:
+-->
+```
+
+その一方で、イテラブル・コレクションに含まれる複数の値を関数呼び出しで個別の引数として"継ぎ合わせる"ことも
+手軽によく行われます。これは、関数呼び出しの中で、`...`使っておこないます。
+
 
 ```jldoctest barfunc
 julia> x = (3, 4)
@@ -425,8 +634,17 @@ julia> bar(1,2,x...)
 (1, 2, (3, 4))
 ```
 
+```@raw html
+<!--
 In this case a tuple of values is spliced into a varargs call precisely where the variable number
 of arguments go. This need not be the case, however:
+-->
+```
+
+この場合は、、値のタプルが関数呼び出しの引数に、数が合って、ちょうど継ぎ合わされています。
+`...`を使う必要がないですね。
+
+
 
 ```jldoctest barfunc
 julia> x = (2, 3, 4)
@@ -442,7 +660,13 @@ julia> bar(x...)
 (1, 2, (3, 4))
 ```
 
+```@raw html
+<!--
 Furthermore, the iterable object spliced into a function call need not be a tuple:
+-->
+```
+さらに、関数呼び出しに継ぎ合わせられるイテラブル・オブジェクトはタプルである必要はありません。
+
 
 ```jldoctest barfunc
 julia> x = [3,4]
@@ -464,8 +688,14 @@ julia> bar(x...)
 (1, 2, (3, 4))
 ```
 
+```@raw html
+<!--
 Also, the function that arguments are spliced into need not be a varargs function (although it
 often is):
+-->
+```
+
+また、継ぎ合わせられる関数側も、可変長引数関数でなくてもかまいません。(これは結構よくあります)
 
 ```jldoctest
 julia> baz(a,b) = a + b;
