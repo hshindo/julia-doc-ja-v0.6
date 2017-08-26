@@ -720,8 +720,14 @@ Closest candidates are:
   baz(::Any, ::Any) at none:1
 ```
 
+```@raw html
+<!-
 As you can see, if the wrong number of elements are in the spliced container, then the function
 call will fail, just as it would if too many arguments were given explicitly.
+-->
+```
+みてわかるように、継ぎ合わせるコンテナ側の要素数が正しくないと、関数の呼び出しは失敗します。
+与えるべき引数が多すぎる場合と同様に。
 
 ## Optional Arguments
 
