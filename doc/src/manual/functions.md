@@ -730,11 +730,22 @@ call will fail, just as it would if too many arguments were given explicitly.
 与えるべき引数が多すぎる場合と同様に。
 
 ## Optional Arguments
+## 省略可能な引数
+
+```@raw html
+<!-
 
 In many cases, function arguments have sensible default values and therefore might not need to
 be passed explicitly in every call. For example, the library function [`parse(T, num, base)`](@ref)
 interprets a string as a number in some base. The `base` argument defaults to `10`. This behavior
 can be expressed concisely as:
+-->
+```
+
+多くの場合、関数の引数には適切な初期値が割り当てられていて、呼び出す度に値を渡す必要がありません。
+例えば、ライブラリ関数の [`parse(T, num, base)`](@ref) は文字をなんらかの基数にしたがって解釈すますが、
+基数の初期設定値は `10` です。こうした挙動は簡潔に以下のように記述できます。
+
 
 ```julia
 function parse(type, num, base=10)
@@ -742,8 +753,18 @@ function parse(type, num, base=10)
 end
 ```
 
+```@raw html
+<!-
+
 With this definition, the function can be called with either two or three arguments, and `10`
 is automatically passed when a third argument is not specified:
+
+-->
+```
+
+この定義によって、関数の引数を２個、または 3個　与えて呼び出すことができ、
+３番目の引数を指定しない場合は、'10'が自動的に引き渡されます。
+
 
 ```jldoctest
 julia> parse(Int,"12",10)
@@ -756,14 +777,40 @@ julia> parse(Int,"12")
 12
 ```
 
+```@raw html
+<!-
+
 Optional arguments are actually just a convenient syntax for writing multiple method definitions
 with different numbers of arguments (see [Note on Optional and keyword Arguments](@ref)).
 
+-->
+```
+
+省略可能な引数は、実質的には、引数の個数の違う複数のメソッドの定義を書くための便利な構文なのです。
+( [省略可能な引数とキーワード引数の注意点](@ref) を参照).
+
 ## Keyword Arguments
+## キーワード引数
+
+```@raw html
+<!-
 
 Some functions need a large number of arguments, or have a large number of behaviors. Remembering
 how to call such functions can be difficult. Keyword arguments can make these complex interfaces
 easier to use and extend by allowing arguments to be identified by name instead of only by position.
+
+-->
+```
+
+関数の中には、多数の引数が必要なものや、様々な挙動をとるものがあります。
+そんな関数の呼び出し方を覚えるのは困難なことになりかねません。
+キーワード引数は、引数の指定を位置ではなく、名前でおこなって、複雑な入力方法を、使いやすく、また拡張しやすく
+するものです。
+
+
+
+```@raw html
+<!-
 
 For example, consider a function `plot` that plots a line. This function might have many options,
 for controlling line style, width, color, and so on. If it accepts keyword arguments, a possible
@@ -771,24 +818,56 @@ call might look like `plot(x, y, width=2)`, where we have chosen to specify only
 that this serves two purposes. The call is easier to read, since we can label an argument with
 its meaning. It also becomes possible to pass any subset of a large number of arguments, in any
 order.
+-->
+```
+例えば、`plot`という折れ線グラフを描く関数を考えてみましょう。
+この関数たくさんのオプションがあっては、線のスタイル、幅、色などを制御することができます。
+キーワード引数を使えば、`plot(x, y, width=2)` のように書いて、線の幅だけを指定する、といったことができるでしょう。
+キーワード引数には、２つの目的があります。１つは、関数呼び出しの意図がわかりやすくなります。引数に意味をラベル付けできるからです。もう１つは、たくさんの引数の中から、設定する引数を選んでどの順番で指定してもいいのです。
+
+```@raw html
+<!-
 
 Functions with keyword arguments are defined using a semicolon in the signature:
+-->
+```
+キーワード引数関数を使う関数はシグネチャにおいて、セミコロンを使って定義します。
 
 ```julia
 function plot(x, y; style="solid", width=1, color="black")
     ###
 end
 ```
-
+```@raw html
+<!-
 When the function is called, the semicolon is optional: one can either call `plot(x, y, width=2)`
 or `plot(x, y; width=2)`, but the former style is more common. An explicit semicolon is required
 only for passing varargs or computed keywords as described below.
+-->
+```
+関数呼び出しの際に、セミコロンは必ずしも必要ありません。
+ `plot(x, y, width=2)` と  `plot(x, y; width=2)` どちらでもよいのですが、ふつうは１つ目の書き方をします。
+ 後述の可変長引数や計算済みのキーワードを使う場合に、明示的にセミコロンを使わなければなりません。
 
+
+
+```@raw html
+<!-
 Keyword argument default values are evaluated only when necessary (when a corresponding keyword
 argument is not passed), and in left-to-right order. Therefore default expressions may refer to
 prior keyword arguments.
+-->
+```
+キーワード引数の初期値は、（対応する値が渡されなくて）必要になった時だけ、左から右の順番で評価されます。
+そのため、初期値の式は左側の引数を参照していてもかまいません。
 
+
+```@raw html
+<!-
 The types of keyword arguments can be made explicit as follows:
+-->
+```
+キーワード引数の型は以下のように明示的に指定できます。
 
 ```julia
 function f(;x::Int64=1)
@@ -796,7 +875,12 @@ function f(;x::Int64=1)
 end
 ```
 
+```@raw html
+<!-
 Extra keyword arguments can be collected using `...`, as in varargs functions:
+-->
+```
+明示的に指定されなかった、キーワード引数は、可変長引数関数の場合につかう、`...` をつけて、まとめることができます。
 
 ```julia
 function f(x; y=0, kwargs...)
@@ -804,26 +888,67 @@ function f(x; y=0, kwargs...)
 end
 ```
 
+```@raw html
+<!-
 Inside `f`, `kwargs` will be a collection of `(key,value)` tuples, where each `key` is a symbol.
 Such collections can be passed as keyword arguments using a semicolon in a call, e.g. `f(x, z=1; kwargs...)`.
-Dictionaries can also be used for this purpose.
+-->
+```
+`f`の内部では、`kwargs`は、`key` がシンボルを表す`(key,value)` というタプルのコレクションになるでしょう。
+このコレクションはセミコロンを使って  `f(x, z=1; kwargs...)` のように受け渡しができます。
 
+
+```@raw html
+<!-
+Dictionaries can also be used for this purpose.
+-->
+```
+こういった場合に辞書が使われます。
+
+```@raw html
+<!-
 One can also pass `(key,value)` tuples, or any iterable expression (such as a `=>` pair) that
 can be assigned to such a tuple, explicitly after a semicolon. For example, `plot(x, y; (:width,2))`
 and `plot(x, y; :width => 2)` are equivalent to `plot(x, y, width=2)`. This is useful in situations
 where the keyword name is computed at runtime.
+-->
+```
 
+`(key,value)` といったタプルや、（=>）を使ったペアなどタプルに代入できる反復可能な式などは、セミコロンを使って
+代入ができます。`plot(x, y; (:width,2))` や  `plot(x, y; :width => 2)` などと定義は `plot(x, y, width=2)` 
+と同等です。こういった書き方は実行時にキーワード名を導出する場合に役立ちます。  
+
+
+```@raw html
+<!-
 The nature of keyword arguments makes it possible to specify the same argument more than once.
 For example, in the call `plot(x, y; options..., width=2)` it is possible that the `options` structure
 also contains a value for `width`. In such a case the rightmost occurrence takes precedence; in
 this example, `width` is certain to have the value `2`.
+-->
+```
+キーワード引数の性質上、同じ引数に何度も値を指定できるようになっています。
+例えば、`plot(x, y; options..., width=2)` という関数呼び出しは、`options`の中に`width`の値も設定されています。
+この場合は、一番右に出てきた値が優先されます。`width` の値は `2` に設定されます。
+
+
 
 ## Evaluation Scope of Default Values
+## 初期値を評価するスコープ
 
+```@raw html
+<!-
 Optional and keyword arguments differ slightly in how their default values are evaluated. When
 optional argument default expressions are evaluated, only *previous* arguments are in scope. In
 contrast, *all* the arguments are in scope when keyword arguments default expressions are evaluated.
 For example, given this definition:
+-->
+```
+
+省略可能な引数とキーワード引数は初期値を評価する方法が、少し違います。
+省略可能な引数の初期値を評価する際にスコープに存在するのは、既に評価された引数だけです。
+一方、キーワード引数では、初期値を評価するスコープにはすべての引数が存在します。
+例えば、次式のような定義では、
 
 ```julia
 function f(x, a=b, b=1)
@@ -831,18 +956,37 @@ function f(x, a=b, b=1)
 end
 ```
 
+```@raw html
+<!-
 the `b` in `a=b` refers to a `b` in an outer scope, not the subsequent argument `b`. However,
 if `a` and `b` were keyword arguments instead, then both would be created in the same scope and
 the `b` in `a=b` would refer to the subsequent argument `b` (shadowing any `b` in an outer scope),
 which would result in an undefined variable error (since the default expressions are evaluated
 left-to-right, and `b` has not been assigned yet).
+-->
+```
+`a=b` の中の `b` は、スコープ外を参照していて、次の引数の `b`とは、解釈されません。
+しかし `a` と `b` がキーワード引数なら、両方とも同じスコープに生成されて``、`a=b` の中の `b` は、次の引数の `b` 
+を参照するでしょう（スコープ外の`b`はシャドーイングされます）。
+この結果、変数の未定義エラーが発生するでしょう。(初期値は左から右へ評価されるため、`b`にはまだ何も代入されていません)
+
 
 ## Do-Block Syntax for Function Arguments
+## 関数の引数に対するDoブロック構文
 
+
+```@raw html
+<!-
 Passing functions as arguments to other functions is a powerful technique, but the syntax for
 it is not always convenient. Such calls are especially awkward to write when the function argument
 requires multiple lines. As an example, consider calling [`map()`](@ref) on a function with several
 cases:
+-->
+```
+関数を別の関数へ渡すことは強力な技法ですが、いつも便利な構文で実行できるわけではありません。
+特に関数の引数が何行にもわたって必要な場合は、とりわけ関数の呼び出しが不格好に見えるでしょう。
+例として、[`map()`](@ref) を呼び出すいくつかのケースを考えてみましょう。
+
 
 ```julia
 map(x->begin
@@ -857,7 +1001,12 @@ map(x->begin
     [A, B, C])
 ```
 
+```@raw html
+<!-
 Julia provides a reserved word `do` for rewriting this code more clearly:
+-->
+```
+Juliaの予約語である`do`を使って、もっと明解に書きかえてみると、
 
 ```julia
 map([A, B, C]) do x
@@ -871,26 +1020,53 @@ map([A, B, C]) do x
 end
 ```
 
+```@raw html
+<!-
 The `do x` syntax creates an anonymous function with argument `x` and passes it as the first argument
 to [`map()`](@ref). Similarly, `do a,b` would create a two-argument anonymous function, and a
 plain `do` would declare that what follows is an anonymous function of the form `() -> ...`.
+-->
+```
+`do x` という構文では `x` を引数にとる無名関数が生成されて、[`map()`](@ref) の第一引数として渡されます。
+同様に `do a,b` と書くと、引数が2個の無名関数が生成されて、また、単に  `do` と書くと  `() -> ...` という形式の
+無名関数が生成されます。
 
+```@raw html
+<!-
 How these arguments are initialized depends on the "outer" function; here, [`map()`](@ref) will
 sequentially set `x` to `A`, `B`, `C`, calling the anonymous function on each, just as would happen
 in the syntax `map(func, [A, B, C])`.
+-->
+```
+こうした引数が、どうのように初期化されるかは、`外側の`関数によって、ちがいます。
+ここで取り上げた [`map()`](@ref) では、順番に `x` に対して `A`, `B`, `C` が代入されて、その都度、無名関数が
+呼び出されます。ちょうど`map(func, [A, B, C])`という構文を使ったときと同じです。
 
+```@raw html
+<!-
 This syntax makes it easier to use functions to effectively extend the language, since calls look
 like normal code blocks. There are many possible uses quite different from [`map()`](@ref), such
 as managing system state. For example, there is a version of [`open()`](@ref) that runs code ensuring
 that the opened file is eventually closed:
+-->
+```
+この構文を使うと、簡単に関数を使って、言語を効率的に拡張できます。通常のプログラムと同じ感じなのですから。
+[`map()`](@ref) と全く違う使い方もたくさんあって、システムの状態を管理するようなこともできます。
+たとえば、[`open()`](@ref) の使い方として、コードの実行後にに必ず開いたファイルを閉じるように保証することができます。
+
+
 
 ```julia
 open("outfile", "w") do io
     write(io, data)
 end
 ```
-
+```@raw html
+<!-
 This is accomplished by the following definition:
+-->
+```
+次のように定義すれば、実行できます。
 
 ```julia
 function open(f::Function, args...)
@@ -903,16 +1079,31 @@ function open(f::Function, args...)
 end
 ```
 
+```@raw html
+<!-
 Here, [`open()`](@ref) first opens the file for writing and then passes the resulting output stream
 to the anonymous function you defined in the `do ... end` block. After your function exits, [`open()`](@ref)
 will make sure that the stream is properly closed, regardless of whether your function exited
 normally or threw an exception. (The `try/finally` construct will be described in [Control Flow](@ref).)
+-->
+```
+ここでは、 [`open()`](@ref)　によって書き込み用のファイルが開かれ、出力ストリームに `do ... end` ブロックで定義された無名関数が渡されます。あなたの書いた関数が終了した後に、 [`open()`](@ref) はストリームが適切に閉じられたかどうかを確認します。これはあなたの関数が正常に終了しても、例外を投げても行われます。
+( `try/finally` は [実行制御](@ref) に記述されています)
+-->
 
+```@raw html
+<!-
 With the `do` block syntax, it helps to check the documentation or implementation to know how
 the arguments of the user function are initialized.
+-->
+```
+ `do`ブロック構文を使って、ユーザー定義関数の引数がどのように初期化されているかを調べると、文書や実装をチェックするのに役立ちます。
 
 ## [Dot Syntax for Vectorizing Functions](@id man-vectorized)
+##ベクトル化関数に対するDot構文
 
+```@raw html
+<!-
 In technical-computing languages, it is common to have "vectorized" versions of functions, which
 simply apply a given function `f(x)` to each element of an array `A` to yield a new array via
 `f(A)`. This kind of syntax is convenient for data processing, but in other languages vectorization
@@ -922,6 +1113,15 @@ can call fast library code written in a low-level language. In Julia, vectorized
 [Performance Tips](@ref man-performance-tips)), but they can still be convenient. Therefore, *any* Julia function
 `f` can be applied elementwise to any array (or other collection) with the syntax `f.(A)`.
 For example `sin` can be applied to all elements in the vector `A`, like so:
+-->
+```
+技術計算用のプログラム言語では、ベクトル化"したバージョンの関数を作ることがよくあります。
+つまり、所与の関数 `f(x)`を配列Aの各要素に単に適用して新しい配列を作る`f(A)`という関数を作るといった具合に。
+こういった類の構文はデータ処理用に便利なものですが、Julia以外のプログラミング言語ではベクトル化はパフォーマンスをあげるために必要となることがよくあります。ループ処理が遅い場合には、低水準のプログラム言語で書かれた高速なベクトル版の関数を呼び出して使うのです。
+Juliaではパフォーマンスをよくするために関数をベクトル化する必要は *ありません* 。
+実際に、自分でループを書いたほうがよいこともよくあります([パフォーマンス ティップス](@ref man-performance-tips)参照)。それでも、ベクトル化は便利なので、Juliaでは *すべての* 関数 `f` は、　配列（その他のコレクション)に要素ごとに適用する `f.(A)` という構文が用意されています。
+例えば、ベクトル`A`のすべての要素に`sin`関数を適用することができます。以下のように。
+
 
 ```jldoctest
 julia> A = [1.0, 2.0, 3.0]
@@ -936,17 +1136,31 @@ julia> sin.(A)
  0.909297
  0.14112
 ```
-
+```@raw html
+<!-
 Of course, you can omit the dot if you write a specialized "vector" method of `f`, e.g. via `f(A::AbstractArray) = map(f, A)`,
 and this is just as efficient as `f.(A)`. But that approach requires you to decide in advance
 which functions you want to vectorize.
+-->
+```
+もちろん、"ベクトル版"のメソッド `f`を `f(A::AbstractArray) = map(f, A)`のように書いて、dotを省略することもできます。この効率は　`f.(A)`という書き方と変わりません。しかし、こういった手法では、事前に度の関数をベクトル化するかを
+決める必要があります。
 
+```@raw html
+<!-
 More generally, `f.(args...)` is actually equivalent to `broadcast(f, args...)`, which allows
 you to operate on multiple arrays (even of different shapes), or a mix of arrays and scalars (see
 [Broadcasting](@ref)). For example, if you have `f(x,y) = 3x + 4y`, then `f.(pi,A)` will return
 a new array consisting of `f(pi,a)` for each `a` in `A`, and `f.(vector1,vector2)` will return
 a new vector consisting of `f(vector1[i],vector2[i])` for each index `i` (throwing an exception
 if the vectors have different length).
+-->
+```
+さらに、たいていの場合は、`f.(args...)` と `broadcast(f, args...)`は実質的に同等であり、複数の配列(形が違っていてもかまいません)の場合や、配列とスカラーを混合した場合([ブロードキャスト](@ref)参照)も操作可能です。
+例えば `f(x,y) = 3x + 4y`と定義してから`f.(pi,A)` と書くと、 `A`の各要素`a`を使って `f(pi,a)`と書けるような
+新規の配列が返ってくるし、 
+`f.(vector1,vector2)` と書くとインデックス`i`を使って各要素が`f(vector1[i],vector2[i])`と書けるような
+新規のベクトルが返ってきます。(ベクトルの長さが違うときは例外が発生します)
 
 ```jldoctest
 julia> f(x,y) = 3x + 4y;
@@ -968,6 +1182,8 @@ julia> f.(A, B)
  33.0
 ```
 
+```@raw html
+<!-
 Moreover, *nested* `f.(args...)` calls are *fused* into a single `broadcast` loop. For example,
 `sin.(cos.(X))` is equivalent to `broadcast(x -> sin(cos(x)), X)`, similar to `[sin(cos(x)) for x in X]`:
 there is only a single loop over `X`, and a single array is allocated for the result. [In contrast,
@@ -977,7 +1193,16 @@ loop fusion is not a compiler optimization that may or may not occur, it is a *s
 whenever nested `f.(args...)` calls are encountered. Technically, the fusion stops as soon as
 a "non-dot" function call is encountered; for example, in `sin.(sort(cos.(X)))` the `sin` and `cos`
 loops cannot be merged because of the intervening `sort` function.
+-->
+```
+さらに `f.(args...)`という書き方を*ネスト*すると、単一の`ブロードキャスト`ループに`融合`します。
+例えば、`sin.(cos.(X))` は `broadcast(x -> sin(cos(x)), X)`と同等で、 `[sin(cos(x)) for x in X]`と同様です。
+この時`X`に対して1重のループを行うだけで戻り値用の配列１つ分のメモリが確保されるだけです。
+[これとは対照的に、典型的なベクトル化されたプログラミング言語で`sin(cos(X))`と書くと、はじめに一時的な配列にメモリを割り当てて`tmp=cos(X)`を計算を行い、次に`sin(tmp)`の計算を別のループで行い別の配列にメモリを割り当てます。]
+このループ融合は、コンパイラの最適化によって、されたりｓれなかったりするものではなく、 `f.(args...)`がネストして呼び出されたときに、必ず行われるように*構文的に保証されて＊います。しくみとしては、ループ融合は"ドットを使わない"関数呼び出しに出会った時点で停止します。例えば、 `sin.(sort(cos.(X)))`と書くと、 `sin` と `cos`は`sort`をはさんでいるために、融合されることはありません。
 
+```@raw html
+<!-
 Finally, the maximum efficiency is typically achieved when the output array of a vectorized operation
 is *pre-allocated*, so that repeated calls do not allocate new arrays over and over again for
 the results ([Pre-allocating outputs](@ref):). A convenient syntax for this is `X .= ...`, which
@@ -986,11 +1211,23 @@ fused with any nested "dot" calls. For example, `X .= sin.(Y)` is equivalent to 
 overwriting `X` with `sin.(Y)` in-place. If the left-hand side is an array-indexing expression,
 e.g. `X[2:end] .= sin.(Y)`, then it translates to `broadcast!` on a `view`, e.g. `broadcast!(sin, view(X, 2:endof(X)), Y)`,
 so that the left-hand side is updated in-place.
+-->
+```
+最後に、効率が最大限に達する典型的なケースは、ベクトル化された演算の出力用の配列が、*もともと割り当てられている*場合で、関数呼び出しを何回繰り返しても、新しく演算結果の配列にメモリを割り当てることが、ありません([出力の事前割り当て](@ref):)。
 
+
+
+
+```@raw html
+<!-
 Since adding dots to many operations and function calls in an expression
 can be tedious and lead to code that is difficult to read, the macro
 [`@.`](@ref @__dot__) is provided to convert *every* function call,
 operation, and assignment in an expression into the "dotted" version.
+-->
+```
+式の中に出てくる多くの演算子にdotをつけて関数呼び出しを行うのはバカバカし、コードが読みづらくなります。
+[`@.`](@ref @__dot__)マクロを使うと、式中の、関数呼び出し、演算子、代入すべてに対して"ドット"を付加します。
 
 ```jldoctest
 julia> Y = [1.0, 2.0, 3.0, 4.0];
@@ -1004,16 +1241,33 @@ julia> @. X = sin(cos(Y)) # equivalent to X .= sin.(cos.(Y))
  -0.836022
  -0.608083
 ```
-
+```@raw html
+<!-
 Binary (or unary) operators like `.+` are handled with the same mechanism:
 they are equivalent to `broadcast` calls and are fused with other nested "dot" calls.
  `X .+= Y` etcetera is equivalent to `X .= X .+ Y` and results in a fused in-place assignment;
  see also [dot operators](@ref man-dot-operators).
+-->
+```
+ `.+` のような２項(または１項)演算子は同じ仕組みで扱われます。これらは`ブロードキャスト`呼び出しと同等で、
+ 他の"dot"呼び出しのネストと融合されます。
+  `X .+= Y` などの書き方は `X .= X .+ Y`と同等で、融合して上書きの代入が行われます。
+ ([dot演算子](@ref man-dot-operators)参照)
 
 ## Further Reading
-
-We should mention here that this is far from a complete picture of defining functions. Julia has
+## さらなる文献
+```@raw html
+<!-
+We should mention here that this 
+is far from a complete picture of defining functions. Julia has
 a sophisticated type system and allows multiple dispatch on argument types. None of the examples
 given here provide any type annotations on their arguments, meaning that they are applicable to
 all types of arguments. The type system is described in [Types](@ref man-types) and defining a function
 in terms of methods chosen by multiple dispatch on run-time argument types is described in [Methods](@ref).
+-->
+```
+ここで、関数定義の全体像の説明からはほど遠いことを、言明しなくてはなりません。
+Juliaの型システムは洗練されていて、引数の型に対して多重ディスパッチを行うことができます。
+引数に対して型注記をつける例も示していません。型注記はすべての引数の型に対して適応可能な意味づけをします。
+型システムは [型](@ref man-types)に記述されています。
+関数定義にメソッドを使って、実行時の引数の型に従って多重ディスパッチの際に選択が行われることについては、 [メソッド](@ref)に記述されています。
