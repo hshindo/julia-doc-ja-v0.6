@@ -184,7 +184,7 @@ triangle with sides of length `x` and `y`, avoiding overflow:
 -->
 ```
 
-もちろん、`g` のように直線的に処理を行う関数で、`return` を使っても仕方がありません。
+もちろん、`g` のように直線的に順次処理を行う関数で、`return` を使っても仕方がありません。
 というのも、`x + y` という式は決して評価されないので、単に `x * y` という式で終わって、
 `return` を削ればいいからです。
 けれども、実行順序を制御する場合、`return`は役に立ちます。
@@ -222,11 +222,11 @@ since it is the last expression.
 
 この関数には、値を返せる場所が３か所ありますが、３つの異なる式のどの値が戻るかは、`x` と `y` の
 値によって変わります。
-一番最後の `return` は　一番後ろの式なので省略可能です。
+一番最後の `return` は　一番、後ろの式なので省略可能です。
 
 
 ## Operators Are Functions
-## 演算子も関数
+## 演算子は関数
 
 ```@raw html
 <!--
@@ -298,7 +298,7 @@ A few special expressions correspond to calls to functions with non-obvious name
 
 
 | Expression        | Calls                  |
-|:----------------- |:---------------------- |
+|:----------------- |:--------------------- |
 | `[A B C ...]`     | [`hcat()`](@ref)       |
 | `[A; B; C; ...]`  | [`vcat()`](@ref)       |
 | `[A B; C D; ...]` | [`hvcat()`](@ref)      |
@@ -417,7 +417,7 @@ object without needing a name:
 ```
 
  配列に対して実行したい変換が、名前つきの関数として存在していて、[`map()`](@ref)の1番目の引数に使える場合は、問題ありません。
- ですが、そんな名前付きの関数はなくて、すぐに使えない場合も多いでしょう。
+ ですが、多くの場合、すぐ使える名前付きの関数なんて存在しません。
 そんな時、無名関数を使えば、使い捨ての関数オブジェクトを名前もつけずに簡単に作成できます。
 
 
@@ -463,7 +463,7 @@ function returns a pair of values:
 
 Juliaでは、複数の値を返したい時は、疑似的に値のタプルを返します。
 しかし、タプルは括弧を使わなくても、生成したり、分解したりできるので、
-は1組のタプルではなく、複数の値が返された、と錯覚するでしょう。
+は1組のタプルではなく、複数の値が返された、と錯覚を起こすでしょう。
 以下の例では関数は値のペアを返します。
 
 
@@ -483,7 +483,7 @@ see the tuple returned:
 -->
 ```
 
-対話セッションで戻り値を何かに代入しない場合は、タプルが返されます。
+対話セッションで戻り値をどこにも代入しない場合は、タプルが返されます。
 
 
 ```jldoctest foofunc
@@ -576,7 +576,7 @@ not work.
 
 
 ## Varargs Functions
-## 可変長引数関数
+## 可変引数関数
 
 ```@raw html
 <!--
@@ -589,9 +589,9 @@ of arguments". You can define a varargs function by following the last argument 
 ```
 
 関数の引数が任意の個数でも受け取れると便利なことが、よくあります。
-そういった関数は伝統的に"可変長引数"関数と呼ばれます。
-"vararg"(可変長引数)は"variable number of arguments"(可変個の引数)の略です。
-可変長引数関数を定義する際には、一番後ろの引数につづけて...(省略記号)を付け加えます。
+そういった関数は伝統的に"可変引数"関数と呼ばれます。
+"vararg"(可変引数)は"variable number of arguments"(可変個の引数)の略です。
+可変引数関数を定義するには、最後の引数の後に...(省略記号)を付けます。
 
 
 
@@ -610,9 +610,8 @@ two arguments:
 -->
 ```
 
-変数 `a`,`b`には、ごく普通に、最初の2つの引数の値が束縛されます。
-変数 `x` に束縛されるのは、関数`bar`に最初の2つの引数に続けて渡された
-０個以上のイテレータ付きのコレクションです。
+変数 `a`,`b`には、通常通り、最初の2つの引数の値が束縛されます。
+変数 `x` に束縛されるのは、長さ０個以上のイテラブル・コレクションで、関数`bar`に始めの2つの引数の後に続けて渡されたものです。
 
 
 ```jldoctest barfunc
@@ -635,7 +634,7 @@ In all these cases, `x` is bound to a tuple of the trailing values passed to `ba
 -->
 ```
 
-以上のすべてのケースで、'x'は`bar`に渡された末尾の値のタプルが束縛されます。
+以上のすべてのケースで、'x'には、`bar`に渡されて残ったものがタプルとして束縛されます。
 
 
 ```@raw html
@@ -645,6 +644,8 @@ later in [Parametrically-constrained Varargs methods](@ref).
 -->
 ```
 
+可変引数として渡される値の個数に制約をかけることも可能です。
+これは、あとで[パラメータに制約をかけた可変引数メソッド](@ref)で検討します。
 
 ```@raw html
 <!--
@@ -654,8 +655,7 @@ call instead:
 -->
 ```
 
-その一方で、イテラブル・コレクションに含まれる複数の値を関数呼び出しで個別の引数として"継ぎ合わせる"ことも
-手軽によく行われます。これは、関数呼び出しの中で、`...`使っておこないます。
+その一方で、イテラブル・コレクションと関数の引数を"継ぎ合わせる"ことも、便利なのでよく行われます。これは、関数呼び出しの中で、`...`使っておこないます。
 
 
 ```jldoctest barfunc
@@ -673,7 +673,7 @@ of arguments go. This need not be the case, however:
 -->
 ```
 
-この場合は、、値のタプルが関数呼び出しの引数に、数が合って、ちょうど継ぎ合わされています。
+この場合は、タプルと関数の引数の数がちょうど同じ状態で継ぎ合わされています。
 `...`を使う必要がないですね。
 
 
@@ -697,7 +697,7 @@ julia> bar(x...)
 Furthermore, the iterable object spliced into a function call need not be a tuple:
 -->
 ```
-さらに、関数呼び出しに継ぎ合わせられるイテラブル・オブジェクトはタプルである必要はありません。
+さらに、関数呼び出しと継ぎ合わせるイテラブル・オブジェクトはタプルである必要はありません。
 
 
 ```jldoctest barfunc
@@ -727,7 +727,7 @@ often is):
 -->
 ```
 
-また、継ぎ合わせられる関数側も、可変長引数関数でなくてもかまいません。(これは結構よくあります)
+また、継ぎ合わせる関数のほうも、可変引数関数でなくてもかまいません。(よくあります)
 
 ```jldoctest
 julia> baz(a,b) = a + b;
@@ -758,8 +758,8 @@ As you can see, if the wrong number of elements are in the spliced container, th
 call will fail, just as it would if too many arguments were given explicitly.
 -->
 ```
-みてわかるように、継ぎ合わせるコンテナ側の要素数が正しくないと、関数の呼び出しは失敗します。
-与えるべき引数が多すぎる場合と同様に。
+ご覧のように、継ぎ合わせるコンテナの要素の数が間違っていると、明示した引数が多すぎる場合と同じように、関数の呼び出しは失敗します。
+
 
 ## Optional Arguments
 ## 省略可能な引数
@@ -775,8 +775,8 @@ can be expressed concisely as:
 ```
 
 多くの場合、関数の引数には適切な初期値が割り当てられていて、呼び出す度に値を渡す必要がありません。
-例えば、ライブラリ関数の [`parse(T, num, base)`](@ref) は文字をなんらかの基数にしたがって解釈すますが、
-基数の初期設定値は `10` です。こうした挙動は簡潔に以下のように記述できます。
+例えば、ライブラリ関数の [`parse(T, num, base)`](@ref) は文字列をある基数の数値として解釈します。
+基数の初期設定値は `10` です。この振る舞いは簡潔に以下のように記述できます。
 
 
 ```julia
@@ -794,7 +794,7 @@ is automatically passed when a third argument is not specified:
 -->
 ```
 
-この定義によって、関数の引数を２個、または 3個　与えて呼び出すことができ、
+この定義では、関数を２個または3個の引数で呼び出すことができて、
 ３番目の引数を指定しない場合は、'10'が自動的に引き渡されます。
 
 
@@ -818,7 +818,7 @@ with different numbers of arguments (see [Note on Optional and keyword Arguments
 -->
 ```
 
-省略可能な引数は、実質的には、引数の個数の違う複数のメソッドの定義を書くための便利な構文なのです。
+省略可能な引数は、実際には、引数の個数の違う複数のメソッドの定義を書くための便利な構文なのです。
 ( [省略可能な引数とキーワード引数の注意点](@ref) を参照).
 
 ## Keyword Arguments
@@ -835,9 +835,8 @@ easier to use and extend by allowing arguments to be identified by name instead 
 ```
 
 関数の中には、多数の引数が必要なものや、様々な挙動をとるものがあります。
-そんな関数の呼び出し方を覚えるのは困難なことになりかねません。
-キーワード引数は、引数の指定を位置ではなく、名前でおこなって、複雑な入力方法を、使いやすく、また拡張しやすく
-するものです。
+そんな関数の呼び出し方を覚えるのは難しいものです。
+キーワード引数は、引数の指定を位置ではなく、名前でおこなって、複雑な入力方法を、使いやすく、拡張するものです。
 
 
 
@@ -852,10 +851,10 @@ its meaning. It also becomes possible to pass any subset of a large number of ar
 order.
 -->
 ```
-例えば、`plot`という折れ線グラフを描く関数を考えてみましょう。
-この関数たくさんのオプションがあっては、線のスタイル、幅、色などを制御することができます。
+例えば、`plot`という線を描く関数を考えてみましょう。
+この関数たくさんのオプションがあって、線のスタイル、幅、色などを操作することができます。
 キーワード引数を使えば、`plot(x, y, width=2)` のように書いて、線の幅だけを指定する、といったことができるでしょう。
-キーワード引数には、２つの目的があります。１つは、関数呼び出しの意図がわかりやすくなります。引数に意味をラベル付けできるからです。もう１つは、たくさんの引数の中から、設定する引数を選んでどの順番で指定してもいいのです。
+キーワード引数には、２つの目的で役に立ちます。１つは、関数呼び出しの意図がわかりやすくなります。引数に意味をラベル付けできるからです。もう１つは、たくさんの引数の中から、設定する引数を選んでどの順番で指定してもいいのです。
 
 ```@raw html
 <!-
@@ -863,7 +862,7 @@ order.
 Functions with keyword arguments are defined using a semicolon in the signature:
 -->
 ```
-キーワード引数関数を使う関数はシグネチャにおいて、セミコロンを使って定義します。
+キーワード引数関数を使う関数は、関数を宣言する行で、セミコロンを使って定義します。
 
 ```julia
 function plot(x, y; style="solid", width=1, color="black")
@@ -879,7 +878,7 @@ only for passing varargs or computed keywords as described below.
 ```
 関数呼び出しの際に、セミコロンは必ずしも必要ありません。
  `plot(x, y, width=2)` と  `plot(x, y; width=2)` どちらでもよいのですが、ふつうは１つ目の書き方をします。
- 後述の可変長引数や計算済みのキーワードを使う場合に、明示的にセミコロンを使わなければなりません。
+ 後述の可変引数や計算済みのキーワードを使う場合には、明示的にセミコロンを使わなければなりません。
 
 
 
@@ -891,7 +890,7 @@ prior keyword arguments.
 -->
 ```
 キーワード引数の初期値は、（対応する値が渡されなくて）必要になった時だけ、左から右の順番で評価されます。
-そのため、初期値の式は左側の引数を参照していてもかまいません。
+そのため、初期値の式は評価済みのキーワード引数を参照していてもかまいません。
 
 
 ```@raw html
@@ -912,7 +911,7 @@ end
 Extra keyword arguments can be collected using `...`, as in varargs functions:
 -->
 ```
-明示的に指定されなかった、キーワード引数は、可変長引数関数の場合につかう、`...` をつけて、まとめることができます。
+余分なキーワード引数は、可変引数関数で使う`...` をつけて、まとめることができます。
 
 ```julia
 function f(x; y=0, kwargs...)
@@ -926,7 +925,7 @@ Inside `f`, `kwargs` will be a collection of `(key,value)` tuples, where each `k
 Such collections can be passed as keyword arguments using a semicolon in a call, e.g. `f(x, z=1; kwargs...)`.
 -->
 ```
-`f`の内部では、`kwargs`は、`key` がシンボルを表す`(key,value)` というタプルのコレクションになるでしょう。
+`f`の内部では、`kwargs`は、`key` がシンボルである`(key,value)` というタプルのコレクションになるでしょう。
 このコレクションはセミコロンを使って  `f(x, z=1; kwargs...)` のように受け渡しができます。
 
 
@@ -935,7 +934,7 @@ Such collections can be passed as keyword arguments using a semicolon in a call,
 Dictionaries can also be used for this purpose.
 -->
 ```
-こういった場合に辞書が使われます。
+こういった場合に辞書もまた使われます。
 
 ```@raw html
 <!-
@@ -946,9 +945,9 @@ where the keyword name is computed at runtime.
 -->
 ```
 
-`(key,value)` といったタプルや、（=>）を使ったペアなどタプルに代入できる反復可能な式などは、セミコロンを使って
-代入ができます。`plot(x, y; (:width,2))` や  `plot(x, y; :width => 2)` などと定義は `plot(x, y, width=2)` 
-と同等です。こういった書き方は実行時にキーワード名を導出する場合に役立ちます。  
+`(key,value)` といったタプルや、タプルに代入できる（`=>`を使ったペアなど)イテラブルな式などは、明示的に書いたセミコロンの後に続けて渡すことができます。
+`plot(x, y; (:width,2))` や  `plot(x, y; :width => 2)` などと定義は `plot(x, y, width=2)` 
+と同等です。こういった書き方は実行時にキーワード名を算出する場合に役立ちます。  
 
 
 ```@raw html
@@ -959,28 +958,26 @@ also contains a value for `width`. In such a case the rightmost occurrence takes
 this example, `width` is certain to have the value `2`.
 -->
 ```
-キーワード引数の性質上、同じ引数に何度も値を指定できるようになっています。
+キーワード引数の性質上、同じ引数に複数回、値を指定できるようになっています。
 例えば、`plot(x, y; options..., width=2)` という関数呼び出しは、`options`の中に`width`の値も設定されています。
-この場合は、一番右に出てきた値が優先されます。`width` の値は `2` に設定されます。
+この場合は、右端の出現が優先されます。`width` の値は `2` に設定されます。
 
 
 
 ## Evaluation Scope of Default Values
-## 初期値を評価するスコープ
+## 初期値を評価する際のスコープ
 
 ```@raw html
 <!-
-Optional and keyword arguments differ slightly in how their default values are evaluated. When
-optional argument default expressions are evaluated, only *previous* arguments are in scope. In
-contrast, *all* the arguments are in scope when keyword arguments default expressions are evaluated.
+When optional and keyword argument default expressions are evaluated, only *previous* arguments are in
+scope.
 For example, given this definition:
 -->
 ```
 
-省略可能な引数とキーワード引数は初期値を評価する方法が、少し違います。
-省略可能な引数の初期値を評価する際にスコープに存在するのは、既に評価された引数だけです。
-一方、キーワード引数では、初期値を評価するスコープにはすべての引数が存在します。
-例えば、次式のような定義では、
+省略可能な引数やキーワード引数は式の初期値が評価される際に
+スコープに存在するのは、既に評価された引数だけです。
+次式のような定義を例に挙げます。
 
 ```julia
 function f(x, a=b, b=1)
@@ -990,17 +987,11 @@ end
 
 ```@raw html
 <!-
-the `b` in `a=b` refers to a `b` in an outer scope, not the subsequent argument `b`. However,
-if `a` and `b` were keyword arguments instead, then both would be created in the same scope and
-the `b` in `a=b` would refer to the subsequent argument `b` (shadowing any `b` in an outer scope),
-which would result in an undefined variable error (since the default expressions are evaluated
-left-to-right, and `b` has not been assigned yet).
+the `b` in `a=b` refers to a `b` in an outer scope, not the subsequent argument `b`. 
 -->
 ```
 `a=b` の中の `b` は、スコープ外を参照していて、次の引数の `b`とは、解釈されません。
-しかし `a` と `b` がキーワード引数なら、両方とも同じスコープに生成されて``、`a=b` の中の `b` は、次の引数の `b` 
-を参照するでしょう（スコープ外の`b`はシャドーイングされます）。
-この結果、変数の未定義エラーが発生するでしょう。(初期値は左から右へ評価されるため、`b`にはまだ何も代入されていません)
+
 
 
 ## Do-Block Syntax for Function Arguments
@@ -1016,7 +1007,7 @@ cases:
 -->
 ```
 関数を別の関数へ渡すことは強力な技法ですが、いつも便利な構文で実行できるわけではありません。
-特に関数の引数が何行にもわたって必要な場合は、とりわけ関数の呼び出しが不格好に見えるでしょう。
+特に関数の引数が何行にも渡る場合は、書くのが厄介でしょう。
 例として、[`map()`](@ref) を呼び出すいくつかのケースを考えてみましょう。
 
 
@@ -1038,7 +1029,7 @@ map(x->begin
 Julia provides a reserved word `do` for rewriting this code more clearly:
 -->
 ```
-Juliaの予約語である`do`を使って、もっと明解に書きかえてみると、
+Juliaの予約語である`do`を使って、もっと明解に書きかえてみましょう。
 
 ```julia
 map([A, B, C]) do x
@@ -1060,8 +1051,7 @@ plain `do` would declare that what follows is an anonymous function of the form 
 -->
 ```
 `do x` という構文では `x` を引数にとる無名関数が生成されて、[`map()`](@ref) の第一引数として渡されます。
-同様に `do a,b` と書くと、引数が2個の無名関数が生成されて、また、単に  `do` と書くと  `() -> ...` という形式の
-無名関数が生成されます。
+同様に `do a,b` と書くと、引数が2個の無名関数が生成され、また、単に  `do` と書くと  `() -> ...` という形式の無名関数が生成されます。
 
 ```@raw html
 <!-
@@ -1070,7 +1060,7 @@ sequentially set `x` to `A`, `B`, `C`, calling the anonymous function on each, j
 in the syntax `map(func, [A, B, C])`.
 -->
 ```
-こうした引数が、どうのように初期化されるかは、`外側の`関数によって、ちがいます。
+こうした引数が、どうのように初期化されるかは、`外側の`関数によって、異なります。
 ここで取り上げた [`map()`](@ref) では、順番に `x` に対して `A`, `B`, `C` が代入されて、その都度、無名関数が
 呼び出されます。ちょうど`map(func, [A, B, C])`という構文を使ったときと同じです。
 
@@ -1082,9 +1072,9 @@ as managing system state. For example, there is a version of [`open()`](@ref) th
 that the opened file is eventually closed:
 -->
 ```
-この構文を使うと、簡単に関数を使って、言語を効率的に拡張できます。通常のプログラムと同じ感じなのですから。
-[`map()`](@ref) と全く違う使い方もたくさんあって、システムの状態を管理するようなこともできます。
-たとえば、[`open()`](@ref) の使い方として、コードの実行後にに必ず開いたファイルを閉じるように保証することができます。
+この構文を使うと、簡単に関数を使って、言語を効率的に拡張できます。通常のコードブロックと同様に関数を呼び出せるのですから。
+また[`map()`](@ref) と全く違う使い方もたくさんあって、システムの状態を管理するようなこともできます。
+たとえば、[`open()`](@ref) を使って、コードの実行後にに必ず開いたファイルを閉じるように保証するように書くことができます。
 
 
 
@@ -1119,8 +1109,8 @@ will make sure that the stream is properly closed, regardless of whether your fu
 normally or threw an exception. (The `try/finally` construct will be described in [Control Flow](@ref).)
 -->
 ```
-ここでは、 [`open()`](@ref)　によって書き込み用のファイルが開かれ、出力ストリームに `do ... end` ブロックで定義された無名関数が渡されます。あなたの書いた関数が終了した後に、 [`open()`](@ref) はストリームが適切に閉じられたかどうかを確認します。これはあなたの関数が正常に終了しても、例外を投げても行われます。
-( `try/finally` は [実行制御](@ref) に記述されています)
+ここでは、 [`open()`](@ref)　は書き込み用のファイルを開き、出力ストリームを `do ... end` ブロックで定義された無名関数に渡します。この無名関数が終了した後に、 [`open()`](@ref) はストリームが適切に閉じられたかどうかを確認します。これは無名関数が正常に終了しても、例外を投げても行われます。
+( `try/finally` については [実行制御](@ref) に記述しています)
 -->
 
 ```@raw html
@@ -1129,7 +1119,7 @@ With the `do` block syntax, it helps to check the documentation or implementatio
 the arguments of the user function are initialized.
 -->
 ```
- `do`ブロック構文を使って、ユーザー定義関数の引数がどのように初期化されているかを調べると、文書や実装をチェックするのに役立ちます。
+ `do`ブロック構文は、マニュアルや実装をチェックして、ユーザー定義関数の引数がどのように初期化されているかを理解するのに役立ちます。
 
 ## [Dot Syntax for Vectorizing Functions](@id man-vectorized)
 ##ベクトル化関数に対するDot構文
@@ -1147,12 +1137,12 @@ can call fast library code written in a low-level language. In Julia, vectorized
 For example `sin` can be applied to all elements in the vector `A`, like so:
 -->
 ```
-技術計算用のプログラム言語では、ベクトル化"したバージョンの関数を作ることがよくあります。
-つまり、所与の関数 `f(x)`を配列Aの各要素に単に適用して新しい配列を作る`f(A)`という関数を作るといった具合に。
-こういった類の構文はデータ処理用に便利なものですが、Julia以外のプログラミング言語ではベクトル化はパフォーマンスをあげるために必要となることがよくあります。ループ処理が遅い場合には、低水準のプログラム言語で書かれた高速なベクトル版の関数を呼び出して使うのです。
+技術計算用のプログラム言語では、関数のベクトル化"したバージョンを作ることがよくあります。
+既存の関数 `f(x)`を配列Aの各要素に単に適用して新しい配列を作る`f(A)`という関数を作るといった具合に。
+こういった類の構文はデータ処理用に便利なものですが、Julia以外のプログラミング言語ではベクトル化はパフォーマンスをあげるために必要となることがよくあります。ループ処理が遅い場合には、低水準のプログラム言語で書かれた高速なベクトル版の関数を呼び出して使うというように。
 Juliaではパフォーマンスをよくするために関数をベクトル化する必要は *ありません* 。
 実際に、自分でループを書いたほうがよいこともよくあります([パフォーマンス ティップス](@ref man-performance-tips)参照)。それでも、ベクトル化は便利なので、Juliaでは *すべての* 関数 `f` は、　配列（その他のコレクション)に要素ごとに適用する `f.(A)` という構文が用意されています。
-例えば、ベクトル`A`のすべての要素に`sin`関数を適用することができます。以下のように。
+例えば、ベクトル`A`のすべての要素に`sin`関数を適用することができます。
 
 
 ```jldoctest
@@ -1175,7 +1165,7 @@ and this is just as efficient as `f.(A)`. But that approach requires you to deci
 which functions you want to vectorize.
 -->
 ```
-もちろん、"ベクトル版"のメソッド `f`を `f(A::AbstractArray) = map(f, A)`のように書いて、dotを省略することもできます。この効率は　`f.(A)`という書き方と変わりません。しかし、こういった手法では、事前に度の関数をベクトル化するかを
+もちろん、"ベクトル版"のメソッド `f`を `f(A::AbstractArray) = map(f, A)`のように書いて、dotを省略することもできます。この場合、効率は　`f.(A)`という書き方と変わりません。しかし、こういった手法では、事前にどの関数をベクトル化するかを
 決める必要があります。
 
 ```@raw html
@@ -1188,7 +1178,7 @@ a new vector consisting of `f(vector1[i],vector2[i])` for each index `i` (throwi
 if the vectors have different length).
 -->
 ```
-さらに、たいていの場合は、`f.(args...)` と `broadcast(f, args...)`は実質的に同等であり、複数の配列(形が違っていてもかまいません)の場合や、配列とスカラーを混合した場合([ブロードキャスト](@ref)参照)も操作可能です。
+さらに、大概の場合は、`f.(args...)` と `broadcast(f, args...)`は実質的に同等であり、複数の配列(形が違っていてもかまいません)の場合や、配列とスカラーを混合した場合([ブロードキャスト](@ref)参照)も操作可能です。
 例えば `f(x,y) = 3x + 4y`と定義してから`f.(pi,A)` と書くと、 `A`の各要素`a`を使って `f(pi,a)`と書けるような
 新規の配列が返ってくるし、 
 `f.(vector1,vector2)` と書くとインデックス`i`を使って各要素が`f(vector1[i],vector2[i])`と書けるような
@@ -1231,7 +1221,7 @@ loops cannot be merged because of the intervening `sort` function.
 例えば、`sin.(cos.(X))` は `broadcast(x -> sin(cos(x)), X)`と同等で、 `[sin(cos(x)) for x in X]`と同様です。
 この時`X`に対して1重のループを行うだけで戻り値用の配列１つ分のメモリが確保されるだけです。
 [これとは対照的に、典型的なベクトル化されたプログラミング言語で`sin(cos(X))`と書くと、はじめに一時的な配列にメモリを割り当てて`tmp=cos(X)`を計算を行い、次に`sin(tmp)`の計算を別のループで行い別の配列にメモリを割り当てます。]
-このループ融合は、コンパイラの最適化によって、されたりｓれなかったりするものではなく、 `f.(args...)`がネストして呼び出されたときに、必ず行われるように*構文的に保証されて＊います。しくみとしては、ループ融合は"ドットを使わない"関数呼び出しに出会った時点で停止します。例えば、 `sin.(sort(cos.(X)))`と書くと、 `sin` と `cos`は`sort`をはさんでいるために、融合されることはありません。
+このループ融合は、コンパイラの最適化によって、左右されるものではなく、 `f.(args...)`がネストして呼び出されたときに、必ず行われるように"構文的に保証されて" います。しくみとしては、ループ融合は"ドットを使わない"関数呼び出しに出会った時点で停止します。例えば、 `sin.(sort(cos.(X)))`と書くと、 `sin` と `cos`は`sort`をはさんでいるために、融合されることはありません。
 
 ```@raw html
 <!-
@@ -1245,7 +1235,7 @@ e.g. `X[2:end] .= sin.(Y)`, then it translates to `broadcast!` on a `view`, e.g.
 so that the left-hand side is updated in-place.
 -->
 ```
-最後に、効率が最大限に達する典型的なケースは、ベクトル化された演算の出力用の配列が、*もともと割り当てられている*場合で、関数呼び出しを何回繰り返しても、新しく演算結果の配列にメモリを割り当てることが、ありません([出力の事前割り当て](@ref):)。
+最後に、効率が最大限に達する典型例は、ベクトル化された演算の出力用の配列が、*もともと割り当てられている*場合で、関数呼び出しを何回繰り返しても、新しく演算結果の配列にメモリを割り当てることが、ありません([出力の事前割り当て](@ref):)。
 
 
 
@@ -1281,13 +1271,13 @@ they are equivalent to `broadcast` calls and are fused with other nested "dot" c
  see also [dot operators](@ref man-dot-operators).
 -->
 ```
- `.+` のような２項(または１項)演算子は同じ仕組みで扱われます。これらは`ブロードキャスト`呼び出しと同等で、
- 他の"dot"呼び出しのネストと融合されます。
-  `X .+= Y` などの書き方は `X .= X .+ Y`と同等で、融合して上書きの代入が行われます。
+ `.+` のような二項(または単項)演算子は同じ仕組みで扱われます。これらは`ブロードキャスト`呼び出しと同等で、
+ 他のネストされた"dot"呼び出しと融合されます。
+  `X .+= Y` などの書き方は `X .= X .+ Y`と同等で、上書きによる代入が融合されて行われます。
  ([dot演算子](@ref man-dot-operators)参照)
 
 ## Further Reading
-## さらなる文献
+## 関連項目
 ```@raw html
 <!-
 We should mention here that this 
@@ -1298,8 +1288,8 @@ all types of arguments. The type system is described in [Types](@ref man-types) 
 in terms of methods chosen by multiple dispatch on run-time argument types is described in [Methods](@ref).
 -->
 ```
-ここで、関数定義の全体像の説明からはほど遠いことを、言明しなくてはなりません。
-Juliaの型システムは洗練されていて、引数の型に対して多重ディスパッチを行うことができます。
-引数に対して型注記をつける例も示していません。型注記はすべての引数の型に対して適応可能な意味づけをします。
+この章の説明は関数定義の全体像からはほど遠いものです。
+Juliaは洗練された型システムを持ち、引数の型による多重ディスパッチを行うことができます。
+引数に対して型注釈をつける例も示していません。型注釈はすべての引数の型に対して適応可能な意味づけをします。
 型システムは [型](@ref man-types)に記述されています。
-関数定義にメソッドを使って、実行時の引数の型に従って多重ディスパッチの際に選択が行われることについては、 [メソッド](@ref)に記述されています。
+実行時の引数の型による多重ディスパッチを行い、その際に選択されるメソッドを使って関数を定義する方法は、 [メソッド](@ref)に記述されています。
