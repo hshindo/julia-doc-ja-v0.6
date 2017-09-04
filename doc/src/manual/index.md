@@ -8,7 +8,7 @@
 　* [複素数と有理数](@ref)
   * [Strings](@ref)
   * [Functions](@ref)
-  * [Control Flow](@ref)
+  * [制御構造](@ref)
   * [Scope of Variables](@ref scope-of-variables)
   * [Types](@ref man-types)
   * [Methods](@ref)
