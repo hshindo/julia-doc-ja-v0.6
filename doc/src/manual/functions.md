@@ -1110,7 +1110,7 @@ normally or threw an exception. (The `try/finally` construct will be described i
 -->
 ```
 ここでは、 [`open()`](@ref)　は書き込み用のファイルを開き、出力ストリームを `do ... end` ブロックで定義された無名関数に渡します。この無名関数が終了した後に、 [`open()`](@ref) はストリームが適切に閉じられたかどうかを確認します。これは無名関数が正常に終了しても、例外を投げても行われます。
-( `try/finally` については [実行制御](@ref) に記述しています)
+( `try/finally` については [制御構造](@ref) に記述しています)
 -->
 
 ```@raw html
