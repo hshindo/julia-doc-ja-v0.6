@@ -1,27 +1,58 @@
 # Control Flow
 # 制御構造
 
+```@raw html
+<!--
 Julia provides a variety of control flow constructs:
-
+-->
+```
+Juliaには、さまざまな制御構造があります。
+```@raw html
+<!--
   * [Compound Expressions](@ref man-compound-expressions): `begin` and `(;)`.
   * [Conditional Evaluation](@ref man-conditional-evaluation): `if`-`elseif`-`else` and `?:` (ternary operator).
   * [Short-Circuit Evaluation](@ref): `&&`, `||` and chained comparisons.
   * [Repeated Evaluation: Loops](@ref man-loops): `while` and `for`.
   * [Exception Handling](@ref): `try`-`catch`, [`error()`](@ref) and [`throw()`](@ref).
   * [Tasks (aka Coroutines)](@ref man-tasks): [`yieldto()`](@ref).
-
+-->
+```
+  * [複合式](@ref man-compound-expressions): `begin` および `(;)`。
+  * [条件付き評価](@ref man-conditional-evaluation): `if`-`elseif`-`else` および `?:` (三項演算子)。
+  * [短絡評価](@ref): `&&`, `||` とおよび比較の連鎖。
+  * [繰り返し評価: ループ](@ref man-loops): `while` と `for`。
+  * [例外処理](@ref): `try`-`catch`, [`error()`](@ref) および [`throw()`](@ref)。
+  * [タスク (コルーチン)の別称](@ref man-tasks): [`yieldto()`](@ref)。
+```@raw html
+<!--
 The first five control flow mechanisms are standard to high-level programming languages. [`Task`](@ref)s
 are not so standard: they provide non-local control flow, making it possible to switch between
 temporarily-suspended computations. This is a powerful construct: both exception handling and
 cooperative multitasking are implemented in Julia using tasks. Everyday programming requires no
 direct usage of tasks, but certain problems can be solved much more easily by using tasks.
+-->
+```
+始めの５つは高水準なプログラミング言語に標準的な制御構造の仕組みです。
+[タスク]はそれほど標準的ではありません。タスクはローカルだけにとどまらない制御構造で、一時的に保留している計算を
+切り替えることができます。
+これは、強力な制御構造で、Juliaでは、例外処理や協調的なマルチタスクは、共にタスクを使って実装されています。
+日常的なプログラムには、タスクを直接使う必要はないかもしれませんが、ある種の問題には、タスクを使うとはるかに簡単に解くことができます。
 
 ## [Compound Expressions](@id man-compound-expressions)
+## [複合式]
 
+```@raw html
+<!--
 Sometimes it is convenient to have a single expression which evaluates several subexpressions
 in order, returning the value of the last subexpression as its value. There are two Julia constructs
 that accomplish this: `begin` blocks and `(;)` chains. The value of both compound expression constructs
 is that of the last subexpression. Here's an example of a `begin` block:
+-->
+```
+いくつかの部分式を並べて単一の式とし、順番に評価した部分式の最後の式の値を戻り値とすると、便利なことが、時々あります。
+これを遂行するJuliaの制御構造は2つあります。beginブロック、と、セミコロン(;)連鎖です。
+どちらの複合式も、最後の部分式の値が戻り値になります。
+beginブロックの例を次に示します。
 
 ```jldoctest
 julia> z = begin
@@ -32,17 +63,27 @@ julia> z = begin
 3
 ```
 
+```@raw html
+<!--
 Since these are fairly small, simple expressions, they could easily be placed onto a single line,
 which is where the `(;)` chain syntax comes in handy:
+-->
+```
+この例では、式がかなり小さくて単純なので、簡単に1行にまとめることができます。こういう場合に便利なのが、セミコロン(;)連鎖構文です。
 
 ```jldoctest
 julia> z = (x = 1; y = 2; x + y)
 3
 ```
-
+```@raw html
+<!--
 This syntax is particularly useful with the terse single-line function definition form introduced
 in [Functions](@ref). Although it is typical, there is no requirement that `begin` blocks be multiline
 or that `(;)` chains be single-line:
+-->
+```
+この構文は、[関数](@ref) の章で紹介した、簡潔で単一行の関数定義形式で使うと、特に便利です。
+こういう使い方が典型的ですが、beginブロックは複数行で、セミコロン(;)連鎖は単一行でなければならないといった、制約はありません。
 
 ```jldoctest
 julia> begin x = 1; y = 2; x + y end
@@ -55,9 +96,15 @@ julia> (x = 1;
 ```
 
 ## [Conditional Evaluation](@id man-conditional-evaluation)
+## [条件付き評価](@id man-conditional-evaluation)
 
+```@raw html
+<!--
 Conditional evaluation allows portions of code to be evaluated or not evaluated depending on the
 value of a boolean expression. Here is the anatomy of the `if`-`elseif`-`else` conditional syntax:
+-->
+```
+
 
 ```julia
 if x < y
