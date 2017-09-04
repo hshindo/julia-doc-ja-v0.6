@@ -104,7 +104,8 @@ Conditional evaluation allows portions of code to be evaluated or not evaluated 
 value of a boolean expression. Here is the anatomy of the `if`-`elseif`-`else` conditional syntax:
 -->
 ```
-
+条件付き評価では、ブール式の値に応じてコードの一部を評価するかしないかを、制御ができます。
+ここで、 `if`-`elseif`-`else`型の条件分岐構文の解剖をしてみましょう：
 
 ```julia
 if x < y
@@ -116,9 +117,15 @@ else
 end
 ```
 
+```@raw html
+<!--
 If the condition expression `x < y` is `true`, then the corresponding block is evaluated; otherwise
 the condition expression `x > y` is evaluated, and if it is `true`, the corresponding block is
 evaluated; if neither expression is true, the `else` block is evaluated. Here it is in action:
+-->
+```
+条件式`x < y`が`真`の場合、対応するブロックが評価されます。そうでなければ、条件式`x > y`が評価され、この式が`真`の場合は、対応するブロックが評価されます。いずれの式も真でない場合、elseブロックが評価されます。
+例を挙げると、
 
 ```jldoctest
 julia> function test(x, y)
@@ -141,15 +148,30 @@ x is greater than y
 julia> test(1, 1)
 x is equal to y
 ```
-
+```@raw html
+<!--
 The `elseif` and `else` blocks are optional, and as many `elseif` blocks as desired can be used.
 The condition expressions in the `if`-`elseif`-`else` construct are evaluated until the first
 one evaluates to `true`, after which the associated block is evaluated, and no further condition
 expressions or blocks are evaluated.
+-->
+```
+この、`elseif` および `else`ブロックは省略可能で、`elseif`ブロックは、書いただけ使うことができます。
+`if`-`elseif`-`else`構文に出てくる条件文は、`真`になるものがでてくるまで評価されます。
+その後、真になる条件文に対応するブロックが評価され、以降は、条件式もブロックも評価されません。
 
+```@raw html
+<!--
 `if` blocks are "leaky", i.e. they do not introduce a local scope. This means that new variables
 defined inside the `if` clauses can be used after the `if` block, even if they weren't defined
 before. So, we could have defined the `test` function above as
+-->
+```
+`if`ブロックには「漏れ」があります。つまりローカルスコープを導入していません。
+これは、`if`句の中で定義した新しい変数が、たとえ`if`ブロックの前で定義していなくても、
+`if`ブロックの後ろで使えるということです。
+だから、上記のtest関数は、このようにも定義できます。
+
 
 ```jldoctest
 julia> function test(x,y)
@@ -167,10 +189,17 @@ test (generic function with 1 method)
 julia> test(2, 1)
 x is greater than y.
 ```
-
+```@raw html
+<!--
 The variable `relation` is declared inside the `if` block, but used outside. However, when depending
 on this behavior, make sure all possible code paths define a value for the variable. The following
 change to the above function results in a runtime error
+-->
+```
+変数`relation`は`if`ブロックの内側で宣言されていますが、外側で使用されています。
+ただし、こういった使い方をする場合は、すべてのとりうる分岐で、変数の値が定義されていることを確認してください。
+上記の関数を次のように変更すると、ランタイムエラーが発生します。
+
 
 ```jldoctest
 julia> function test(x,y)
@@ -191,11 +220,15 @@ ERROR: UndefVarError: relation not defined
 Stacktrace:
  [1] test(::Int64, ::Int64) at ./none:7
 ```
-
+```@raw html
+<!--
 `if` blocks also return a value, which may seem unintuitive to users coming from many other languages.
 This value is simply the return value of the last executed statement in the branch that was chosen,
 so
-
+-->
+```
+`if`ブロックも値を返しますが、他の多くの言語の利用者には直感的ではないようです。
+この値は、単に、選択された分岐の中で、最後に実行された文の戻り値です。
 ```jldoctest
 julia> x = 3
 3
@@ -207,40 +240,78 @@ julia> if x > 0
        end
 "positive!"
 ```
-
+```@raw html
+<!--
 Note that very short conditional statements (one-liners) are frequently expressed using Short-Circuit
 Evaluation in Julia, as outlined in the next section.
+-->
+```
+Juliaでは、非常に短い条件文（ワンライナー）には、頻繁に短絡評価が利用される点に注意してください。
+次章で説明します。
 
+```@raw html
+<!--
 Unlike C, MATLAB, Perl, Python, and Ruby -- but like Java, and a few other stricter, typed languages
 -- it is an error if the value of a conditional expression is anything but `true` or `false`:
-
+-->
+```
+条件文に、`true` または `false` 以外の値をいれると、エラーが発生します。
+この仕様は、C、MATLAB、PerlやPython、Rubyとは異なりますが、Javaなどの厳格な型付け言語とおなじです。
 ```jldoctest
 julia> if 1
            println("true")
        end
 ERROR: TypeError: non-boolean (Int64) used in boolean context
 ```
-
+```@raw html
+<!--
 This error indicates that the conditional was of the wrong type: [`Int64`](@ref) rather
 than the required [`Bool`](@ref).
+-->
+```
+このエラーは、条件が間違った型であったことを示しています。
+適合する型は[`Bool`](@ref)であって [`Int64`](@ref)は不適合です。
 
+
+```@raw html
+<!--
 The so-called "ternary operator", `?:`, is closely related to the `if`-`elseif`-`else` syntax,
 but is used where a conditional choice between single expression values is required, as opposed
 to conditional execution of longer blocks of code. It gets its name from being the only operator
 in most languages taking three operands:
+-->
+```
+いわゆる「三項演算子」`?:`は、`if`-`elseif`-`else`構文と密接に関連しています。
+前者は一つの式で条件を選択する必要がありますが、後者はもっと長いコードで条件分岐をおこなえます。
+「三項演算子」の名前は、多くの他の言語では、3つの被演算子をとる唯一の演算子であることに由来します。
 
 ```julia
 a ? b : c
 ```
-
+```@raw html
+<!--
 The expression `a`, before the `?`, is a condition expression, and the ternary operation evaluates
 the expression `b`, before the `:`, if the condition `a` is `true` or the expression `c`, after
 the `:`, if it is `false`.
-
+-->
+```
+`?`の前にある式`a`は条件式で、三項演算は`a`が`真`の時は、`:`の前にある`b`を評価し、`偽`の時は、`:`の後にある`c`を評価します。
+```@raw html
+<!--
 The easiest way to understand this behavior is to see an example. In the previous example, the
 `println` call is shared by all three branches: the only real choice is which literal string to
 print. This could be written more concisely using the ternary operator. For the sake of clarity,
 let's try a two-way version first:
+-->
+```
+
+
+この動作を理解する最も簡単な方法は、例を見ることでしょう。
+前述の例では`println`の呼び出しは3つの分岐すべてで共有されています。
+唯一の本当の選択は、どのリテラル文字列を印刷するかです。
+これは三項演算子を使ってより簡潔に書くことができます。
+わかりやすくするために、まず二分岐版をみてみましょう：
+
 
 ```jldoctest
 julia> x = 1; y = 2;
@@ -253,12 +324,15 @@ julia> x = 1; y = 0;
 julia> println(x < y ? "less than" : "not less than")
 not less than
 ```
-
+```@raw html
+<!--
 If the expression `x < y` is true, the entire ternary operator expression evaluates to the string
 `"less than"` and otherwise it evaluates to the string `"not less than"`. The original three-way
 example requires chaining multiple uses of the ternary operator together:
-
-```jldoctest
+-->
+```
+式`x < y`が真の場合、三項演算子式全体は、文字列"less than"に評価され、そうでない場合は文字列"not less than" に評価されます。元の三分岐版の例では、三項演算子を複数連鎖させて使用​​する必要があります。
+```jldoctest`
 julia> test(x, y) = println(x < y ? "x is less than y"    :
                             x > y ? "x is greater than y" : "x is equal to y")
 test (generic function with 1 method)
@@ -272,11 +346,17 @@ x is greater than y
 julia> test(1, 1)
 x is equal to y
 ```
-
+```@raw html
+<!--
 To facilitate chaining, the operator associates from right to left.
 
 It is significant that like `if`-`elseif`-`else`, the expressions before and after the `:` are
 only evaluated if the condition expression evaluates to `true` or `false`, respectively:
+-->
+```
+連鎖を利用する時は、演算子の結合順は右から左です。
+`if`-`elseif`-`else`と同様に重要なのは、`:`の前後の式は、それぞれ条件式が`真`・`偽`の時、その時だけ、
+評価されることです。
 
 ```jldoctest
 julia> v(x) = (println(x); x)
