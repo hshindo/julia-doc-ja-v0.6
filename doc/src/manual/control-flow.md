@@ -305,10 +305,9 @@ let's try a two-way version first:
 -->
 ```
 
-
 この動作を理解する最も簡単な方法は、例を見ることでしょう。
-前述の例では`println`の呼び出しは3つの分岐すべてで共有されています。
-唯一の本当の選択は、どのリテラル文字列を印刷するかです。
+前述の例では`println`を呼び出すのは3つの分岐すべてで共通しています。
+唯一の意味のある分岐は、どの文字列のリテラルが印刷されるかです。
 これは三項演算子を使ってより簡潔に書くことができます。
 わかりやすくするために、まず二分岐版をみてみましょう：
 
@@ -372,20 +371,39 @@ no
 ```
 
 ## Short-Circuit Evaluation
+## 短絡評価
 
+```@raw html
+<!--
 Short-circuit evaluation is quite similar to conditional evaluation. The behavior is found in
 most imperative programming languages having the `&&` and `||` boolean operators: in a series
 of boolean expressions connected by these operators, only the minimum number of expressions are
 evaluated as are necessary to determine the final boolean value of the entire chain. Explicitly,
 this means that:
+-->
+```
+短絡評価は条件付き評価と非常によく似ています。
+短絡評価は`&&`や`||`のブール演算子持つほとんどの命令型プログラミング言語で
+みられます。ブール式をこれらの演算子で連結した時、式全体のブール値を決定する最小限の式しか評価されません。つまり、
 
+
+```@raw html
+<!--
   * In the expression `a && b`, the subexpression `b` is only evaluated if `a` evaluates to `true`.
   * In the expression `a || b`, the subexpression `b` is only evaluated if `a` evaluates to `false`.
-
+-->
+```
+*  `a && b`という式では、`b`が評価されるのは、`a`の評価値が`真`の時のみ。
+*  `a || b`という式では、`b`が評価されるのは、`a`の評価値が`偽`の時のみ。
+```@raw html
+<!--
 The reasoning is that `a && b` must be `false` if `a` is `false`, regardless of the value of
 `b`, and likewise, the value of `a || b` must be true if `a` is `true`, regardless of the value
 of `b`. Both `&&` and `||` associate to the right, but `&&` has higher precedence than `||` does.
 It's easy to experiment with this behavior:
+-->
+```
+この理由は、`a && b`は`a`が`偽`の時には、`b`の値がどうであれ、`偽`でなければならないから。 同様に`a || b`は`a`が`真`の時には、`b`の値がどうであれ、`真`でなければならないから。`&&` と`||`は共に、右から結合するが、`&&`は`||`より、優先度が高い。これを実験するのは簡単です：
 
 ```jldoctest tandf
 julia> t(x) = (println(x); true)
@@ -431,15 +449,36 @@ julia> f(1) || f(2)
 false
 ```
 
+```@raw html
+<!--
 You can easily experiment in the same way with the associativity and precedence of various combinations
 of `&&` and `||` operators.
+-->
+```
+同様の方法で、`&&`と`||`演算子のさまざまな組み合わせに対して、結合性と優先度を簡単に試すことができます。
 
+```@raw html
+<!--
 This behavior is frequently used in Julia to form an alternative to very short `if` statements.
 Instead of `if <cond> <statement> end`, one can write `<cond> && <statement>` (which could be
 read as: <cond> *and then* <statement>). Similarly, instead of `if ! <cond> <statement> end`,
 one can write `<cond> || <statement>` (which could be read as: <cond> *or else* <statement>).
 
 For example, a recursive factorial routine could be defined like this:
+-->
+```
+
+
+Juliaでは、if文が非常に短くなる時、代わりに、この動作が頻繁に利用されます。
+`if <条件式> <実行文> end`の代わりに、
+`<条件式> && <実行文>`と書けます
+（`&&`、"の時は" と読み下せます)。
+同様に、 `if ! <条件式> <実行文> end`は、
+`<条件式> || <実行文>`と書けます
+（`||`は"でなければ" と読み下せます)。
+
+たとえば、再帰的な階乗ルーチンは次のように定義できます。
+
 
 ```jldoctest
 julia> function fact(n::Int)
@@ -461,9 +500,15 @@ Stacktrace:
  [1] fact(::Int64) at ./none:2
 ```
 
+```@raw html
+<!--
 Boolean operations *without* short-circuit evaluation can be done with the bitwise boolean operators
-introduced in [算術処理と基本的な関数](@ref): `&` and `|`. These are
+introduced in [Mathematical Operations and Elementary Functions](@ref): `&` and `|`. These are
 normal functions, which happen to support infix operator syntax, but always evaluate their arguments:
+-->
+```
+短絡評価を使わないブール演算は、[算術処理と基本的な関数](@ref)で紹介した、 `&` と `|`の、ビット単位の論理演算子を使って行うことができます。
+これらは通常の関数で、中置演算子の構文を利用できますが、常に引数を評価します。
 
 ```jldoctest tandf
 julia> f(1) & t(2)
@@ -477,17 +522,29 @@ julia> t(1) | t(2)
 true
 ```
 
+```@raw html
+<!--
 Just like condition expressions used in `if`, `elseif` or the ternary operator, the operands of
 `&&` or `||` must be boolean values (`true` or `false`). Using a non-boolean value anywhere except
 for the last entry in a conditional chain is an error:
+-->
+```
+`if`、`elseif`、三項演算子で使用される条件式のと同様に、
+`&&`や`||`の被演算子は、ブール値()`true` または `false`)でなければなりません。
+条件式の連鎖で最後の項以外のどこかで、非ブール値を使用するとエラーになります。
 
 ```jldoctest
 julia> 1 && true
 ERROR: TypeError: non-boolean (Int64) used in boolean context
 ```
 
+```@raw html
+<!--
 On the other hand, any type of expression can be used at the end of a conditional chain. It will
 be evaluated and returned depending on the preceding conditionals:
+-->
+```
+一方、条件式の連鎖の最終項では、あらゆる型の式が利用可能です。これは先立つ項の条件に応じて評価され、戻り値となります。
 
 ```jldoctest
 julia> true && (x = (1, 2, 3))
@@ -1006,12 +1063,18 @@ julia> take!(chnl)
 "stop"
 ```
 
+```@raw html
+<!--
 One way to think of this behavior is that `producer` was able to return multiple times. Between
 calls to [`put!()`](@ref), the producer's execution is suspended and the consumer has control.
-
+-->
+```
+```@raw html
+<!--
 The returned [`Channel`](@ref) can be used as an iterable object in a `for` loop, in which case the
 loop variable takes on all the produced values. The loop is terminated when the channel is closed.
-
+-->
+```
 ```jldoctest producer
 julia> for x in Channel(producer)
            println(x)
