@@ -17,12 +17,12 @@
 | scalar                           | スカラー
 | reference                        | 参照
 | user                             | ユーザー
-| interactive session                   | 対話型セッション
+| interactive session                   | 対話型セッション、対話セッション
 | expression                            | 式
-| is bound to                           | 紐付けされる
+| is bound to                           | 紐付けされる、束縛される
 | hit, enter                            | 入力する
 | show                                  | 表示する、出力する
-| evaluate                              | 判断する、読み込ませる
+| evaluate                              | 判断する、読み込ませる、評価する
 | global constant                       | グローバル定数
 | worker process                        | ワーカープロセス
 | worker                                | ワーカー
@@ -63,11 +63,11 @@
 | variable-width   |  可変幅
 | variable-length   |  可変長
 | byte array literals   |  バイト配列リテラル
-| assignment form   |  代入形式
+| assignment form   |  代入形式、代入方式
 | anonymous function   |  無名関数
 | tuple   |  タプル
-| tuple “destructuring”   |  タプル「構造解除」
-| Varargs   |  可変引数
+| tuple “destructuring”   |  タプル「構造解除」、タプルの「分割」
+| varargs,variable argument   |  可変引数
 | Parametrically-constrained Varargs methods   |  パラメトリック制約付き可変引数メソッド
 | Performance Tip   |  パフォーマンスに関するヒント
 | Pre-allocating outputs   |  出力の事前割り当て

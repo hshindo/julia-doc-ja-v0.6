@@ -10,9 +10,9 @@ by the global state of the program. The basic syntax for defining functions in J
 ```
 
 Juliaにおいて、関数は、引数の値のタプルを受け取り、戻り値を返すオブジェクトです。
-関数はプログラムのグローバルな状態によって、関数の挙動が変わったり、グローバルな状態自体を変更したりします。
+関数は、プログラムのグローバルな状態を変更したり、逆に、グローバルな状態に、挙動が影響を受けたりします。
 そういう意味で、純粋に数学的ではありません。
-Juliaで関数を定義する基本構文はつぎの通りです。
+Juliaで関数を定義する基本構文は次のとおりです。
 
 ```jldoctest
 julia> function f(x,y)
@@ -28,7 +28,7 @@ declaration syntax demonstrated above is equivalent to the following compact "as
 -->
 ```
 
-もっと簡潔に関数を定義する第二の構文もあります。上に示したような、従来の関数を宣言する構文と、つぎのような、コンパクトな「代入形式」とは同等です。
+もっと簡潔に関数を定義する第二の構文もあります。上に示したような、従来の関数を宣言する構文と、つぎのような、コンパクトな「代入方式」とは同等です。
 
 
 
@@ -48,7 +48,7 @@ both typing and visual noise.
 ```
 
 
-代入形式では、関数の本体は単一の式でなければなりませんが、その式は複合式( [複合式](@ref man-compound-expressions)を参照)でもかまいません。
+代入方式では、関数の本体は単一の式でなければなりませんが、その式は複合式( [複合式](@ref man-compound-expressions)を参照)でもかまいません。
 こうした短くて簡単な関数定義は、Juliaではよく使われます。短い関数構文を多用するほど、文字数が大幅に少なくなり、見た目もすっきりします。
 
 ```@raw html
@@ -72,7 +72,7 @@ like any value:
 -->
 ```
 
-括弧をつけない 、式`f`は、関数オブジェクトを参照し、他の値と同じように受け渡しすることができます。
+括弧をつけない式`f`は、関数オブジェクトを表し、他の値と同じように受け渡しができます。
 
 
 
@@ -89,7 +89,7 @@ As with variables, Unicode can also be used for function names:
 -->
 ```
 
-変数と同様に関数名にもUnicodeを使うことができます。
+変数名と同様に関数名にもUnicodeを使用できます。
 
 ```jldoctest
 julia> ∑(x,y) = x + y
@@ -100,7 +100,7 @@ julia> ∑(2, 3)
 ```
 
 ## Argument Passing Behavior
-## 引数受け渡しの振る舞い
+## 引数渡しの振る舞い
 
 ```@raw html
 <!--
@@ -114,10 +114,9 @@ Python, Ruby and Perl, among other dynamic languages.
 ```
 
 Juliaの関数の引数は、時折「共有渡し」と呼ばれる方式に従っていて、関数へ引き渡す際に、値の複写を行いません。
-関数の引数自体は、新しい変数を *束縛* (新しい値を参照)したように振舞いますが、
-参照先は引き渡された値と同一です。
+関数の引数は、新しい変数を *束縛* (新しい値を参照)したように振る舞いますが、参照先は渡された値と同一です。
 関数内で(配列のような)可変な値を変更すると、呼び出す側にも影響します。
-こうした挙動は,Scheme,ほとんどのLisp,Python,Ruby,Perl,その他の動的な言語と同じです。
+こうした挙動は,Scheme,Lispの大部分,Python,Ruby,Perl,その他の動的言語と同様です。
 
 
 　
@@ -135,9 +134,9 @@ an expression whose value is returned:
 -->
 ```
 
-関数の返す値は、最後に評価された式の値で、初期設定では関数定義本体の中で、一番後ろに位置する式の値になります。
+関数の返す値は、最後に評価された式の値で、デフォルトでは関数定義の本体内で、最後尾の式の値になります。
 例えば、前節に出てきた `f` という関数の戻り値は 、式 `x + y` の値です。
-Cおよび他の命令型言語や、関数型言語と同様に、`return` キーワードを使うと、指定された式の値をすぐに返します。
+C言語ほかの命令型言語や、関数型言語と同様に、`return` キーワードを使うと、指定された式の値がすぐに返されます。
 
 
 ```julia
@@ -185,8 +184,7 @@ triangle with sides of length `x` and `y`, avoiding overflow:
 ```
 
 もちろん、`g` のように直線的に順次処理を行う関数で、`return` を使っても仕方がありません。
-というのも、`x + y` という式は決して評価されないので、単に `x * y` という式で終わって、
-`return` を削ればいいからです。
+というのも、`x + y` という式は決して評価されないので、単に `x * y` という式で終わって、`return` を削ればいいからです。
 けれども、実行順序を制御する場合、`return`は役に立ちます。
 例えば、直角三角形の斜辺を、その他の二辺 `x` ,`y`から、桁あふれをさけながら、計算する場合を考えてみましょう。
 
@@ -220,9 +218,9 @@ since it is the last expression.
 -->
 ```
 
-この関数には、値を返せる場所が３か所ありますが、３つの異なる式のどの値が戻るかは、`x` と `y` の
-値によって変わります。
-一番最後の `return` は　一番、後ろの式なので省略可能です。
+この関数には、値を返せる場所が３か所ありますが、３つの異なる式のどの値が返されるのかは、`x` と `y` の
+値に応じて変化します。
+最終行の `return` は最後尾の式なので省略可能です。
 
 
 ## Operators Are Functions
@@ -239,7 +237,7 @@ as you would any other function:
 ```
 
 Juliaでは、ほとんどの演算子は、特殊な構文をとっていても、単なる関数です。
-（例外は特殊な評価戦略をとる演算子で、`&&`や`||`などがあります。これらの演算子は関数たりえません。というのは、[短絡評価](@ref)は被演算子が評価されていなくても、演算の評価をおこなうからです。）したがって、演算子は、他の関数と同様に、括弧でくくった引数のリストに対して、適用することがきます。
+（例外は評価戦略が特殊な演算子で、`&&`や`||`などがあります。これらの演算子は関数たりえません。というのは、[短絡評価](@ref)は被演算子が評価されていなくても、演算の評価をおこなうからです。）したがって、演算子は、他の関数と同様に、括弧でくくった引数のリストに対して、適用することがきます。
 
 
 
@@ -259,8 +257,7 @@ operators such as [`+()`](@ref) and [`*()`](@ref) just like you would with other
 -->
 ```
 
-中置方式は関数適用方式とまったく同等です。じつのところ、中置方式は構文解析の後に、内部的に関数呼び出しを行っているのです。 そのため、[`+()`](@ref) や [`*()`](@ref)　といった演算子も、関数を値として扱う場合と同様に、代入や受け渡し
-を、行うことができます。
+中置方式は関数適用方式とまったく同等です。じつのところ、中置方式は構文解析後に、内部的に関数呼び出しを行っているのです。 そのため、[`+()`](@ref) や [`*()`](@ref)　といった演算子も、他の関数値と同様に、代入や受け渡しを、行うことができます。
 
 
 ```jldoctest
@@ -291,7 +288,7 @@ A few special expressions correspond to calls to functions with non-obvious name
 -->
 ```
 
-特殊な式で、特殊な名前で関数呼び出しできるものが、いくつかあります。
+特殊な式のなかには、あまり知られていない名前で関数呼び出しのできるものが、いくつかあります。
 
 ```@raw html
 <!--
@@ -333,7 +330,7 @@ names.
 -->
 ```
 
-こういった関数は、`Base.Operators`　モジュールに入っています。演算子らしい名前ではありませんが。
+こういった関数は名前が演算子らしくなくても、`Base.Operators`　モジュールに含まれています。
 
 
 ## [Anonymous Functions](@id man-anonymous-functions)
@@ -354,7 +351,7 @@ syntaxes:
 Julia　において、関数は、 [第一級オブジェクト](https://en.wikipedia.org/wiki/First-class_citizen)です:
 関数は、変数に代入したり、代入した変数から標準的な構文で呼び出したりできます。
 関数の引数としても、戻り値としても使うことができます。
-また、名前をつけずに無名で、以下の構文のいずれかを使用して、生成することができます。
+また、以下の構文のいずれかを使用して、名前をつけずに無名で、生成することができます。
 
 
 ```jldoctest
@@ -390,7 +387,7 @@ an array and returns a new array containing the resulting values:
 -->
 ```
 
-無名関数の主な用途は、関数を引数とする別の関数に渡すことでしょう。
+無名関数の主な用途は、別の関数を引数とする関数に渡すことでしょう。
 定番の例としては、[`map()`](@ref) があります。
 この関数は、 配列の各要素に関数を適用したものを、新しい配列として返します。
 
@@ -462,8 +459,7 @@ function returns a pair of values:
 ```
 
 Juliaでは、複数の値を返したい時は、疑似的に値のタプルを返します。
-しかし、タプルは括弧を使わなくても、生成したり、分解したりできるので、
-は1組のタプルではなく、複数の値が返された、と錯覚を起こすでしょう。
+しかし、タプルは括弧を使わなくても、生成したり、分解したりできるので、1組のタプルではなく、複数の値が返された、と錯覚を起こすでしょう。
 以下の例では関数は値のペアを返します。
 
 
@@ -532,48 +528,11 @@ end
 
 ```@raw html
 <!--
-
 This has the exact same effect as the previous definition of `foo`.
-
 -->
 ```
 
 この書き方は以前の `foo` の定義とまったく同等の効力をもちます。
-
-## Argument destructuring
-## 引数の分割
-
-```@raw html
-<!--
-The destructuring feature can also be used within a function argument.
-If a function argument name is written as a tuple (e.g. `(x, y)`) instead of just
-a symbol, then an assignment `(x, y) = argument` will be inserted for you:
--->
-```
-こうした分割は、関数の引数の中でも使用できます。
-関数の引数が、単一の記号ではなく、`(x,y)`のようなタプルで書かれている場合、`(x, y) = 引数` と書いて、代入を行えます。
-
-
-```julia
-julia> minmax(x, y) = (y < x) ? (y, x) : (x, y)
-
-julia> range((min, max)) = max - min
-
-julia> range(minmax(10, 2))
-8
-```
-
-```@raw html
-<!--
-Notice the extra set of parentheses in the definition of `range`.
-Without those, `range` would be a two-argument function, and this example would
-not work.
--->
-```
-`range`の定義に余分な括弧がついている点に注意してください。
-これがないと、`range`は、２つの引数をとる関数とみなされ、上記のような例はうまくいきません。
-
-
 
 ## Varargs Functions
 ## 可変引数関数
@@ -645,7 +604,7 @@ later in [Parametrically-constrained Varargs methods](@ref).
 ```
 
 可変引数として渡される値の個数に制約をかけることも可能です。
-これは、あとで[パラメータに制約をかけた可変引数メソッド](@ref)で検討します。
+これは、あとで[パラメートリック制約付き可変引数メソッド](@ref)で検討します。
 
 ```@raw html
 <!--
@@ -762,7 +721,7 @@ call will fail, just as it would if too many arguments were given explicitly.
 
 
 ## Optional Arguments
-## 省略可能な引数
+## 省略可能引数
 
 ```@raw html
 <!-
@@ -774,9 +733,9 @@ can be expressed concisely as:
 -->
 ```
 
-多くの場合、関数の引数には適切な初期値が割り当てられていて、呼び出す度に値を渡す必要がありません。
+多くの場合、関数の引数には適切なデフォルト値があるので、すべての呼び出しで、値を明示的に渡す必要はないかもしれません。
 例えば、ライブラリ関数の [`parse(T, num, base)`](@ref) は文字列をある基数の数値として解釈します。
-基数の初期設定値は `10` です。この振る舞いは簡潔に以下のように記述できます。
+基数のデフォルト値は `10` です。この振る舞いは簡潔に以下のように記述できます。
 
 
 ```julia
@@ -852,7 +811,7 @@ order.
 -->
 ```
 例えば、`plot`という線を描く関数を考えてみましょう。
-この関数たくさんのオプションがあって、線のスタイル、幅、色などを操作することができます。
+この関数には、たくさんのオプションがあって、線のスタイル、幅、色などを操作することができます。
 キーワード引数を使えば、`plot(x, y, width=2)` のように書いて、線の幅だけを指定する、といったことができるでしょう。
 キーワード引数には、２つの目的で役に立ちます。１つは、関数呼び出しの意図がわかりやすくなります。引数に意味をラベル付けできるからです。もう１つは、たくさんの引数の中から、設定する引数を選んでどの順番で指定してもいいのです。
 
@@ -889,8 +848,8 @@ argument is not passed), and in left-to-right order. Therefore default expressio
 prior keyword arguments.
 -->
 ```
-キーワード引数の初期値は、（対応する値が渡されなくて）必要になった時だけ、左から右の順番で評価されます。
-そのため、初期値の式は評価済みのキーワード引数を参照していてもかまいません。
+キーワード引数のデフォルト値は、（対応する値が渡されなくて）必要になった時だけ、左から右の順番で評価されます。
+そのため、デフォルトの式は評価済みのキーワード引数を参照していてもかまいません。
 
 
 ```@raw html
@@ -925,8 +884,8 @@ Inside `f`, `kwargs` will be a collection of `(key,value)` tuples, where each `k
 Such collections can be passed as keyword arguments using a semicolon in a call, e.g. `f(x, z=1; kwargs...)`.
 -->
 ```
-`f`の内部では、`kwargs`は、`key` がシンボルである`(key,value)` というタプルのコレクションになるでしょう。
-このコレクションはセミコロンを使って  `f(x, z=1; kwargs...)` のように受け渡しができます。
+`f`の内部では、`kwargs`は、`key` がシンボルであるタプル`(key,value)` のコレクションになります。
+このコレクションはセミコロンを使って  `f(x, z=1; kwargs...)` のように渡すことができます。
 
 
 ```@raw html
@@ -965,19 +924,21 @@ this example, `width` is certain to have the value `2`.
 
 
 ## Evaluation Scope of Default Values
-## 初期値を評価する際のスコープ
+## デフォルト値を評価する際のスコープ
 
 ```@raw html
 <!-
-When optional and keyword argument default expressions are evaluated, only *previous* arguments are in
-scope.
+Optional and keyword arguments differ slightly in how their default values are evaluated. When
+optional argument default expressions are evaluated, only *previous* arguments are in scope. In
+contrast, *all* the arguments are in scope when keyword arguments default expressions are evaluated.
 For example, given this definition:
 -->
 ```
-
-省略可能な引数やキーワード引数は式の初期値が評価される際に
-スコープに存在するのは、既に評価された引数だけです。
+省略可能引数とキーワード引数は式のデフォルト値が評価される方法が少し違います。
+省略可能引数が評価される際、スコープに存在するのは、既に評価された引数だけです。
+一方、キーワード引数が評価される際には、すべての引数がスコープ内に存在します。
 次式のような定義を例に挙げます。
+
 
 ```julia
 function f(x, a=b, b=1)
@@ -987,11 +948,17 @@ end
 
 ```@raw html
 <!-
-the `b` in `a=b` refers to a `b` in an outer scope, not the subsequent argument `b`. 
+the `b` in `a=b` refers to a `b` in an outer scope, not the subsequent argument `b`. However,
+if `a` and `b` were keyword arguments instead, then both would be created in the same scope and
+the `b` in `a=b` would refer to the subsequent argument `b` (shadowing any `b` in an outer scope),
+which would result in an undefined variable error (since the default expressions are evaluated
+left-to-right, and `b` has not been assigned yet).
 -->
 ```
 `a=b` の中の `b` は、スコープ外を参照していて、次の引数の `b`とは、解釈されません。
-
+ しかし `a` と `b` がキーワード引数なら、両方とも同じスコープに生成されて``、`a=b` の中の `b` は、次の引数の `b` 
+ を参照するでしょう（スコープ外の`b`はシャドーイングされます）。
+ この結果、変数の未定義エラーが発生するでしょう。(初期値は左から右へ評価されるため、`b`にはまだ何も代入されていません)
 
 
 ## Do-Block Syntax for Function Arguments
