@@ -555,9 +555,16 @@ false
 ```
 
 ## [Repeated Evaluation: Loops](@id man-loops)
+## 繰り返し評価:ループ
 
+```@raw html
+<!--
 There are two constructs for repeated evaluation of expressions: the `while` loop and the `for`
 loop. Here is an example of a `while` loop:
+-->
+```
+式の繰り返し評価には、`while`ループと`for`ループの2種類があります。
+`while`ループの例を次に示します。
 
 ```jldoctest
 julia> i = 1;
@@ -573,6 +580,8 @@ julia> while i <= 5
 5
 ```
 
+```@raw html
+<!--
 The `while` loop evaluates the condition expression (`i <= 5` in this case), and as long it remains
 `true`, keeps also evaluating the body of the `while` loop. If the condition expression is `false`
 when the `while` loop is first reached, the body is never evaluated.
@@ -580,6 +589,13 @@ when the `while` loop is first reached, the body is never evaluated.
 The `for` loop makes common repeated evaluation idioms easier to write. Since counting up and
 down like the above `while` loop does is so common, it can be expressed more concisely with a
 `for` loop:
+-->`
+```
+ `while` ループは、条件式(この場合は`i <= 5`）を評価し、その式が`真`である間、`while`ループ本体の評価を続けます。
+ 条件式の評価が`偽`に初めてなると、その後、本体は決して評価されません。
+
+`for`ループは、よくある繰り返し評価を、書きやすい慣用表現にしたものです。
+上記の`while`ループのようなカウントアップ・カウントダウンは非常に一般的で、`for`ループでより簡潔に表現できます。
 
 ```jldoctest
 julia> for i = 1:5
@@ -592,12 +608,21 @@ julia> for i = 1:5
 5
 ```
 
+```@raw html
+<!--
 Here the `1:5` is a `Range` object, representing the sequence of numbers 1, 2, 3, 4, 5. The `for`
 loop iterates through these values, assigning each one in turn to the variable `i`. One rather
 important distinction between the previous `while` loop form and the `for` loop form is the scope
 during which the variable is visible. If the variable `i` has not been introduced in an other
 scope, in the `for` loop form, it is visible only inside of the `for` loop, and not afterwards.
 You'll either need a new interactive session instance or a different variable name to test this:
+-->
+```
+この`1:5`は、`Range`オブジェクトで、1,2,3,4,5の数列をあらわしています。
+`for` ループはこれらの値を反復し、順番に変数`i`に代入します。。
+前述の`while`ループ方式と`for`ループ方式のかなり重要な違いの1つは、ループの実行中の変数が見えるスコープです。
+`for`ループ方式の時は、変数`i`が、他のスコープに導入されていない場合、変数は  `for`ループの内部でのみ見えて、その後ろでは見えません。
+これを試すには、新規の対話セッションか、別の変数名が必要です。
 
 ```jldoctest
 julia> for j = 1:5
@@ -613,14 +638,22 @@ julia> j
 ERROR: UndefVarError: j not defined
 ```
 
+```@raw html
+<!--
 See [Scope of Variables](@ref scope-of-variables) for a detailed explanation of variable scope and how it works in
 Julia.
 
 In general, the `for` loop construct can iterate over any container. In these cases, the alternative
 (but fully equivalent) keyword `in` or `∈` is typically used instead of `=`, since it makes
 the code read more clearly:
+-->
+```
+変数のスコープとJuliaでの動作の詳細については、[変数のスコープ]（@ref変数のスコープ）を参照してください。
 
-```jldoctest
+一般に、`for`ループはどのコンテナに対しても反復処理が可能です。
+これらのケースでは、`=`の代替となり、しかし完全に同等なキーワードの`in`や`∈`が広く使われます。というのも、コードがより明確になるからです。
+
+``jldoctest
 julia> for i in [1,4,0]
            println(i)
        end
@@ -636,12 +669,22 @@ bar
 baz
 ```
 
+```@raw html
+<!--
 Various types of iterable containers will be introduced and discussed in later sections of the
 manual (see, e.g., [Multi-dimensional Arrays](@ref man-multi-dim-arrays)).
 
 It is sometimes convenient to terminate the repetition of a `while` before the test condition
 is falsified or stop iterating in a `for` loop before the end of the iterable object is reached.
 This can be accomplished with the `break` keyword:
+-->
+```
+さまざまなタイプのイテラブル・コンテナについて、マニュアルの次章以降で紹介・検討します（例：[多次元配列]（@ ref man-multi-dim-arrays）参照）。
+
+`while`ループで、条件式が偽になる前に繰り返しを終わらせたり、`for`ループで、最後のイテラブル・オブジェクトに達する前に反復を止めたりすると、
+便利なことがあります。
+これは`break`キーワードで実現できます：
+
 
 ```jldoctest
 julia> i = 1;
@@ -672,10 +715,21 @@ julia> for i = 1:1000
 5
 ```
 
+```@raw html
+<!--
 Without the `break` keyword, the above `while` loop would never terminate on its own, and the `for` loop would iterate up to 1000. These loops are both exited early by using `break`.
 
 In other circumstances, it is handy to be able to stop an iteration and move on to the next one
 immediately. The `continue` keyword accomplishes this:
+-->
+```
+
+`break`キーワードがなければ、上記の`while`ループは決して自身で終了することはなく、`for`ループは1000まで繰り返されます。
+これらのループは、共に、`break`を使用すると、早い段階で終了します。
+
+他の状況では、現在の繰り返しを停止してすぐに次回に移ることができれば便利なことがあります。continueキーワードは、これを実現します：
+
+
 
 ```jldoctest
 julia> for i = 1:10
@@ -689,6 +743,8 @@ julia> for i = 1:10
 9
 ```
 
+```@raw html
+<!--
 This is a somewhat contrived example since we could produce the same behavior more clearly by
 negating the condition and placing the `println` call inside the `if` block. In realistic usage
 there is more code to be evaluated after the `continue`, and often there are multiple points from
@@ -696,6 +752,14 @@ which one calls `continue`.
 
 Multiple nested `for` loops can be combined into a single outer loop, forming the cartesian product
 of its iterables:
+-->
+```
+これは不自然な例です。というのも、条件を否定にしてコールを`if`ブロック内に`println`の呼び出しを置くことで、同じ動作をより明確に書けるからです。
+実際に使用するときは、`continue`の後に評価するコードがもっとあって、`continue`を呼び出す箇所も複数ある場合でしょう。
+
+複数のネストしている`for`ループは、組み合わせて1つの外側ループにして、イテラブルの直積を作ることができます。
+
+
 
 ```jldoctest
 julia> for i = 1:2, j = 3:4
@@ -707,8 +771,12 @@ julia> for i = 1:2, j = 3:4
 (2, 4)
 ```
 
+```@raw html
+<!--
 A `break` statement inside such a loop exits the entire nest of loops, not just the inner one.
-
+-->
+```
+ネストした`for`ループ内の`break`文は、内側の１つループだけでなく、ネスト全体のループを終了します。
 ## Exception Handling
 
 When an unexpected condition occurs, a function may be unable to return a reasonable value to
