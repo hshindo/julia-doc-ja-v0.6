@@ -56,7 +56,7 @@
 | Arbitrary Precision Arithmetic        | 任意精度計算
 | elementwise  |  要素単位
 | short-circuit evaluation   |  短絡評価
-| Dot Syntax for Vectorizing Functions   |  ベクトル化関数のドット構文
+| Dot Syntax for Vectorizing Functions   |  ベクトル化関数のドット構文、関数をベクトル化するドット構文
 | modulus, modulo   |  合同式の法、余剰演算
 | derivative   |  微分
 | arithmetic operation   |  算術処理
@@ -113,3 +113,15 @@
 | quoted expression   |  引用式
 | stdlib-collections-iteration   |  stdlibコレクションの反復
 | Hygiene   |  衛生規約
+|splice     |継ぎ合わせる
+|optional   |省略可能な
+|signature  |シグネチャ、関数を宣言する行
+|pass-by-sharing|共有渡し
+|compound expression|複合式
+|control flow|制御構造
+| generic function	|総称関数
+|type annotation	|型注釈
+|argument|引数
+|return value|戻り値
+|evaluation semantics	|評価戦略
+|Optional Arguments	|省略可能引数
