@@ -1,5 +1,5 @@
-# [Functions](@id man-functions)
-# 関数
+[](# [Functions](@id man-functions))
+# [関数](@id man-functions)
 
 ```@raw html
 <!--
@@ -99,7 +99,7 @@ julia> ∑(2, 3)
 5
 ```
 
-## Argument Passing Behavior
+[](## Argument Passing Behavior)
 ## 引数渡しの振る舞い
 
 ```@raw html
@@ -119,9 +119,7 @@ Juliaの関数の引数は、時折「共有渡し」と呼ばれる方式に従
 こうした挙動は,Scheme,Lispの大部分,Python,Ruby,Perl,その他の動的言語と同様です。
 
 
-　
-
-## The `return` Keyword
+[](## The `return` Keyword)
 ## `return`　キーワード
 
 ```@raw html
@@ -223,7 +221,7 @@ since it is the last expression.
 最終行の `return` は最後尾の式なので省略可能です。
 
 
-## Operators Are Functions
+[](## Operators Are Functions)
 ## 演算子は関数
 
 ```@raw html
@@ -278,11 +276,8 @@ Under the name `f`, the function does not support infix notation, however.
 しかしながら、`f` のような名前の関数は、中置記法に対応していません。
 
 
-
-## Operators With Special Names
-
+[](## Operators With Special Names)
 ## 特殊な名前の演算子
-
 
 ```@raw html
 <!--
@@ -335,8 +330,9 @@ names.
 こういった関数は、名前は演算子らしくなくても、`Base.Operators`　モジュールに含まれています。
 
 
-## [Anonymous Functions](@id man-anonymous-functions)
-## 無名関数
+[](## [Anonymous Functions](@id man-anonymous-functions))
+## [無名関数](@id man-anonymous-functions)
+
 
 ```@raw html
 <!--
@@ -445,7 +441,7 @@ wrapped in a zero-argument function, which is later invoked by calling it as `f(
 この記法では、コードのブロックを引数のない関数で囲んでおき、あとから`f()`のように呼び出します。
 
 
-## Multiple Return Values
+[](## Multiple Return Values)
 ## 複数の戻り値
 
 
@@ -536,7 +532,8 @@ This has the exact same effect as the previous definition of `foo`.
 
 この書き方は以前の `foo` の定義とまったく同等の効力をもちます。
 
-## Varargs Functions
+
+[](## Varargs Functions)
 ## 可変引数関数
 
 ```@raw html
@@ -606,7 +603,7 @@ later in [Parametrically-constrained Varargs methods](@ref).
 ```
 
 可変引数として渡される値の個数に制約をかけることも可能です。
-これは、あとで[パラメートリック制約付き可変引数メソッド](@ref)で検討します。
+これは、あとで[パラメトリック制約付き可変引数メソッド](@ref)で検討します。
 
 ```@raw html
 <!--
@@ -722,7 +719,7 @@ call will fail, just as it would if too many arguments were given explicitly.
 ご覧のように、継ぎ合わせるコンテナの要素の数が間違っていると、明示した引数が多すぎる場合と同じように、関数の呼び出しは失敗します。
 
 
-## Optional Arguments
+[](## Optional Arguments)
 ## 省略可能引数
 
 ```@raw html
@@ -782,7 +779,8 @@ with different numbers of arguments (see [Note on Optional and keyword Arguments
 省略可能な引数は、実際には、引数の個数の違う複数のメソッドの定義を書くための便利な構文なのです。
 ( [省略可能引数とキーワード引数の注意点](@ref) を参照).
 
-## Keyword Arguments
+
+[](## Keyword Arguments)
 ## キーワード引数
 
 ```@raw html
@@ -924,8 +922,7 @@ this example, `width` is certain to have the value `2`.
 この場合は、右端の出現が優先されます。`width` の値は `2` に設定されます。
 
 
-
-## Evaluation Scope of Default Values
+[](## Evaluation Scope of Default Values)
 ## デフォルト値を評価する際のスコープ
 
 ```@raw html
@@ -963,7 +960,7 @@ left-to-right, and `b` has not been assigned yet).
  この結果、変数の未定義エラーが発生するでしょう。(デフォルト値は左から右へ評価されるため、`b`にはまだ何も代入されていません)
 
 
-## Do-Block Syntax for Function Arguments
+[](## Do-Block Syntax for Function Arguments)
 ## 関数の引数に対するDoブロック構文
 
 
@@ -1078,16 +1075,7 @@ will make sure that the stream is properly closed, regardless of whether your fu
 normally or threw an exception. (The `try/finally` construct will be described in [Control Flow](@ref).)
 -->
 ```
-<<<<<<< HEAD
-ここでは、 [`open()`](@ref)　は書き込み用にファイルを開き、出力ストリームを `do ... end` ブロックで定義された無名関数に渡します。この無名関数が終了した後に、 [`open()`](@ref) はストリームが適切に閉じられたかどうかを確認します。これは無名関数終了が正常な場合も、例外を投げた場合も行われます。
-=======
-ここでは、 [`open()`](@ref)　は書き込み用のファイルを開き、出力ストリームを `do ... end` ブロックで定義された無名関数に渡します。この無名関数が終了した後に、 [`open()`](@ref) はストリームが適切に閉じられたかどうかを確認します。これは無名関数が正常に終了しても、例外を投げても行われます。
-<<<<<<< HEAD
->>>>>>> 6422559c0165b14b2eed92bd346e6698e13cf899
-=======
->>>>>>> 6422559c0165b14b2eed92bd346e6698e13cf899
-( `try/finally` については [制御構造](@ref) に記述しています)
--->
+ここでは、 [`open()`](@ref)　は書き込み用のファイルを開き、出力ストリームを `do ... end` ブロックで定義された無名関数に渡します。この無名関数が終了した後に、 [`open()`](@ref) はストリームが適切に閉じられたかどうかを確認します。これは無名関数が正常に終了しても、例外を投げても行われます。( `try/finally` については [制御構造](@ref) に記述しています)
 
 ```@raw html
 <!-
@@ -1097,8 +1085,9 @@ the arguments of the user function are initialized.
 ```
  `do`ブロック構文は、文書や実装をチェックして、ユーザー定義関数の引数がどのように初期化されているかを理解する際に役立ちます。
 
-## [Dot Syntax for Vectorizing Functions](@id man-vectorized)
-##関数をベクトル化するドット構文
+
+[](## [Dot Syntax for Vectorizing Functions](@id man-vectorized))
+## [関数をベクトル化するドット構文](@id man-vectorized)
 
 ```@raw html
 <!-
@@ -1250,7 +1239,8 @@ they are equivalent to `broadcast` calls and are fused with other nested "dot" c
   `X .+= Y` などの書き方は `X .= X .+ Y`と同等で、上書きによる代入が融合されて行われます。
  ([dot演算子](@ref man-dot-operators)参照)
 
-## Further Reading
+
+[](## Further Reading)
 ## 関連項目
 ```@raw html
 <!-

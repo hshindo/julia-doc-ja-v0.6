@@ -900,7 +900,7 @@ false
 ```
 
 Notice that `Vararg{T}` corresponds to zero or more elements of type `T`. Vararg tuple types are
-used to represent the arguments accepted by varargs methods (see [Varargs Functions](@ref)).
+used to represent the arguments accepted by varargs methods (see [可変引数関数](@ref)).
 
 The type `Vararg{T,N}` corresponds to exactly `N` elements of type `T`.  `NTuple{N,T}` is a convenient
 alias for `Tuple{Vararg{T,N}}`, i.e. a tuple type containing exactly `N` elements of type `T`.

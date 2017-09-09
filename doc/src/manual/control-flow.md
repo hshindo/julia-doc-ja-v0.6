@@ -1,4 +1,5 @@
 # Control Flow
+# 制御構造
 
 Julia provides a variety of control flow constructs:
 
@@ -244,6 +245,7 @@ no
 ```
 
 ## Short-Circuit Evaluation
+## 短絡評価
 
 Short-circuit evaluation is quite similar to conditional evaluation. The behavior is found in
 most imperative programming languages having the `&&` and `||` boolean operators: in a series
