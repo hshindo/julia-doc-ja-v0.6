@@ -776,19 +776,36 @@ julia> for i = 1:2, j = 3:4
 A `break` statement inside such a loop exits the entire nest of loops, not just the inner one.
 -->
 ```
-ネストした`for`ループ内の`break`文は、内側の１つループだけでなく、ネスト全体のループを終了します。
+ネストした`for`ループ内の`break`文は、内側のループ１つだけでなく、ネスト全体のループを終了します。
 ## Exception Handling
+## 例外処理
 
+```@raw html
+<!--
 When an unexpected condition occurs, a function may be unable to return a reasonable value to
 its caller. In such cases, it may be best for the exceptional condition to either terminate the
 program, printing a diagnostic error message, or if the programmer has provided code to handle
 such exceptional circumstances, allow that code to take the appropriate action.
+-->
 
-### Built-in `Exception`s
+予期外の状態が発生した場合、関数は呼び出しに対して、適切な値を返すことができない可能性があります。
+そんな例外的な状況に対する最善の策は、プログラムを終了させることかもしれないし、状況を報告するエラーメッセージを出力することかもしれません。また、プログラマが例外的な状況に対応するコードを用意している場合は、そのコードに適切な処置をとらせることかもしれません。
 
+
+### Built-in `Exception`
+### 標準装備の`例外`
+
+```@raw html
+<!--
 `Exception`s are thrown when an unexpected condition has occurred. The built-in `Exception`s listed
 below all interrupt the normal flow of control.
+-->
+```
 
+`例外`は予想外の状況が発生したときに投げられます。以下に掲載した標準装備の例外は、すべて、通常の制御の流れを中断します。
+
+```@raw html
+<!--
 | `Exception`                   |
 |:----------------------------- |
 | [`ArgumentError`](@ref)       |
@@ -815,9 +832,44 @@ below all interrupt the normal flow of control.
 | [`UndefRefError`](@ref)       |
 | [`UndefVarError`](@ref)       |
 | `UnicodeError`                |
+-->
+```
+| `例外`                   |
+|:----------------------------- |
+| [`ArgumentError`](@ref)       |
+| [`BoundsError`](@ref)         |
+| `CompositeException`          |
+| [`DivideError`](@ref)         |
+| [`DomainError`](@ref)         |
+| [`EOFError`](@ref)            |
+| [`ErrorException`](@ref)      |
+| [`InexactError`](@ref)        |
+| [`InitError`](@ref)           |
+| [`InterruptException`](@ref)  |
+| `InvalidStateException`       |
+| [`KeyError`](@ref)            |
+| [`LoadError`](@ref)           |
+| [`OutOfMemoryError`](@ref)    |
+| [`ReadOnlyMemoryError`](@ref) |
+| [`RemoteException`](@ref)     |
+| [`MethodError`](@ref)         |
+| [`OverflowError`](@ref)       |
+| [`ParseError`](@ref)          |
+| [`SystemError`](@ref)         |
+| [`TypeError`](@ref)           |
+| [`UndefRefError`](@ref)       |
+| [`UndefVarError`](@ref)       |
+| `UnicodeError`                |
 
+
+
+```@raw html
+<!--
 For example, the [`sqrt()`](@ref) function throws a [`DomainError`](@ref) if applied to a negative
 real value:
+-->
+```
+たとえば、 [`sqrt()`](@ref) 関数を負の実数値に適用すると、a [`DomainError`](@ref) が投げられます。
 
 ```jldoctest
 julia> sqrt(-1)
@@ -827,17 +879,29 @@ Stacktrace:
  [1] sqrt(::Int64) at ./math.jl:434
 ```
 
+```@raw html
+<!--
 You may define your own exceptions in the following way:
+-->
+```
+独自の例外を次のように定義することができます。
 
 ```jldoctest
 julia> struct MyCustomException <: Exception end
 ```
 
 ### The [`throw()`](@ref) function
+### [`throw()`](@ref)　関数
 
+```@raw html
+<!--
 Exceptions can be created explicitly with [`throw()`](@ref). For example, a function defined only
 for nonnegative numbers could be written to [`throw()`](@ref) a [`DomainError`](@ref) if the argument
 is negative:
+-->
+```
+例外は[`throw()`](@ref) 関数を使って、明示的に作成できます。
+たとえば、非負の数値のみに定義される関数は、引数が負の場合に[`DomainError`](@ref) を[`throw()`](@ref) 関数として書くことができます。
 
 ```jldoctest
 julia> f(x) = x>=0 ? exp(-x) : throw(DomainError())
@@ -852,8 +916,14 @@ Stacktrace:
  [1] f(::Int64) at ./none:1
 ```
 
+```@raw html
+<!--
 Note that [`DomainError`](@ref) without parentheses is not an exception, but a type of exception.
 It needs to be called to obtain an `Exception` object:
+-->
+```
+[`DomainError`](@ref) は括弧が抜けると、例外ではなく、例外の型になる点に注意してください。
+`例外`オブジェクトを取得するには、関数呼び出しを行う必要があります。
 
 ```jldoctest
 julia> typeof(DomainError()) <: Exception
@@ -863,15 +933,25 @@ julia> typeof(DomainError) <: Exception
 false
 ```
 
+```@raw html
+<!--
 Additionally, some exception types take one or more arguments that are used for error reporting:
+-->
+```
+さらに、一部の例外の型は、1つ以上の引数をとって、エラーの報告をおこないます。
 
 ```jldoctest
 julia> throw(UndefVarError(:x))
 ERROR: UndefVarError: x not defined
 ```
 
+```@raw html
+<!--
 This mechanism can be implemented easily by custom exception types following the way [`UndefVarError`](@ref)
 is written:
+-->
+```
+この方法を使うと、以下のように、[`UndefVarError`](@ref)　にならった、独自の例外の型を簡単に実装できます。UndefVarError 。
 
 ```jldoctest
 julia> struct MyUndefVarError <: Exception
@@ -881,6 +961,8 @@ julia> struct MyUndefVarError <: Exception
 julia> Base.showerror(io::IO, e::MyUndefVarError) = print(io, e.var, " not defined")
 ```
 
+```@raw html
+<!--
 !!! note
     When writing an error message, it is preferred to make the first word lowercase. For example,
     `size(A) == size(B) || throw(DimensionMismatch("size of A not equal to size of B"))`
@@ -891,7 +973,23 @@ julia> Base.showerror(io::IO, e::MyUndefVarError) = print(io, e.var, " not defin
 
     However, sometimes it makes sense to keep the uppercase first letter, for instance if an argument
     to a function is a capital letter: `size(A,1) == size(B,2) || throw(DimensionMismatch("A has first dimension..."))`.
+-->
+```
 
+!!! 注意点
+エラーメッセージを書くときは、最初の単語を小文字にすることをお勧めします。
+例えば、 
+  `size(A) == size(B) || throw(DimensionMismatch("size of A not equal to size of B"))`
+のほうが
+  `size(A) == size(B) || throw(DimensionMismatch("Size of A not equal to size of B"))`.
+より好ましいです。
+
+しかし、最初の文字を意図的に大文字にする場合もたまにあります。
+例えば、
+`size(A,1) == size(B,2) || throw(DimensionMismatch("A has first dimension..."))`.
+
+
+size(A) == size(B) || throw(DimensionMismatch("size of A not equal to size of B"))
 ### Errors
 
 The [`error()`](@ref) function is used to produce an [`ErrorException`](@ref) that interrupts
