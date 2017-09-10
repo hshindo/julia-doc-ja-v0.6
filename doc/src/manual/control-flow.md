@@ -889,7 +889,6 @@ You may define your own exceptions in the following way:
 ```jldoctest
 julia> struct MyCustomException <: Exception end
 ```
-
 ### The [`throw()`](@ref) function
 ### [`throw()`](@ref)　関数
 
@@ -991,13 +990,24 @@ julia> Base.showerror(io::IO, e::MyUndefVarError) = print(io, e.var, " not defin
 
 size(A) == size(B) || throw(DimensionMismatch("size of A not equal to size of B"))
 ### Errors
+### エラー
 
+```@raw html
+<!--
 The [`error()`](@ref) function is used to produce an [`ErrorException`](@ref) that interrupts
 the normal flow of control.
 
 Suppose we want to stop execution immediately if the square root of a negative number is taken.
 To do this, we can define a fussy version of the [`sqrt()`](@ref) function that raises an error
 if its argument is negative:
+-->
+```
+[`error()`](@ref) 関数は、[`ErrorExceptioをn`](@ref) を生成して、通常の制御の流れを中断するために使用されます。
+
+負の数の平方根を取ると即座に実行を停止したいとします。このとき、[`sqrt()`](@ref) 関数を、引数が負の場合にエラーを発生させる、小うるさく定義することができます。
+
+
+
 
 ```jldoctest fussy_sqrt
 julia> fussy_sqrt(x) = x >= 0 ? sqrt(x) : error("negative x not allowed")
@@ -1012,9 +1022,15 @@ Stacktrace:
  [1] fussy_sqrt(::Int64) at ./none:1
 ```
 
+```@raw html
+<!--
 If `fussy_sqrt` is called with a negative value from another function, instead of trying to continue
 execution of the calling function, it returns immediately, displaying the error message in the
 interactive session:
+-->
+```
+`fussy_sqrt`が、別の関数から負の値で呼び出された場合、関数呼び出しを続行しようとするのではなく、
+直ちに関数から抜けて、エラーメッセージを対話セッションに表示します。
 
 ```jldoctest fussy_sqrt
 julia> function verbose_fussy_sqrt(x)
@@ -1039,9 +1055,16 @@ Stacktrace:
 ```
 
 ### Warnings and informational messages
+### 警告と情報メッセージ
 
+```@raw html
+<!--
 Julia also provides other functions that write messages to the standard error I/O, but do not
 throw any `Exception`s and hence do not interrupt execution:
+-->
+```
+Juliaには、標準エラー出力にメッセージを書き出す他の関数もありますが、例外を投げないため、実行が中断されません。
+
 
 ```jldoctest
 julia> info("Hi"); 1+1
@@ -1059,10 +1082,19 @@ Stacktrace:
 ```
 
 ### The `try/catch` statement
+### The `try/catch` 文
 
+```@raw html
+<!--
 The `try/catch` statement allows for `Exception`s to be tested for. For example, a customized
 square root function can be written to automatically call either the real or complex square root
 method on demand using `Exception`s :
+-->
+```
+try/catch文によって、例外をテストすることができます。
+たとえば、`例外`を使って、場合によって、実数の平方根メソッドまたは複素数の平方根メソッドを自動的に呼び出すような、独自の平方根関数を書くことができます。
+
+
 
 ```jldoctest
 julia> f(x) = try
@@ -1079,12 +1111,21 @@ julia> f(-1)
 0.0 + 1.0im
 ```
 
+```@raw html
+<!--
 It is important to note that in real code computing this function, one would compare `x` to zero
 instead of catching an exception. The exception is much slower than simply comparing and branching.
 
 `try/catch` statements also allow the `Exception` to be saved in a variable. In this contrived
 example, the following example calculates the square root of the second element of `x` if `x`
 is indexable, otherwise assumes `x` is a real number and returns its square root:
+-->
+```
+注意すべき重要な点は、この関数が実際に計算されるときには、例外を受理するのではなくて、`x`と0を比較する点です。例外は、単なる比較や分岐よりも、はるかに遅いのです。
+
+`try/catch`文では、例外を変数を変数に保存することができます。
+無理がありますが、次の例では、`x`がインデックスを持つ場合、`x`の2番目の要素の平方根を計算し、そうでなければ,
+`x`を実数と仮定して平方根を返します。
 
 ```jldoctest
 julia> sqrt_second(x) = try
@@ -1113,15 +1154,29 @@ Stacktrace:
  [1] sqrt_second(::Int64) at ./none:7
 ```
 
+```@raw html
+<!--
 Note that the symbol following `catch` will always be interpreted as a name for the exception,
 so care is needed when writing `try/catch` expressions on a single line. The following code will
 *not* work to return the value of `x` in case of an error:
+-->
+```
+`catch`に続くシンボルは常に例外の名前として解釈されるため、try/catch式を1行に記述する際には注意が必要です。
+次のコードは、エラーの時には、`x`の値を返しません。
+
 
 ```julia
 try bad() catch x end
 ```
 
+```@raw html
+<!--
 Instead, use a semicolon or insert a line break after `catch`:
+-->
+```
+
+
+代わりに、`catch`の後では、セミコロンを使用するか、改行を挿入します。
 
 ```julia
 try bad() catch; x end
@@ -1132,20 +1187,35 @@ catch
 end
 ```
 
+```@raw html
+<!--
 The `catch` clause is not strictly necessary; when omitted, the default return value is `nothing`.
+-->
+```
+この`catch`節は厳密には必要ではありません。省略された場合、デフォルトの戻り値は`nothing`です。
+
 
 ```jldoctest
 julia> try error() end # Returns nothing
 ```
 
+```@raw html
+<!--
 The power of the `try/catch` construct lies in the ability to unwind a deeply nested computation
 immediately to a much higher level in the stack of calling functions. There are situations where
 no error has occurred, but the ability to unwind the stack and pass a value to a higher level
 is desirable. Julia provides the [`rethrow()`](@ref), [`backtrace()`](@ref) and [`catch_backtrace()`](@ref)
 functions for more advanced error handling.
+-->
+```
+`try/catch`文が強力なのは、深く入れ子になった計算から、関数呼び出しを重ねたはるかに高いレベルまで、すぐに巻き戻すことができることにあります。エラーが発生していない場合でも、スタックを巻き戻してより高いレベルに値を渡す機能はほしいものです。
+Juliaでは [`rethrow()`](@ref), [`backtrace()`](@ref) and [`catch_backtrace()`](@ref) といった さらに高度なエラー処理のための関数が用意されています。
 
 ### `finally` Clauses
+### `finally` 節
 
+```@raw html
+<!--
 In code that performs state changes or uses resources like files, there is typically clean-up
 work (such as closing files) that needs to be done when the code is finished. Exceptions potentially
 complicate this task, since they can cause a block of code to exit before reaching its normal
@@ -1153,6 +1223,17 @@ end. The `finally` keyword provides a way to run some code when a given block of
 of how it exits.
 
 For example, here is how we can guarantee that an opened file is closed:
+-->
+```
+
+状態の変更やファイルのようなリソースの使用するコードでは、一般的に、コードの終了時に行うべきクリーンアップ作業（ファイルの閉じることなど）が記述されています。
+例外があると、正常に終了する前にコードブロックを終了させる可能性があるため、このタスクを複雑にする可能性があります。
+この`finally`キーワードは、あるコードブロックが終了する際に、どのように終了しようと、別のあるコードを実行させる手段を提供します。
+
+たとえば、開いているファイルを閉じることを保証する方法は次のとおりです。
+
+
+
 
 ```julia
 f = open("file")
@@ -1163,10 +1244,19 @@ finally
 end
 ```
 
+```@raw html
+<!--
 When control leaves the `try` block (for example due to a `return`, or just finishing normally),
 `close(f)` will be executed. If the `try` block exits due to an exception, the exception will
 continue propagating. A `catch` block may be combined with `try` and `finally` as well. In this
 case the `finally` block will run after `catch` has handled the error.
+-->
+```
+
+制御が`try`ブロックを離れると（たとえば`return`を使ったり、通常どおり正常終了したりして）、 ブロック`close(f)`が実行されます。
+`try`ブロックを例外によって抜ける場合、例外が伝播していきます。`catch`ブロックは`try`や`finally`とくみあわせてもかまいません。この場合、`finally`ブロックは`catch`ブロックがエラーを処理した後に実行されます。
+
+
 
 ## [Tasks (aka Coroutines)](@id man-tasks)
 
