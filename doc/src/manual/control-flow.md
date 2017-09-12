@@ -1450,7 +1450,8 @@ True kernel threads are discussed under the topic of [Parallel Computing](@ref).
 -->
 ```
 
-現在、Juliaのタスクは別々のCPUコアで実行するようにスケジュールされていないことに注意してください。真のカーネルスレッドについては、[並列コンピューティング](@ref) のトピックで説明します。
+現在、Juliaのタスクは別々のCPUコアで実行するようにスケジュールされないことに注意してください。
+真のカーネルスレッドについては、[並列コンピューティング](@ref) のトピックで説明します。
 
 
 ### Core task operations
@@ -1466,6 +1467,11 @@ we are always just switching to a different task. This is why this feature is al
 coroutines"; each task is switched to and from using the same mechanism.
 -->
 ```
+低レベルの関数 [`yieldto()`](@ref) を調査して、タスク切り替えがどのように動作するかを理解しましょう。
+ `yieldto(task,value)` を実行すると、現在のタスクを中断し、指定された`task`に切り替えて、そのタスクへの最新の[`yieldto()`](@ref) 呼び出しに対して、指定された`value`を返します。
+ は、制御構造としてタスクを使う場合に必須な操作は[`yieldto()`](@ref) のみであることに注意してください。
+ 関数呼び出したり値を返すかわりに、別のタスクに切り替えればいいのです。
+ このため、この制御構造は「対称コルーチン」とも呼ばれ、各タスクは同じしくみを利用して切り替えられます。
 
 ```@raw html
 <!--
@@ -1478,8 +1484,12 @@ who the consumers are. Not needing to manually keep track of the consuming task 
 easier to use than the low-level [`yieldto()`](@ref).
 -->
 ```
+[`yieldto()`](@ref) は強力ですが、タスクを使う場合、大抵は直接呼び出されることはありません。
+なぜなのか考えてみましょう。現在のタスクから離れる場合は、おそらくいつかは戻りたいのでしょうが、いつどのタスクが担当して戻るのかを知るのは、かなりの調整が必要になります。
+例えば、 [`put!()`](@ref) や [`take!()`](@ref) はブロッキング・オペレーションで、チャネルと共に使うとき、消費者が誰であるかを覚えるために状態を維持します。
+ 消費するタスクを手動で追跡する必要がないため、 [`put!()`](@ref) は低レベルの [`yieldto()`](@ref) よりも使いやすくなっています。
 
-```@raw html
+```@raw htmlも
 <!--
 In addition to [`yieldto()`](@ref), a few other basic functions are needed to use tasks effectively.
 
@@ -1489,37 +1499,83 @@ In addition to [`yieldto()`](@ref), a few other basic functions are needed to us
   * [`task_local_storage()`](@ref) manipulates a key-value store specific to the current task.
 -->
 ```
+[`yieldto()`](@ref) に加えて、タスクを効果的に使用するためには、いくつかの基本機能が必要です。
+
+  * [`current_task()`](@ref) 現在実行中のタスクへの参照を取得します。
+  * [`istaskdone()`](@ref) タスクが終了したかどうかを問い合わせします。
+  * [`istaskstarted()`](@ref) タスクがまだ実行されているかどうかを問い合わせします。
+  * [`task_local_storage()`](@ref) 現在のタスクに固有のキーバリューストアを操作します。
+
 
 ### Tasks and events
+### タスクとイベント
 
+```@raw html
+<!--
 Most task switches occur as a result of waiting for events such as I/O requests, and are performed
 by a scheduler included in the standard library. The scheduler maintains a queue of runnable tasks,
 and executes an event loop that restarts tasks based on external events such as message arrival.
+-->
+```
 
+ほとんどのタスク切り替えは、I / O要求などのイベントを待機する結果として発生し、標準ライブラリに含まれるスケジューラによって実行されます。
+スケジューラは、実行可能なタスクのキューを保持し、メッセージ到着などの外部イベントをきっかけにしてタスクを再開するイベントループを実行します。
+
+```@raw html
+<!--
 The basic function for waiting for an event is [`wait()`](@ref). Several objects implement [`wait()`](@ref);
 for example, given a `Process` object, [`wait()`](@ref) will wait for it to exit. [`wait()`](@ref)
 is often implicit; for example, a [`wait()`](@ref) can happen inside a call to [`read()`](@ref)
 to wait for data to be available.
+-->
+```
+イベントを待つための基本的な機能は[`wait()`](@ref) です。
+いくつかのオブジェクトで[`wait()`](@ref) が実装されています。
+例えば、`Process` オブジェクトがある場合、[`wait()`](@ref) それが終了するのを待ちます。
+[`wait()`](@ref) は、しばしば暗黙的で、たとえば、[`read()`](@ref)　を呼び出す時、データが利用可能になるのを待つため内部的に[`wait()`](@ref) が発生する可能性があります。
 
+```@raw html
+<!--
 In all of these cases, [`wait()`](@ref) ultimately operates on a [`Condition`](@ref) object, which
 is in charge of queueing and restarting tasks. When a task calls [`wait()`](@ref) on a [`Condition`](@ref),
 the task is marked as non-runnable, added to the condition's queue, and switches to the scheduler.
 The scheduler will then pick another task to run, or block waiting for external events. If all
 goes well, eventually an event handler will call [`notify()`](@ref) on the condition, which causes
 tasks waiting for that condition to become runnable again.
+-->
+```
+これらのすべてのケースでは、[`wait()`](@ref) は最終的に、タスクのキューイングと再開を担当する[`Condition`](@ref) オブジェクトに対して操作を行います。
+タスクが[`wait()`](@ref) を呼び出し、[`Condition`](@ref) に働きかけると、タスクは非実行可能としてマークされて、状態のキューに追加され、スケジューラに切り替わります。スケジューラは、実行する別のタスクを選択するか、外部イベントを待機してブロックします。すべてがうまくいけば、最終的にイベントハンドラは[`notify()`](@ref) を呼び出して条件に働きかけ、その条件を待っているタスクを再度実行可能にします。
 
+
+```@raw html
+<!--
 A task created explicitly by calling [`Task`](@ref) is initially not known to the scheduler. This
 allows you to manage tasks manually using [`yieldto()`](@ref) if you wish. However, when such
 a task waits for an event, it still gets restarted automatically when the event happens, as you
 would expect. It is also possible to make the scheduler run a task whenever it can, without necessarily
 waiting for any events. This is done by calling [`schedule()`](@ref), or using the [`@schedule`](@ref)
 or [`@async`](@ref) macros (see [Parallel Computing](@ref) for more details).
+-->
+```
+[`Task`](@ref) を呼び出して明示的に作成されたタスクは、最初はスケジューラには知られていません。
+このため、必要に応じて[`yieldto()`](@ref) を使って手動でタスクを管理できます。
+しかし、このようなタスクがイベントを待っているときは、イベントが発生したときに自動的に再開されます。
+また、必ずしもイベントを待つことなく、スケジューラーが可能な限りタスクを実行できるようにすることも可能です。
+これは、[`schedule()`](@ref) 呼び出すか、または、[`@schedule`](@ref) か[`@async`](@ref) のマクロを使って行います。(詳細については[並列コンピューティング](@ref) を参照）。
 
 ### Task states
-
+### タスクの状態
+```@raw html
+<!--
 Tasks have a `state` field that describes their execution status. A [`Task`](@ref) `state` is one of the following
 symbols:
+-->
+```
+タスクには、実行状態を示す`state`フィールドがあります。 [`Task`](@ref) の`state` は次のシンボルのいずれかです。
 
+```@raw html
+<!--
 | Symbol      | Meaning                                            |
 |:----------- |:-------------------------------------------------- |
 | `:runnable` | Currently running, or available to be switched to  |
@@ -1527,3 +1583,13 @@ symbols:
 | `:queued`   | In the scheduler's run queue about to be restarted |
 | `:done`     | Successfully finished executing                    |
 | `:failed`   | Finished with an uncaught exception                |
+-->
+```
+| シンボル     | 意味                                               |
+|:----------- |:-------------------------------------------------- |
+| `:runnable` | 現在実行中、または切り替え可能                        |
+| `:waiting`  | 特定のイベントを待機して中断中                         |
+| `:queued`   | スケジューラの実行キュー内で再開待機　                 |
+| `:done`     | 実行が正常に終了　　　　　　　　　                    |
+| `:failed`   | 例外が捕捉されずに終了                               |
+
