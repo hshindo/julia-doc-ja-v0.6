@@ -17,11 +17,11 @@ Juliaには、さまざまな制御構造があります。
   * [Tasks (aka Coroutines)](@ref man-tasks): [`yieldto()`](@ref).
 -->
 ```
-  * [複合式](@ref man-compound-expressions): `begin` および `(;)`。
-  * [条件付き評価](@ref man-conditional-evaluation): `if`-`elseif`-`else` および `?:` (三項演算子)。
-  * [短絡評価](@ref): `&&`, `||` とおよび比較の連鎖。
+  * [複合式](@ref man-compound-expressions): `begin` と`(;)`。
+  * [条件評価](@ref man-conditional-evaluation): `if`-`elseif`-`else` と `?:` (三項演算子)。
+  * [短絡評価](@ref): `&&`, `||` と比較の連鎖。
   * [繰り返し評価: ループ](@ref man-loops): `while` と `for`。
-  * [例外処理](@ref): `try`-`catch`, [`error()`](@ref) および [`throw()`](@ref)。
+  * [例外処理](@ref): `try`-`catch`, [`error()`](@ref) と [`throw()`](@ref)。
   * [タスク (コルーチン)の別称](@ref man-tasks): [`yieldto()`](@ref)。
 ```@raw html
 <!--
@@ -32,11 +32,11 @@ cooperative multitasking are implemented in Julia using tasks. Everyday programm
 direct usage of tasks, but certain problems can be solved much more easily by using tasks.
 -->
 ```
-始めの５つは高水準なプログラミング言語に標準的な制御構造の仕組みです。
-[タスク]はそれほど標準的ではありません。タスクはローカルだけにとどまらない制御構造で、一時的に保留している計算を
+はじめの５つの制御構造は、高水準なプログラミング言語には標準的なものです。
+[タスク]はそれほど標準的ではありません。タスクはローカルだけとは限らない制御構造で、一時的に保留している計算を
 切り替えることができます。
-これは、強力な制御構造で、Juliaでは、例外処理や協調的なマルチタスクは、共にタスクを使って実装されています。
-日常的なプログラムには、タスクを直接使う必要はないかもしれませんが、ある種の問題には、タスクを使うとはるかに簡単に解くことができます。
+これは、強力な制御構造で、Juliaでは、例外処理や協調的マルチタスクは、共にタスクを使って実装されています。
+日常的なプログラムには、タスクを直接使う必要はないかもしれませんが、ある種の問題は、タスクを使うとはるかに簡単に解くことができます。
 
 ## [Compound Expressions](@id man-compound-expressions)
 ## [複合式]
@@ -49,8 +49,8 @@ that accomplish this: `begin` blocks and `(;)` chains. The value of both compoun
 is that of the last subexpression. Here's an example of a `begin` block:
 -->
 ```
-いくつかの部分式を並べて単一の式とし、順番に評価した部分式の最後の式の値を戻り値とすると、便利なことが、時々あります。
-これを遂行するJuliaの制御構造は2つあります。beginブロック、と、セミコロン(;)連鎖です。
+いくつかの部分式を順番に評価していき、最後の式の値を戻り値とするような単一の式を考えると、便利なことが、時々あります。
+これを実現するJuliaの制御構造には、beginブロックと、セミコロン(;)連鎖があります。
 どちらの複合式も、最後の部分式の値が戻り値になります。
 beginブロックの例を次に示します。
 
@@ -82,8 +82,8 @@ in [Functions](@ref). Although it is typical, there is no requirement that `begi
 or that `(;)` chains be single-line:
 -->
 ```
-この構文は、[関数](@ref) の章で紹介した、簡潔で単一行の関数定義形式で使うと、特に便利です。
-こういう使い方が典型的ですが、beginブロックは複数行で、セミコロン(;)連鎖は単一行でなければならないといった、制約はありません。
+この構文は、[関数](@ref) の章で紹介した、簡潔で単一行の関数定義方式で使うと、特に便利です。
+このような使い方が一般的ですが、beginブロックは複数行で、セミコロン(;)連鎖は単一行でなければならないといった、制約はありません。
 
 ```jldoctest
 julia> begin x = 1; y = 2; x + y end
@@ -96,7 +96,7 @@ julia> (x = 1;
 ```
 
 ## [Conditional Evaluation](@id man-conditional-evaluation)
-## [条件付き評価](@id man-conditional-evaluation)
+## [条件評価](@id man-conditional-evaluation)
 
 ```@raw html
 <!--
@@ -104,8 +104,8 @@ Conditional evaluation allows portions of code to be evaluated or not evaluated 
 value of a boolean expression. Here is the anatomy of the `if`-`elseif`-`else` conditional syntax:
 -->
 ```
-条件付き評価では、ブール式の値に応じてコードの一部を評価するかしないかを、制御ができます。
-ここで、 `if`-`elseif`-`else`型の条件分岐構文の解剖をしてみましょう：
+条件評価では、コードの一部がブール式の値に応じて、評価されたりされなかったりします。
+ここで、 `if`-`elseif`-`else`型の条件分岐構文を解剖してみましょう：
 
 ```julia
 if x < y
@@ -124,7 +124,7 @@ the condition expression `x > y` is evaluated, and if it is `true`, the correspo
 evaluated; if neither expression is true, the `else` block is evaluated. Here it is in action:
 -->
 ```
-条件式`x < y`が`真`の場合、対応するブロックが評価されます。そうでなければ、条件式`x > y`が評価され、この式が`真`の場合は、対応するブロックが評価されます。いずれの式も真でない場合、elseブロックが評価されます。
+条件式`x < y`が`真`の場合、対応するブロックが評価されます。さもなければ、条件式`x > y`が評価され、`真`の場合は、対応するブロックが評価されます。いずれの式も真でない場合、elseブロックが評価されます。
 例を挙げると、
 
 ```jldoctest
@@ -156,9 +156,9 @@ one evaluates to `true`, after which the associated block is evaluated, and no f
 expressions or blocks are evaluated.
 -->
 ```
-この、`elseif` および `else`ブロックは省略可能で、`elseif`ブロックは、書いただけ使うことができます。
-`if`-`elseif`-`else`構文に出てくる条件文は、`真`になるものがでてくるまで評価されます。
-その後、真になる条件文に対応するブロックが評価され、以降は、条件式もブロックも評価されません。
+この、`elseif` および `else`ブロックは省略可能で、`elseif`ブロックは、書いた数だけ使うことができます。
+`if`-`elseif`-`else`構文中の条件文は、`真`になるものが現れるまで評価が続きます。
+その条件文に対応するブロックが評価されたあとは、条件式やブロックは評価されません。
 
 ```@raw html
 <!--
@@ -167,10 +167,10 @@ defined inside the `if` clauses can be used after the `if` block, even if they w
 before. So, we could have defined the `test` function above as
 -->
 ```
-`if`ブロックには「漏れ」があります。つまりローカルスコープを導入していません。
-これは、`if`句の中で定義した新しい変数が、たとえ`if`ブロックの前で定義していなくても、
-`if`ブロックの後ろで使えるということです。
-だから、上記のtest関数は、このようにも定義できます。
+`if`ブロックには「漏れ」があります。つまりローカルスコープではありません。
+これは、`if`句の中で定義した新しい変数が、`if`ブロックの後ろで使えるということです。
+たとえ`if`ブロックの前で定義していなくてもよいのです。
+そのため、上記のtest関数は、このようにも定義できます。
 
 
 ```jldoctest
@@ -196,9 +196,9 @@ on this behavior, make sure all possible code paths define a value for the varia
 change to the above function results in a runtime error
 -->
 ```
-変数`relation`は`if`ブロックの内側で宣言されていますが、外側で使用されています。
-ただし、こういった使い方をする場合は、すべてのとりうる分岐で、変数の値が定義されていることを確認してください。
-上記の関数を次のように変更すると、ランタイムエラーが発生します。
+変数`relation`は`if`ブロックの内側で宣言されていますが、使用されるのは外側です。
+ただし、こういった使い方をする場合は、とりうるすべての分岐で、変数の値が定義されていることを確認してください。
+上記の関数を次のように変更すると、実行時エラーが発生します。
 
 
 ```jldoctest
@@ -227,8 +227,8 @@ This value is simply the return value of the last executed statement in the bran
 so
 -->
 ```
-`if`ブロックも値を返しますが、他の多くの言語の利用者には直感的ではないようです。
-この値は、単に、選択された分岐の中で、最後に実行された文の戻り値です。
+`if`ブロックは値を返しますが、他の言語を利用する多くの人の直感に反するようです。
+この値は、単純に、分岐の中から選択されて、最後に実行された文の戻り値です。
 ```jldoctest
 julia> x = 3
 3
@@ -246,8 +246,8 @@ Note that very short conditional statements (one-liners) are frequently expresse
 Evaluation in Julia, as outlined in the next section.
 -->
 ```
-Juliaでは、非常に短い条件文（ワンライナー）には、頻繁に短絡評価が利用される点に注意してください。
-次章で説明します。
+Juliaでは、非常に短い条件文（ワンライナー）は、短絡評価を使って表現されることが非常に多い点に注意してください。
+次章で概説します。
 
 ```@raw html
 <!--
@@ -255,8 +255,8 @@ Unlike C, MATLAB, Perl, Python, and Ruby -- but like Java, and a few other stric
 -- it is an error if the value of a conditional expression is anything but `true` or `false`:
 -->
 ```
-条件文に、`true` または `false` 以外の値をいれると、エラーが発生します。
-この仕様は、C、MATLAB、PerlやPython、Rubyとは異なりますが、Javaなどの厳格な型付け言語とおなじです。
+条件式の値が、`true` か `false` 以外の値だと、エラーが発生します。
+この仕様は、C、MATLAB、PerlやPython、Rubyとは異なりますが、Javaなどの厳格な型付け言語と同等です。
 ```jldoctest
 julia> if 1
            println("true")
@@ -269,8 +269,8 @@ This error indicates that the conditional was of the wrong type: [`Int64`](@ref)
 than the required [`Bool`](@ref).
 -->
 ```
-このエラーは、条件が間違った型であったことを示しています。
-適合する型は[`Bool`](@ref)であって [`Int64`](@ref)は不適合です。
+このエラーは、条件式の型が誤りであることを示しています。
+[`Int64`](@ref) は、要求される[`Bool`](@ref)に適合しません。
 
 
 ```@raw html
@@ -282,7 +282,7 @@ in most languages taking three operands:
 -->
 ```
 いわゆる「三項演算子」`?:`は、`if`-`elseif`-`else`構文と密接に関連しています。
-前者は一つの式で条件を選択する必要がありますが、後者はもっと長いコードで条件分岐をおこなえます。
+前者は単一の式の値を選択するような条件分岐を行う場合に利用されますが、後者は条件式の実行がもっと長いコードのブロックになる場合に使います。
 「三項演算子」の名前は、多くの他の言語では、3つの被演算子をとる唯一の演算子であることに由来します。
 
 ```julia
@@ -307,9 +307,9 @@ let's try a two-way version first:
 
 この動作を理解する最も簡単な方法は、例を見ることでしょう。
 前述の例では`println`を呼び出すのは3つの分岐すべてで共通しています。
-唯一の意味のある分岐は、どの文字列のリテラルが印刷されるかです。
+実質的な分岐は、出力される文字列リテラルです。
 これは三項演算子を使ってより簡潔に書くことができます。
-わかりやすくするために、まず二分岐版をみてみましょう：
+わかりやすい二分岐版をまずみてみましょう：
 
 
 ```jldoctest
@@ -330,7 +330,7 @@ If the expression `x < y` is true, the entire ternary operator expression evalua
 example requires chaining multiple uses of the ternary operator together:
 -->
 ```
-式`x < y`が真の場合、三項演算子式全体は、文字列"less than"に評価され、そうでない場合は文字列"not less than" に評価されます。元の三分岐版の例では、三項演算子を複数連鎖させて使用​​する必要があります。
+式`x < y`が真の場合、三項演算子式全体は、文字列"less than"に評価され、そうでない場合は文字列"not less than" に評価されます。もともとの三分岐版の例では、三項演算子を複数連鎖させて使用​​する必要があります。
 ```jldoctest`
 julia> test(x, y) = println(x < y ? "x is less than y"    :
                             x > y ? "x is greater than y" : "x is equal to y")
@@ -354,12 +354,12 @@ only evaluated if the condition expression evaluates to `true` or `false`, respe
 -->
 ```
 連鎖を利用する時は、演算子の結合順は右から左です。
-`if`-`elseif`-`else`と同様に重要なのは、`:`の前後の式は、それぞれ条件式が`真`・`偽`の時、その時だけ、
+`if`-`elseif`-`else`の場合と同様に、重要な点は、`:`の前後の式は、それぞれ条件式が`真`・`偽`の時、その時だけ、
 評価されることです。
 
 ```jldoctest
 julia> v(x) = (println(x); x)
-v (generic function with 1 method)
+(generic function with 1 method)
 
 julia> 1 < 2 ? v("yes") : v("no")
 yes
@@ -382,7 +382,7 @@ evaluated as are necessary to determine the final boolean value of the entire ch
 this means that:
 -->
 ```
-短絡評価は条件付き評価と非常によく似ています。
+短絡評価は条件評価と非常によく似ています。
 短絡評価は`&&`や`||`のブール演算子持つほとんどの命令型プログラミング言語で
 みられます。ブール式をこれらの演算子で連結した時、式全体のブール値を決定する最小限の式しか評価されません。つまり、
 
