@@ -1226,7 +1226,7 @@ For example, here is how we can guarantee that an opened file is closed:
 -->
 ```
 
-状態の変更やファイルのようなリソースの使用するコードでは、一般的に、コードの終了時に行うべきクリーンアップ作業（ファイルの閉じることなど）が記述されています。
+状態の変更やファイルのようなリソースの使用するコードには、通常、コードの終了時に行うべきクリーンアップ作業（ファイルの閉じることなど）が記述されています。
 例外があると、正常に終了する前にコードブロックを終了させる可能性があるため、このタスクを複雑にする可能性があります。
 この`finally`キーワードは、あるコードブロックが終了する際に、どのように終了しようと、別のあるコードを実行させる手段を提供します。
 
@@ -1259,11 +1259,19 @@ case the `finally` block will run after `catch` has handled the error.
 
 
 ## [Tasks (aka Coroutines)](@id man-tasks)
+## タスク（別名コルーチン）
 
+```@raw html
+<!--
 Tasks are a control flow feature that allows computations to be suspended and resumed in a flexible
 manner. This feature is sometimes called by other names, such as symmetric coroutines, lightweight
 threads, cooperative multitasking, or one-shot continuations.
+-->
+```
+タスクとは、計算を柔軟な方法で保留したり再開したりできる制御構造です。この機能は、対称コルーチン、軽量スレッド、協調的マルチタスク、ワンショット継続など、他の名前で呼ばれることがあります。
 
+```@raw html
+<!--
 When a piece of computing work (in practice, executing a particular function) is designated as
 a [`Task`](@ref), it becomes possible to interrupt it by switching to another [`Task`](@ref).
 The original [`Task`](@ref) can later be resumed, at which point it will pick up right where it
@@ -1271,6 +1279,15 @@ left off. At first, this may seem similar to a function call. However there are 
 First, switching tasks does not use any space, so any number of task switches can occur without
 consuming the call stack. Second, switching among tasks can occur in any order, unlike function
 calls, where the called function must finish executing before control returns to the calling function.
+-->
+```
+ある計算作業（実のところ関数の実行）を[`タスク`](@ref)に指定すると、その作業を中断して、別の計算作業に切り替えることができます。
+元の作業は後で中断したところから再開することができます。一見、これは関数呼び出しと同じように見えるかもしれません。しかし、2つの重要な違いがあります。
+まず、タスクの切り替えではメモリ領域が使用されないため、コールスタックを消費せずに任意の数のタスク切り替えを実行できます。
+つぎに、タスク間の切り替えは任意の順序で行うことができて、呼び出された関数は、呼び出した関数に制御が戻る前に、実行を終了する必要がある関数呼び出しとは異なります。
+
+```@raw html
+<!--
 
 This kind of control flow can make it much easier to solve certain problems. In some problems,
 the various pieces of required work are not naturally related by function calls; there is no obvious
@@ -1279,7 +1296,18 @@ problem, where one complex procedure is generating values and another complex pr
 them. The consumer cannot simply call a producer function to get a value, because the producer
 may have more values to generate and so might not yet be ready to return. With tasks, the producer
 and consumer can both run as long as they need to, passing values back and forth as necessary.
+-->
+```
 
+この種の制御構造によって、特定の問題を簡単に解決することができます。
+ある種の問題では、さまざまな必要な作業間に、関数呼び出しでは当然の対応づけができません。
+なすべき作業が「呼び出す側」と「呼び出される側」にはっきりとわかれるわけではないのです。
+例として「生産者/消費者」の問題、つまり、ある複雑な処理が生成した値を、別の複雑な処理が消費する場合をみましょう。
+消費者は値を得るために、単に生産者の関数を呼び出せばいいわけではありません。なぜなら、生産者には生成すべき値があり過ぎて、値を返す準備ができていない可能性があるからです。
+タスクを使用すると、生産者と消費者は、必要に応じて値をやり取りしながら、必要なだけ両側とも作動することができます。
+
+```@raw html
+<!--
 Julia provides a [`Channel`](@ref) mechanism for solving this problem.
 A [`Channel`](@ref) is a waitable first-in first-out queue which can have
 multiple tasks reading from and writing to it.
@@ -1288,6 +1316,15 @@ Let's define a producer task, which produces values via the [`put!`](@ref) call.
 To consume values, we need to schedule the producer to run in a new task. A special [`Channel`](@ref)
 constructor which accepts a 1-arg function as an argument can be used to run a task bound to a channel.
 We can then [`take!()`](@ref) values repeatedly from the channel object:
+-->
+```
+Juliaはこの問題を解決するための[`チャネル`](@ref) という仕組みを提供しています。
+[`チャネル`](@ref) は待機可能な先入先出のキューで、複数のタスクの読み書きが可能です。
+
+生産者タスクを定義して、[`put!`](@ref) を呼び出すと値を生産するようにしましょう。
+値を消費するには、生産者を新しいタスクで実行するようにスケジュールする必要があります。
+ 引数が1個の関数を引数として受けとる特殊なコンストラクタを使用して、チャネルにバインドされたタスクを実行することができます。
+ [`take!()`](@ref)、チャネルオブジェクトから繰り返し値を取得できます。
 
 ```jldoctest producer
 julia> function producer(c::Channel)
@@ -1325,12 +1362,23 @@ One way to think of this behavior is that `producer` was able to return multiple
 calls to [`put!()`](@ref), the producer's execution is suspended and the consumer has control.
 -->
 ```
+
+この振る舞いのとらえ方の１つは、`生産者`が複数回値を返すことができるというものです。
+[`put!()`](@ref) を呼び出す間では、生産者の実行が保留され、消費者は制御権を持ちます。
+
+
+
+
 ```@raw html
 <!--
 The returned [`Channel`](@ref) can be used as an iterable object in a `for` loop, in which case the
 loop variable takes on all the produced values. The loop is terminated when the channel is closed.
 -->
 ```
+返される[`Channel`](@ref) はforループ内のイテラブルオブジェクトとして使用できます。その場合、ループ変数は生成されたすべての値をとります。チャネルが閉じられると、ループは終了します。
+
+
+
 ```jldoctest producer
 julia> for x in Channel(producer)
            println(x)
@@ -1343,17 +1391,38 @@ start
 stop
 ```
 
+```@raw html
+<!--
 Note that we did not have to explicitly close the channel in the producer. This is because
 the act of binding a [`Channel`](@ref) to a [`Task()`](@ref) associates the open lifetime of
 a channel with that of the bound task. The channel object is closed automatically when the task
 terminates. Multiple channels can be bound to a task, and vice-versa.
+-->
+```
 
+生産者のチャネルを明示的に閉じる必要はないことに注意してください。
+これは、[`チャネル`](@ref) を[`Task()`](@ref)に接続することは、存続期間のわからないチャネルとタスクを対応させることだからです。
+タスクが終了すると、チャネルオブジェクトは自動的に閉じられます。
+タスクには複数のチャネルをバインドすることができ、その逆も可能です。
+
+```@raw html
+<!--
 While the [`Task()`](@ref) constructor expects a 0-argument function, the [`Channel()`](@ref)
 method which creates a channel bound task expects a function that accepts a single argument of
 type [`Channel`](@ref). A common pattern is for the producer to be parameterized, in which case a partial
 function application is needed to create a 0 or 1 argument [anonymous function](@ref man-anonymous-functions).
 
 For [`Task()`](@ref) objects this can be done either directly or by use of a convenience macro:
+-->
+```
+
+ [`Task()`](@ref) のコンストラクタは引数０個の関数を引数にとる一方、
+ [`Channel()`](@ref) メソッドは、引数が1個で[`Channel`](@ref) の型を持つ関数を引数にとり、その関数を表すタスクと接続したチャネルを生成します。
+ 生産者をパラメータ化するのはよくあるパターンで、引数が0個又は1個の[無名関数]（@ ref man-anonymous-functions）を生成するために関数の部分適用が必要です。
+[`Task()`](@ref) オブジェクトに対して、これは、直接または便利なマクロを使って行うことができます。
+
+
+
 
 ```julia
 function mytask(myarg)
@@ -1365,22 +1434,41 @@ taskHdl = Task(() -> mytask(7))
 taskHdl = @task mytask(7)
 ```
 
+```@raw html
+<!--
 To orchestrate more advanced work distribution patterns, [`bind()`](@ref) and [`schedule()`](@ref)
 can be used in conjunction with [`Task()`](@ref) and [`Channel()`](@ref)
 constructors to explicitly link a set of channels with a set of producer/consumer tasks.
+-->
+```
+より高度な作業分配パターンを編成するために、[`bind()`](@ref) や [`schedule()`](@ref) は[`Task()`](@ref) や[`Channel()`](@ref) のコンストラクタと共に使用して、複数の生産者/消費者タスクと接続した複数のチャネルを明示的に連携することができます。
 
+```@raw html
+<!--
 Note that currently Julia tasks are not scheduled to run on separate CPU cores.
 True kernel threads are discussed under the topic of [Parallel Computing](@ref).
+-->
+```
+
+現在、Juliaのタスクは別々のCPUコアで実行するようにスケジュールされていないことに注意してください。真のカーネルスレッドについては、[並列コンピューティング](@ref) のトピックで説明します。
+
 
 ### Core task operations
+### コアタスク処理
 
+```@raw html
+<!--
 Let us explore the low level construct [`yieldto()`](@ref) to underestand how task switching works.
 `yieldto(task,value)` suspends the current task, switches to the specified `task`, and causes
 that task's last [`yieldto()`](@ref) call to return the specified `value`. Notice that [`yieldto()`](@ref)
 is the only operation required to use task-style control flow; instead of calling and returning
 we are always just switching to a different task. This is why this feature is also called "symmetric
 coroutines"; each task is switched to and from using the same mechanism.
+-->
+```
 
+```@raw html
+<!--
 [`yieldto()`](@ref) is powerful, but most uses of tasks do not invoke it directly. Consider why
 this might be. If you switch away from the current task, you will probably want to switch back
 to it at some point, but knowing when to switch back, and knowing which task has the responsibility
@@ -1388,13 +1476,19 @@ of switching back, can require considerable coordination. For example, [`put!()`
 are blocking operations, which, when used in the context of channels maintain state to remember
 who the consumers are. Not needing to manually keep track of the consuming task is what makes [`put!()`](@ref)
 easier to use than the low-level [`yieldto()`](@ref).
+-->
+```
 
+```@raw html
+<!--
 In addition to [`yieldto()`](@ref), a few other basic functions are needed to use tasks effectively.
 
   * [`current_task()`](@ref) gets a reference to the currently-running task.
   * [`istaskdone()`](@ref) queries whether a task has exited.
   * [`istaskstarted()`](@ref) queries whether a task has run yet.
   * [`task_local_storage()`](@ref) manipulates a key-value store specific to the current task.
+-->
+```
 
 ### Tasks and events
 
