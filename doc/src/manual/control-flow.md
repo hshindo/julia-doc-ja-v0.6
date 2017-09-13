@@ -1055,9 +1055,9 @@ To do this, we can define a fussy version of the [`sqrt()`](@ref) function that 
 if its argument is negative:
 -->
 ```
-[`error()`](@ref) 関数は、[`ErrorExceptioをn`](@ref) を生成して、通常の制御の流れを中断するために使用されます。
+[`error()`](@ref) 関数は、[`ErrorException`](@ref) を生成して、通常の制御の流れを中断するために使用されます。
 
-負の数の平方根を取ると即座に実行を停止したいとします。このとき、[`sqrt()`](@ref) 関数を、引数が負の場合にエラーを発生させる、小うるさく定義することができます。
+負の数の平方根を取ると即座に実行を停止したいとします。このとき、[`sqrt()`](@ref) 関数を、引数が負の場合にエラーを発生させる、小うるさい定義にすることができます。
 
 
 
@@ -1082,7 +1082,7 @@ execution of the calling function, it returns immediately, displaying the error 
 interactive session:
 -->
 ```
-`fussy_sqrt`が、別の関数から負の値で呼び出された場合、関数呼び出しを続行しようとするのではなく、
+`fussy_sqrt`が、別の関数から負の値で呼び出された場合、関数呼び出しを続行しようとする代わりに、
 直ちに関数から抜けて、エラーメッセージを対話セッションに表示します。
 
 ```jldoctest fussy_sqrt
