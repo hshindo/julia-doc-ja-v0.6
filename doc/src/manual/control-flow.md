@@ -840,7 +840,7 @@ such exceptional circumstances, allow that code to take the appropriate action.
 -->
 ```
 
-予想外の状態が発生した場合、関数は呼び出しに対して、適切な値を返すことができない可能性があります。
+予想外の状態が発生した場合、関数は呼び出しに対して、適切な値を返せないかもしれません。
 そんな例外的な状況に対する最善の策は、プログラムを終了させることかもしれないし、状況を報告するエラーメッセージを出力することかもしれません。また、プログラマが例外的な状況に対応するコードを用意している場合は、そのコードに適切な処置をとらせることかもしれません。
 
 
@@ -854,7 +854,7 @@ below all interrupt the normal flow of control.
 -->
 ```
 
-`例外`は予想外の状況が発生したときに投げられます。以下に掲載した標準装備の例外は、すべて、通常の制御の流れを中断します。
+`例外`は予想外の状況が発生したときに投げられます。以下に挙げた標準装備の例外は、すべて、通常の制御の流れを中断します。
 
 ```@raw html
 <!--
@@ -921,7 +921,7 @@ For example, the [`sqrt()`](@ref) function throws a [`DomainError`](@ref) if app
 real value:
 -->
 ```
-たとえば、 [`sqrt()`](@ref) 関数を負の実数値に適用すると、a [`DomainError`](@ref) が投げられます。
+たとえば、負の実数値に [`sqrt()`](@ref) 関数を適用すると、[`DomainError`](@ref) が投げられます。
 
 ```jldoctest
 julia> sqrt(-1)
@@ -951,8 +951,9 @@ for nonnegative numbers could be written to [`throw()`](@ref) a [`DomainError`](
 is negative:
 -->
 ```
+
 例外は[`throw()`](@ref) 関数を使って、明示的に作成できます。
-たとえば、非負の数値のみに定義される関数は、引数が負の場合に[`DomainError`](@ref) を[`throw()`](@ref) 関数として書くことができます。
+たとえば、非負の数値のみに定義される関数を、引数が負の場合には[`throw()`](@ref) で[`DomainError`](@ref) を投げることで書くことができます。
 
 ```jldoctest
 julia> f(x) = x>=0 ? exp(-x) : throw(DomainError())
@@ -973,7 +974,7 @@ Note that [`DomainError`](@ref) without parentheses is not an exception, but a t
 It needs to be called to obtain an `Exception` object:
 -->
 ```
-[`DomainError`](@ref) は括弧が抜けると、例外ではなく、例外の型になる点に注意してください。
+[`DomainError`](@ref) は括弧をつけない場合は、例外ではなく、例外の型を表す点に注意してください。
 `例外`オブジェクトを取得するには、関数呼び出しを行う必要があります。
 
 ```jldoctest
@@ -989,7 +990,7 @@ false
 Additionally, some exception types take one or more arguments that are used for error reporting:
 -->
 ```
-さらに、一部の例外の型は、1つ以上の引数をとって、エラーの報告をおこないます。
+さらに、ある種のの例外の型は、エラーの報告に使われる、1つ以上の引数をとります。
 
 ```jldoctest
 julia> throw(UndefVarError(:x))
@@ -1002,7 +1003,7 @@ This mechanism can be implemented easily by custom exception types following the
 is written:
 -->
 ```
-この方法を使うと、以下のように、[`UndefVarError`](@ref)　にならった、独自の例外の型を簡単に実装できます。UndefVarError 。
+独自の例外型を書いて、[`UndefVarError`](@ref) と同様の仕組みを実装するのは簡単です。
 
 ```jldoctest
 julia> struct MyUndefVarError <: Exception
