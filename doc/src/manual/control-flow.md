@@ -6,7 +6,9 @@
 Julia provides a variety of control flow constructs:
 -->
 ```
+
 Juliaには、さまざまな制御構造があります。
+
 ```@raw html
 <!--
   * [Compound Expressions](@ref man-compound-expressions): `begin` and `(;)`.
@@ -17,12 +19,14 @@ Juliaには、さまざまな制御構造があります。
   * [Tasks (aka Coroutines)](@ref man-tasks): [`yieldto()`](@ref).
 -->
 ```
+
   * [複合式](@ref man-compound-expressions): `begin` と`(;)`。
   * [条件評価](@ref man-conditional-evaluation): `if`-`elseif`-`else` と `?:` (三項演算子)。
   * [短絡評価](@ref): `&&`, `||` と比較の連鎖。
   * [繰り返し評価: ループ](@ref man-loops): `while` と `for`。
   * [例外処理](@ref): `try`-`catch`, [`error()`](@ref) と [`throw()`](@ref)。
   * [タスク (コルーチン)の別称](@ref man-tasks): [`yieldto()`](@ref)。
+
 ```@raw html
 <!--
 The first five control flow mechanisms are standard to high-level programming languages. [`Task`](@ref)s
@@ -32,6 +36,7 @@ cooperative multitasking are implemented in Julia using tasks. Everyday programm
 direct usage of tasks, but certain problems can be solved much more easily by using tasks.
 -->
 ```
+
 はじめの５つの制御構造は、高水準なプログラミング言語には標準的なものです。
 [タスク]はそれほど標準的ではありません。タスクはローカルだけとは限らない制御構造で、一時的に保留している計算を
 切り替えることができます。
@@ -69,12 +74,14 @@ Since these are fairly small, simple expressions, they could easily be placed on
 which is where the `(;)` chain syntax comes in handy:
 -->
 ```
+
 この例では、式がかなり小さくて単純なので、簡単に1行にまとめることができます。こういう場合に便利なのが、セミコロン(;)連鎖構文です。
 
 ```jldoctest
 julia> z = (x = 1; y = 2; x + y)
 3
 ```
+
 ```@raw html
 <!--
 This syntax is particularly useful with the terse single-line function definition form introduced
@@ -82,6 +89,7 @@ in [Functions](@ref). Although it is typical, there is no requirement that `begi
 or that `(;)` chains be single-line:
 -->
 ```
+
 この構文は、[関数](@ref) の章で紹介した、簡潔で単一行の関数定義方式で使うと、特に便利です。
 このような使い方が一般的ですが、beginブロックは複数行で、セミコロン(;)連鎖は単一行でなければならないといった、制約はありません。
 
@@ -104,6 +112,7 @@ Conditional evaluation allows portions of code to be evaluated or not evaluated 
 value of a boolean expression. Here is the anatomy of the `if`-`elseif`-`else` conditional syntax:
 -->
 ```
+
 条件評価では、コードの一部がブール式の値に応じて、評価されたりされなかったりします。
 ここで、 `if`-`elseif`-`else`型の条件分岐構文を解剖してみましょう：
 
@@ -124,6 +133,7 @@ the condition expression `x > y` is evaluated, and if it is `true`, the correspo
 evaluated; if neither expression is true, the `else` block is evaluated. Here it is in action:
 -->
 ```
+
 条件式`x < y`が`真`の場合、対応するブロックが評価されます。さもなければ、条件式`x > y`が評価され、`真`の場合は、対応するブロックが評価されます。いずれの式も真でない場合、elseブロックが評価されます。
 例を挙げると、
 
@@ -148,6 +158,7 @@ x is greater than y
 julia> test(1, 1)
 x is equal to y
 ```
+
 ```@raw html
 <!--
 The `elseif` and `else` blocks are optional, and as many `elseif` blocks as desired can be used.
@@ -156,6 +167,7 @@ one evaluates to `true`, after which the associated block is evaluated, and no f
 expressions or blocks are evaluated.
 -->
 ```
+
 この、`elseif` および `else`ブロックは省略可能で、`elseif`ブロックは、書いた数だけ使うことができます。
 `if`-`elseif`-`else`構文中の条件文は、`真`になるものが現れるまで評価が続きます。
 その条件文に対応するブロックが評価されたあとは、条件式やブロックは評価されません。
@@ -167,6 +179,7 @@ defined inside the `if` clauses can be used after the `if` block, even if they w
 before. So, we could have defined the `test` function above as
 -->
 ```
+
 `if`ブロックには「漏れ」があります。つまりローカルスコープではありません。
 これは、`if`句の中で定義した新しい変数が、`if`ブロックの後ろで使えるということです。
 たとえ`if`ブロックの前で定義していなくてもよいのです。
@@ -189,6 +202,7 @@ test (generic function with 1 method)
 julia> test(2, 1)
 x is greater than y.
 ```
+
 ```@raw html
 <!--
 The variable `relation` is declared inside the `if` block, but used outside. However, when depending
@@ -196,6 +210,7 @@ on this behavior, make sure all possible code paths define a value for the varia
 change to the above function results in a runtime error
 -->
 ```
+
 変数`relation`は`if`ブロックの内側で宣言されていますが、使用されるのは外側です。
 ただし、こういった使い方をする場合は、とりうるすべての分岐で、変数の値が定義されていることを確認してください。
 上記の関数を次のように変更すると、実行時エラーが発生します。
@@ -220,6 +235,7 @@ ERROR: UndefVarError: relation not defined
 Stacktrace:
  [1] test(::Int64, ::Int64) at ./none:7
 ```
+
 ```@raw html
 <!--
 `if` blocks also return a value, which may seem unintuitive to users coming from many other languages.
@@ -227,8 +243,10 @@ This value is simply the return value of the last executed statement in the bran
 so
 -->
 ```
+
 `if`ブロックは値を返しますが、他の言語を利用する多くの人の直感に反するようです。
-この値は、単純に、分岐の中から選択されて、最後に実行された文の戻り値です。
+この値は、単純に、分岐の中から選択されて、最後に実行された節の戻り値です。
+
 ```jldoctest
 julia> x = 3
 3
@@ -240,12 +258,14 @@ julia> if x > 0
        end
 "positive!"
 ```
+
 ```@raw html
 <!--
 Note that very short conditional statements (one-liners) are frequently expressed using Short-Circuit
 Evaluation in Julia, as outlined in the next section.
 -->
 ```
+
 Juliaでは、非常に短い条件文（ワンライナー）は、短絡評価を使って表現されることが非常に多い点に注意してください。
 次章で概説します。
 
@@ -255,20 +275,24 @@ Unlike C, MATLAB, Perl, Python, and Ruby -- but like Java, and a few other stric
 -- it is an error if the value of a conditional expression is anything but `true` or `false`:
 -->
 ```
+
 条件式の値が、`true` か `false` 以外の値だと、エラーが発生します。
 この仕様は、C、MATLAB、PerlやPython、Rubyとは異なりますが、Javaなどの厳格な型付け言語と同等です。
+
 ```jldoctest
 julia> if 1
            println("true")
        end
 ERROR: TypeError: non-boolean (Int64) used in boolean context
 ```
+
 ```@raw html
 <!--
 This error indicates that the conditional was of the wrong type: [`Int64`](@ref) rather
 than the required [`Bool`](@ref).
 -->
 ```
+
 このエラーは、条件式の型が誤りであることを示しています。
 [`Int64`](@ref) は、要求される[`Bool`](@ref)に適合しません。
 
@@ -281,6 +305,7 @@ to conditional execution of longer blocks of code. It gets its name from being t
 in most languages taking three operands:
 -->
 ```
+
 いわゆる「三項演算子」`?:`は、`if`-`elseif`-`else`構文と密接に関連しています。
 前者は単一の式の値を選択するような条件分岐を行う場合に利用されますが、後者は条件式の実行がもっと長いコードのブロックになる場合に使います。
 「三項演算子」の名前は、多くの他の言語では、3つの被演算子をとる唯一の演算子であることに由来します。
@@ -288,6 +313,7 @@ in most languages taking three operands:
 ```julia
 a ? b : c
 ```
+
 ```@raw html
 <!--
 The expression `a`, before the `?`, is a condition expression, and the ternary operation evaluates
@@ -295,7 +321,9 @@ the expression `b`, before the `:`, if the condition `a` is `true` or the expres
 the `:`, if it is `false`.
 -->
 ```
+
 `?`の前にある式`a`は条件式で、三項演算は`a`が`真`の時は、`:`の前にある`b`を評価し、`偽`の時は、`:`の後にある`c`を評価します。
+
 ```@raw html
 <!--
 The easiest way to understand this behavior is to see an example. In the previous example, the
@@ -323,6 +351,7 @@ julia> x = 1; y = 0;
 julia> println(x < y ? "less than" : "not less than")
 not less than
 ```
+
 ```@raw html
 <!--
 If the expression `x < y` is true, the entire ternary operator expression evaluates to the string
@@ -330,8 +359,10 @@ If the expression `x < y` is true, the entire ternary operator expression evalua
 example requires chaining multiple uses of the ternary operator together:
 -->
 ```
+
 式`x < y`が真の場合、三項演算子式全体は、文字列"less than"に評価され、そうでない場合は文字列"not less than" に評価されます。もともとの三分岐版の例では、三項演算子を複数連鎖させて使用​​する必要があります。
-```jldoctest`
+
+```jldoctest
 julia> test(x, y) = println(x < y ? "x is less than y"    :
                             x > y ? "x is greater than y" : "x is equal to y")
 test (generic function with 1 method)
@@ -345,6 +376,7 @@ x is greater than y
 julia> test(1, 1)
 x is equal to y
 ```
+
 ```@raw html
 <!--
 To facilitate chaining, the operator associates from right to left.
@@ -353,6 +385,7 @@ It is significant that like `if`-`elseif`-`else`, the expressions before and aft
 only evaluated if the condition expression evaluates to `true` or `false`, respectively:
 -->
 ```
+
 連鎖を利用する時は、演算子の結合順は右から左です。
 `if`-`elseif`-`else`の場合と同様に、重要な点は、`:`の前後の式は、それぞれ条件式が`真`・`偽`の時、その時だけ、
 評価されることです。
@@ -382,9 +415,10 @@ evaluated as are necessary to determine the final boolean value of the entire ch
 this means that:
 -->
 ```
+
 短絡評価は条件評価と非常によく似ています。
-短絡評価は`&&`や`||`のブール演算子持つほとんどの命令型プログラミング言語で
-みられます。ブール式をこれらの演算子で連結した時、式全体のブール値を決定する最小限の式しか評価されません。つまり、
+命令型プログラミング言語にみられる`&&`や`||`のブール演算子のほとんどは短絡評価です。
+これらの演算子で連結したブール式の中で、式全体のブール値を決定する最小限の式しか評価されません。つまり、
 
 
 ```@raw html
@@ -393,8 +427,10 @@ this means that:
   * In the expression `a || b`, the subexpression `b` is only evaluated if `a` evaluates to `false`.
 -->
 ```
-*  `a && b`という式では、`b`が評価されるのは、`a`の評価値が`真`の時のみ。
-*  `a || b`という式では、`b`が評価されるのは、`a`の評価値が`偽`の時のみ。
+
+*  `a && b`という式で、`b`が評価されるのは、`a`の評価が`真`の時のみです。
+*  `a || b`という式で、`b`が評価されるのは、`a`の評価が`偽`の時のみです。
+
 ```@raw html
 <!--
 The reasoning is that `a && b` must be `false` if `a` is `false`, regardless of the value of
@@ -403,7 +439,11 @@ of `b`. Both `&&` and `||` associate to the right, but `&&` has higher precedenc
 It's easy to experiment with this behavior:
 -->
 ```
-この理由は、`a && b`は`a`が`偽`の時には、`b`の値がどうであれ、`偽`でなければならないから。 同様に`a || b`は`a`が`真`の時には、`b`の値がどうであれ、`真`でなければならないから。`&&` と`||`は共に、右から結合するが、`&&`は`||`より、優先度が高い。これを実験するのは簡単です：
+
+なぜなら、`b`の値にかかわらず、`a`が`偽`の時には、`a && b`は`偽`でなければならないからです。
+同様に、`b`の値にかかわらず、`a`が`真`の時には、`a || b`は`真`でなければなりません。
+ `&&` と`||`は共に、右から結合しますが、`&&`は`||`より、優先度が高いです。
+ これは簡単に試してみることができます：
 
 ```jldoctest tandf
 julia> t(x) = (println(x); true)
@@ -455,7 +495,8 @@ You can easily experiment in the same way with the associativity and precedence 
 of `&&` and `||` operators.
 -->
 ```
-同様の方法で、`&&`と`||`演算子のさまざまな組み合わせに対して、結合性と優先度を簡単に試すことができます。
+
+同様の手法で、`&&`と`||`の演算子のさまざまな組み合わせに対して、結合性と優先度を簡単に試すことができます。
 
 ```@raw html
 <!--
@@ -469,7 +510,7 @@ For example, a recursive factorial routine could be defined like this:
 ```
 
 
-Juliaでは、if文が非常に短くなる時、代わりに、この動作が頻繁に利用されます。
+Juliaでは、非常に短いif文の代わりに、短絡評価が頻繁に利用されます。
 `if <条件式> <実行文> end`の代わりに、
 `<条件式> && <実行文>`と書けます
 （`&&`、"の時は" と読み下せます)。
@@ -507,8 +548,9 @@ introduced in [Mathematical Operations and Elementary Functions](@ref): `&` and 
 normal functions, which happen to support infix operator syntax, but always evaluate their arguments:
 -->
 ```
-短絡評価を使わないブール演算は、[算術処理と基本的な関数](@ref)で紹介した、 `&` と `|`の、ビット単位の論理演算子を使って行うことができます。
-これらは通常の関数で、中置演算子の構文を利用できますが、常に引数を評価します。
+
+短絡評価ではないブール演算は、[算術処理と基本的な関数](@ref)で紹介した、 `&` と `|`の、ビット単位の論理演算子を使って行うことができます。
+これらの演算子は、たまたま中置記法を採用しただけの通常の関数で、常に引数を評価します。
 
 ```jldoctest tandf
 julia> f(1) & t(2)
@@ -529,9 +571,10 @@ Just like condition expressions used in `if`, `elseif` or the ternary operator, 
 for the last entry in a conditional chain is an error:
 -->
 ```
+
 `if`、`elseif`、三項演算子で使用される条件式のと同様に、
-`&&`や`||`の被演算子は、ブール値()`true` または `false`)でなければなりません。
-条件式の連鎖で最後の項以外のどこかで、非ブール値を使用するとエラーになります。
+`&&`や`||`の被演算子は、ブール値(`true` か `false`)でなければなりません。
+条件式の連鎖で、最終項以外で、非ブール値を使用するとエラーになります。
 
 ```jldoctest
 julia> 1 && true
@@ -544,7 +587,8 @@ On the other hand, any type of expression can be used at the end of a conditiona
 be evaluated and returned depending on the preceding conditionals:
 -->
 ```
-一方、条件式の連鎖の最終項では、あらゆる型の式が利用可能です。これは先立つ項の条件に応じて評価され、戻り値となります。
+
+一方、条件式の連鎖の最終項では、あらゆる型の式が利用可能です。これは前の条件式に応じて評価され、戻り値を返します。
 
 ```jldoctest
 julia> true && (x = (1, 2, 3))
@@ -563,7 +607,7 @@ There are two constructs for repeated evaluation of expressions: the `while` loo
 loop. Here is an example of a `while` loop:
 -->
 ```
-式の繰り返し評価には、`while`ループと`for`ループの2種類があります。
+式を繰り返し評価する制御構造は２つあります。`while`ループと`for`ループです。
 `while`ループの例を次に示します。
 
 ```jldoctest
@@ -591,11 +635,12 @@ down like the above `while` loop does is so common, it can be expressed more con
 `for` loop:
 -->`
 ```
+
  `while` ループは、条件式(この場合は`i <= 5`）を評価し、その式が`真`である間、`while`ループ本体の評価を続けます。
  条件式の評価が`偽`に初めてなると、その後、本体は決して評価されません。
 
 `for`ループは、よくある繰り返し評価を、書きやすい慣用表現にしたものです。
-上記の`while`ループのようなカウントアップ・カウントダウンは非常に一般的で、`for`ループでより簡潔に表現できます。
+上記の`while`ループのようなカウントアップ・カウントダウンは非常に一般的ですが、`for`ループなら、より簡潔に表現できます。
 
 ```jldoctest
 julia> for i = 1:5
@@ -618,6 +663,7 @@ scope, in the `for` loop form, it is visible only inside of the `for` loop, and 
 You'll either need a new interactive session instance or a different variable name to test this:
 -->
 ```
+
 この`1:5`は、`Range`オブジェクトで、1,2,3,4,5の数列をあらわしています。
 `for` ループはこれらの値を反復し、順番に変数`i`に代入します。。
 前述の`while`ループ方式と`for`ループ方式のかなり重要な違いの1つは、ループの実行中の変数が見えるスコープです。
@@ -648,12 +694,13 @@ In general, the `for` loop construct can iterate over any container. In these ca
 the code read more clearly:
 -->
 ```
+
 変数のスコープとJuliaでの動作の詳細については、[変数のスコープ]（@ref変数のスコープ）を参照してください。
 
 一般に、`for`ループはどのコンテナに対しても反復処理が可能です。
-これらのケースでは、`=`の代替となり、しかし完全に同等なキーワードの`in`や`∈`が広く使われます。というのも、コードがより明確になるからです。
+これらのケースでは、`=`の代わりに、完全に同等なキーワードの`in`や`∈`が広く使われます。というのも、コードがよりわかりやすくなるからです。
 
-``jldoctest
+```jldoctest
 julia> for i in [1,4,0]
            println(i)
        end
@@ -679,10 +726,10 @@ is falsified or stop iterating in a `for` loop before the end of the iterable ob
 This can be accomplished with the `break` keyword:
 -->
 ```
-さまざまなタイプのイテラブル・コンテナについて、マニュアルの次章以降で紹介・検討します（例：[多次元配列]（@ ref man-multi-dim-arrays）参照）。
 
-`while`ループで、条件式が偽になる前に繰り返しを終わらせたり、`for`ループで、最後のイテラブル・オブジェクトに達する前に反復を止めたりすると、
-便利なことがあります。
+さまざまなタイプのイテラブル・コンテナについて、マニュアルの後ろの章で紹介・検討します（例：[多次元配列]（@ ref man-multi-dim-arrays）参照）。
+
+`while`ループで、条件式が偽になる前に繰り返しを終了したり、`for`ループで、最後のイテラブル・オブジェクトに達する前に反復を止めたりすると、便利なことがあります。
 これは`break`キーワードで実現できます：
 
 
@@ -725,9 +772,9 @@ immediately. The `continue` keyword accomplishes this:
 ```
 
 `break`キーワードがなければ、上記の`while`ループは決して自身で終了することはなく、`for`ループは1000まで繰り返されます。
-これらのループは、共に、`break`を使用すると、早い段階で終了します。
+これらのループは、早い段階で終了するには、共に、`break`を使用します。
 
-他の状況では、現在の繰り返しを停止してすぐに次回に移ることができれば便利なことがあります。continueキーワードは、これを実現します：
+他の状況では、繰り返しを停止してすぐに次回に移ることができれば便利なことがあります。continueキーワードは、これを実現します：
 
 
 
@@ -754,10 +801,13 @@ Multiple nested `for` loops can be combined into a single outer loop, forming th
 of its iterables:
 -->
 ```
-これは不自然な例です。というのも、条件を否定にしてコールを`if`ブロック内に`println`の呼び出しを置くことで、同じ動作をより明確に書けるからです。
+
+これは不自然な例です。というのも、条件式を否定して`if`ブロック内に`println`の呼び出しを置いた方が、同じ動作をより明確に書けるからです。
 実際に使用するときは、`continue`の後に評価するコードがもっとあって、`continue`を呼び出す箇所も複数ある場合でしょう。
 
-複数のネストしている`for`ループは、組み合わせて1つの外側ループにして、イテラブルの直積を作ることができます。
+複数のネストしている`for`ループは、結合して、イテラブルの直積に対する、単一の外側ループ [^1] にすることができます。  
+
+
 
 
 
@@ -776,7 +826,8 @@ julia> for i = 1:2, j = 3:4
 A `break` statement inside such a loop exits the entire nest of loops, not just the inner one.
 -->
 ```
-ネストした`for`ループ内の`break`文は、内側のループ１つだけでなく、ネスト全体のループを終了します。
+
+ネストした`for`ループ内の`break`文は、内側のループだけでなく、ネスト全体のループを終了します。
 ## Exception Handling
 ## 例外処理
 
@@ -787,8 +838,9 @@ its caller. In such cases, it may be best for the exceptional condition to eithe
 program, printing a diagnostic error message, or if the programmer has provided code to handle
 such exceptional circumstances, allow that code to take the appropriate action.
 -->
+```
 
-予期外の状態が発生した場合、関数は呼び出しに対して、適切な値を返すことができない可能性があります。
+予想外の状態が発生した場合、関数は呼び出しに対して、適切な値を返すことができない可能性があります。
 そんな例外的な状況に対する最善の策は、プログラムを終了させることかもしれないし、状況を報告するエラーメッセージを出力することかもしれません。また、プログラマが例外的な状況に対応するコードを用意している場合は、そのコードに適切な処置をとらせることかもしれません。
 
 
@@ -1489,7 +1541,7 @@ easier to use than the low-level [`yieldto()`](@ref).
 例えば、 [`put!()`](@ref) や [`take!()`](@ref) はブロッキング・オペレーションで、チャネルと共に使うとき、消費者が誰であるかを覚えるために状態を維持します。
  消費するタスクを手動で追跡する必要がないため、 [`put!()`](@ref) は低レベルの [`yieldto()`](@ref) よりも使いやすくなっています。
 
-```@raw htmlも
+```@raw html
 <!--
 In addition to [`yieldto()`](@ref), a few other basic functions are needed to use tasks effectively.
 
@@ -1593,3 +1645,4 @@ symbols:
 | `:done`     | 実行が正常に終了　　　　　　　　　                    |
 | `:failed`   | 例外が捕捉されずに終了                               |
 
+[^1]:　外側とはループの進み方で、直積の左を内側、右を外側に見立てて、外側のカウンターが一巡してから右側のカウンターが進んでいくということを表しているんだと思います。
