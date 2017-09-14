@@ -17,19 +17,19 @@
 | scalar                           | スカラー
 | reference                        | 参照
 | user                             | ユーザー
-| interactive session                   | 対話型セッション
+| interactive session                   | 対話型セッション、対話セッション
 | expression                            | 式
-| is bound to                           | 紐付けされる
+| is bound to                           | 紐付けされる、束縛される
 | hit, enter                            | 入力する
 | show                                  | 表示する、出力する
-| evaluate                              | 判断する、読み込ませる
+| evaluate                              | 判断する、読み込ませる、評価する
 | global constant                       | グローバル定数
 | worker process                        | ワーカープロセス
 | worker                                | ワーカー
 | Unicode                               | Unicode
 | UTF-8                                 | UTF-8
 | backslashed LaTex symbol              | バックスラッシュを伴うLaTex記号
-| built-in                              | ビルトイン
+| built-in                              | ビルトイン、標準装備の
 | code point                            | 符号点
 | primes                                | プライム記号、素数
 | method                                | メソッド
@@ -56,18 +56,18 @@
 | Arbitrary Precision Arithmetic        | 任意精度計算
 | elementwise  |  要素単位
 | short-circuit evaluation   |  短絡評価
-| Dot Syntax for Vectorizing Functions   |  ベクトル化関数のドット構文
+| Dot Syntax for Vectorizing Functions   |  ベクトル化関数のドット構文、関数をベクトル化するドット構文
 | modulus, modulo   |  合同式の法、余剰演算
 | derivative   |  微分
 | arithmetic operation   |  算術処理
 | variable-width   |  可変幅
 | variable-length   |  可変長
 | byte array literals   |  バイト配列リテラル
-| assignment form   |  代入形式
+| assignment form   |  代入形式、代入方式
 | anonymous function   |  無名関数
 | tuple   |  タプル
-| tuple “destructuring”   |  タプル「構造解除」
-| Varargs   |  可変引数
+| tuple “destructuring”   |  タプル「構造解除」、タプルの「分割」
+| varargs,variable argument   |  可変引数
 | Parametrically-constrained Varargs methods   |  パラメトリック制約付き可変引数メソッド
 | Performance Tip   |  パフォーマンスに関するヒント
 | Pre-allocating outputs   |  出力の事前割り当て
@@ -113,3 +113,45 @@
 | quoted expression   |  引用式
 | stdlib-collections-iteration   |  stdlibコレクションの反復
 | Hygiene   |  衛生規約
+|splice     |継ぎ合わせる
+|optional   |省略可能な
+|signature  |シグネチャ、関数を宣言する行
+|pass-by-sharing|共有渡し
+|compound expression|複合式
+|control flow|制御構造
+| generic function	|総称関数
+|type annotation	|型注釈
+|argument|引数
+|return value|戻り値
+|evaluation semantics	|評価戦略
+|Optional Arguments	|省略可能引数
+Conditional Evaluation	|	条件評価
+Task	|	タスク
+Channel	|	チャネル
+Coroutine	|	コルーチン
+subexpression	|	部分式
+branch	|	分岐
+standard error I/O	|	標準エラー出力
+unwind	|	巻き戻す、(深い階層から)飛び越えて戻る
+suspend	|	一時停止する、保留する、中断する
+resume	|	再開する
+pick up right where you left off	|	中断したところから再開する
+lifetime	|	存続期間、寿命
+blocking operations	|	他を中断させる操作
+ `(;)` chain syntax	|	セミコロン(;)連鎖構文
+`begin` blocks	|	beginブロック
+unintuitive	|	直観に反する
+precedence	|	優先順位
+associativity	|	結合性
+contrived	|	不自然な
+cartesian product	|	直積
+symmetric coroutines	|	対称コルーチン
+lightweight　threads	|	軽量スレッド
+cooperative multitasking	|	協調的マルチタスク
+one-shot continuations	|	ワンショット継続
+ first-in first-out	|	先入先出
+queue	|	キュー
+producer	|	生産者
+consumer	|	消費者
+
+
