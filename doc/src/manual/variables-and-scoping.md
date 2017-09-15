@@ -42,19 +42,19 @@ Juliaには**グローバルスコープ**と**ローカルスコープ**の2つ
 
 ```@raw html
 <!--
-| Scope name           | block/construct introducing this kind of scope                                                           |
-|:-------------------- |:-------------------------------------------------------------------------------------------------------- |
-| [Global Scope](@ref) | `module`, `baremodule`, at interactive prompt (REPL)                                                     |
-| [Local Scope](@ref)  | [Soft Local Scope](@ref): `for`, `while`, comprehensions, try-catch-finally, `let`                       |
-| [Local Scope](@ref)  | [Hard Local Scope](@ref): functions (either syntax, anonymous & do-blocks), `struct`, `macro`            |
+| Scope name           | block/construct introducing this kind of scope                                                |
+| :------------------- | :-------------------------------------------------------------------------------------------- |
+| [Global Scope](@ref) | `module`, `baremodule`, at interactive prompt (REPL)                                          |
+| [Local Scope](@ref)  | [Soft Local Scope](@ref): `for`, `while`, comprehensions, try-catch-finally, `let`            |
+| [Local Scope](@ref)  | [Hard Local Scope](@ref): functions (either syntax, anonymous & do-blocks), `struct`, `macro` |
 -->
 ```
 
-| スコープ名                | スコープを採用している　ブロック／構成要素                                                                  |
-|:--------------------     |:-------------------------------------------------------------------------------------------------------- |
-| [グローバルスコープ](@ref) | `module`, `baremodule`, 対話セッション (REPL)                                                           |
-| [ローカルスコープ](@ref)   | [ソフトローカルスコープ](@ref): `for`, `while`, 内包表記, try-catch-finally, `let`                       |
-| [ローカルスコープ](@ref)   | [ハードローカルスコープ](@ref): 関数 (通常の構文、 無名関数 、 do-ブロック), `struct`, `macro`            |
+| スコープ名            | スコープを採用している　ブロック／構成要素                                                    |
+| :---------------- | :----------------------------------------------------------------------------- |
+| [グローバルスコープ](@ref) | `module`, `baremodule`, 対話セッション (REPL)                                       |
+| [ローカルスコープ](@ref)  | [ソフトローカルスコープ](@ref): `for`, `while`, 内包表記, try-catch-finally, `let`        |
+| [ローカルスコープ](@ref)  | [ハードローカルスコープ](@ref): 関数 (通常の構文、 無名関数 、 do-ブロック), `struct`, `macro` |
 
 
 
@@ -130,7 +130,11 @@ dot-notation, i.e. each module is a so-called *namespace*. Note that variable bi
 be changed within their global scope and not from an outside module.
 -->
 ```
-モジュールは、それぞれ、他のモジュールとは異なる新しいグローバルスコープを導入します。すべてを包括するスコープは存在しません。モジュールは他のモジュールの変数を自分のスコープに導入可能で、[usingまたはimport]（@ ref モジュール）文を使うとモジュール全体、dot表記を使うと限定的になります。つまり、各モジュールはいわゆる名前空間です。変数の束縛が変更されるのは、モジュールのグローバルスコープ内のみで、モジュールでは変わらないことに注意してください。
+モジュールは、それぞれ、他のモジュールとは異なる新しいグローバルスコープを導入します。
+すべてを包括するスコープは存在しません。
+モジュールは他のモジュールの変数を自分のスコープに導入可能で、[usingまたはimport]（@ ref モジュール）文を使うとモジュール全体、dot表記を使うと限定的になります。
+つまり、各モジュールはいわゆる名前空間です。
+変数の束縛が変更されるのは、モジュールのグローバルスコープ内のみで、モジュールでは変わらないことに注意してください。
 
 
 
@@ -182,6 +186,11 @@ thus variables in an inner scope cannot be retrieved from the parent scope throu
 qualified access.
 -->
 ```
+新しいローカルスコープが、ほとんどのコードブロックによって導入されています。上記の表を参照してください。
+ローカルスコープは、**通常は**、親スコープのすべての変数を引き継いで、読み書きができます。
+ローカルスコープにはハードとソフトの2つの派生型があり、どの変数が引き継がれるのか、規則がわずかに異なります。
+グローバルスコープとは異なり、ローカルスコープは名前空間ではないため、何かしらの宣言などをして、内部スコープの変数に対して親スコープから取り出すことができません。
+
 
 ```@raw html
 <!--
@@ -190,6 +199,9 @@ variable in a local scope does not back-propagate to its parent scope. For examp
 `z` is not introduced into the top-level scope:
 -->
 ```
+次の規則と例は、ハードローカルスコープとソフトローカルスコープの両方に関係します。
+ローカルスコープ内に新しく導入された変数は、その親スコープに伝播しません。たとえば、ここで `z`はトップレベルのスコープには導入されていません。
+
 
 ```jldoctest
 julia> for i = 1:10
@@ -208,6 +220,10 @@ with a clean workspace, for instance a newly started REPL.)
 Inside a local scope a variable can be forced to be a local variable using the `local` keyword:
 -->
 ```
+（この例と以下のすべては、トップレベルが、新規に起動されたREPLなどの、クリーンなワークスペースを持つグローバルスコープであると想定しています）。
+
+ローカルスコープの内部では、`local`キーワードを使用して変数を強制的にローカル変数にすることができます：
+
 
 ```jldoctest
 julia> x = 0;
@@ -227,6 +243,8 @@ Inside a local scope a new global variable can be defined using the keyword `glo
 -->
 ```
 
+ローカルスコープ内で、新しいグローバル変数は、`global`キーワードを使用して定義することができます。
+
 ```jldoctest
 julia> for i = 1:10
            global z
@@ -237,12 +255,18 @@ julia> z
 10
 ```
 
+
+
 ```@raw html
 <!--
 The location of both the `local` and `global` keywords within the scope block is irrelevant.
 The following is equivalent to the last example (although stylistically worse):
 -->
 ```
+スコープブロック内の`local`キーワードと`global`キーワード位置両方ともどこでも構いません。
+以下は先程の例と同等です（あまりよくないスタイルですが）。
+
+
 
 ```jldoctest
 julia> for i = 1:10
@@ -264,6 +288,7 @@ julia> z
 > specifically marked with the keyword `local`.
 -->
 ```
+> ソフトローカルスコープでは、特に`local`キーワードが設定されていない限り、すべての変数は親スコープから引き継がれます。
 
 ```@raw html
 <!--
@@ -271,6 +296,8 @@ Soft local scopes are introduced by for-loops, while-loops, comprehensions, try-
 and let-blocks. There are some extra rules for [Let Blocks](@ref) and for [For Loops and Comprehensions](@ref).
 -->
 ```
+ソフトループスコープは、for-ループ、while-ループ、内包表記、try-catch-finally-ブロック、およびlet-ブロックに導入されています。
+[Let ブロック](@ref) と [For ループ と 内包表記](@ref) には、いくつかの追加ルールがあります。
 
 ```@raw html
 <!--
@@ -278,6 +305,8 @@ In the following example the `x` and `y` refer always to the same variables as t
 scope inherits both read and write variables:
 -->
 ```
+次の例では、softローカルスコープによって読み書き可能な変数として引き継がれた、引き継ぎ元の`x`と`y`を常に参照しています。
+
 
 ```jldoctest
 julia> x, y = 0, 1;
@@ -296,6 +325,8 @@ Within soft scopes, the *global* keyword is never necessary, although allowed. T
 when it would change the semantics is (currently) a syntax error:
 -->
 ```
+ソフトスコープ内では、**グローバル**キーワードは必要ではありませんが、使っても構いません。
+セマンティクスの変わる唯一のケースは、構文エラーです（現時点）。
 
 ```jldoctest
 julia> let
