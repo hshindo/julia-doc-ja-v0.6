@@ -1,4 +1,4 @@
-# [Scope of Variables](@id scope-of-variables)
+[](# [Scope of Variables](@id scope-of-variables))
 # 変数のスコープ
 
 ```@raw html
@@ -118,8 +118,7 @@ Thus *lexical scope* means that the scope of variables can be inferred from the 
 
 このように、**レキシカルスコープ**では、変数のスコープをソースコードだけで推測できることを意味します。
 
-## Global Scope
-
+[](## Global Scope)
 ## グローバル　スコープ
 
 ```@raw html
@@ -164,7 +163,8 @@ ERROR: cannot assign variables in other modules
 Note that the interactive prompt (aka REPL) is in the global scope of the module `Main`.
 -->
 ```
-## Local Scope
+[](## Local Scope)
+## ローカルスコープ
 
 ```@raw html
 <!--
@@ -248,7 +248,9 @@ julia> z
 10
 ```
 
-### Soft Local Scope
+[](### Soft Local Scope)
+### ソフトローカルスコープ
+
 
 ```@raw html
 <!--
@@ -299,7 +301,8 @@ julia> let
 ERROR: syntax: `global j`: j is local variable in the enclosing scope
 ```
 
-### Hard Local Scope
+[](### Hard Local Scope)
+### ハードローカルスコープ
 
 ```@raw html
 <!--
@@ -472,8 +475,8 @@ and [`isodd()`](@ref) so the above definitions should only be taken as examples.
 -->
 ```
 
-### Hard vs. Soft Local Scope
-
+[](### Hard vs. Soft Local Scope)
+### ハード vs ソフトローカルスコープ
 ```@raw html
 <!--
 Blocks which introduce a soft local scope, such as loops, are generally used to manipulate the
@@ -519,7 +522,9 @@ See also the closures in the examples in the next two sections.
 -->
 ```
 
-### Let Blocks
+[](### Let Blocks)
+### Let ブロック
+
 
 ```@raw html
 <!--
@@ -619,8 +624,8 @@ outer local `x`.
 -->
 ```
 
-### For Loops and Comprehensions
-
+[](### For Loops and Comprehensions)
+### For ループと内包表記
 
 ```@raw html
 <!--
@@ -678,7 +683,8 @@ julia> x
 0
 ```
 
-## Constants
+[](## Constants)
+## 定数
 
 
 ```@raw html
