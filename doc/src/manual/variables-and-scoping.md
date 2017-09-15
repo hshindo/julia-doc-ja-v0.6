@@ -66,7 +66,7 @@ be explained below as well as some extra rules for certain blocks.
 -->
 ```
 
-注意すべきはこのテーブルにない [begin ブロック]（@ ref man-compound-expressions）と[if ブロック（@ ref man-conditional-evaluation）]です。
+注目すべきはこのテーブルにない [begin ブロック]（@ ref man-compound-expressions）と[if ブロック（@ ref man-conditional-evaluation）]です。
 これらは新しいスコープブロックを導入しません。
 以下、少しずつ規則の違う３つのスコープと、特別な規則のブロックについて説明します。
 
@@ -130,6 +130,9 @@ dot-notation, i.e. each module is a so-called *namespace*. Note that variable bi
 be changed within their global scope and not from an outside module.
 -->
 ```
+モジュールは、それぞれ、他のモジュールとは異なる新しいグローバルスコープを導入します。すべてを包括するスコープは存在しません。モジュールは他のモジュールの変数を自分のスコープに導入可能で、[usingまたはimport]（@ ref モジュール）文を使うとモジュール全体、dot表記を使うと限定的になります。つまり、各モジュールはいわゆる名前空間です。変数の束縛が変更されるのは、モジュールのグローバルスコープ内のみで、モジュールでは変わらないことに注意してください。
+
+
 
 ```jldoctest
 julia> module A
@@ -163,6 +166,9 @@ ERROR: cannot assign variables in other modules
 Note that the interactive prompt (aka REPL) is in the global scope of the module `Main`.
 -->
 ```
+対話セッション（別名REPL）は、`Main`モジュールのグローバルスコープ内にあることに注意してくださいMain。
+
+
 [](## Local Scope)
 ## ローカルスコープ
 
