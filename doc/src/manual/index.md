@@ -11,7 +11,7 @@
   * [制御構造](@ref)
   * [Scope of Variables](@ref scope-of-variables)
   * [Types](@ref man-types)
-  * [Methods](@ref)
+  * [メソッド](@ref)
   * [Constructors](@ref man-constructors)
   * [Conversion and Promotion](@ref conversion-and-promotion)
   * [Interfaces](@ref)

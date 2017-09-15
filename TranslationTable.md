@@ -118,7 +118,7 @@
 |signature  |シグネチャ、関数を宣言する行
 |pass-by-sharing|共有渡し
 |compound expression|複合式
-|control flow| 制御構造
+|control flow|制御構造
 | generic function	|総称関数
 |type annotation	|型注釈
 |argument|引数
