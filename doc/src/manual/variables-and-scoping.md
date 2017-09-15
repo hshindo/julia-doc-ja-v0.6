@@ -80,7 +80,7 @@ to the `x` in the global scope of its module `Bar`:
 ```
 
 Juliaはレキシカルスコープを使用しています。
-つまり、関数のスコープは呼び出し元のスコープを引き継がず、関数が定義されたスコープを引き継ぎます。
+つまり、関数のスコープは呼び出し元のスコープを受け継がず、関数が定義されたスコープを受け継ぎます。
 たとえば、次のコードでは、`foo`の内側の`x`は、`Bar`モジュールのグローバルスコープ内にある`x`を参照します。
 
 
@@ -170,7 +170,7 @@ ERROR: cannot assign variables in other modules
 Note that the interactive prompt (aka REPL) is in the global scope of the module `Main`.
 -->
 ```
-対話セッション（別名REPL）は、`Main`モジュールのグローバルスコープ内にあることに注意してくださいMain。
+対話セッション（別名REPL）は、`Main`モジュールのグローバルスコープ内にあることに注意してください。
 
 
 [](## Local Scope)
@@ -187,9 +187,9 @@ qualified access.
 -->
 ```
 新しいローカルスコープが、ほとんどのコードブロックによって導入されています。上記の表を参照してください。
-ローカルスコープは、**通常は**、親スコープのすべての変数を引き継いで、読み書きができます。
-ローカルスコープにはハードとソフトの2つの派生型があり、どの変数が引き継がれるのか、規則がわずかに異なります。
-グローバルスコープとは異なり、ローカルスコープは名前空間ではないため、何かしらの宣言などをして、内部スコープの変数に対して親スコープから取り出すことができません。
+ローカルスコープは、**通常は**、親スコープのすべての変数を受け継いで、読み書きができます。
+ローカルスコープにはハードとソフトの2つの派生型があり、どの変数が受け継がれるのか、規則がわずかに異なります。
+グローバルスコープとは異なり、ローカルスコープは名前空間ではないため、何かしらの限定的なアクセスによって、内部スコープの変数に対して親スコープから取り出すことができません。
 
 
 ```@raw html
@@ -263,7 +263,7 @@ The location of both the `local` and `global` keywords within the scope block is
 The following is equivalent to the last example (although stylistically worse):
 -->
 ```
-スコープブロック内の`local`キーワードと`global`キーワード位置両方ともどこでも構いません。
+スコープブロック内の`local`キーワードと`global`キーワードの位置は、両方ともどこでも構いません。
 以下は先程の例と同等です（あまりよくないスタイルですが）。
 
 
@@ -288,7 +288,7 @@ julia> z
 > specifically marked with the keyword `local`.
 -->
 ```
-> ソフトローカルスコープでは、特に`local`キーワードが設定されていない限り、すべての変数は親スコープから引き継がれます。
+> ソフトローカルスコープでは、わざわざ`local`キーワードをつけていない限り、すべての変数は親スコープから受け継がれます。
 
 ```@raw html
 <!--
@@ -305,7 +305,7 @@ In the following example the `x` and `y` refer always to the same variables as t
 scope inherits both read and write variables:
 -->
 ```
-次の例では、softローカルスコープによって読み書き可能な変数として引き継がれた、引き継ぎ元の`x`と`y`を常に参照しています。
+次の例では、softローカルスコープによって読み書き可能な変数として受け継がれた、受け継ぎ元の`x`と`y`を常に参照しています。
 
 
 ```jldoctest
@@ -347,6 +347,9 @@ Hard local scopes are introduced by function definitions (in all their forms), s
 and macro-definitions.
 -->
 ```
+ハードローカルスコープは、関数定義(すべての方式)、タイプ定義(structブロック)、およびマクロ定義によって導入されます。
+
+
 
 ```@raw html
 <!--
@@ -356,12 +359,16 @@ and macro-definitions.
 >   * a variable is specifically marked with the keyword `local`.
 -->
 ```
+> ハードローカルスコープでは、次の場合を除き、すべての変数は親スコープから受け継ぎます。
+> * 代入の結果、**グローバル**変数が変更されるか、または
+> * 変数にわざわざ`local`キーワードをつけている。
 
 ```@raw html
 <!--
 Thus global variables are only inherited for reading but not for writing:
 -->
 ```
+したがって、グローバル変数は、読み込みのためだけ受け継がれ、書き込みのためには受け継がれません。
 
 ```jldoctest
 julia> x, y = 1, 2;
@@ -383,6 +390,7 @@ julia> x
 An explicit `global` is needed to assign to a global variable:
 -->
 ```
+グローバル変数に代入するには明示的に`global`をつける必要があります。
 
 ```jldoctest
 julia> x = 1;
@@ -403,7 +411,7 @@ Note that *nested functions* can behave differently to functions defined in the 
 they can modify their parent scope's *local* variables:
 -->
 ```
-
+**ネストした関数**は、親スコープのローカル変数を変更できるため、グローバルスコープで定義された関数とは異なる動作をする可能性があることに注意してください。
 ```jldoctest
 julia> x, y = 1, 2;
 
@@ -430,6 +438,10 @@ slight differences between functions defined in local vs. global scopes. Conside
 of the last example by moving `bar` to the global scope:
 -->
 ```
+代入の際のグローバル変数とローカル変数の受け継ぎ方の違いから、ローカルスコープとグローバルスコープで定義された関数間に若干の違いが生じる可能性があります。
+前述の例で、`bar`をグローバルスコープに移動するとどうなるか、かんがえてみてください。
+
+
 
 ```jldoctest
 julia> x, y = 1, 2;
@@ -458,13 +470,16 @@ at the global scope. There are special scoping rules concerning the evaluation o
 keyword function arguments which are described in the [Function section](@ref man-functions).
 -->
 ```
-
+上記のような微妙な事態は型やマクロの定義にはおこりません。なぜなら、それらはグローバルスコープでしか現れないからです。
+[Function section]（@ ref man-functions）に記述されている、デフォルトおよびキーワード関数の引数の評価に関する特別なスコープ規則があります。
 ```@raw html
 <!--
 An assignment introducing a variable used inside a function, type or macro definition need not
 come before its inner usage:
 -->
 ```
+関数、型、またはマクロ定義の中で、変数を導入して行う代入は、その内部使用の前に来る必要はありません。
+
 
 ```jldoctest
 julia> f = y -> y + a
@@ -492,7 +507,9 @@ they are actually called. As an example, here is an inefficient, mutually recurs
 if positive integers are even or odd:
 -->
 ```
-
+この動作は、通常の変数の使い方では少し奇妙に見えるかもしれませんが、名前付き関数、つまり関数オブジェクトを保持する通常の変数、を定義する前に使用することができます。
+これにより、実際に呼び出された時点で定義されている限り、関数を直観的で便利な順序で定義できて、ボトムアップの順序や事前の宣言がにこだわる必要はありません。
+例として、正の整数が偶数か奇数かをテストする非効率的な、相互再帰的な方法を次に示します。
 ```jldoctest
 julia> even(n) = n == 0 ? true : odd(n-1);
 
@@ -511,6 +528,7 @@ Julia provides built-in, efficient functions to test for oddness and evenness ca
 and [`isodd()`](@ref) so the above definitions should only be taken as examples.
 -->
 ```
+ジュリアには、奇数・偶数を判定する、標準装備の効率的な関数[`iseven()`](@ref)と [`isodd()`](@ref) があるので、上記の定義は、単なる例だと思ってください。
 
 [](### Hard vs. Soft Local Scope)
 ### ハード vs ソフトローカルスコープ
