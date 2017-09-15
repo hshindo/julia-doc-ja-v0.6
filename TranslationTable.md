@@ -118,38 +118,38 @@
 |signature  |シグネチャ、関数を宣言する行
 |pass-by-sharing|共有渡し
 |compound expression|複合式
-|control flow|制御構造
+|control flow| 制御構造
 | generic function	|総称関数
 |type annotation	|型注釈
 |argument|引数
 |return value|戻り値
 |evaluation semantics	|評価戦略
 |Optional Arguments	|省略可能引数
-|Conditional Evaluation	|	条件評価
-|Task	|	タスク
-|Channel	|	チャネル
-|Coroutine	|	コルーチン
-|subexpression	|	部分式
-|branch	|	分岐
-|standard error I/O	|	標準エラー出力
-|unwind	|	巻き戻す、(深い階層から)飛び越えて戻る
-|suspend	|	一時停止する、保留する、中断する
-|resume	|	再開する
-|pick up right where you left off	|	中断したところから再開する
-|lifetime	|	存続期間、寿命
-|blocking operations	|	他を中断させる操作
-| `(;)` chain syntax	|	セミコロン(;)連鎖構文
-|`begin` blocks	|	beginブロック
-|unintuitive	|	直観に反する
-|precedence	|	優先順位
-|associativity	|	結合性
-|contrived	|	不自然な
-|cartesian product	|	直積
-|symmetric coroutines	|	対称コルーチン
-|lightweight　threads	|	軽量スレッド
-|cooperative multitasking	|	協調的マルチタスク
-|one-shot continuations	|	ワンショット継続
-|first-in first-out	|	先入先出
-|queue	|	キュー
-|producer	|	生産者
-|consumer	|	消費者
+|Conditional Evaluation  |  条件評価
+|Task  |  タスク
+|Channel  |  チャネル
+|Coroutine  |  コルーチン
+|subexpression  |  部分式
+|branch  |  分岐
+|standard error I/O  |  標準エラー出力
+|unwind  |  巻き戻す、(深い階層から)飛び越えて戻る
+|suspend  |  一時停止する、保留する、中断する
+|resume  |  再開する
+|pick up right where you left off  |  中断したところから再開する
+|lifetime  |  存続期間、寿命
+|blocking operations  |  他を中断させる操作
+| `(;)` chain syntax  |  セミコロン(;)連鎖構文
+|`begin` blocks  |  beginブロック
+|unintuitive  |  直観に反する
+|precedence  |  優先順位
+|associativity  |  結合性
+|contrived  |  不自然な
+|cartesian product  |  直積
+|symmetric coroutines  |  対称コルーチン
+|lightweight　threads  |  軽量スレッド
+|cooperative multitasking  |  協調的マルチタスク
+|one-shot continuations  |  ワンショット継続
+|first-in first-out  |  先入先出
+|queue  |  キュー
+|producer  |  生産者
+|consumer  |  消費者
