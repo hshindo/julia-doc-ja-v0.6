@@ -1,4 +1,5 @@
 # [Scope of Variables](@id scope-of-variables)
+# 変数のスコープ
 
 ```@raw html
 <!--
@@ -10,6 +11,17 @@ rules for when the same variable name does or doesn't refer to the same thing ar
 rules; this section spells them out in detail.
 -->
 ```
+
+変数の**スコープ**は、変数の見えるコードの領域です。
+変数のスコープは、変数の名前の衝突を避けるのに役立ちます。
+その考え方は直観的です。
+２つの関数が、引数に同じ名前の`x`を使っていても、それぞれの`x`が同じものを参照することがないようにできます。
+同様に、異なるコードブロックで、同じ名前を使用しても、同じものを参照することのない多くの他のケースがあります。
+同じ変数名が、いつ同じものを参照し、いつそうではないかを、決める規則は、スコープ規則と呼ばれます。
+このセクションで詳しく説明します。
+
+
+
 ```@raw html
 <!--
 Certain constructs in the language introduce *scope blocks*, which are regions of code that are
@@ -19,6 +31,14 @@ main types of scopes in Julia, *global scope* and *local scope*, the latter can 
 constructs introducing scope blocks are:
 -->
 ```
+
+ある種の言語構文は、**スコープブロック**を採用しています。
+これは、変数のスコープとして適切なコードの領域です。
+変数のスコープは、ソースコードの勝手な行の範囲を割り当てることはできません。
+代わりに、スコープブロックのいずれかを常に割り当てます。
+Juliaには**グローバルスコープ**と**ローカルスコープ**の2つの主要なスコープがあり、ローカルスコープはネストすることができます。
+スコープブロックを導入する構成要素は次のとおりです。
+
 
 ```@raw html
 <!--
@@ -30,6 +50,14 @@ constructs introducing scope blocks are:
 -->
 ```
 
+| スコープ名                | スコープを採用している　ブロック／構成要素                                                                  |
+|:--------------------     |:-------------------------------------------------------------------------------------------------------- |
+| [グローバルスコープ](@ref) | `module`, `baremodule`, 対話セッション (REPL)                                                           |
+| [ローカルスコープ](@ref)   | [ソフトローカルスコープ](@ref): `for`, `while`, 内包表記, try-catch-finally, `let`                       |
+| [ローカルスコープ](@ref)   | [ハードローカルスコープ](@ref): 関数 (通常の構文、 無名関数 、 do-ブロック), `struct`, `macro`            |
+
+
+
 ```@raw html
 <!--
 Notably missing from this table are [begin blocks](@ref man-compound-expressions) and [if blocks](@ref man-conditional-evaluation), which do *not*
@@ -37,6 +65,10 @@ introduce new scope blocks. All three types of scopes follow somewhat different 
 be explained below as well as some extra rules for certain blocks.
 -->
 ```
+
+注意すべきはこのテーブルにない [begin ブロック]（@ ref man-compound-expressions）と[if ブロック（@ ref man-conditional-evaluation）]です。
+これらは新しいスコープブロックを導入しません。
+以下、少しずつ規則の違う３つのスコープと、特別な規則のブロックについて説明します。
 
 ```@raw html
 <!--
@@ -46,6 +78,12 @@ which the function was defined. For example, in the following code the `x` insid
 to the `x` in the global scope of its module `Bar`:
 -->
 ```
+
+Juliaはレキシカルスコープを使用しています。
+つまり、関数のスコープは呼び出し元のスコープを引き継がず、関数が定義されたスコープを引き継ぎます。
+たとえば、次のコードでは、`foo`の内側の`x`は、`Bar`モジュールのグローバルスコープ内にある`x`を参照します。
+
+
 
 ```jldoctest moduleBar
 julia> module Bar
@@ -59,6 +97,9 @@ julia> module Bar
 and not a `x` in the scope where `foo` is used:
 -->
 ```
+
+`foo`が使われるスコープ内の`x`を参照するわけではありません。
+
 
 ```jldoctest moduleBar
 julia> import .Bar
@@ -75,7 +116,11 @@ Thus *lexical scope* means that the scope of variables can be inferred from the 
 -->
 ```
 
+このように、**レキシカルスコープ**では、変数のスコープをソースコードだけで推測できることを意味します。
+
 ## Global Scope
+
+## グローバル　スコープ
 
 ```@raw html
 <!--
