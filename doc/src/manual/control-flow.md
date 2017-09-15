@@ -43,7 +43,7 @@ direct usage of tasks, but certain problems can be solved much more easily by us
 日常的なプログラムには、タスクを直接使う必要はないかもしれませんが、ある種の問題は、タスクを使うとはるかに簡単に解くことができます。
 
 [](## [Compound Expressions](@id man-compound-expressions))
-## [複合式]
+## [複合式](@id man-compound-expressions)
 
 ```@raw html
 <!--
@@ -89,7 +89,7 @@ or that `(;)` chains be single-line:
 -->
 ```
 
-この構文は、[関数](@ref) の章で紹介した、簡潔で単一行の関数定義方式と一緒に使うと、特に便利です。
+この構文は、[Functions](@ref) の章で紹介した、簡潔で単一行の関数定義方式と一緒に使うと、特に便利です。
 beginブロックは複数行で、セミコロン(;)連鎖は単一行で使うのが一般的ですが、これに従う必要はありません。
 
 ```jldoctest
@@ -597,7 +597,7 @@ false
 ```
 
 [](## [Repeated Evaluation: Loops](@id man-loops))
-## 繰り返し評価:ループ
+## [繰り返し評価:ループ](@id man-loops)
 
 ```@raw html
 <!--
@@ -1310,7 +1310,7 @@ case the `finally` block will run after `catch` has handled the error.
 
 
 [](## [Tasks (aka Coroutines)](@id man-tasks))
-## タスク（別名コルーチン）
+## [タスク（別名コルーチン）](@id man-tasks)
 
 ```@raw html
 <!--
@@ -1332,8 +1332,8 @@ consuming the call stack. Second, switching among tasks can occur in any order, 
 calls, where the called function must finish executing before control returns to the calling function.
 -->
 ```
-ある計算作業（実のところ関数の実行）を[`タスク`](@ref)に指定すると、その作業を中断して、別の計算作業に切り替えることができます。
-元の[`タスク`](@ref)は後で中断したところから再開することができます。一見、これは関数呼び出しと同じように見えるかもしれません。しかし、2つの重要な違いがあります。
+ある計算作業（実のところ関数の実行）を[`Task`](@ref)に指定すると、その作業を中断して、別の計算作業に切り替えることができます。
+元の[`Task`](@ref)は後で中断したところから再開することができます。一見、これは関数呼び出しと同じように見えるかもしれません。しかし、2つの重要な違いがあります。
 まず、タスクの切り替えではメモリ領域が使用されないため、コールスタックを消費せずに任意の数のタスク切り替えを実行できます。
 つぎに、タスク間の切り替えは任意の順序で行うことができます。これは、呼ばれた関数は、呼び出し元の関数に制御が戻る前に、実行を終了する必要がある関数呼び出しとは異なります。
 
@@ -1369,12 +1369,12 @@ constructor which accepts a 1-arg function as an argument can be used to run a t
 We can then [`take!()`](@ref) values repeatedly from the channel object:
 -->
 ```
-Juliaはこの問題を解決するための[`チャネル`](@ref) という仕組みを提供しています。
-[`チャネル`](@ref) は待機可能な先入先出のキューで、複数のタスクの読み書きが可能です。
+Juliaはこの問題を解決するための[`Channel`](@ref) という仕組みを提供しています。
+[`Channel`](@ref) は待機可能な先入先出のキューで、複数のタスクの読み書きが可能です。
 
 生産者タスクを定義して、[`put!`](@ref) を呼び出すと値を生産するようにしましょう。
 値を消費するには、生産者を新しいタスクで実行するようにスケジュールする必要があります。
- 引数が1個の関数を引数として受けとる特殊な[`チャネル`](@ref) コンストラクタを使用して、チャネルに接続されたタスクを実行することができます。
+ 引数が1個の関数を引数として受けとる特殊な[`Channel`](@ref) コンストラクタを使用して、チャネルに接続されたタスクを実行することができます。
 そうすると、 [`take!()`](@ref)を使って、チャネルオブジェクトから繰り返し値を取得できます。
 
 ```jldoctest producer
@@ -1452,7 +1452,7 @@ terminates. Multiple channels can be bound to a task, and vice-versa.
 ```
 
 生産者のチャネルを明示的に閉じる必要はないことに注意してください。
-これは、[`チャネル`](@ref) を[`Task()`](@ref)に接続することは、存続期間のわからないチャネルとタスクを対応させることだからです。
+これは、[`Channel`](@ref) を[`Task()`](@ref)に接続することは、存続期間のわからないチャネルとタスクを対応させることだからです。
 タスクが終了すると、チャネルオブジェクトは自動的に閉じられます。
 タスクには複数のチャネルを接続することができ、その逆も可能です。
 
@@ -1502,7 +1502,7 @@ True kernel threads are discussed under the topic of [Parallel Computing](@ref).
 ```
 
 いまのところ、Juliaのタスクは別々のCPUコアで実行するようにスケジュールされないことに注意してください。
-真のカーネルスレッドについては、[並列コンピューティング](@ref) のトピックで説明します。
+真のカーネルスレッドについては、[Parallel Computing](@ref) のトピックで説明します。
 
 
 [](### Core task operations)
@@ -1613,7 +1613,7 @@ or [`@async`](@ref) macros (see [Parallel Computing](@ref) for more details).
 このため、必要に応じて[`yieldto()`](@ref) を使って手動でタスクを管理できます。
 しかし、このようなタスクがイベントを待機しているときは、イベントが発生したときに自動的に再開されます。
 また、いかなるイベントも待機することなく、スケジューラーが可能な限りタスクを実行できるようにすることも可能です。
-これは、[`schedule()`](@ref) 呼び出すか、または、[`@schedule`](@ref) か[`@async`](@ref) のマクロを使って行います。(詳細については[並列コンピューティング](@ref) を参照）。
+これは、[`schedule()`](@ref) 呼び出すか、または、[`@schedule`](@ref) か[`@async`](@ref) のマクロを使って行います。(詳細については[Parallel Computing](@ref) を参照）。
 
 [](### Task states)
 ### タスクの状態
