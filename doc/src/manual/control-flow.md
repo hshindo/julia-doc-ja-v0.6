@@ -1,4 +1,4 @@
-# Control Flow
+[](# Control Flow)
 # 制御構造
 
 ```@raw html
@@ -42,7 +42,7 @@ direct usage of tasks, but certain problems can be solved much more easily by us
 タスクは、強力な制御構造で、Juliaでは、例外処理や協調的マルチタスクの実装に、使われています。
 日常的なプログラムには、タスクを直接使う必要はないかもしれませんが、ある種の問題は、タスクを使うとはるかに簡単に解くことができます。
 
-## [Compound Expressions](@id man-compound-expressions)
+[](## [Compound Expressions](@id man-compound-expressions))
 ## [複合式]
 
 ```@raw html
@@ -102,7 +102,7 @@ julia> (x = 1;
 3
 ```
 
-## [Conditional Evaluation](@id man-conditional-evaluation)
+[](## [Conditional Evaluation](@id man-conditional-evaluation))
 ## [条件評価](@id man-conditional-evaluation)
 
 ```@raw html
@@ -401,7 +401,7 @@ no
 "no"
 ```
 
-## Short-Circuit Evaluation
+[](## Short-Circuit Evaluation)
 ## 短絡評価
 
 ```@raw html
@@ -596,7 +596,7 @@ julia> false && (x = (1, 2, 3))
 false
 ```
 
-## [Repeated Evaluation: Loops](@id man-loops)
+[](## [Repeated Evaluation: Loops](@id man-loops))
 ## 繰り返し評価:ループ
 
 ```@raw html
@@ -826,7 +826,7 @@ A `break` statement inside such a loop exits the entire nest of loops, not just 
 ```
 
 ネストした`for`ループ内の`break`文は、内側のループだけでなく、ネスト全体のループを終了します。
-## Exception Handling
+[](## Exception Handling)
 ## 例外処理
 
 ```@raw html
@@ -842,7 +842,7 @@ such exceptional circumstances, allow that code to take the appropriate action.
 そんな例外的な状況に対する最善の策は、プログラムを終了させることかもしれないし、状況を報告するエラーメッセージを出力することかもしれません。また、プログラマが例外的な状況に対応するコードを用意している場合は、そのコードに適切な処置をとらせることかもしれません。
 
 
-### Built-in `Exception`
+[](### Built-in `Exception`)
 ### 標準装備の`例外`
 
 ```@raw html
@@ -939,7 +939,7 @@ You may define your own exceptions in the following way:
 ```jldoctest
 julia> struct MyCustomException <: Exception end
 ```
-### The [`throw()`](@ref) function
+[](### The [`throw()`](@ref) function)
 ### [`throw()`](@ref)　関数
 
 ```@raw html
@@ -1040,7 +1040,7 @@ julia> Base.showerror(io::IO, e::MyUndefVarError) = print(io, e.var, " not defin
 
 
 size(A) == size(B) || throw(DimensionMismatch("size of A not equal to size of B"))
-### Errors
+[](### Errors)
 ### エラー
 
 ```@raw html
@@ -1105,7 +1105,7 @@ Stacktrace:
  [2] verbose_fussy_sqrt(::Int64) at ./none:3
 ```
 
-### Warnings and informational messages
+[](### Warnings and informational messages)
 ### 警告と情報メッセージ
 
 ```@raw html
@@ -1132,7 +1132,7 @@ Stacktrace:
  [1] error(::String) at ./error.jl:21
 ```
 
-### The `try/catch` statement
+[](### The `try/catch` statement)
 ### The `try/catch` 文
 
 ```@raw html
@@ -1262,7 +1262,7 @@ functions for more advanced error handling.
 `try/catch`文が強力なのは、深く入れ子になった計算から、関数呼び出しを重ねたはるかに高いレベルまで、飛び越えて戻ることができることにあります。エラーが発生していない場合でも、スタックを飛び越えて戻ってより高いレベルに値を渡す機能はほしいものです。
 Juliaでは [`rethrow()`](@ref), [`backtrace()`](@ref) and [`catch_backtrace()`](@ref) といった さらに高度なエラー処理のための関数が用意されています。
 
-### `finally` Clauses
+[](### `finally` Clauses)
 ### `finally` 節
 
 ```@raw html
@@ -1309,7 +1309,7 @@ case the `finally` block will run after `catch` has handled the error.
 
 
 
-## [Tasks (aka Coroutines)](@id man-tasks)
+[](## [Tasks (aka Coroutines)](@id man-tasks))
 ## タスク（別名コルーチン）
 
 ```@raw html
@@ -1505,7 +1505,7 @@ True kernel threads are discussed under the topic of [Parallel Computing](@ref).
 真のカーネルスレッドについては、[並列コンピューティング](@ref) のトピックで説明します。
 
 
-### Core task operations
+[](### Core task operations)
 ### コアタスク処理
 
 ```@raw html
@@ -1558,7 +1558,7 @@ In addition to [`yieldto()`](@ref), a few other basic functions are needed to us
   * [`task_local_storage()`](@ref) 現在のタスクに固有のキーバリューストアを操作します。
 
 
-### Tasks and events
+[](### Tasks and events)
 ### タスクとイベント
 
 ```@raw html
@@ -1615,7 +1615,7 @@ or [`@async`](@ref) macros (see [Parallel Computing](@ref) for more details).
 また、いかなるイベントも待機することなく、スケジューラーが可能な限りタスクを実行できるようにすることも可能です。
 これは、[`schedule()`](@ref) 呼び出すか、または、[`@schedule`](@ref) か[`@async`](@ref) のマクロを使って行います。(詳細については[並列コンピューティング](@ref) を参照）。
 
-### Task states
+[](### Task states)
 ### タスクの状態
 ```@raw html
 <!--
@@ -1636,6 +1636,7 @@ symbols:
 | `:failed`   | Finished with an uncaught exception                |
 -->
 ```
+
 | シンボル     | 意味                                               |
 |:----------- |:-------------------------------------------------- |
 | `:runnable` | 現在実行中、または切り替え可能                        |
