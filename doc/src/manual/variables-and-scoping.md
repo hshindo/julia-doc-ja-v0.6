@@ -359,8 +359,8 @@ and macro-definitions.
 >   * a variable is specifically marked with the keyword `local`.
 -->
 ```
-> ハードローカルスコープでは、次の場合を除き、すべての変数は親スコープから受け継ぎます。
-> * 代入の結果、**グローバル**変数が変更されるか、または
+> ハードローカルスコープでは、次のいづれかの場合を除き、すべての変数は親スコープから受け継ぎます。
+> * 代入の結果、**グローバル**変数が変更される。
 > * 変数にわざわざ`local`キーワードをつけている。
 
 ```@raw html
@@ -439,7 +439,7 @@ of the last example by moving `bar` to the global scope:
 -->
 ```
 代入の際のグローバル変数とローカル変数の受け継ぎ方の違いから、ローカルスコープとグローバルスコープで定義された関数間に若干の違いが生じる可能性があります。
-前述の例で、`bar`をグローバルスコープに移動するとどうなるか、かんがえてみてください。
+前述の例で、`bar`をグローバルスコープに移動するとどうなるか、考えてみてください。
 
 
 
@@ -531,7 +531,7 @@ and [`isodd()`](@ref) so the above definitions should only be taken as examples.
 ジュリアには、奇数・偶数を判定する、標準装備の効率的な関数[`iseven()`](@ref)と [`isodd()`](@ref) があるので、上記の定義は、単なる例だと思ってください。
 
 [](### Hard vs. Soft Local Scope)
-### ハード vs ソフトローカルスコープ
+### ハードローカルスコープとソフトローカルスコープの比較
 ```@raw html
 <!--
 Blocks which introduce a soft local scope, such as loops, are generally used to manipulate the
@@ -539,7 +539,8 @@ variables in their parent scope. Thus their default is to fully access all varia
 parent scope.
 -->
 ```
-
+ループなどのソフトローカルスコープが導入されるブロックは、通常、親スコープ内の変数を操作するために使用されます。
+そのため、デフォルトでは、親スコープのすべての変数に無制限にアクセスできます。
 ```@raw html
 <!--
 Conversely, the code inside blocks which introduce a hard local scope (function, type, and macro
@@ -548,6 +549,9 @@ variables in other modules should be done with care and thus this is an opt-in f
 the `global` keyword.
 -->
 ```
+一方、ハードローカルスコープを導入するブロック（関数・型・マクロの定義）内のコードは、プログラムの任意の場所で実行できます。
+他のモジュールのグローバル変数の状態を外側から変更する場合は注意が必要です。
+そのため、これはわざわざ`global`キーワードをつけなければできないオプトインの機能です。
 
 ```@raw html
 <!--
@@ -556,6 +560,8 @@ constructing [closures](https://en.wikipedia.org/wiki/Closure_%28computer_progra
 have a private state, for instance the `state` variable in the following example:
 -->
 ```
+ネストされた関数から親スコープのローカル変数を変更できるのは、
+プライベートな状態（たとえば、次の例の`state`変数）を持つ[クロージャ](https://en.wikipedia.org/wiki/Closure_%28computer_programming%29)を構築できるようにするためです。
 
 ```jldoctest
 julia> let
@@ -576,7 +582,7 @@ julia> counter()
 See also the closures in the examples in the next two sections.
 -->
 ```
-
+次の2つのセクションの例のクロージャも参照してください。
 [](### Let Blocks)
 ### Let ブロック
 
