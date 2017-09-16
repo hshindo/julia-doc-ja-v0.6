@@ -129,11 +129,11 @@ dot-notation, i.e. each module is a so-called *namespace*. Note that variable bi
 be changed within their global scope and not from an outside module.
 -->
 ```
-モジュールは、それぞれ、他のモジュールとは異なる新しいグローバルスコープを導入します。
+各モジュールは、それぞれ、他のすべてのモジュールと分離した新しいグローバルスコープを導入します。
 すべてを包括するスコープは存在しません。
-モジュールは他のモジュールの変数を自分のスコープに導入可能で、[usingまたはimport]（@ ref モジュール）文を使うとモジュール全体、dot表記を使うと限定的になります。
+モジュールは他のモジュールの変数を自分のスコープに導入できて、[usingまたはimport]（@ ref モジュール）文を使うとモジュール全体、dot表記を使うと限定的になります。
 つまり、各モジュールはいわゆる名前空間です。
-変数の束縛が変更されるのは、モジュールのグローバルスコープ内のみで、モジュールでは変わらないことに注意してください。
+変数の束縛が変更されるのは、モジュール内のグローバルスコープのみで、モジュール外では変わらないことに注意してください。
 
 
 
@@ -169,7 +169,7 @@ ERROR: cannot assign variables in other modules
 Note that the interactive prompt (aka REPL) is in the global scope of the module `Main`.
 -->
 ```
-対話セッション（別名REPL）は、`Main`モジュールのグローバルスコープ内にあることに注意してください。
+対話セッション（別名REPL）は、`Main`モジュールのグローバルスコープ内であることに注意してください。
 
 
 [](## Local Scope)
