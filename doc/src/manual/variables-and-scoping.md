@@ -714,7 +714,10 @@ loops which reuse the variables for all iterations. Therefore these constructs a
 `while` loops with `let` blocks inside:
 -->
 ```
-
+forループおよび[内包表記](@ref) は次のように動作します。
+本体のスコープに導入された新しい変数は、ループの繰り返しごとに新しく割り当てられます。
+これは、`while`るループでは、 すべての反復で変数が再利用されるのとは対照的です。
+つまり、これらは内側で`let`ブロックを使った`while`ループと同様の動作をします。
 ```jldoctest
 julia> Fs = Array{Any}(2);
 
@@ -735,6 +738,8 @@ julia> Fs[2]()
 `for` loops will reuse existing variables for its iteration variable:
 -->
 ```
+for ループで反復に使う変数は、既存の変数を再利用します。
+
 
 ```jldoctest
 julia> i = 0;
@@ -752,6 +757,8 @@ julia> i
 However, comprehensions do not do this, and always freshly allocate their iteration variables:
 -->
 ```
+しかし、内包表記はこれとは異なり、常に反復用の変数を新しく割り当てます。
+
 
 ```jldoctest
 julia> x = 0;
@@ -772,6 +779,7 @@ A common use of variables is giving names to specific, unchanging values. Such v
 assigned once. This intent can be conveyed to the compiler using the `const` keyword:
 -->
 ```
+変数の一般的な使用は、特定の変更されない値に名前を付けることです。このような変数は1回のみ割り当てられます。このインテントは、次のconstキーワードを使用してコンパイラに伝えることができます。
 
 ```jldoctest
 julia> const e  = 2.71828182845904523536;
@@ -788,7 +796,10 @@ their values (or even their types) might change at almost any time. If a global 
 not change, adding a `const` declaration solves this performance problem.
 -->
 ```
-
+`const`宣言は、グローバルとローカルの両方の変数に利用できますが、特にグローバルに対して有用です。
+コンパイラにとって、グローバル変数を含むコードを最適化することは困難です。
+その値（時には型も）がほとんどどんな時でも変更される可能性があるからです。
+グローバル変数に変更がない場合、`const`宣言を追加すると、このパフォーマンスの問題は解決します。
 
 ```@raw html
 <!--
@@ -796,7 +807,8 @@ Local constants are quite different. The compiler is able to determine automatic
 variable is constant, so local constant declarations are not necessary for performance purposes.
 -->
 ```
-
+ローカル定数は全く異なります。
+コンパイラは、ローカル変数が定数の時に自動的に判別できるため、パフォーマンス目的でローカルの定数宣言をする必要はありません。
 
 ```@raw html
 <!--
@@ -804,6 +816,8 @@ Special top-level assignments, such as those performed by the `function` and `st
 are constant by default.
 -->
 ```
+`function`や`struct`キーワードによって実行されるような特殊なトップレベルの代入は、デフォルトでは定数です。
+
 
 
 ```@raw html
@@ -812,3 +826,5 @@ Note that `const` only affects the variable binding; the variable may be bound t
 (such as an array), and that object may still be modified.
 -->
 ```
+`const`宣言が有効なのは変数に束縛されている場合だけなので注意してください。
+（配列など）可変なオブジェクトに変数を束縛しても、そのオブジェクトは変更されている可能性があります。
