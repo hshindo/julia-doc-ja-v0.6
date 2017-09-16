@@ -1,5 +1,5 @@
 [](# [Scope of Variables](@id scope-of-variables))
-# 変数のスコープ
+# 変数のスコープ(@id scope-of-variables)
 
 ```@raw html
 <!--
@@ -199,7 +199,7 @@ variable in a local scope does not back-propagate to its parent scope. For examp
 -->
 ```
 次の規則と例は、ハードローカルスコープとソフトローカルスコープの両方に関連します。
-ローカルスコープ内に新しく導入された変数は、その親スコープに伝播しません。たとえば、この例の `z`はトップレベルのスコープには導入されていません。
+ローカルスコープ内に新しく導入された変数は、その親スコープに逆伝播しません。たとえば、この例の `z`はトップレベルのスコープには導入されていません。
 
 
 ```jldoctest
@@ -324,8 +324,8 @@ Within soft scopes, the *global* keyword is never necessary, although allowed. T
 when it would change the semantics is (currently) a syntax error:
 -->
 ```
-ソフトスコープ内では、**グローバル**キーワードは必要ではありませんが、使っても構いません。
-セマンティクスの変わる唯一のケースは、構文エラーです（現時点）。
+ソフトスコープ内では、**グローバル**キーワードは必要ありませんが、使っても構いません。
+globalの有無でセマンティクスの変わる（現時点の）唯一のケースは、構文エラーです。
 
 ```jldoctest
 julia> let
@@ -469,7 +469,7 @@ at the global scope. There are special scoping rules concerning the evaluation o
 keyword function arguments which are described in the [Function section](@ref man-functions).
 -->
 ```
-上記のような微妙な事態は型やマクロの定義にはおこりません。なぜなら、それらはグローバルスコープでしか現れないからです。
+上記のような微妙な事態は型やマクロの定義にはおこりません。というのも、これらはグローバルスコープにしか現れないからです。
 [Function section]（@ ref man-functions）に記述されている、デフォルトおよびキーワード関数の引数の評価に関する特別なスコープ規則があります。
 ```@raw html
 <!--
@@ -477,7 +477,7 @@ An assignment introducing a variable used inside a function, type or macro defin
 come before its inner usage:
 -->
 ```
-関数、型、またはマクロ定義の中で、変数を導入して行う代入は、その内部使用の前に来る必要はありません。
+関数・型・マクロ定義の内部で使う変数を導入する代入は、その変数の内部での使用の前である必要はありません。
 
 
 ```jldoctest
@@ -507,7 +507,7 @@ if positive integers are even or odd:
 -->
 ```
 この動作は、通常の変数の使い方では少し奇妙に見えるかもしれませんが、名前付き関数、つまり関数オブジェクトを保持する通常の変数、を定義する前に使用することができます。
-これにより、実際に呼び出された時点で定義されている限り、関数を直観的で便利な順序で定義できて、ボトムアップの順序や事前の宣言がにこだわる必要はありません。
+これにより、実際に呼び出された時点で定義されている限り、関数を直観的で便利な順序で定義できて、ボトムアップの順序の強制や事前の宣言の必要はありません。
 例として、正の整数が偶数か奇数かをテストする非効率的な、相互再帰的な方法を次に示します。
 ```jldoctest
 julia> even(n) = n == 0 ? true : odd(n-1);
@@ -678,7 +678,7 @@ Since the `begin` construct does not introduce a new scope, it can be useful to 
 -->
 ```
 
-複合式`begin`では新しいスコープを導入しないので、引数がなくて新しい束縛を行わない`let`文を、新しいスコープブロックを導入するためだけに使うと便利なことがあります 。
+複合式`begin`では新しいスコープを導入しないので、新しいスコープブロックを導入するためだけに、引数がなくて新しい束縛を行わない`let`文を、使うと便利なことがあります 。
 
 
 ```jldoctest
@@ -737,7 +737,7 @@ julia> Fs[2]()
 `for` loops will reuse existing variables for its iteration variable:
 -->
 ```
-for ループで反復に使う変数は、既存の変数を再利用します。
+forループで反復に使う変数は、既存の変数を再利用します。
 
 
 ```jldoctest
@@ -778,7 +778,7 @@ A common use of variables is giving names to specific, unchanging values. Such v
 assigned once. This intent can be conveyed to the compiler using the `const` keyword:
 -->
 ```
-不変の特定の値に名前を与えるために変数を使う、ということはよくあります。
+特定の不変の値に名前を与えるために変数を使う、ということはよくあります。
 このような変数に対する代入は一度きりです。
 こうした意図を、次の`const`キーワードを使って、コンパイラに伝えることができます。
 
@@ -798,9 +798,9 @@ not change, adding a `const` declaration solves this performance problem.
 -->
 ```
 `const`宣言は、グローバルとローカルの両方の変数に利用できますが、特にグローバルに対して有用です。
-コンパイラにとって、グローバル変数を含むコードを最適化することは困難です。
+コンパイラが、グローバル変数を含むコードを最適化することは困難です。
 その値（時には型も）がほとんどどんな時でも変更される可能性があるからです。
-グローバル変数に変更がない場合、`const`宣言を追加すると、このパフォーマンスの問題は解決します。
+グローバル変数に変更がない場合、`const`宣言を追加すると、このパフォーマンス上の問題は解決します。
 
 ```@raw html
 <!--
@@ -809,7 +809,7 @@ variable is constant, so local constant declarations are not necessary for perfo
 -->
 ```
 ローカル定数は全く異なります。
-コンパイラは、ローカル変数が定数の時に自動的に判別できるため、パフォーマンス目的でローカルの定数宣言をする必要はありません。
+コンパイラは、ローカル変数が定数だと自動的に判別できるため、パフォーマンス目的でローカルの定数の宣言をする必要はありません。
 
 ```@raw html
 <!--
