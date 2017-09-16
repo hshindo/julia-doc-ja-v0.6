@@ -596,6 +596,11 @@ outlive their scope via closures. The `let` syntax accepts a comma-separated ser
 and variable names:
 -->
 ```
+ローカル変数への代入とは異なり、`let`文は実行するたびに変数の束縛に新たにメモリを割り当てます。
+代入によって既存の値の場所が変更され、`let`が新しい場所を作成します。
+この差は通常は重要ではなく、クロージャを介したスコープ外の変数の場合にのみ検出可能です。
+`let`構文では、カンマで区切った一連の代入と変数名が受理されます。
+
 
 ```jldoctest
 julia> x, y, z = -1, -1, -1;
@@ -616,6 +621,9 @@ something like `let x = x` since the two `x` variables are distinct and have sep
 Here is an example where the behavior of `let` is needed:
 -->
 ```
+代入は順番に評価され、それぞれ、、右側がスコープ内で評価されてから、左側の新しい変数が導入されます。
+したがって`let x = x`のような記述は意味を成します。2つの変数`x`は別物で、別々の記憶域を持つからです。
+`let`の挙動が必要な例を次に示します。
 
 ```jldoctest
 julia> Fs = Array{Any}(2); i = 1;
@@ -640,6 +648,11 @@ variable `i`, so the two closures behave identically. We can use `let` to create
 for `i`:
 -->
 ```
+ここでは、変数`i`を返す2つのクロージャを作成して格納します。
+しかし、それは常に同じ変数`i`なので、2つのクロージャは同じように動作します。
+`let`を使って、次のような新しい`i`のバインディングを作成することができます。
+
+
 
 ```jldoctest
 julia> Fs = Array{Any}(2); i = 1;
@@ -666,6 +679,9 @@ Since the `begin` construct does not introduce a new scope, it can be useful to 
 -->
 ```
 
+複合式`begin`では新しいスコープを導入しないので、引数がなくて新しい束縛を行わない`let`文を、新しいスコープブロックを導入するためだけに使うと便利なことがあります 。
+
+
 ```jldoctest
 julia> let
            local x = 1
@@ -678,12 +694,14 @@ julia> let
 ```
 
 
+
 ```@raw html
 <!--
 Since `let` introduces a new scope block, the inner local `x` is a different variable than the
 outer local `x`.
 -->
 ```
+`let`によって、新しいスコープブロックが導入されるので、内側のローカル変数`x`は外側のローカル変数`x`とは異なります。
 
 [](### For Loops and Comprehensions)
 ### For ループと内包表記
