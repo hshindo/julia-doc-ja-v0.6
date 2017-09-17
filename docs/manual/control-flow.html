@@ -1,30 +1,64 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Control Flow · The Julia Language</title><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>制御構造 · The Julia Language</title><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-28835595-6', 'auto');
 ga('send', 'pageview');
-</script><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/highlightjs/default.css" rel="stylesheet" type="text/css"/><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="The Julia Language logo"/></a><h1>The Julia Language</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li><span class="toctext">Manual</span><ul><li><a class="toctext" href="introduction.html">はじめに</a></li><li><a class="toctext" href="getting-started.html">Juliaをはじめる</a></li><li><a class="toctext" href="variables.html">変数</a></li><li><a class="toctext" href="integers-and-floating-point-numbers.html">整数と浮動小数点数</a></li><li><a class="toctext" href="mathematical-operations.html">算術処理と基本的な関数</a></li><li><a class="toctext" href="complex-and-rational-numbers.html">複素数と有理数</a></li><li><a class="toctext" href="strings.html">Strings</a></li><li><a class="toctext" href="functions.html">Functions</a></li><li class="current"><a class="toctext" href="control-flow.html">Control Flow</a><ul class="internal"><li><a class="toctext" href="#man-compound-expressions-1">Compound Expressions</a></li><li><a class="toctext" href="#man-conditional-evaluation-1">Conditional Evaluation</a></li><li><a class="toctext" href="#Short-Circuit-Evaluation-1">Short-Circuit Evaluation</a></li><li><a class="toctext" href="#man-loops-1">Repeated Evaluation: Loops</a></li><li><a class="toctext" href="#Exception-Handling-1">Exception Handling</a></li><li><a class="toctext" href="#man-tasks-1">Tasks (aka Coroutines)</a></li></ul></li><li><a class="toctext" href="variables-and-scoping.html">Scope of Variables</a></li><li><a class="toctext" href="types.html">Types</a></li><li><a class="toctext" href="methods.html">Methods</a></li><li><a class="toctext" href="constructors.html">Constructors</a></li><li><a class="toctext" href="conversion-and-promotion.html">Conversion and Promotion</a></li><li><a class="toctext" href="interfaces.html">Interfaces</a></li><li><a class="toctext" href="modules.html">Modules</a></li><li><a class="toctext" href="documentation.html">Documentation</a></li><li><a class="toctext" href="metaprogramming.html">Metaprogramming</a></li><li><a class="toctext" href="arrays.html">Multi-dimensional Arrays</a></li><li><a class="toctext" href="linear-algebra.html">Linear algebra</a></li><li><a class="toctext" href="networking-and-streams.html">Networking and Streams</a></li><li><a class="toctext" href="parallel-computing.html">Parallel Computing</a></li><li><a class="toctext" href="dates.html">Date and DateTime</a></li><li><a class="toctext" href="interacting-with-julia.html">Interacting With Julia</a></li><li><a class="toctext" href="running-external-programs.html">Running External Programs</a></li><li><a class="toctext" href="calling-c-and-fortran-code.html">Calling C and Fortran Code</a></li><li><a class="toctext" href="handling-operating-system-variation.html">Handling Operating System Variation</a></li><li><a class="toctext" href="environment-variables.html">Environment Variables</a></li><li><a class="toctext" href="embedding.html">Embedding Julia</a></li><li><a class="toctext" href="packages.html">Packages</a></li><li><a class="toctext" href="profile.html">Profiling</a></li><li><a class="toctext" href="stacktraces.html">Stack Traces</a></li><li><a class="toctext" href="performance-tips.html">Performance Tips</a></li><li><a class="toctext" href="workflow-tips.html">Workflow Tips</a></li><li><a class="toctext" href="style-guide.html">Style Guide</a></li><li><a class="toctext" href="faq.html">Frequently Asked Questions</a></li><li><a class="toctext" href="noteworthy-differences.html">Noteworthy Differences from other Languages</a></li><li><a class="toctext" href="unicode-input.html">Unicode Input</a></li></ul></li><li><span class="toctext">Standard Library</span><ul><li><a class="toctext" href="../stdlib/base.html">Essentials</a></li><li><a class="toctext" href="../stdlib/collections.html">Collections and Data Structures</a></li><li><a class="toctext" href="../stdlib/math.html">Mathematics</a></li><li><a class="toctext" href="../stdlib/numbers.html">Numbers</a></li><li><a class="toctext" href="../stdlib/strings.html">Strings</a></li><li><a class="toctext" href="../stdlib/arrays.html">Arrays</a></li><li><a class="toctext" href="../stdlib/parallel.html">Tasks and Parallel Computing</a></li><li><a class="toctext" href="../stdlib/linalg.html">Linear Algebra</a></li><li><a class="toctext" href="../stdlib/constants.html">Constants</a></li><li><a class="toctext" href="../stdlib/file.html">Filesystem</a></li><li><a class="toctext" href="../stdlib/io-network.html">I/O and Network</a></li><li><a class="toctext" href="../stdlib/punctuation.html">Punctuation</a></li><li><a class="toctext" href="../stdlib/sort.html">Sorting and Related Functions</a></li><li><a class="toctext" href="../stdlib/pkg.html">Package Manager Functions</a></li><li><a class="toctext" href="../stdlib/dates.html">Dates and Time</a></li><li><a class="toctext" href="../stdlib/iterators.html">Iteration utilities</a></li><li><a class="toctext" href="../stdlib/test.html">Unit Testing</a></li><li><a class="toctext" href="../stdlib/c.html">C Interface</a></li><li><a class="toctext" href="../stdlib/libc.html">C Standard Library</a></li><li><a class="toctext" href="../stdlib/libdl.html">Dynamic Linker</a></li><li><a class="toctext" href="../stdlib/profile.html">Profiling</a></li><li><a class="toctext" href="../stdlib/stacktraces.html">StackTraces</a></li><li><a class="toctext" href="../stdlib/simd-types.html">SIMD Support</a></li></ul></li><li><span class="toctext">Developer Documentation</span><ul><li><a class="toctext" href="../devdocs/reflection.html">Reflection and introspection</a></li><li><span class="toctext">Documentation of Julia&#39;s Internals</span><ul><li><a class="toctext" href="../devdocs/init.html">Initialization of the Julia runtime</a></li><li><a class="toctext" href="../devdocs/ast.html">Julia ASTs</a></li><li><a class="toctext" href="../devdocs/types.html">More about types</a></li><li><a class="toctext" href="../devdocs/object.html">Memory layout of Julia Objects</a></li><li><a class="toctext" href="../devdocs/eval.html">Eval of Julia code</a></li><li><a class="toctext" href="../devdocs/callconv.html">Calling Conventions</a></li><li><a class="toctext" href="../devdocs/compiler.html">High-level Overview of the Native-Code Generation Process</a></li><li><a class="toctext" href="../devdocs/functions.html">Julia Functions</a></li><li><a class="toctext" href="../devdocs/cartesian.html">Base.Cartesian</a></li><li><a class="toctext" href="../devdocs/meta.html">Talking to the compiler (the <code>:meta</code> mechanism)</a></li><li><a class="toctext" href="../devdocs/subarrays.html">SubArrays</a></li><li><a class="toctext" href="../devdocs/sysimg.html">System Image Building</a></li><li><a class="toctext" href="../devdocs/llvm.html">Working with LLVM</a></li><li><a class="toctext" href="../devdocs/stdio.html">printf() and stdio in the Julia runtime</a></li><li><a class="toctext" href="../devdocs/boundscheck.html">Bounds checking</a></li><li><a class="toctext" href="../devdocs/locks.html">Proper maintenance and care of multi-threading locks</a></li><li><a class="toctext" href="../devdocs/offset-arrays.html">Arrays with custom indices</a></li><li><a class="toctext" href="../devdocs/libgit2.html">Base.LibGit2</a></li><li><a class="toctext" href="../devdocs/require.html">Module loading</a></li></ul></li><li><span class="toctext">Developing/debugging Julia&#39;s C code</span><ul><li><a class="toctext" href="../devdocs/backtraces.html">Reporting and analyzing crashes (segfaults)</a></li><li><a class="toctext" href="../devdocs/debuggingtips.html">gdb debugging tips</a></li><li><a class="toctext" href="../devdocs/valgrind.html">Using Valgrind with Julia</a></li><li><a class="toctext" href="../devdocs/sanitizers.html">Sanitizer support</a></li></ul></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li>Manual</li><li><a href="control-flow.html">Control Flow</a></li></ul><a class="edit-page" href="https://github.com/JuliaLang/julia/tree/903644385b91ed8d95e5e3a5716c089dd1f1b08a/doc/src/manual/control-flow.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Control Flow</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Control-Flow-1" href="#Control-Flow-1">Control Flow</a></h1><p>Julia provides a variety of control flow constructs:</p><ul><li><p><a href="control-flow.html#man-compound-expressions-1">Compound Expressions</a>: <code>begin</code> and <code>(;)</code>.</p></li><li><p><a href="control-flow.html#man-conditional-evaluation-1">Conditional Evaluation</a>: <code>if</code>-<code>elseif</code>-<code>else</code> and <code>?:</code> (ternary operator).</p></li><li><p><a href="control-flow.html#Short-Circuit-Evaluation-1">Short-Circuit Evaluation</a>: <code>&amp;&amp;</code>, <code>||</code> and chained comparisons.</p></li><li><p><a href="control-flow.html#man-loops-1">Repeated Evaluation: Loops</a>: <code>while</code> and <code>for</code>.</p></li><li><p><a href="control-flow.html#Exception-Handling-1">Exception Handling</a>: <code>try</code>-<code>catch</code>, <a href="../stdlib/base.html#Base.error"><code>error()</code></a> and <a href="../stdlib/base.html#Core.throw"><code>throw()</code></a>.</p></li><li><p><a href="control-flow.html#man-tasks-1">Tasks (aka Coroutines)</a>: <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a>.</p></li></ul><p>The first five control flow mechanisms are standard to high-level programming languages. <a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a>s are not so standard: they provide non-local control flow, making it possible to switch between temporarily-suspended computations. This is a powerful construct: both exception handling and cooperative multitasking are implemented in Julia using tasks. Everyday programming requires no direct usage of tasks, but certain problems can be solved much more easily by using tasks.</p><h2><a class="nav-anchor" id="man-compound-expressions-1" href="#man-compound-expressions-1">Compound Expressions</a></h2><p>Sometimes it is convenient to have a single expression which evaluates several subexpressions in order, returning the value of the last subexpression as its value. There are two Julia constructs that accomplish this: <code>begin</code> blocks and <code>(;)</code> chains. The value of both compound expression constructs is that of the last subexpression. Here&#39;s an example of a <code>begin</code> block:</p><pre><code class="language-julia-repl">julia&gt; z = begin
+</script><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Ubuntu+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="The Julia Language logo"/></a><h1>The Julia Language</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li><span class="toctext">Manual</span><ul><li><a class="toctext" href="introduction.html">はじめに</a></li><li><a class="toctext" href="getting-started.html">Juliaをはじめる</a></li><li><a class="toctext" href="variables.html">変数</a></li><li><a class="toctext" href="integers-and-floating-point-numbers.html">整数と浮動小数点数</a></li><li><a class="toctext" href="mathematical-operations.html">算術処理と基本的な関数</a></li><li><a class="toctext" href="complex-and-rational-numbers.html">複素数と有理数</a></li><li><a class="toctext" href="strings.html">文字列</a></li><li><a class="toctext" href="functions.html">関数</a></li><li class="current"><a class="toctext" href="control-flow.html">制御構造</a><ul class="internal"><li><a class="toctext" href="#man-compound-expressions-1">複合式</a></li><li><a class="toctext" href="#man-conditional-evaluation-1">条件評価</a></li><li><a class="toctext" href="#短絡評価-1">短絡評価</a></li><li><a class="toctext" href="#man-loops-1">繰り返し評価:ループ</a></li><li><a class="toctext" href="#例外処理-1">例外処理</a></li><li><a class="toctext" href="#man-tasks-1">タスク（別名コルーチン）</a></li></ul></li><li><a class="toctext" href="variables-and-scoping.html">Scope of Variables</a></li><li><a class="toctext" href="types.html">Types</a></li><li><a class="toctext" href="methods.html">Methods</a></li><li><a class="toctext" href="constructors.html">Constructors</a></li><li><a class="toctext" href="conversion-and-promotion.html">Conversion and Promotion</a></li><li><a class="toctext" href="interfaces.html">Interfaces</a></li><li><a class="toctext" href="modules.html">Modules</a></li><li><a class="toctext" href="documentation.html">Documentation</a></li><li><a class="toctext" href="metaprogramming.html">Metaprogramming</a></li><li><a class="toctext" href="arrays.html">Multi-dimensional Arrays</a></li><li><a class="toctext" href="linear-algebra.html">Linear algebra</a></li><li><a class="toctext" href="networking-and-streams.html">Networking and Streams</a></li><li><a class="toctext" href="parallel-computing.html">Parallel Computing</a></li><li><a class="toctext" href="dates.html">Date and DateTime</a></li><li><a class="toctext" href="interacting-with-julia.html">Interacting With Julia</a></li><li><a class="toctext" href="running-external-programs.html">Running External Programs</a></li><li><a class="toctext" href="calling-c-and-fortran-code.html">Calling C and Fortran Code</a></li><li><a class="toctext" href="handling-operating-system-variation.html">Handling Operating System Variation</a></li><li><a class="toctext" href="environment-variables.html">Environment Variables</a></li><li><a class="toctext" href="interacting-with-julia.html">Interacting With Julia</a></li><li><a class="toctext" href="embedding.html">Embedding Julia</a></li><li><a class="toctext" href="packages.html">Packages</a></li><li><a class="toctext" href="profile.html">Profiling</a></li><li><a class="toctext" href="stacktraces.html">Stack Traces</a></li><li><a class="toctext" href="performance-tips.html">Performance Tips</a></li><li><a class="toctext" href="workflow-tips.html">Workflow Tips</a></li><li><a class="toctext" href="style-guide.html">Style Guide</a></li><li><a class="toctext" href="faq.html">Frequently Asked Questions</a></li><li><a class="toctext" href="noteworthy-differences.html">Noteworthy Differences from other Languages</a></li><li><a class="toctext" href="unicode-input.html">Unicode Input</a></li></ul></li><li><span class="toctext">Standard Library</span><ul><li><a class="toctext" href="../stdlib/base.html">Essentials</a></li><li><a class="toctext" href="../stdlib/collections.html">Collections and Data Structures</a></li><li><a class="toctext" href="../stdlib/math.html">Mathematics</a></li><li><a class="toctext" href="../stdlib/numbers.html">Numbers</a></li><li><a class="toctext" href="../stdlib/strings.html">Strings</a></li><li><a class="toctext" href="../stdlib/arrays.html">Arrays</a></li><li><a class="toctext" href="../stdlib/parallel.html">Tasks and Parallel Computing</a></li><li><a class="toctext" href="../stdlib/linalg.html">Linear Algebra</a></li><li><a class="toctext" href="../stdlib/constants.html">Constants</a></li><li><a class="toctext" href="../stdlib/file.html">Filesystem</a></li><li><a class="toctext" href="../stdlib/io-network.html">I/O and Network</a></li><li><a class="toctext" href="../stdlib/punctuation.html">Punctuation</a></li><li><a class="toctext" href="../stdlib/sort.html">Sorting and Related Functions</a></li><li><a class="toctext" href="../stdlib/pkg.html">Package Manager Functions</a></li><li><a class="toctext" href="../stdlib/dates.html">Dates and Time</a></li><li><a class="toctext" href="../stdlib/iterators.html">Iteration utilities</a></li><li><a class="toctext" href="../stdlib/test.html">Unit Testing</a></li><li><a class="toctext" href="../stdlib/c.html">C Interface</a></li><li><a class="toctext" href="../stdlib/libc.html">C Standard Library</a></li><li><a class="toctext" href="../stdlib/libdl.html">Dynamic Linker</a></li><li><a class="toctext" href="../stdlib/profile.html">Profiling</a></li><li><a class="toctext" href="../stdlib/stacktraces.html">StackTraces</a></li><li><a class="toctext" href="../stdlib/simd-types.html">SIMD Support</a></li></ul></li><li><span class="toctext">Developer Documentation</span><ul><li><a class="toctext" href="../devdocs/reflection.html">Reflection and introspection</a></li><li><span class="toctext">Documentation of Julia&#39;s Internals</span><ul><li><a class="toctext" href="../devdocs/init.html">Initialization of the Julia runtime</a></li><li><a class="toctext" href="../devdocs/ast.html">Julia ASTs</a></li><li><a class="toctext" href="../devdocs/types.html">More about types</a></li><li><a class="toctext" href="../devdocs/object.html">Memory layout of Julia Objects</a></li><li><a class="toctext" href="../devdocs/eval.html">Eval of Julia code</a></li><li><a class="toctext" href="../devdocs/callconv.html">Calling Conventions</a></li><li><a class="toctext" href="../devdocs/compiler.html">High-level Overview of the Native-Code Generation Process</a></li><li><a class="toctext" href="../devdocs/functions.html">Julia Functions</a></li><li><a class="toctext" href="../devdocs/cartesian.html">Base.Cartesian</a></li><li><a class="toctext" href="../devdocs/meta.html">Talking to the compiler (the <code>:meta</code> mechanism)</a></li><li><a class="toctext" href="../devdocs/subarrays.html">SubArrays</a></li><li><a class="toctext" href="../devdocs/sysimg.html">System Image Building</a></li><li><a class="toctext" href="../devdocs/llvm.html">Working with LLVM</a></li><li><a class="toctext" href="../devdocs/stdio.html">printf() and stdio in the Julia runtime</a></li><li><a class="toctext" href="../devdocs/boundscheck.html">Bounds checking</a></li><li><a class="toctext" href="../devdocs/locks.html">Proper maintenance and care of multi-threading locks</a></li><li><a class="toctext" href="../devdocs/offset-arrays.html">Arrays with custom indices</a></li><li><a class="toctext" href="../devdocs/libgit2.html">Base.LibGit2</a></li><li><a class="toctext" href="../devdocs/require.html">Module loading</a></li></ul></li><li><span class="toctext">Developing/debugging Julia&#39;s C code</span><ul><li><a class="toctext" href="../devdocs/backtraces.html">Reporting and analyzing crashes (segfaults)</a></li><li><a class="toctext" href="../devdocs/debuggingtips.html">gdb debugging tips</a></li><li><a class="toctext" href="../devdocs/valgrind.html">Using Valgrind with Julia</a></li><li><a class="toctext" href="../devdocs/sanitizers.html">Sanitizer support</a></li></ul></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li>Manual</li><li><a href="control-flow.html">制御構造</a></li></ul><a class="edit-page" href="https://github.com/JuliaLang/julia/tree/903644385b91ed8d95e5e3a5716c089dd1f1b08a/doc/src/manual/control-flow.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/></header><p><a href="# Control Flow"></a></p><h1><a class="nav-anchor" id="制御構造-1" href="#制御構造-1">制御構造</a></h1><!--
+Julia provides a variety of control flow constructs:
+--><p>Juliaには、さまざまな制御構造があります。</p><!--
+  * [Compound Expressions](@ref man-compound-expressions): `begin` and `(;)`.
+  * [Conditional Evaluation](@ref man-conditional-evaluation): `if`-`elseif`-`else` and `?:` (ternary operator).
+  * [Short-Circuit Evaluation](@ref): `&&`, `||` and chained comparisons.
+  * [Repeated Evaluation: Loops](@ref man-loops): `while` and `for`.
+  * [Exception Handling](@ref): `try`-`catch`, [`error()`](@ref) and [`throw()`](@ref).
+  * [Tasks (aka Coroutines)](@ref man-tasks): [`yieldto()`](@ref).
+--><ul><li><p><a href="control-flow.html#man-compound-expressions-1">複合式</a>: <code>begin</code> と<code>(;)</code>。</p></li><li><p><a href="control-flow.html#man-conditional-evaluation-1">条件評価</a>: <code>if</code>-<code>elseif</code>-<code>else</code> と <code>？:</code> (三項演算子)。</p></li><li><p><a href="control-flow.html#短絡評価-1">短絡評価</a>: <code>&amp;&amp;</code>, <code>||</code> と比較の連鎖。</p></li><li><p><a href="control-flow.html#man-loops-1">繰り返し評価: ループ</a>: <code>while</code> と <code>for</code>。</p></li><li><p><a href="control-flow.html#例外処理-1">例外処理</a>: <code>try</code>-<code>catch</code>, <a href="../stdlib/base.html#Base.error"><code>error()</code></a> と <a href="../stdlib/base.html#Core.throw"><code>throw()</code></a>。</p></li><li><p><a href="control-flow.html#man-tasks-1">タスク (コルーチン)の別称</a>: <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a>。</p></li></ul><!--
+The first five control flow mechanisms are standard to high-level programming languages. [`Task`](@ref)s
+are not so standard: they provide non-local control flow, making it possible to switch between
+temporarily-suspended computations. This is a powerful construct: both exception handling and
+cooperative multitasking are implemented in Julia using tasks. Everyday programming requires no
+direct usage of tasks, but certain problems can be solved much more easily by using tasks.
+--><p>はじめの５つは、高水準なプログラミング言語には標準的な制御構造です。 [タスク]はそれほど標準的ではありませんが、ローカルに限らない制御構造で、一時的に保留している計算を切り替えることができます。 タスクは、強力な制御構造で、Juliaでは、例外処理や協調的マルチタスクの実装に、使われています。 日常的なプログラムには、タスクを直接使う必要はないかもしれませんが、ある種の問題は、タスクを使うとはるかに簡単に解くことができます。</p><p><a href="## [Compound Expressions](@id man-compound-expressions)"></a></p><h2><a class="nav-anchor" id="man-compound-expressions-1" href="#man-compound-expressions-1">複合式</a></h2><!--
+Sometimes it is convenient to have a single expression which evaluates several subexpressions
+in order, returning the value of the last subexpression as its value. There are two Julia constructs
+that accomplish this: `begin` blocks and `(;)` chains. The value of both compound expression constructs
+is that of the last subexpression. Here's an example of a `begin` block:
+--><p>何個かの部分式を順番に評価していき、最後の式の値を戻り値とするような単一の式を考えると、便利なことが、時々あります。 これを実現するJuliaの制御構造には、beginブロックと、セミコロン(;)連鎖の２つがあります。 どちらの複合式も、最後の部分式の値が戻り値になります。 beginブロックの例を次に示します。</p><pre><code class="language-julia">julia&gt; z = begin
            x = 1
            y = 2
            x + y
        end
-3</code></pre><p>Since these are fairly small, simple expressions, they could easily be placed onto a single line, which is where the <code>(;)</code> chain syntax comes in handy:</p><pre><code class="language-julia-repl">julia&gt; z = (x = 1; y = 2; x + y)
-3</code></pre><p>This syntax is particularly useful with the terse single-line function definition form introduced in <a href="faq.html#Functions-1">Functions</a>. Although it is typical, there is no requirement that <code>begin</code> blocks be multiline or that <code>(;)</code> chains be single-line:</p><pre><code class="language-julia-repl">julia&gt; begin x = 1; y = 2; x + y end
+3</code></pre><!--
+Since these are fairly small, simple expressions, they could easily be placed onto a single line,
+which is where the `(;)` chain syntax comes in handy:
+--><p>この例では、式がかなり小さくて単純なので、簡単に1行にまとめることができます。こういう場合に便利なのが、セミコロン(;)連鎖構文です。</p><pre><code class="language-julia">julia&gt; z = (x = 1; y = 2; x + y)
+3</code></pre><!--
+This syntax is particularly useful with the terse single-line function definition form introduced
+in [Functions](@ref). Although it is typical, there is no requirement that `begin` blocks be multiline
+or that `(;)` chains be single-line:
+--><p>この構文は、<a href="faq.html#Functions-1">Functions</a> の章で紹介した、簡潔で単一行の関数定義方式と一緒に使うと、特に便利です。 beginブロックは複数行で、セミコロン(;)連鎖は単一行で使うのが一般的ですが、これに従う必要はありません。</p><pre><code class="language-julia">julia&gt; begin x = 1; y = 2; x + y end
 3
 
 julia&gt; (x = 1;
         y = 2;
         x + y)
-3</code></pre><h2><a class="nav-anchor" id="man-conditional-evaluation-1" href="#man-conditional-evaluation-1">Conditional Evaluation</a></h2><p>Conditional evaluation allows portions of code to be evaluated or not evaluated depending on the value of a boolean expression. Here is the anatomy of the <code>if</code>-<code>elseif</code>-<code>else</code> conditional syntax:</p><pre><code class="language-julia">if x &lt; y
+3</code></pre><p><a href="## [Conditional Evaluation](@id man-conditional-evaluation)"></a></p><h2><a class="nav-anchor" id="man-conditional-evaluation-1" href="#man-conditional-evaluation-1">条件評価</a></h2><!--
+Conditional evaluation allows portions of code to be evaluated or not evaluated depending on the
+value of a boolean expression. Here is the anatomy of the `if`-`elseif`-`else` conditional syntax:
+--><p>条件評価では、コードの一部がブール式の値に応じて、評価されたりされなかったりします。 ここで、 <code>if</code>-<code>elseif</code>-<code>else</code>型の条件分岐構文を解剖してみましょう：</p><pre><code class="language-julia">if x &lt; y
     println(&quot;x is less than y&quot;)
 elseif x &gt; y
     println(&quot;x is greater than y&quot;)
 else
     println(&quot;x is equal to y&quot;)
-end</code></pre><p>If the condition expression <code>x &lt; y</code> is <code>true</code>, then the corresponding block is evaluated; otherwise the condition expression <code>x &gt; y</code> is evaluated, and if it is <code>true</code>, the corresponding block is evaluated; if neither expression is true, the <code>else</code> block is evaluated. Here it is in action:</p><pre><code class="language-julia-repl">julia&gt; function test(x, y)
+end</code></pre><!--
+If the condition expression `x < y` is `true`, then the corresponding block is evaluated; otherwise
+the condition expression `x > y` is evaluated, and if it is `true`, the corresponding block is
+evaluated; if neither expression is true, the `else` block is evaluated. Here it is in action:
+--><p>条件式<code>x &lt; y</code>が<code>真</code>の時は、対応するブロックが評価され、さもなければ、条件式<code>x &gt; y</code>が評価され、これが<code>真</code>の場合は、対応するブロックが評価されます。いずれの式も真でない場合、elseブロックが評価されます。 例を挙げると、</p><pre><code class="language-julia">julia&gt; function test(x, y)
            if x &lt; y
                println(&quot;x is less than y&quot;)
            elseif x &gt; y
@@ -42,7 +76,16 @@ julia&gt; test(2, 1)
 x is greater than y
 
 julia&gt; test(1, 1)
-x is equal to y</code></pre><p>The <code>elseif</code> and <code>else</code> blocks are optional, and as many <code>elseif</code> blocks as desired can be used. The condition expressions in the <code>if</code>-<code>elseif</code>-<code>else</code> construct are evaluated until the first one evaluates to <code>true</code>, after which the associated block is evaluated, and no further condition expressions or blocks are evaluated.</p><p><code>if</code> blocks are &quot;leaky&quot;, i.e. they do not introduce a local scope. This means that new variables defined inside the <code>if</code> clauses can be used after the <code>if</code> block, even if they weren&#39;t defined before. So, we could have defined the <code>test</code> function above as</p><pre><code class="language-julia-repl">julia&gt; function test(x,y)
+x is equal to y</code></pre><!--
+The `elseif` and `else` blocks are optional, and as many `elseif` blocks as desired can be used.
+The condition expressions in the `if`-`elseif`-`else` construct are evaluated until the first
+one evaluates to `true`, after which the associated block is evaluated, and no further condition
+expressions or blocks are evaluated.
+--><p>この、<code>elseif</code> および <code>else</code>ブロックは省略可能で、<code>elseif</code>ブロックは、書いた数だけ使うことができます。 <code>if</code>-<code>elseif</code>-<code>else</code>構文中の条件文は、<code>真</code>になるものが現れるまで評価が続きます。 その真になった条件式に対応するブロックが評価されると、あとの条件式やブロックは評価されません。</p><!--
+`if` blocks are "leaky", i.e. they do not introduce a local scope. This means that new variables
+defined inside the `if` clauses can be used after the `if` block, even if they weren't defined
+before. So, we could have defined the `test` function above as
+--><p><code>if</code>ブロックには「漏れ」があり、ローカルスコープを採用していません。 これは、<code>if</code>句の中で定義した新しい変数が、<code>if</code>ブロックの後ろで使えるということです。 たとえ<code>if</code>ブロックの前で定義していなくてもよいのです。 そのため、上記のtest関数は、このようにも定義できます。</p><pre><code class="language-julia">julia&gt; function test(x,y)
            if x &lt; y
                relation = &quot;less than&quot;
            elseif x == y
@@ -55,7 +98,11 @@ x is equal to y</code></pre><p>The <code>elseif</code> and <code>else</code> blo
 test (generic function with 1 method)
 
 julia&gt; test(2, 1)
-x is greater than y.</code></pre><p>The variable <code>relation</code> is declared inside the <code>if</code> block, but used outside. However, when depending on this behavior, make sure all possible code paths define a value for the variable. The following change to the above function results in a runtime error</p><pre><code class="language-julia-repl">julia&gt; function test(x,y)
+x is greater than y.</code></pre><!--
+The variable `relation` is declared inside the `if` block, but used outside. However, when depending
+on this behavior, make sure all possible code paths define a value for the variable. The following
+change to the above function results in a runtime error
+--><p>変数<code>relation</code>は<code>if</code>ブロックの内側で宣言されていますが、使用されるのは外側です。 ただし、こういった使い方をする場合は、とりうるすべての分岐で、変数の値が定義されていることを確認してください。 上記の関数を次のように変更すると、実行時エラーが発生します。</p><pre><code class="language-julia">julia&gt; function test(x,y)
            if x &lt; y
                relation = &quot;less than&quot;
            elseif x == y
@@ -71,7 +118,11 @@ x is less than y.
 julia&gt; test(2,1)
 ERROR: UndefVarError: relation not defined
 Stacktrace:
- [1] test(::Int64, ::Int64) at ./none:7</code></pre><p><code>if</code> blocks also return a value, which may seem unintuitive to users coming from many other languages. This value is simply the return value of the last executed statement in the branch that was chosen, so</p><pre><code class="language-julia-repl">julia&gt; x = 3
+ [1] test(::Int64, ::Int64) at ./none:7</code></pre><!--
+`if` blocks also return a value, which may seem unintuitive to users coming from many other languages.
+This value is simply the return value of the last executed statement in the branch that was chosen,
+so
+--><p><code>if</code>ブロックは値を返しますが、他の言語を利用する多くの人の直観に反するようです。 この値は、単純に、分岐の中から選択されて、最後に実行された文の戻り値です。</p><pre><code class="language-julia">julia&gt; x = 3
 3
 
 julia&gt; if x &gt; 0
@@ -79,10 +130,33 @@ julia&gt; if x &gt; 0
        else
            &quot;negative...&quot;
        end
-&quot;positive!&quot;</code></pre><p>Note that very short conditional statements (one-liners) are frequently expressed using Short-Circuit Evaluation in Julia, as outlined in the next section.</p><p>Unlike C, MATLAB, Perl, Python, and Ruby – but like Java, and a few other stricter, typed languages – it is an error if the value of a conditional expression is anything but <code>true</code> or <code>false</code>:</p><pre><code class="language-julia-repl">julia&gt; if 1
+&quot;positive!&quot;</code></pre><!--
+Note that very short conditional statements (one-liners) are frequently expressed using Short-Circuit
+Evaluation in Julia, as outlined in the next section.
+--><p>Juliaでは、非常に短い条件文（ワンライナー）は、短絡評価を使って表現されることが非常に多い点に注意してください。 次のセクションで概説します。</p><!--
+Unlike C, MATLAB, Perl, Python, and Ruby -- but like Java, and a few other stricter, typed languages
+-- it is an error if the value of a conditional expression is anything but `true` or `false`:
+--><p>条件式の値が、<code>true</code> か <code>false</code> 以外の値だと、エラーが発生します。 この仕様は、C、MATLAB、PerlやPython、Rubyとは異なりますが、Javaなどの厳格な型付け言語と同等です。</p><pre><code class="language-julia">julia&gt; if 1
            println(&quot;true&quot;)
        end
-ERROR: TypeError: non-boolean (Int64) used in boolean context</code></pre><p>This error indicates that the conditional was of the wrong type: <a href="../stdlib/numbers.html#Core.Int64"><code>Int64</code></a> rather than the required <a href="../stdlib/numbers.html#Core.Bool"><code>Bool</code></a>.</p><p>The so-called &quot;ternary operator&quot;, <code>?:</code>, is closely related to the <code>if</code>-<code>elseif</code>-<code>else</code> syntax, but is used where a conditional choice between single expression values is required, as opposed to conditional execution of longer blocks of code. It gets its name from being the only operator in most languages taking three operands:</p><pre><code class="language-julia">a ? b : c</code></pre><p>The expression <code>a</code>, before the <code>?</code>, is a condition expression, and the ternary operation evaluates the expression <code>b</code>, before the <code>:</code>, if the condition <code>a</code> is <code>true</code> or the expression <code>c</code>, after the <code>:</code>, if it is <code>false</code>.</p><p>The easiest way to understand this behavior is to see an example. In the previous example, the <code>println</code> call is shared by all three branches: the only real choice is which literal string to print. This could be written more concisely using the ternary operator. For the sake of clarity, let&#39;s try a two-way version first:</p><pre><code class="language-julia-repl">julia&gt; x = 1; y = 2;
+ERROR: TypeError: non-boolean (Int64) used in boolean context</code></pre><!--
+This error indicates that the conditional was of the wrong type: [`Int64`](@ref) rather
+than the required [`Bool`](@ref).
+--><p>このエラーは、条件式の型が誤りであることを示しています。 <a href="../stdlib/numbers.html#Core.Int64"><code>Int64</code></a> は、要求される<a href="../stdlib/numbers.html#Core.Bool"><code>Bool</code></a>に適合しません。</p><!--
+The so-called "ternary operator", `?:`, is closely related to the `if`-`elseif`-`else` syntax,
+but is used where a conditional choice between single expression values is required, as opposed
+to conditional execution of longer blocks of code. It gets its name from being the only operator
+in most languages taking three operands:
+--><p>いわゆる「三項演算子」<code>？:</code>は、<code>if</code>-<code>elseif</code>-<code>else</code>構文と密接に関連しています。 前者は単一の式の値を選択するような条件分岐を行う場合に利用されますが、後者は条件式の実行がもっと長いコードのブロックになる場合に使います。 「三項演算子」の名前は、多くの他の言語では、3つの被演算子をとる唯一の演算子であることに由来します。</p><pre><code class="language-julia">a ? b : c</code></pre><!--
+The expression `a`, before the `?`, is a condition expression, and the ternary operation evaluates
+the expression `b`, before the `:`, if the condition `a` is `true` or the expression `c`, after
+the `:`, if it is `false`.
+--><p><code>！</code>の前にある式<code>a</code>は条件式で、三項演算は<code>a</code>が<code>真</code>の時は、<code>:</code>の前にある<code>b</code>を評価し、<code>偽</code>の時は、<code>:</code>の後にある<code>c</code>を評価します。</p><!--
+The easiest way to understand this behavior is to see an example. In the previous example, the
+`println` call is shared by all three branches: the only real choice is which literal string to
+print. This could be written more concisely using the ternary operator. For the sake of clarity,
+let's try a two-way version first:
+--><p>この動作を理解する最も簡単な方法は、例を見ることでしょう。 前述の例では<code>println</code>を呼び出すのは3つの分岐すべてで共通しています。 実質的な分岐は、出力される文字列リテラルです。 これは三項演算子を使ってより簡潔に書くことができます。 わかりやすい二分岐版をまずみてみましょう：</p><pre><code class="language-julia">julia&gt; x = 1; y = 2;
 
 julia&gt; println(x &lt; y ? &quot;less than&quot; : &quot;not less than&quot;)
 less than
@@ -90,7 +164,11 @@ less than
 julia&gt; x = 1; y = 0;
 
 julia&gt; println(x &lt; y ? &quot;less than&quot; : &quot;not less than&quot;)
-not less than</code></pre><p>If the expression <code>x &lt; y</code> is true, the entire ternary operator expression evaluates to the string <code>&quot;less than&quot;</code> and otherwise it evaluates to the string <code>&quot;not less than&quot;</code>. The original three-way example requires chaining multiple uses of the ternary operator together:</p><pre><code class="language-julia-repl">julia&gt; test(x, y) = println(x &lt; y ? &quot;x is less than y&quot;    :
+not less than</code></pre><!--
+If the expression `x < y` is true, the entire ternary operator expression evaluates to the string
+`"less than"` and otherwise it evaluates to the string `"not less than"`. The original three-way
+example requires chaining multiple uses of the ternary operator together:
+--><p>式<code>x &lt; y</code>が真の場合、三項演算子の式全体は、文字列 &quot;less than&quot; に評価され、偽の場合は文字列 &quot;not less than&quot; に評価されます。もともとの三分岐版の例では、三項演算子を複数連鎖させて使用​​する必要があります。</p><pre><code class="language-julia">julia&gt; test(x, y) = println(x &lt; y ? &quot;x is less than y&quot;    :
                             x &gt; y ? &quot;x is greater than y&quot; : &quot;x is equal to y&quot;)
 test (generic function with 1 method)
 
@@ -101,8 +179,13 @@ julia&gt; test(2, 1)
 x is greater than y
 
 julia&gt; test(1, 1)
-x is equal to y</code></pre><p>To facilitate chaining, the operator associates from right to left.</p><p>It is significant that like <code>if</code>-<code>elseif</code>-<code>else</code>, the expressions before and after the <code>:</code> are only evaluated if the condition expression evaluates to <code>true</code> or <code>false</code>, respectively:</p><pre><code class="language-julia-repl">julia&gt; v(x) = (println(x); x)
-v (generic function with 1 method)
+x is equal to y</code></pre><!--
+To facilitate chaining, the operator associates from right to left.
+
+It is significant that like `if`-`elseif`-`else`, the expressions before and after the `:` are
+only evaluated if the condition expression evaluates to `true` or `false`, respectively:
+--><p>連鎖を利用する時は、演算子の結合順は右から左です。 重要なのは、<code>if</code>-<code>elseif</code>-<code>else</code>の場合と同様に、 <code>:</code> の前後の式は、それぞれ条件式が<code>真</code>・<code>偽</code>の時、そしてその時だけ、評価されるということです。</p><pre><code class="language-julia">julia&gt; v(x) = (println(x); x)
+(generic function with 1 method)
 
 julia&gt; 1 &lt; 2 ? v(&quot;yes&quot;) : v(&quot;no&quot;)
 yes
@@ -110,7 +193,21 @@ yes
 
 julia&gt; 1 &gt; 2 ? v(&quot;yes&quot;) : v(&quot;no&quot;)
 no
-&quot;no&quot;</code></pre><h2><a class="nav-anchor" id="Short-Circuit-Evaluation-1" href="#Short-Circuit-Evaluation-1">Short-Circuit Evaluation</a></h2><p>Short-circuit evaluation is quite similar to conditional evaluation. The behavior is found in most imperative programming languages having the <code>&amp;&amp;</code> and <code>||</code> boolean operators: in a series of boolean expressions connected by these operators, only the minimum number of expressions are evaluated as are necessary to determine the final boolean value of the entire chain. Explicitly, this means that:</p><ul><li><p>In the expression <code>a &amp;&amp; b</code>, the subexpression <code>b</code> is only evaluated if <code>a</code> evaluates to <code>true</code>.</p></li><li><p>In the expression <code>a || b</code>, the subexpression <code>b</code> is only evaluated if <code>a</code> evaluates to <code>false</code>.</p></li></ul><p>The reasoning is that <code>a &amp;&amp; b</code> must be <code>false</code> if <code>a</code> is <code>false</code>, regardless of the value of <code>b</code>, and likewise, the value of <code>a || b</code> must be true if <code>a</code> is <code>true</code>, regardless of the value of <code>b</code>. Both <code>&amp;&amp;</code> and <code>||</code> associate to the right, but <code>&amp;&amp;</code> has higher precedence than <code>||</code> does. It&#39;s easy to experiment with this behavior:</p><pre><code class="language-jldoctest">julia&gt; t(x) = (println(x); true)
+&quot;no&quot;</code></pre><p><a href="## Short-Circuit Evaluation"></a></p><h2><a class="nav-anchor" id="短絡評価-1" href="#短絡評価-1">短絡評価</a></h2><!--
+Short-circuit evaluation is quite similar to conditional evaluation. The behavior is found in
+most imperative programming languages having the `&&` and `||` boolean operators: in a series
+of boolean expressions connected by these operators, only the minimum number of expressions are
+evaluated as are necessary to determine the final boolean value of the entire chain. Explicitly,
+this means that:
+--><p>短絡評価は条件評価と非常によく似ています。 命令型プログラミング言語にみられる<code>&amp;&amp;</code>や<code>||</code>のブール演算子のほとんどは短絡評価です。 これらの演算子で連結したブール式の中で、評価されるのは、式全体のブール値を決定する最小限のものだけです。つまり、</p><!--
+  * In the expression `a && b`, the subexpression `b` is only evaluated if `a` evaluates to `true`.
+  * In the expression `a || b`, the subexpression `b` is only evaluated if `a` evaluates to `false`.
+--><ul><li><p><code>a &amp;&amp; b</code>という式で、<code>b</code>が評価されるのは、<code>a</code>の評価が<code>真</code>の時のみです。</p></li><li><p><code>a || b</code>という式で、<code>b</code>が評価されるのは、<code>a</code>の評価が<code>偽</code>の時のみです。</p></li></ul><!--
+The reasoning is that `a && b` must be `false` if `a` is `false`, regardless of the value of
+`b`, and likewise, the value of `a || b` must be true if `a` is `true`, regardless of the value
+of `b`. Both `&&` and `||` associate to the right, but `&&` has higher precedence than `||` does.
+It's easy to experiment with this behavior:
+--><p>なぜなら、<code>b</code>の値にかかわらず、<code>a</code>が<code>偽</code>の時には、<code>a &amp;&amp; b</code>は<code>偽</code>でなければならないからです。 同様に、<code>b</code>の値にかかわらず、<code>a</code>が<code>真</code>の時には、<code>a || b</code>は<code>真</code>でなければなりません。  <code>&amp;&amp;</code> と<code>||</code>は共に、右から結合しますが、<code>&amp;&amp;</code>は<code>||</code>より、優先順位が高いです。  これは簡単に試してみることができます：</p><pre><code class="language-jldoctest">julia&gt; t(x) = (println(x); true)
 t (generic function with 1 method)
 
 julia&gt; f(x) = (println(x); false)
@@ -150,7 +247,17 @@ true
 julia&gt; f(1) || f(2)
 1
 2
-false</code></pre><p>You can easily experiment in the same way with the associativity and precedence of various combinations of <code>&amp;&amp;</code> and <code>||</code> operators.</p><p>This behavior is frequently used in Julia to form an alternative to very short <code>if</code> statements. Instead of <code>if &lt;cond&gt; &lt;statement&gt; end</code>, one can write <code>&lt;cond&gt; &amp;&amp; &lt;statement&gt;</code> (which could be read as: &lt;cond&gt; <em>and then</em> &lt;statement&gt;). Similarly, instead of <code>if ! &lt;cond&gt; &lt;statement&gt; end</code>, one can write <code>&lt;cond&gt; || &lt;statement&gt;</code> (which could be read as: &lt;cond&gt; <em>or else</em> &lt;statement&gt;).</p><p>For example, a recursive factorial routine could be defined like this:</p><pre><code class="language-julia-repl">julia&gt; function fact(n::Int)
+false</code></pre><!--
+You can easily experiment in the same way with the associativity and precedence of various combinations
+of `&&` and `||` operators.
+--><p>同様の手法で、<code>&amp;&amp;</code>と<code>||</code>の演算子のさまざまな組み合わせに対して、結合性と優先順位を簡単に試すことができます。</p><!--
+This behavior is frequently used in Julia to form an alternative to very short `if` statements.
+Instead of `if <cond> <statement> end`, one can write `<cond> && <statement>` (which could be
+read as: <cond> *and then* <statement>). Similarly, instead of `if ! <cond> <statement> end`,
+one can write `<cond> || <statement>` (which could be read as: <cond> *or else* <statement>).
+
+For example, a recursive factorial routine could be defined like this:
+--><p>Juliaでは、非常に短いif文の代わりに、短絡評価が頻繁に利用されます。 <code>if &lt;条件式&gt; &lt;実行文&gt; end</code>の代わりに、 <code>&lt;条件式&gt; &amp;&amp; &lt;実行文&gt;</code>と書けます （<code>&amp;&amp;</code>は、&quot;の時は&quot; と読み下せます)。 同様に、 <code>if ！ &lt;条件式&gt; &lt;実行文&gt; end</code>は、 <code>&lt;条件式&gt; || &lt;実行文&gt;</code>と書けます （<code>||</code>は、&quot;でなければ&quot; と読み下せます)。</p><p>たとえば、再帰的な階乗ルーチンは次のように定義できます。</p><pre><code class="language-julia">julia&gt; function fact(n::Int)
            n &gt;= 0 || error(&quot;n must be non-negative&quot;)
            n == 0 &amp;&amp; return 1
            n * fact(n-1)
@@ -166,7 +273,11 @@ julia&gt; fact(0)
 julia&gt; fact(-1)
 ERROR: n must be non-negative
 Stacktrace:
- [1] fact(::Int64) at ./none:2</code></pre><p>Boolean operations <em>without</em> short-circuit evaluation can be done with the bitwise boolean operators introduced in <a href="mathematical-operations.html#算術処理と基本的な関数-1">算術処理と基本的な関数</a>: <code>&amp;</code> and <code>|</code>. These are normal functions, which happen to support infix operator syntax, but always evaluate their arguments:</p><pre><code class="language-jldoctest">julia&gt; f(1) &amp; t(2)
+ [1] fact(::Int64) at ./none:2</code></pre><!--
+Boolean operations *without* short-circuit evaluation can be done with the bitwise boolean operators
+introduced in [Mathematical Operations and Elementary Functions](@ref): `&` and `|`. These are
+normal functions, which happen to support infix operator syntax, but always evaluate their arguments:
+--><p>短絡評価ではないブール演算は、<a href="mathematical-operations.html#算術処理と基本的な関数-1">算術処理と基本的な関数</a>で紹介した、 <code>&amp;</code> と <code>|</code>の、ビット単位の論理演算子を使って行うことができます。 これらの演算子は、たまたま中置記法を採用しただけの通常の関数で、常に引数を評価します。</p><pre><code class="language-jldoctest">julia&gt; f(1) &amp; t(2)
 1
 2
 false
@@ -174,12 +285,22 @@ false
 julia&gt; t(1) | t(2)
 1
 2
-true</code></pre><p>Just like condition expressions used in <code>if</code>, <code>elseif</code> or the ternary operator, the operands of <code>&amp;&amp;</code> or <code>||</code> must be boolean values (<code>true</code> or <code>false</code>). Using a non-boolean value anywhere except for the last entry in a conditional chain is an error:</p><pre><code class="language-julia-repl">julia&gt; 1 &amp;&amp; true
-ERROR: TypeError: non-boolean (Int64) used in boolean context</code></pre><p>On the other hand, any type of expression can be used at the end of a conditional chain. It will be evaluated and returned depending on the preceding conditionals:</p><pre><code class="language-julia-repl">julia&gt; true &amp;&amp; (x = (1, 2, 3))
+true</code></pre><!--
+Just like condition expressions used in `if`, `elseif` or the ternary operator, the operands of
+`&&` or `||` must be boolean values (`true` or `false`). Using a non-boolean value anywhere except
+for the last entry in a conditional chain is an error:
+--><p><code>if</code>、<code>elseif</code>、三項演算子で使用される条件式のと同様に、 <code>&amp;&amp;</code>や<code>||</code>の被演算子は、ブール値（<code>true</code> か <code>false</code>）でなければなりません。 条件式の連鎖で、最終項以外で、非ブール値を使用するとエラーになります。</p><pre><code class="language-julia">julia&gt; 1 &amp;&amp; true
+ERROR: TypeError: non-boolean (Int64) used in boolean context</code></pre><!--
+On the other hand, any type of expression can be used at the end of a conditional chain. It will
+be evaluated and returned depending on the preceding conditionals:
+--><p>一方、条件式の連鎖の最終項では、あらゆる型の式が利用可能です。これは前の条件式に応じて評価され、戻り値を返します。</p><pre><code class="language-julia">julia&gt; true &amp;&amp; (x = (1, 2, 3))
 (1, 2, 3)
 
 julia&gt; false &amp;&amp; (x = (1, 2, 3))
-false</code></pre><h2><a class="nav-anchor" id="man-loops-1" href="#man-loops-1">Repeated Evaluation: Loops</a></h2><p>There are two constructs for repeated evaluation of expressions: the <code>while</code> loop and the <code>for</code> loop. Here is an example of a <code>while</code> loop:</p><pre><code class="language-julia-repl">julia&gt; i = 1;
+false</code></pre><p><a href="## [Repeated Evaluation: Loops](@id man-loops)"></a></p><h2><a class="nav-anchor" id="man-loops-1" href="#man-loops-1">繰り返し評価:ループ</a></h2><!--
+There are two constructs for repeated evaluation of expressions: the `while` loop and the `for`
+loop. Here is an example of a `while` loop:
+--><p>式を繰り返し評価する制御構造は２つあります。<code>while</code>ループと<code>for</code>ループです。 <code>while</code>ループの例を次に示します。</p><pre><code class="language-julia">julia&gt; i = 1;
 
 julia&gt; while i &lt;= 5
            println(i)
@@ -189,14 +310,29 @@ julia&gt; while i &lt;= 5
 2
 3
 4
-5</code></pre><p>The <code>while</code> loop evaluates the condition expression (<code>i &lt;= 5</code> in this case), and as long it remains <code>true</code>, keeps also evaluating the body of the <code>while</code> loop. If the condition expression is <code>false</code> when the <code>while</code> loop is first reached, the body is never evaluated.</p><p>The <code>for</code> loop makes common repeated evaluation idioms easier to write. Since counting up and down like the above <code>while</code> loop does is so common, it can be expressed more concisely with a <code>for</code> loop:</p><pre><code class="language-julia-repl">julia&gt; for i = 1:5
+5</code></pre><!--
+The `while` loop evaluates the condition expression (`i <= 5` in this case), and as long it remains
+`true`, keeps also evaluating the body of the `while` loop. If the condition expression is `false`
+when the `while` loop is first reached, the body is never evaluated.
+
+The `for` loop makes common repeated evaluation idioms easier to write. Since counting up and
+down like the above `while` loop does is so common, it can be expressed more concisely with a
+`for` loop:
+-->`<p><code>while</code> ループは、条件式 （この場合は<code>i &lt;= 5</code>）を評価し、その式が<code>真</code>である間、<code>while</code>ループ本体の評価を続けます。  条件式の評価が<code>偽</code>に初めてなると、その後、本体は決して評価されません。</p><p><code>for</code>ループは、よくある繰り返し評価を、書きやすい慣用表現にしたものです。 上記の<code>while</code>ループのようなカウントアップ・カウントダウンは非常に一般的ですが、<code>for</code>ループなら、より簡潔に表現できます。</p><pre><code class="language-julia">julia&gt; for i = 1:5
            println(i)
        end
 1
 2
 3
 4
-5</code></pre><p>Here the <code>1:5</code> is a <code>Range</code> object, representing the sequence of numbers 1, 2, 3, 4, 5. The <code>for</code> loop iterates through these values, assigning each one in turn to the variable <code>i</code>. One rather important distinction between the previous <code>while</code> loop form and the <code>for</code> loop form is the scope during which the variable is visible. If the variable <code>i</code> has not been introduced in an other scope, in the <code>for</code> loop form, it is visible only inside of the <code>for</code> loop, and not afterwards. You&#39;ll either need a new interactive session instance or a different variable name to test this:</p><pre><code class="language-julia-repl">julia&gt; for j = 1:5
+5</code></pre><!--
+Here the `1:5` is a `Range` object, representing the sequence of numbers 1, 2, 3, 4, 5. The `for`
+loop iterates through these values, assigning each one in turn to the variable `i`. One rather
+important distinction between the previous `while` loop form and the `for` loop form is the scope
+during which the variable is visible. If the variable `i` has not been introduced in an other
+scope, in the `for` loop form, it is visible only inside of the `for` loop, and not afterwards.
+You'll either need a new interactive session instance or a different variable name to test this:
+--><p>この<code>1:5</code>は、<code>Range</code>オブジェクトで、1,2,3,4,5の数列をあらわしています。 <code>for</code> ループはこれらの値を反復し、順番に変数<code>i</code>に代入します。 前述の<code>while</code>ループ方式と<code>for</code>ループ方式のかなり重要な違いの1つは、ループの実行中の変数が見えるスコープです。 <code>for</code>ループ方式の時は、変数<code>i</code>が、他のスコープにとりこまれていない場合、変数は  <code>for</code>ループの内部でのみ見えて、その後ろでは見えません。 これを試すには、新規の対話セッションか、別の変数名が必要です。</p><pre><code class="language-julia">julia&gt; for j = 1:5
            println(j)
        end
 1
@@ -206,7 +342,14 @@ julia&gt; while i &lt;= 5
 5
 
 julia&gt; j
-ERROR: UndefVarError: j not defined</code></pre><p>See <a href="variables-and-scoping.html#scope-of-variables-1">Scope of Variables</a> for a detailed explanation of variable scope and how it works in Julia.</p><p>In general, the <code>for</code> loop construct can iterate over any container. In these cases, the alternative (but fully equivalent) keyword <code>in</code> or <code>∈</code> is typically used instead of <code>=</code>, since it makes the code read more clearly:</p><pre><code class="language-julia-repl">julia&gt; for i in [1,4,0]
+ERROR: UndefVarError: j not defined</code></pre><!--
+See [Scope of Variables](@ref scope-of-variables) for a detailed explanation of variable scope and how it works in
+Julia.
+
+In general, the `for` loop construct can iterate over any container. In these cases, the alternative
+(but fully equivalent) keyword `in` or `∈` is typically used instead of `=`, since it makes
+the code read more clearly:
+--><p>変数のスコープとJuliaでの動作の詳細については、[変数のスコープ]（@ref変数のスコープ）を参照してください。</p><p>一般に、<code>for</code>ループはどのコンテナに対しても反復処理が可能です。 これらのケースでは、<code>=</code>の代わりに、完全に同等なキーワードの<code>in</code>や<code>∈</code>が広く使われます。というのも、コードがよりわかりやすくなるからです。</p><pre><code class="language-julia">julia&gt; for i in [1,4,0]
            println(i)
        end
 1
@@ -218,7 +361,14 @@ julia&gt; for s ∈ [&quot;foo&quot;,&quot;bar&quot;,&quot;baz&quot;]
        end
 foo
 bar
-baz</code></pre><p>Various types of iterable containers will be introduced and discussed in later sections of the manual (see, e.g., <a href="arrays.html#man-multi-dim-arrays-1">Multi-dimensional Arrays</a>).</p><p>It is sometimes convenient to terminate the repetition of a <code>while</code> before the test condition is falsified or stop iterating in a <code>for</code> loop before the end of the iterable object is reached. This can be accomplished with the <code>break</code> keyword:</p><pre><code class="language-julia-repl">julia&gt; i = 1;
+baz</code></pre><!--
+Various types of iterable containers will be introduced and discussed in later sections of the
+manual (see, e.g., [Multi-dimensional Arrays](@ref man-multi-dim-arrays)).
+
+It is sometimes convenient to terminate the repetition of a `while` before the test condition
+is falsified or stop iterating in a `for` loop before the end of the iterable object is reached.
+This can be accomplished with the `break` keyword:
+--><p>さまざまなタイプのイテラブル・コンテナについて、マニュアルの後ろの章で紹介・検討します（例：[多次元配列]（@ ref man-multi-dim-arrays）参照）。</p><p><code>while</code>ループで、条件式が偽になる前に繰り返しを終了したり、<code>for</code>ループで、最後のイテラブル・オブジェクトに達する前に反復を止めたりすると、便利なことがあります。 これは<code>break</code>キーワードで実現できます：</p><pre><code class="language-julia">julia&gt; i = 1;
 
 julia&gt; while true
            println(i)
@@ -243,7 +393,12 @@ julia&gt; for i = 1:1000
 2
 3
 4
-5</code></pre><p>Without the <code>break</code> keyword, the above <code>while</code> loop would never terminate on its own, and the <code>for</code> loop would iterate up to 1000. These loops are both exited early by using <code>break</code>.</p><p>In other circumstances, it is handy to be able to stop an iteration and move on to the next one immediately. The <code>continue</code> keyword accomplishes this:</p><pre><code class="language-julia-repl">julia&gt; for i = 1:10
+5</code></pre><!--
+Without the `break` keyword, the above `while` loop would never terminate on its own, and the `for` loop would iterate up to 1000. These loops are both exited early by using `break`.
+
+In other circumstances, it is handy to be able to stop an iteration and move on to the next one
+immediately. The `continue` keyword accomplishes this:
+--><p><code>break</code>キーワードがなければ、上記の<code>while</code>ループは決して自身で終了することはなく、<code>for</code>ループは1000まで繰り返されます。 これらのループを早い段階で終了するには、共に、<code>break</code>を使用します。</p><p>他の状況では、繰り返しを停止してすぐに次回に移ることができれば便利なことがあります。continueキーワードは、これを実現します：</p><pre><code class="language-julia">julia&gt; for i = 1:10
            if i % 3 != 0
                continue
            end
@@ -251,17 +406,71 @@ julia&gt; for i = 1:1000
        end
 3
 6
-9</code></pre><p>This is a somewhat contrived example since we could produce the same behavior more clearly by negating the condition and placing the <code>println</code> call inside the <code>if</code> block. In realistic usage there is more code to be evaluated after the <code>continue</code>, and often there are multiple points from which one calls <code>continue</code>.</p><p>Multiple nested <code>for</code> loops can be combined into a single outer loop, forming the cartesian product of its iterables:</p><pre><code class="language-julia-repl">julia&gt; for i = 1:2, j = 3:4
+9</code></pre><!--
+This is a somewhat contrived example since we could produce the same behavior more clearly by
+negating the condition and placing the `println` call inside the `if` block. In realistic usage
+there is more code to be evaluated after the `continue`, and often there are multiple points from
+which one calls `continue`.
+
+Multiple nested `for` loops can be combined into a single outer loop, forming the cartesian product
+of its iterables:
+--><p>これは不自然な例です。というのも、条件式を否定して<code>if</code>ブロック内に<code>println</code>の呼び出しを置いた方が、同じ動作をより明確に書けるからです。 実際に使用するときは、<code>continue</code>の後に評価するコードがもっとあって、<code>continue</code>を呼び出す箇所も複数ある場合でしょう。</p><p>複数のネストしている<code>for</code>ループは、結合して、イテラブルの直積に対する、一重の外側からのループ [^1訳注] にすることができます。  </p><pre><code class="language-julia">julia&gt; for i = 1:2, j = 3:4
            println((i, j))
        end
 (1, 3)
 (1, 4)
 (2, 3)
-(2, 4)</code></pre><p>A <code>break</code> statement inside such a loop exits the entire nest of loops, not just the inner one.</p><h2><a class="nav-anchor" id="Exception-Handling-1" href="#Exception-Handling-1">Exception Handling</a></h2><p>When an unexpected condition occurs, a function may be unable to return a reasonable value to its caller. In such cases, it may be best for the exceptional condition to either terminate the program, printing a diagnostic error message, or if the programmer has provided code to handle such exceptional circumstances, allow that code to take the appropriate action.</p><h3><a class="nav-anchor" id="Built-in-Exceptions-1" href="#Built-in-Exceptions-1">Built-in <code>Exception</code>s</a></h3><p><code>Exception</code>s are thrown when an unexpected condition has occurred. The built-in <code>Exception</code>s listed below all interrupt the normal flow of control.</p><table><tr><th><code>Exception</code></th></tr><tr><td><a href="../stdlib/base.html#Base.ArgumentError"><code>ArgumentError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.BoundsError"><code>BoundsError</code></a></td></tr><tr><td><code>CompositeException</code></td></tr><tr><td><a href="../stdlib/base.html#Core.DivideError"><code>DivideError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.EOFError"><code>EOFError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.ErrorException"><code>ErrorException</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.InexactError"><code>InexactError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.InitError"><code>InitError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.InterruptException"><code>InterruptException</code></a></td></tr><tr><td><code>InvalidStateException</code></td></tr><tr><td><a href="../stdlib/base.html#Base.KeyError"><code>KeyError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.LoadError"><code>LoadError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.OutOfMemoryError"><code>OutOfMemoryError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.ReadOnlyMemoryError"><code>ReadOnlyMemoryError</code></a></td></tr><tr><td><a href="../stdlib/parallel.html#Base.Distributed.RemoteException"><code>RemoteException</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.MethodError"><code>MethodError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.OverflowError"><code>OverflowError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.ParseError"><code>ParseError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.SystemError"><code>SystemError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.TypeError"><code>TypeError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.UndefRefError"><code>UndefRefError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.UndefVarError"><code>UndefVarError</code></a></td></tr><tr><td><code>UnicodeError</code></td></tr></table><p>For example, the <a href="../stdlib/math.html#Base.sqrt"><code>sqrt()</code></a> function throws a <a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a> if applied to a negative real value:</p><pre><code class="language-julia-repl">julia&gt; sqrt(-1)
+(2, 4)</code></pre><!--
+A `break` statement inside such a loop exits the entire nest of loops, not just the inner one.
+--><p>ネストした<code>for</code>ループ内の<code>break</code>文は、内側のループだけでなく、ネスト全体のループを終了します。 <a href="## Exception Handling"></a></p><h2><a class="nav-anchor" id="例外処理-1" href="#例外処理-1">例外処理</a></h2><!--
+When an unexpected condition occurs, a function may be unable to return a reasonable value to
+its caller. In such cases, it may be best for the exceptional condition to either terminate the
+program, printing a diagnostic error message, or if the programmer has provided code to handle
+such exceptional circumstances, allow that code to take the appropriate action.
+--><p>予想外の状態が発生した場合、関数は呼び出しに対して、適切な値を返せないかもしれません。 そんな例外的な状況に対する最善の策は、プログラムを終了させることかもしれないし、状況を報告するエラーメッセージを出力することかもしれません。また、プログラマが例外的な状況に対応するコードを用意している場合は、そのコードに適切な処置をとらせることかもしれません。</p><p><a href="### Built-in `Exception`"></a></p><h3><a class="nav-anchor" id="標準装備の例外-1" href="#標準装備の例外-1">標準装備の<code>例外</code></a></h3><!--
+`Exception`s are thrown when an unexpected condition has occurred. The built-in `Exception`s listed
+below all interrupt the normal flow of control.
+--><p><code>例外</code>は予想外の状況が発生したときに投げられます。以下に挙げた標準装備の例外は、すべて、通常の制御の流れを中断します。</p><!--
+| `Exception`                   |
+|:----------------------------- |
+| [`ArgumentError`](@ref)       |
+| [`BoundsError`](@ref)         |
+| `CompositeException`          |
+| [`DivideError`](@ref)         |
+| [`DomainError`](@ref)         |
+| [`EOFError`](@ref)            |
+| [`ErrorException`](@ref)      |
+| [`InexactError`](@ref)        |
+| [`InitError`](@ref)           |
+| [`InterruptException`](@ref)  |
+| `InvalidStateException`       |
+| [`KeyError`](@ref)            |
+| [`LoadError`](@ref)           |
+| [`OutOfMemoryError`](@ref)    |
+| [`ReadOnlyMemoryError`](@ref) |
+| [`RemoteException`](@ref)     |
+| [`MethodError`](@ref)         |
+| [`OverflowError`](@ref)       |
+| [`ParseError`](@ref)          |
+| [`SystemError`](@ref)         |
+| [`TypeError`](@ref)           |
+| [`UndefRefError`](@ref)       |
+| [`UndefVarError`](@ref)       |
+| `UnicodeError`                |
+--><table><tr><th><code>例外</code></th></tr><tr><td><a href="../stdlib/base.html#Base.ArgumentError"><code>ArgumentError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.BoundsError"><code>BoundsError</code></a></td></tr><tr><td><code>CompositeException</code></td></tr><tr><td><a href="../stdlib/base.html#Core.DivideError"><code>DivideError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.EOFError"><code>EOFError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.ErrorException"><code>ErrorException</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.InexactError"><code>InexactError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.InitError"><code>InitError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.InterruptException"><code>InterruptException</code></a></td></tr><tr><td><code>InvalidStateException</code></td></tr><tr><td><a href="../stdlib/base.html#Base.KeyError"><code>KeyError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.LoadError"><code>LoadError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.OutOfMemoryError"><code>OutOfMemoryError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.ReadOnlyMemoryError"><code>ReadOnlyMemoryError</code></a></td></tr><tr><td><a href="../stdlib/parallel.html#Base.Distributed.RemoteException"><code>RemoteException</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.MethodError"><code>MethodError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.OverflowError"><code>OverflowError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.ParseError"><code>ParseError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Base.SystemError"><code>SystemError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.TypeError"><code>TypeError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.UndefRefError"><code>UndefRefError</code></a></td></tr><tr><td><a href="../stdlib/base.html#Core.UndefVarError"><code>UndefVarError</code></a></td></tr><tr><td><code>UnicodeError</code></td></tr></table><!--
+For example, the [`sqrt()`](@ref) function throws a [`DomainError`](@ref) if applied to a negative
+real value:
+--><p>たとえば、負の実数値に <a href="../stdlib/math.html#Base.sqrt"><code>sqrt()</code></a> 関数を適用すると、<a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a> が投げられます。</p><pre><code class="language-julia">julia&gt; sqrt(-1)
 ERROR: DomainError:
 sqrt will only return a complex result if called with a complex argument. Try sqrt(complex(x)).
 Stacktrace:
- [1] sqrt(::Int64) at ./math.jl:434</code></pre><p>You may define your own exceptions in the following way:</p><pre><code class="language-julia-repl">julia&gt; struct MyCustomException &lt;: Exception end</code></pre><h3><a class="nav-anchor" id="The-[throw()](@ref)-function-1" href="#The-[throw()](@ref)-function-1">The <a href="../stdlib/base.html#Core.throw"><code>throw()</code></a> function</a></h3><p>Exceptions can be created explicitly with <a href="../stdlib/base.html#Core.throw"><code>throw()</code></a>. For example, a function defined only for nonnegative numbers could be written to <a href="../stdlib/base.html#Core.throw"><code>throw()</code></a> a <a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a> if the argument is negative:</p><pre><code class="language-julia-repl">julia&gt; f(x) = x&gt;=0 ? exp(-x) : throw(DomainError())
+ [1] sqrt(::Int64) at ./math.jl:434</code></pre><!--
+You may define your own exceptions in the following way:
+--><p>独自の例外を次のように定義することができます。</p><pre><code class="language-julia">julia&gt; struct MyCustomException &lt;: Exception end</code></pre><p><a href="### The [`throw()`](@ref) function"></a></p><h3><a class="nav-anchor" id="[throw()](@ref)関数-1" href="#[throw()](@ref)関数-1"><a href="../stdlib/base.html#Core.throw"><code>throw()</code></a>　関数</a></h3><!--
+Exceptions can be created explicitly with [`throw()`](@ref). For example, a function defined only
+for nonnegative numbers could be written to [`throw()`](@ref) a [`DomainError`](@ref) if the argument
+is negative:
+--><p>例外は<a href="../stdlib/base.html#Core.throw"><code>throw()</code></a> 関数を使って、意図的に生成できます。 たとえば、非負の数値のみに定義される関数を、引数が負の場合には<a href="../stdlib/base.html#Core.throw"><code>throw()</code></a> が<a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a> を投げることによって書くことができます。</p><pre><code class="language-julia">julia&gt; f(x) = x&gt;=0 ? exp(-x) : throw(DomainError())
 f (generic function with 1 method)
 
 julia&gt; f(1)
@@ -270,16 +479,42 @@ julia&gt; f(1)
 julia&gt; f(-1)
 ERROR: DomainError:
 Stacktrace:
- [1] f(::Int64) at ./none:1</code></pre><p>Note that <a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a> without parentheses is not an exception, but a type of exception. It needs to be called to obtain an <code>Exception</code> object:</p><pre><code class="language-julia-repl">julia&gt; typeof(DomainError()) &lt;: Exception
+ [1] f(::Int64) at ./none:1</code></pre><!--
+Note that [`DomainError`](@ref) without parentheses is not an exception, but a type of exception.
+It needs to be called to obtain an `Exception` object:
+--><p><a href="../stdlib/base.html#Core.DomainError"><code>DomainError</code></a> は括弧をつけない場合は、例外ではなく、例外の型を表す点に注意してください。 <code>例外</code>オブジェクトを取得するには、（訳注:括弧をつけて）関数呼び出しを行う必要があります。</p><pre><code class="language-julia">julia&gt; typeof(DomainError()) &lt;: Exception
 true
 
 julia&gt; typeof(DomainError) &lt;: Exception
-false</code></pre><p>Additionally, some exception types take one or more arguments that are used for error reporting:</p><pre><code class="language-julia-repl">julia&gt; throw(UndefVarError(:x))
-ERROR: UndefVarError: x not defined</code></pre><p>This mechanism can be implemented easily by custom exception types following the way <a href="../stdlib/base.html#Core.UndefVarError"><code>UndefVarError</code></a> is written:</p><pre><code class="language-julia-repl">julia&gt; struct MyUndefVarError &lt;: Exception
+false</code></pre><!--
+Additionally, some exception types take one or more arguments that are used for error reporting:
+--><p>さらに、ある種の例外の型は、エラーの報告に使われる、1つ以上の引数をとります。</p><pre><code class="language-julia">julia&gt; throw(UndefVarError(:x))
+ERROR: UndefVarError: x not defined</code></pre><!--
+This mechanism can be implemented easily by custom exception types following the way [`UndefVarError`](@ref)
+is written:
+--><p>独自の例外型を書いて、<a href="../stdlib/base.html#Core.UndefVarError"><code>UndefVarError</code></a> と同様の仕組みを実装するのは簡単です。</p><pre><code class="language-julia">julia&gt; struct MyUndefVarError &lt;: Exception
            var::Symbol
        end
 
-julia&gt; Base.showerror(io::IO, e::MyUndefVarError) = print(io, e.var, &quot; not defined&quot;)</code></pre><div class="admonition note"><div class="admonition-title">Note</div><div class="admonition-text"><p>When writing an error message, it is preferred to make the first word lowercase. For example, <code>size(A) == size(B) || throw(DimensionMismatch(&quot;size of A not equal to size of B&quot;))</code></p><p>is preferred over</p><p><code>size(A) == size(B) || throw(DimensionMismatch(&quot;Size of A not equal to size of B&quot;))</code>.</p><p>However, sometimes it makes sense to keep the uppercase first letter, for instance if an argument to a function is a capital letter: <code>size(A,1) == size(B,2) || throw(DimensionMismatch(&quot;A has first dimension...&quot;))</code>.</p></div></div><h3><a class="nav-anchor" id="Errors-1" href="#Errors-1">Errors</a></h3><p>The <a href="../stdlib/base.html#Base.error"><code>error()</code></a> function is used to produce an <a href="../stdlib/base.html#Core.ErrorException"><code>ErrorException</code></a> that interrupts the normal flow of control.</p><p>Suppose we want to stop execution immediately if the square root of a negative number is taken. To do this, we can define a fussy version of the <a href="../stdlib/math.html#Base.sqrt"><code>sqrt()</code></a> function that raises an error if its argument is negative:</p><pre><code class="language-jldoctest">julia&gt; fussy_sqrt(x) = x &gt;= 0 ? sqrt(x) : error(&quot;negative x not allowed&quot;)
+julia&gt; Base.showerror(io::IO, e::MyUndefVarError) = print(io, e.var, &quot; not defined&quot;)</code></pre><!--
+!!! note
+    When writing an error message, it is preferred to make the first word lowercase. For example,
+    `size(A) == size(B) || throw(DimensionMismatch("size of A not equal to size of B"))`
+
+    is preferred over
+
+    `size(A) == size(B) || throw(DimensionMismatch("Size of A not equal to size of B"))`.
+
+    However, sometimes it makes sense to keep the uppercase first letter, for instance if an argument
+    to a function is a capital letter: `size(A,1) == size(B,2) || throw(DimensionMismatch("A has first dimension..."))`.
+--><p>！！！ 注意点 エラーメッセージを書くときは、最初の単語を小文字にすることをお勧めします。 例えば、    <code>size(A) == size(B) || throw(DimensionMismatch(&quot;size of A not equal to size of B&quot;))</code> のほうが   <code>size(A) == size(B) || throw(DimensionMismatch(&quot;Size of A not equal to size of B&quot;))</code>. より好ましいです。</p><p>しかし、最初の文字を意図的に大文字にする場合もたまにあります。 例えば、 <code>size(A,1) == size(B,2) || throw(DimensionMismatch(&quot;A has first dimension...&quot;))</code>.</p><p>size(A) == size(B) || throw(DimensionMismatch(&quot;size of A not equal to size of B&quot;)) <a href="### Errors"></a></p><h3><a class="nav-anchor" id="エラー-1" href="#エラー-1">エラー</a></h3><!--
+The [`error()`](@ref) function is used to produce an [`ErrorException`](@ref) that interrupts
+the normal flow of control.
+
+Suppose we want to stop execution immediately if the square root of a negative number is taken.
+To do this, we can define a fussy version of the [`sqrt()`](@ref) function that raises an error
+if its argument is negative:
+--><p><a href="../stdlib/base.html#Base.error"><code>error()</code></a> 関数は、<a href="../stdlib/base.html#Core.ErrorException"><code>ErrorException</code></a> を生成して、通常の制御の流れを中断するために使用されます。</p><p>負の数の平方根を取ると即座に実行を停止したいとします。これを行うために、<a href="../stdlib/math.html#Base.sqrt"><code>sqrt()</code></a> 関数を、引数が負の場合にエラーを発生させる、小うるさい定義にすることができます。</p><pre><code class="language-jldoctest">julia&gt; fussy_sqrt(x) = x &gt;= 0 ? sqrt(x) : error(&quot;negative x not allowed&quot;)
 fussy_sqrt (generic function with 1 method)
 
 julia&gt; fussy_sqrt(2)
@@ -288,7 +523,11 @@ julia&gt; fussy_sqrt(2)
 julia&gt; fussy_sqrt(-1)
 ERROR: negative x not allowed
 Stacktrace:
- [1] fussy_sqrt(::Int64) at ./none:1</code></pre><p>If <code>fussy_sqrt</code> is called with a negative value from another function, instead of trying to continue execution of the calling function, it returns immediately, displaying the error message in the interactive session:</p><pre><code class="language-jldoctest">julia&gt; function verbose_fussy_sqrt(x)
+ [1] fussy_sqrt(::Int64) at ./none:1</code></pre><!--
+If `fussy_sqrt` is called with a negative value from another function, instead of trying to continue
+execution of the calling function, it returns immediately, displaying the error message in the
+interactive session:
+--><p><code>fussy_sqrt</code>が、別の関数から負の値で呼び出された場合、関数呼び出しを続けようとはしないで、 直ちに関数から抜けて、エラーメッセージを対話セッションに表示します。</p><pre><code class="language-jldoctest">julia&gt; function verbose_fussy_sqrt(x)
            println(&quot;before fussy_sqrt&quot;)
            r = fussy_sqrt(x)
            println(&quot;after fussy_sqrt&quot;)
@@ -306,7 +545,10 @@ before fussy_sqrt
 ERROR: negative x not allowed
 Stacktrace:
  [1] fussy_sqrt at ./none:1 [inlined]
- [2] verbose_fussy_sqrt(::Int64) at ./none:3</code></pre><h3><a class="nav-anchor" id="Warnings-and-informational-messages-1" href="#Warnings-and-informational-messages-1">Warnings and informational messages</a></h3><p>Julia also provides other functions that write messages to the standard error I/O, but do not throw any <code>Exception</code>s and hence do not interrupt execution:</p><pre><code class="language-julia-repl">julia&gt; info(&quot;Hi&quot;); 1+1
+ [2] verbose_fussy_sqrt(::Int64) at ./none:3</code></pre><p><a href="### Warnings and informational messages"></a></p><h3><a class="nav-anchor" id="警告と情報メッセージ-1" href="#警告と情報メッセージ-1">警告と情報メッセージ</a></h3><!--
+Julia also provides other functions that write messages to the standard error I/O, but do not
+throw any `Exception`s and hence do not interrupt execution:
+--><p>Juliaには、標準エラー出力にメッセージを書き出す他の関数もありますが、例外を投げないため、実行が中断されません。</p><pre><code class="language-julia">julia&gt; info(&quot;Hi&quot;); 1+1
 INFO: Hi
 2
 
@@ -317,7 +559,11 @@ WARNING: Hi
 julia&gt; error(&quot;Hi&quot;); 1+1
 ERROR: Hi
 Stacktrace:
- [1] error(::String) at ./error.jl:21</code></pre><h3><a class="nav-anchor" id="The-try/catch-statement-1" href="#The-try/catch-statement-1">The <code>try/catch</code> statement</a></h3><p>The <code>try/catch</code> statement allows for <code>Exception</code>s to be tested for. For example, a customized square root function can be written to automatically call either the real or complex square root method on demand using <code>Exception</code>s :</p><pre><code class="language-julia-repl">julia&gt; f(x) = try
+ [1] error(::String) at ./error.jl:21</code></pre><p><a href="### The `try/catch` statement"></a></p><h3><a class="nav-anchor" id="The-try/catch-文-1" href="#The-try/catch-文-1">The <code>try/catch</code> 文</a></h3><!--
+The `try/catch` statement allows for `Exception`s to be tested for. For example, a customized
+square root function can be written to automatically call either the real or complex square root
+method on demand using `Exception`s :
+--><p>try/catch文によって、例外を検査することができます。 たとえば、<code>例外</code>を使って、場合によって、実数の平方根メソッドまたは複素数の平方根メソッドを自動的に呼び出すような、独自の平方根関数を書くことができます。</p><pre><code class="language-julia">julia&gt; f(x) = try
            sqrt(x)
        catch
            sqrt(complex(x, 0))
@@ -328,7 +574,14 @@ julia&gt; f(1)
 1.0
 
 julia&gt; f(-1)
-0.0 + 1.0im</code></pre><p>It is important to note that in real code computing this function, one would compare <code>x</code> to zero instead of catching an exception. The exception is much slower than simply comparing and branching.</p><p><code>try/catch</code> statements also allow the <code>Exception</code> to be saved in a variable. In this contrived example, the following example calculates the square root of the second element of <code>x</code> if <code>x</code> is indexable, otherwise assumes <code>x</code> is a real number and returns its square root:</p><pre><code class="language-julia-repl">julia&gt; sqrt_second(x) = try
+0.0 + 1.0im</code></pre><!--
+It is important to note that in real code computing this function, one would compare `x` to zero
+instead of catching an exception. The exception is much slower than simply comparing and branching.
+
+`try/catch` statements also allow the `Exception` to be saved in a variable. In this contrived
+example, the following example calculates the square root of the second element of `x` if `x`
+is indexable, otherwise assumes `x` is a real number and returns its square root:
+--><p>注意すべき重要な点は、この関数が実際に計算されるときには、例外を捕捉するのではなくて、<code>x</code>と0を比較する点です。例外は、単なる比較や分岐よりも、はるかに遅いのです。</p><p><code>try/catch</code>文では、例外を変数に保存することができます。 不自然ですが、次の例では、<code>x</code>がインデックスを持つ場合、<code>x</code>の2番目の要素の平方根を計算し、そうでなければ, <code>x</code>を実数と想定して平方根を返します。</p><pre><code class="language-julia">julia&gt; sqrt_second(x) = try
            sqrt(x[2])
        catch y
            if isa(y, DomainError)
@@ -351,17 +604,74 @@ julia&gt; sqrt_second(9)
 julia&gt; sqrt_second(-9)
 ERROR: DomainError:
 Stacktrace:
- [1] sqrt_second(::Int64) at ./none:7</code></pre><p>Note that the symbol following <code>catch</code> will always be interpreted as a name for the exception, so care is needed when writing <code>try/catch</code> expressions on a single line. The following code will <em>not</em> work to return the value of <code>x</code> in case of an error:</p><pre><code class="language-julia">try bad() catch x end</code></pre><p>Instead, use a semicolon or insert a line break after <code>catch</code>:</p><pre><code class="language-julia">try bad() catch; x end
+ [1] sqrt_second(::Int64) at ./none:7</code></pre><!--
+Note that the symbol following `catch` will always be interpreted as a name for the exception,
+so care is needed when writing `try/catch` expressions on a single line. The following code will
+*not* work to return the value of `x` in case of an error:
+--><p><code>catch</code>に続くシンボルは常に例外の名前として解釈されるため、try/catch式を1行に記述する際には注意が必要です。 次のコードは、エラーの時には、<code>x</code>の値を返しません。</p><pre><code class="language-julia">try bad() catch x end</code></pre><!--
+Instead, use a semicolon or insert a line break after `catch`:
+--><p>代わりに、<code>catch</code>の後では、セミコロンを使用するか、改行を挿入します。</p><pre><code class="language-julia">try bad() catch; x end
 
 try bad()
 catch
     x
-end</code></pre><p>The <code>catch</code> clause is not strictly necessary; when omitted, the default return value is <code>nothing</code>.</p><pre><code class="language-julia-repl">julia&gt; try error() end # Returns nothing</code></pre><p>The power of the <code>try/catch</code> construct lies in the ability to unwind a deeply nested computation immediately to a much higher level in the stack of calling functions. There are situations where no error has occurred, but the ability to unwind the stack and pass a value to a higher level is desirable. Julia provides the <a href="../stdlib/base.html#Base.rethrow"><code>rethrow()</code></a>, <a href="../stdlib/base.html#Base.backtrace"><code>backtrace()</code></a> and <a href="../stdlib/base.html#Base.catch_backtrace"><code>catch_backtrace()</code></a> functions for more advanced error handling.</p><h3><a class="nav-anchor" id="finally-Clauses-1" href="#finally-Clauses-1"><code>finally</code> Clauses</a></h3><p>In code that performs state changes or uses resources like files, there is typically clean-up work (such as closing files) that needs to be done when the code is finished. Exceptions potentially complicate this task, since they can cause a block of code to exit before reaching its normal end. The <code>finally</code> keyword provides a way to run some code when a given block of code exits, regardless of how it exits.</p><p>For example, here is how we can guarantee that an opened file is closed:</p><pre><code class="language-julia">f = open(&quot;file&quot;)
+end</code></pre><!--
+The `catch` clause is not strictly necessary; when omitted, the default return value is `nothing`.
+--><p>この<code>catch</code>節は厳密には必要ではありません。省略された場合、デフォルトの戻り値は<code>nothing</code>です。</p><pre><code class="language-julia">julia&gt; try error() end # Returns nothing</code></pre><!--
+The power of the `try/catch` construct lies in the ability to unwind a deeply nested computation
+immediately to a much higher level in the stack of calling functions. There are situations where
+no error has occurred, but the ability to unwind the stack and pass a value to a higher level
+is desirable. Julia provides the [`rethrow()`](@ref), [`backtrace()`](@ref) and [`catch_backtrace()`](@ref)
+functions for more advanced error handling.
+--><p><code>try/catch</code>文が強力なのは、深く入れ子になった計算から、関数呼び出しを重ねたはるかに高いレベルまで、飛び越えて戻ることができることにあります。エラーが発生していない場合でも、スタックを飛び越えて戻ってより高いレベルに値を渡す機能はほしいものです。 Juliaでは <a href="../stdlib/base.html#Base.rethrow"><code>rethrow()</code></a>, <a href="../stdlib/base.html#Base.backtrace"><code>backtrace()</code></a> and <a href="../stdlib/base.html#Base.catch_backtrace"><code>catch_backtrace()</code></a> といった さらに高度なエラー処理のための関数が用意されています。</p><p><a href="### `finally` Clauses"></a></p><h3><a class="nav-anchor" id="finally-節-1" href="#finally-節-1"><code>finally</code> 節</a></h3><!--
+In code that performs state changes or uses resources like files, there is typically clean-up
+work (such as closing files) that needs to be done when the code is finished. Exceptions potentially
+complicate this task, since they can cause a block of code to exit before reaching its normal
+end. The `finally` keyword provides a way to run some code when a given block of code exits, regardless
+of how it exits.
+
+For example, here is how we can guarantee that an opened file is closed:
+--><p>状態の変更したり、ファイルのようなリソースの使用するコードには、通常、コードの終了時に行うべきクリーンアップ作業（ファイルの閉じることなど）が記述されています。 例外があると、正常に最後に達する前にコードブロックを終了することもあるため、このタスクは複雑になる可能性があります。 <code>finally</code>キーワードは、コードブロックが終了する際に、どのように終了しようと、あるコードを実行させる手段を提供します。</p><p>たとえば、開いているファイルを閉じることを保証する方法は次のとおりです。</p><pre><code class="language-julia">f = open(&quot;file&quot;)
 try
     # operate on file f
 finally
     close(f)
-end</code></pre><p>When control leaves the <code>try</code> block (for example due to a <code>return</code>, or just finishing normally), <code>close(f)</code> will be executed. If the <code>try</code> block exits due to an exception, the exception will continue propagating. A <code>catch</code> block may be combined with <code>try</code> and <code>finally</code> as well. In this case the <code>finally</code> block will run after <code>catch</code> has handled the error.</p><h2><a class="nav-anchor" id="man-tasks-1" href="#man-tasks-1">Tasks (aka Coroutines)</a></h2><p>Tasks are a control flow feature that allows computations to be suspended and resumed in a flexible manner. This feature is sometimes called by other names, such as symmetric coroutines, lightweight threads, cooperative multitasking, or one-shot continuations.</p><p>When a piece of computing work (in practice, executing a particular function) is designated as a <a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a>, it becomes possible to interrupt it by switching to another <a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a>. The original <a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a> can later be resumed, at which point it will pick up right where it left off. At first, this may seem similar to a function call. However there are two key differences. First, switching tasks does not use any space, so any number of task switches can occur without consuming the call stack. Second, switching among tasks can occur in any order, unlike function calls, where the called function must finish executing before control returns to the calling function.</p><p>This kind of control flow can make it much easier to solve certain problems. In some problems, the various pieces of required work are not naturally related by function calls; there is no obvious &quot;caller&quot; or &quot;callee&quot; among the jobs that need to be done. An example is the producer-consumer problem, where one complex procedure is generating values and another complex procedure is consuming them. The consumer cannot simply call a producer function to get a value, because the producer may have more values to generate and so might not yet be ready to return. With tasks, the producer and consumer can both run as long as they need to, passing values back and forth as necessary.</p><p>Julia provides a <a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> mechanism for solving this problem. A <a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> is a waitable first-in first-out queue which can have multiple tasks reading from and writing to it.</p><p>Let&#39;s define a producer task, which produces values via the <a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!</code></a> call. To consume values, we need to schedule the producer to run in a new task. A special <a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> constructor which accepts a 1-arg function as an argument can be used to run a task bound to a channel. We can then <a href="../stdlib/io-network.html#Base.take!-Tuple{Base.AbstractIOBuffer}"><code>take!()</code></a> values repeatedly from the channel object:</p><pre><code class="language-jldoctest">julia&gt; function producer(c::Channel)
+end</code></pre><!--
+When control leaves the `try` block (for example due to a `return`, or just finishing normally),
+`close(f)` will be executed. If the `try` block exits due to an exception, the exception will
+continue propagating. A `catch` block may be combined with `try` and `finally` as well. In this
+case the `finally` block will run after `catch` has handled the error.
+--><p>（たとえば<code>return</code>を使ったり、正常終了したりして）、制御が<code>try</code>ブロックを離れると、<code>close(f)</code>が実行されます。 例外によって<code>try</code>ブロックを抜ける場合は、その例外が伝播していきます。<code>catch</code>ブロックは<code>try</code>や<code>finally</code>と組み合わせてもかまいません。この場合、<code>finally</code>ブロックは<code>catch</code>ブロックがエラーを処理した後に実行されます。</p><p><a href="## [Tasks (aka Coroutines)](@id man-tasks)"></a></p><h2><a class="nav-anchor" id="man-tasks-1" href="#man-tasks-1">タスク（別名コルーチン）</a></h2><!--
+Tasks are a control flow feature that allows computations to be suspended and resumed in a flexible
+manner. This feature is sometimes called by other names, such as symmetric coroutines, lightweight
+threads, cooperative multitasking, or one-shot continuations.
+--><p>タスクとは、計算を柔軟な方法で保留したり再開したりできる制御構造です。この機能は、対称コルーチン、軽量スレッド、協調的マルチタスク、ワンショット継続など、他の名前で呼ばれることがあります。</p><!--
+When a piece of computing work (in practice, executing a particular function) is designated as
+a [`Task`](@ref), it becomes possible to interrupt it by switching to another [`Task`](@ref).
+The original [`Task`](@ref) can later be resumed, at which point it will pick up right where it
+left off. At first, this may seem similar to a function call. However there are two key differences.
+First, switching tasks does not use any space, so any number of task switches can occur without
+consuming the call stack. Second, switching among tasks can occur in any order, unlike function
+calls, where the called function must finish executing before control returns to the calling function.
+--><p>ある計算作業（実のところ関数の実行）を<a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a>に指定すると、その作業を中断して、別の計算作業に切り替えることができます。 元の<a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a>は後で中断したところから再開することができます。一見、これは関数呼び出しと同じように見えるかもしれません。しかし、2つの重要な違いがあります。 まず、タスクの切り替えではメモリ領域が使用されないため、コールスタックを消費せずに任意の数のタスク切り替えを実行できます。 つぎに、タスク間の切り替えは任意の順序で行うことができます。これは、呼ばれた関数は、呼び出し元の関数に制御が戻る前に、実行を終了する必要がある関数呼び出しとは異なります。</p><!--
+
+This kind of control flow can make it much easier to solve certain problems. In some problems,
+the various pieces of required work are not naturally related by function calls; there is no obvious
+"caller" or "callee" among the jobs that need to be done. An example is the producer-consumer
+problem, where one complex procedure is generating values and another complex procedure is consuming
+them. The consumer cannot simply call a producer function to get a value, because the producer
+may have more values to generate and so might not yet be ready to return. With tasks, the producer
+and consumer can both run as long as they need to, passing values back and forth as necessary.
+--><p>この種の制御構造を使うと、ある種の問題を簡単に解決することができます。 問題のなかには、さまざまな必要な作業間に、関数呼び出しでは当然の対応づけができないものもあります。 なすべき作業が「呼び出す側」と「呼び出される側」にはっきりとわかれるわけではないのです。 例として「生産者/消費者」の問題をあげます。ある複雑な処理が値を生成し、別の複雑な処理がそれを消費する問題です。 消費者は値を得るために、単に生産者の関数を呼び出せばいいわけではありません。なぜなら、生産者には生成すべき値があり過ぎて、値を返す準備が整っていない可能性があるからです。 タスクを使用すると、生産者と消費者は、必要に応じて値をやり取りしながら、必要なだけ両者とも作動することができます。</p><!--
+Julia provides a [`Channel`](@ref) mechanism for solving this problem.
+A [`Channel`](@ref) is a waitable first-in first-out queue which can have
+multiple tasks reading from and writing to it.
+
+Let's define a producer task, which produces values via the [`put!`](@ref) call.
+To consume values, we need to schedule the producer to run in a new task. A special [`Channel`](@ref)
+constructor which accepts a 1-arg function as an argument can be used to run a task bound to a channel.
+We can then [`take!()`](@ref) values repeatedly from the channel object:
+--><p>Juliaはこの問題を解決するための<a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> という仕組みを提供しています。 <a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> は待機可能な先入先出のキューで、複数のタスクの読み書きが可能です。</p><p>生産者タスクを定義して、<a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!</code></a> を呼び出すと値を生産するようにしましょう。 値を消費するには、生産者を新しいタスクで実行するようにスケジュールする必要があります。  引数が1個の関数を引数として受けとる特殊な<a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> コンストラクタを使用して、チャネルに接続されたタスクを実行することができます。 そうすると、 <a href="../stdlib/io-network.html#Base.take!-Tuple{Base.AbstractIOBuffer}"><code>take!()</code></a>を使って、チャネルオブジェクトから繰り返し値を取得できます。</p><pre><code class="language-jldoctest">julia&gt; function producer(c::Channel)
            put!(c, &quot;start&quot;)
            for n=1:4
                put!(c, 2n)
@@ -387,7 +697,13 @@ julia&gt; take!(chnl)
 8
 
 julia&gt; take!(chnl)
-&quot;stop&quot;</code></pre><p>One way to think of this behavior is that <code>producer</code> was able to return multiple times. Between calls to <a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!()</code></a>, the producer&#39;s execution is suspended and the consumer has control.</p><p>The returned <a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> can be used as an iterable object in a <code>for</code> loop, in which case the loop variable takes on all the produced values. The loop is terminated when the channel is closed.</p><pre><code class="language-jldoctest">julia&gt; for x in Channel(producer)
+&quot;stop&quot;</code></pre><!--
+One way to think of this behavior is that `producer` was able to return multiple times. Between
+calls to [`put!()`](@ref), the producer's execution is suspended and the consumer has control.
+--><p>この振る舞いのとらえ方の１つは、<code>生産者</code>が複数回値を返すことができるというものです。 <a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!()</code></a> の呼び出しの間は、生産者の実行が保留され、消費者に制御権があります。</p><!--
+The returned [`Channel`](@ref) can be used as an iterable object in a `for` loop, in which case the
+loop variable takes on all the produced values. The loop is terminated when the channel is closed.
+--><p>戻される<a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> はforループのイテラブルオブジェクトとして使用できます。その場合、ループ変数は生成されたすべての値をとります。チャネルが閉じられると、ループは終了します。</p><pre><code class="language-jldoctest">julia&gt; for x in Channel(producer)
            println(x)
        end
 start
@@ -395,10 +711,85 @@ start
 4
 6
 8
-stop</code></pre><p>Note that we did not have to explicitly close the channel in the producer. This is because the act of binding a <a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> to a <a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a> associates the open lifetime of a channel with that of the bound task. The channel object is closed automatically when the task terminates. Multiple channels can be bound to a task, and vice-versa.</p><p>While the <a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a> constructor expects a 0-argument function, the <a href="../stdlib/parallel.html#Base.Channel"><code>Channel()</code></a> method which creates a channel bound task expects a function that accepts a single argument of type <a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a>. A common pattern is for the producer to be parameterized, in which case a partial function application is needed to create a 0 or 1 argument <a href="functions.html#man-anonymous-functions-1">anonymous function</a>.</p><p>For <a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a> objects this can be done either directly or by use of a convenience macro:</p><pre><code class="language-julia">function mytask(myarg)
+stop</code></pre><!--
+Note that we did not have to explicitly close the channel in the producer. This is because
+the act of binding a [`Channel`](@ref) to a [`Task()`](@ref) associates the open lifetime of
+a channel with that of the bound task. The channel object is closed automatically when the task
+terminates. Multiple channels can be bound to a task, and vice-versa.
+--><p>生産者のチャネルを明示的に閉じる必要はないことに注意してください。 これは、<a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> を<a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a>に接続することは、存続期間のわからないチャネルとタスクを対応させることだからです。 タスクが終了すると、チャネルオブジェクトは自動的に閉じられます。 タスクには複数のチャネルを接続することができ、その逆も可能です。</p><!--
+While the [`Task()`](@ref) constructor expects a 0-argument function, the [`Channel()`](@ref)
+method which creates a channel bound task expects a function that accepts a single argument of
+type [`Channel`](@ref). A common pattern is for the producer to be parameterized, in which case a partial
+function application is needed to create a 0 or 1 argument [anonymous function](@ref man-anonymous-functions).
+
+For [`Task()`](@ref) objects this can be done either directly or by use of a convenience macro:
+--><p><a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a> のコンストラクタは引数０個の関数を引数にとる一方、  <a href="../stdlib/parallel.html#Base.Channel"><code>Channel()</code></a> メソッドは、型が<a href="../stdlib/parallel.html#Base.Channel"><code>Channel</code></a> の引数1の関数を引数にとり、その関数のタスクと接続したチャネルを生成します。  生産者をパラメータ化するのはよくあるパターンで、引数が0個又は1個の[無名関数]（@ ref man-anonymous-functions）を生成するために関数の部分適用が必要です。 <a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a> オブジェクトに対して、これは、直接または便利なマクロを使って行うことができます。</p><pre><code class="language-julia">function mytask(myarg)
     ...
 end
 
 taskHdl = Task(() -&gt; mytask(7))
 # or, equivalently
-taskHdl = @task mytask(7)</code></pre><p>To orchestrate more advanced work distribution patterns, <a href="../stdlib/io-network.html#Base.bind"><code>bind()</code></a> and <a href="../stdlib/parallel.html#Base.schedule"><code>schedule()</code></a> can be used in conjunction with <a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a> and <a href="../stdlib/parallel.html#Base.Channel"><code>Channel()</code></a> constructors to explicitly link a set of channels with a set of producer/consumer tasks.</p><p>Note that currently Julia tasks are not scheduled to run on separate CPU cores. True kernel threads are discussed under the topic of <a href="parallel-computing.html#Parallel-Computing-1">Parallel Computing</a>.</p><h3><a class="nav-anchor" id="Core-task-operations-1" href="#Core-task-operations-1">Core task operations</a></h3><p>Let us explore the low level construct <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> to underestand how task switching works. <code>yieldto(task,value)</code> suspends the current task, switches to the specified <code>task</code>, and causes that task&#39;s last <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> call to return the specified <code>value</code>. Notice that <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> is the only operation required to use task-style control flow; instead of calling and returning we are always just switching to a different task. This is why this feature is also called &quot;symmetric coroutines&quot;; each task is switched to and from using the same mechanism.</p><p><a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> is powerful, but most uses of tasks do not invoke it directly. Consider why this might be. If you switch away from the current task, you will probably want to switch back to it at some point, but knowing when to switch back, and knowing which task has the responsibility of switching back, can require considerable coordination. For example, <a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!()</code></a> and <a href="../stdlib/io-network.html#Base.take!-Tuple{Base.AbstractIOBuffer}"><code>take!()</code></a> are blocking operations, which, when used in the context of channels maintain state to remember who the consumers are. Not needing to manually keep track of the consuming task is what makes <a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!()</code></a> easier to use than the low-level <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a>.</p><p>In addition to <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a>, a few other basic functions are needed to use tasks effectively.</p><ul><li><p><a href="../stdlib/parallel.html#Base.current_task"><code>current_task()</code></a> gets a reference to the currently-running task.</p></li><li><p><a href="../stdlib/parallel.html#Base.istaskdone"><code>istaskdone()</code></a> queries whether a task has exited.</p></li><li><p><a href="../stdlib/parallel.html#Base.istaskstarted"><code>istaskstarted()</code></a> queries whether a task has run yet.</p></li><li><p><a href="../stdlib/parallel.html#Base.task_local_storage-Tuple{Any}"><code>task_local_storage()</code></a> manipulates a key-value store specific to the current task.</p></li></ul><h3><a class="nav-anchor" id="Tasks-and-events-1" href="#Tasks-and-events-1">Tasks and events</a></h3><p>Most task switches occur as a result of waiting for events such as I/O requests, and are performed by a scheduler included in the standard library. The scheduler maintains a queue of runnable tasks, and executes an event loop that restarts tasks based on external events such as message arrival.</p><p>The basic function for waiting for an event is <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a>. Several objects implement <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a>; for example, given a <code>Process</code> object, <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> will wait for it to exit. <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> is often implicit; for example, a <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> can happen inside a call to <a href="../stdlib/io-network.html#Base.read"><code>read()</code></a> to wait for data to be available.</p><p>In all of these cases, <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> ultimately operates on a <a href="../stdlib/parallel.html#Base.Condition"><code>Condition</code></a> object, which is in charge of queueing and restarting tasks. When a task calls <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> on a <a href="../stdlib/parallel.html#Base.Condition"><code>Condition</code></a>, the task is marked as non-runnable, added to the condition&#39;s queue, and switches to the scheduler. The scheduler will then pick another task to run, or block waiting for external events. If all goes well, eventually an event handler will call <a href="../stdlib/parallel.html#Base.notify"><code>notify()</code></a> on the condition, which causes tasks waiting for that condition to become runnable again.</p><p>A task created explicitly by calling <a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a> is initially not known to the scheduler. This allows you to manage tasks manually using <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> if you wish. However, when such a task waits for an event, it still gets restarted automatically when the event happens, as you would expect. It is also possible to make the scheduler run a task whenever it can, without necessarily waiting for any events. This is done by calling <a href="../stdlib/parallel.html#Base.schedule"><code>schedule()</code></a>, or using the <a href="../stdlib/parallel.html#Base.@schedule"><code>@schedule</code></a> or <a href="../stdlib/parallel.html#Base.@async"><code>@async</code></a> macros (see <a href="parallel-computing.html#Parallel-Computing-1">Parallel Computing</a> for more details).</p><h3><a class="nav-anchor" id="Task-states-1" href="#Task-states-1">Task states</a></h3><p>Tasks have a <code>state</code> field that describes their execution status. A <a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a> <code>state</code> is one of the following symbols:</p><table><tr><th>Symbol</th><th>Meaning</th></tr><tr><td><code>:runnable</code></td><td>Currently running, or available to be switched to</td></tr><tr><td><code>:waiting</code></td><td>Blocked waiting for a specific event</td></tr><tr><td><code>:queued</code></td><td>In the scheduler&#39;s run queue about to be restarted</td></tr><tr><td><code>:done</code></td><td>Successfully finished executing</td></tr><tr><td><code>:failed</code></td><td>Finished with an uncaught exception</td></tr></table><footer><hr/><a class="previous" href="functions.html"><span class="direction">Previous</span><span class="title">Functions</span></a><a class="next" href="variables-and-scoping.html"><span class="direction">Next</span><span class="title">Scope of Variables</span></a></footer></article></body></html>
+taskHdl = @task mytask(7)</code></pre><!--
+To orchestrate more advanced work distribution patterns, [`bind()`](@ref) and [`schedule()`](@ref)
+can be used in conjunction with [`Task()`](@ref) and [`Channel()`](@ref)
+constructors to explicitly link a set of channels with a set of producer/consumer tasks.
+--><p>より高度な作業分配パターンを編成するために、<a href="../stdlib/io-network.html#Base.bind"><code>bind()</code></a> や <a href="../stdlib/parallel.html#Base.schedule"><code>schedule()</code></a> は<a href="../stdlib/parallel.html#Core.Task"><code>Task()</code></a> や<a href="../stdlib/parallel.html#Base.Channel"><code>Channel()</code></a> のコンストラクタと共に使用して、複数の生産者/消費者タスクと接続した複数のチャネルを明示的に連携することができます。</p><!--
+Note that currently Julia tasks are not scheduled to run on separate CPU cores.
+True kernel threads are discussed under the topic of [Parallel Computing](@ref).
+--><p>いまのところ、Juliaのタスクは別々のCPUコアで実行するようにスケジュールされないことに注意してください。 真のカーネルスレッドについては、<a href="parallel-computing.html#Parallel-Computing-1">Parallel Computing</a> のトピックで説明します。</p><p><a href="### Core task operations"></a></p><h3><a class="nav-anchor" id="コアタスク処理-1" href="#コアタスク処理-1">コアタスク処理</a></h3><!--
+Let us explore the low level construct [`yieldto()`](@ref) to underestand how task switching works.
+`yieldto(task,value)` suspends the current task, switches to the specified `task`, and causes
+that task's last [`yieldto()`](@ref) call to return the specified `value`. Notice that [`yieldto()`](@ref)
+is the only operation required to use task-style control flow; instead of calling and returning
+we are always just switching to a different task. This is why this feature is also called "symmetric
+coroutines"; each task is switched to and from using the same mechanism.
+--><p>低レベルの関数 <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> を探査して、タスク切り替えがどのように動作するかを理解しましょう。  <code>yieldto(task,value)</code> は、現在のタスクを中断し、指定された<code>task</code>に切り替えて、そのタスクへの最新の<a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> 呼び出しに対して、指定された<code>value</code>を返します。  制御構造としてタスクを使う場合に必須な操作は<a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> のみであることに注意してください。  関数呼び出したり値を返したりせずに、常に別のタスクに切り替えるだけでいいのです。  このため、この制御構造は「対称コルーチン」とも呼ばれます。各タスクの切り替えは同じ機構を利用しています。</p><!--
+[`yieldto()`](@ref) is powerful, but most uses of tasks do not invoke it directly. Consider why
+this might be. If you switch away from the current task, you will probably want to switch back
+to it at some point, but knowing when to switch back, and knowing which task has the responsibility
+of switching back, can require considerable coordination. For example, [`put!()`](@ref) and [`take!()`](@ref)
+are blocking operations, which, when used in the context of channels maintain state to remember
+who the consumers are. Not needing to manually keep track of the consuming task is what makes [`put!()`](@ref)
+easier to use than the low-level [`yieldto()`](@ref).
+--><p><a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> は強力ですが、タスクを使う場合、大抵は直接呼び出されることはありません。 なぜなのか考えてみましょう。現在のタスクが中断する場合は、おそらくいつかは再開するのでしょうが、いつどのタスクが担当して戻るのかを知るのは、かなりの協調作業が必要になります。 例えば、 <a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!()</code></a> や <a href="../stdlib/io-network.html#Base.take!-Tuple{Base.AbstractIOBuffer}"><code>take!()</code></a> は他を中断する操作で、チャネルと共に使うとき、状態を保持して、消費者が誰であるかを覚えています。  消費するタスクを手動で追跡する必要がないため、 <a href="../stdlib/parallel.html#Base.put!-Tuple{Channel,Any}"><code>put!()</code></a> は低レベルの <a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> よりも使いやすくなっています。</p><!--
+In addition to [`yieldto()`](@ref), a few other basic functions are needed to use tasks effectively.
+
+  * [`current_task()`](@ref) gets a reference to the currently-running task.
+  * [`istaskdone()`](@ref) queries whether a task has exited.
+  * [`istaskstarted()`](@ref) queries whether a task has run yet.
+  * [`task_local_storage()`](@ref) manipulates a key-value store specific to the current task.
+--><p><a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> に加えて、タスクを効果的に使用するためには、いくつかの基本機能が必要です。</p><ul><li><p><a href="../stdlib/parallel.html#Base.current_task"><code>current_task()</code></a> 現在実行中のタスクへの参照を取得します。</p></li><li><p><a href="../stdlib/parallel.html#Base.istaskdone"><code>istaskdone()</code></a> タスクが終了したかどうかを問い合わせします。</p></li><li><p><a href="../stdlib/parallel.html#Base.istaskstarted"><code>istaskstarted()</code></a> タスクがまだ実行されているかどうかを問い合わせします。</p></li><li><p><a href="../stdlib/parallel.html#Base.task_local_storage-Tuple{Any}"><code>task_local_storage()</code></a> 現在のタスクに固有のキーバリューストアを操作します。</p></li></ul><p><a href="### Tasks and events"></a></p><h3><a class="nav-anchor" id="タスクとイベント-1" href="#タスクとイベント-1">タスクとイベント</a></h3><!--
+Most task switches occur as a result of waiting for events such as I/O requests, and are performed
+by a scheduler included in the standard library. The scheduler maintains a queue of runnable tasks,
+and executes an event loop that restarts tasks based on external events such as message arrival.
+--><p>ほとんどのタスク切り替えは、I / O要求などのイベントを待機する結果として発生し、標準ライブラリに含まれるスケジューラによって実行されます。 スケジューラは、実行可能なタスクのキューを保持し、メッセージ到着などの外部イベントをきっかけにしてタスクを再開するイベントループを実行します。</p><!--
+The basic function for waiting for an event is [`wait()`](@ref). Several objects implement [`wait()`](@ref);
+for example, given a `Process` object, [`wait()`](@ref) will wait for it to exit. [`wait()`](@ref)
+is often implicit; for example, a [`wait()`](@ref) can happen inside a call to [`read()`](@ref)
+to wait for data to be available.
+--><p>イベントを待つための基本的な機能は<a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> です。 いくつかのオブジェクトで<a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> が実装されています。 例えば、<code>Process</code> オブジェクトの場合、<a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> はそのプロセスが終了するのを待ちます。 <a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> は、しばしば暗黙的で、たとえば、<a href="../stdlib/io-network.html#Base.read"><code>read()</code></a>　を呼び出す時、データが利用可能になるのを待つため内部的に<a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> が発生する可能性があります。</p><!--
+In all of these cases, [`wait()`](@ref) ultimately operates on a [`Condition`](@ref) object, which
+is in charge of queueing and restarting tasks. When a task calls [`wait()`](@ref) on a [`Condition`](@ref),
+the task is marked as non-runnable, added to the condition's queue, and switches to the scheduler.
+The scheduler will then pick another task to run, or block waiting for external events. If all
+goes well, eventually an event handler will call [`notify()`](@ref) on the condition, which causes
+tasks waiting for that condition to become runnable again.
+--><p>これらのすべてのケースでは、<a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> は最終的に、タスクのキューイングと再開を担当する<a href="../stdlib/parallel.html#Base.Condition"><code>Condition</code></a> オブジェクトに対して働きかけます。 タスクが<a href="../stdlib/parallel.html#Base.wait"><code>wait()</code></a> を呼び出し、<a href="../stdlib/parallel.html#Base.Condition"><code>Condition</code></a> に働きかけると、タスクは非実行可能としてマークされて、状態のキューに追加され、スケジューラに切り替わります。スケジューラは、別のタスクを選択して実行するか、外部イベントを待機して他を中断します。すべてがうまくいけば、最終的にイベントハンドラは<a href="../stdlib/parallel.html#Base.notify"><code>notify()</code></a> を呼び出して条件に働きかけ、その条件を待っているタスクを再度実行可能にします。</p><!--
+A task created explicitly by calling [`Task`](@ref) is initially not known to the scheduler. This
+allows you to manage tasks manually using [`yieldto()`](@ref) if you wish. However, when such
+a task waits for an event, it still gets restarted automatically when the event happens, as you
+would expect. It is also possible to make the scheduler run a task whenever it can, without necessarily
+waiting for any events. This is done by calling [`schedule()`](@ref), or using the [`@schedule`](@ref)
+or [`@async`](@ref) macros (see [Parallel Computing](@ref) for more details).
+--><p><a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a> を呼び出して明示的に作成されたタスクは、はじめはスケジューラには知られていません。 このため、必要に応じて<a href="../stdlib/parallel.html#Base.yieldto"><code>yieldto()</code></a> を使って手動でタスクを管理できます。 しかし、このようなタスクがイベントを待機しているときは、イベントが発生したときに自動的に再開されます。 また、いかなるイベントも待機することなく、スケジューラーが可能な限りタスクを実行できるようにすることも可能です。 これは、<a href="../stdlib/parallel.html#Base.schedule"><code>schedule()</code></a> 呼び出すか、または、<a href="../stdlib/parallel.html#Base.@schedule"><code>@schedule</code></a> か<a href="../stdlib/parallel.html#Base.@async"><code>@async</code></a> のマクロを使って行います。(詳細については<a href="parallel-computing.html#Parallel-Computing-1">Parallel Computing</a> を参照）。</p><p><a href="### Task states"></a></p><h3><a class="nav-anchor" id="タスクの状態-1" href="#タスクの状態-1">タスクの状態</a></h3><!--
+Tasks have a `state` field that describes their execution status. A [`Task`](@ref) `state` is one of the following
+symbols:
+--><p>タスクには、実行状態を示す<code>state</code>フィールドがあります。 <a href="../stdlib/parallel.html#Core.Task"><code>Task</code></a> の<code>state</code> は次のシンボルのいずれかです。</p><!--
+| Symbol      | Meaning                                            |
+|:----------- |:-------------------------------------------------- |
+| `:runnable` | Currently running, or available to be switched to  |
+| `:waiting`  | Blocked waiting for a specific event               |
+| `:queued`   | In the scheduler's run queue about to be restarted |
+| `:done`     | Successfully finished executing                    |
+| `:failed`   | Finished with an uncaught exception                |
+--><table><tr><th>シンボル</th><th>意味</th></tr><tr><td><code>:runnable</code></td><td>現在実行中、または切り替え可能</td></tr><tr><td><code>:waiting</code></td><td>特定のイベントを待機して中断中</td></tr><tr><td><code>:queued</code></td><td>スケジューラの実行キュー内で再開待機　</td></tr><tr><td><code>:done</code></td><td>実行が正常に終了　　　　　　　　　</td></tr><tr><td><code>:failed</code></td><td>例外が捕捉されずに終了</td></tr></table><p>[^1訳注]:　「外側からのループ」というのは、直積の左を内側、右を外側に見立てて、外側のカウンターが一巡してから右側のカウンターが進んでいくという、ループの進み方を表していると思います。</p><footer><hr/><a class="previous" href="functions.html"><span class="direction">Previous</span><span class="title">関数</span></a><a class="next" href="variables-and-scoping.html"><span class="direction">Next</span><span class="title">Scope of Variables</span></a></footer></article></body></html>

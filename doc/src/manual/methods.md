@@ -1,6 +1,7 @@
 # Methods
+# メソッド
 
-Recall from [Functions](@ref man-functions) that a function is an object that maps a tuple of arguments to a
+Recall from [関数](@ref man-functions) that a function is an object that maps a tuple of arguments to a
 return value, or throws an exception if no appropriate value can be returned. It is common for
 the same conceptual function or operation to be implemented quite differently for different types
 of arguments: adding two integers is very different from adding two floating-point numbers, both
@@ -516,9 +517,10 @@ julia> wait(schedule(t, 1))
 ```
 
 ## Parametrically-constrained Varargs methods
+## パラメトリック制約付き可変引数メソッド
 
 Function parameters can also be used to constrain the number of arguments that may be supplied
-to a "varargs" function ([Varargs Functions](@ref)).  The notation `Vararg{T,N}` is used to indicate
+to a "varargs" function ([可変引数関数](@ref)).  The notation `Vararg{T,N}` is used to indicate
 such a constraint.  For example:
 
 ```jldoctest
@@ -548,8 +550,9 @@ function getindex(A::AbstractArray{T,N}, indexes::Vararg{Number,N}) where {T,N}
 would be called only when the number of `indexes` matches the dimensionality of the array.
 
 ## Note on Optional and keyword Arguments
+## 省略可能引数とキーワード引数の注意点
 
-As mentioned briefly in [Functions](@ref man-functions), optional arguments are implemented as syntax for multiple
+As mentioned briefly in [関数](@ref man-functions), optional arguments are implemented as syntax for multiple
 method definitions. For example, this definition:
 
 ```julia

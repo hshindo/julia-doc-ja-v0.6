@@ -523,7 +523,7 @@ should be used explicitly (see [Short-Circuit Evaluation](@ref)).
 思われるかもしれませんが、中間の式は1度だけ処理されます。しかし、連続した比較の処理順は
 定義されていません。連続した比較で副次効果のある式（印刷など）を使用しないことを推奨します。
 副次効果が必要な場合は、短絡 `&&`
-演算子を明示的に使用する必要があります。（ [Short-Circuit Evaluation](@ref) 参照）
+演算子を明示的に使用する必要があります。（ [短絡評価](@ref) 参照）
 
 [](### Elementary Functions)
 ### 基本的な関数

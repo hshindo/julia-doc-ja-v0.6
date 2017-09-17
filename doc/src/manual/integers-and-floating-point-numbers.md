@@ -302,7 +302,7 @@ with some existing programming experience.)
 ```
 [`typemin()`](@ref) および [`typemax()`](@ref) の戻り値は常に指定された引数の型となります。
 （上記の式は、まだ紹介されていない
-[for loops](@ref man-loops)、[Strings](@ref man-strings)、[Interpolation](@ref)
+[繰り返し評価: ループ](@ref man-loops)、[文字列](@ref man-strings)、[Interpolation](@ref)
 などの機能が含まれていますが、プログラミング経験者にとっては難しいものではないはずです。）
 
 [](### Overflow behavior)
