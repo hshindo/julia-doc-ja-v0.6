@@ -120,6 +120,7 @@ julia> Int8[[1 2] [3 4]]
 ```
 
 ### Comprehensions
+### 内包表記
 
 Comprehensions provide a general and powerful way to construct arrays. Comprehension syntax is
 similar to set construction notation in mathematics:
@@ -525,7 +526,7 @@ The following operators are supported for arrays:
 
 1. Unary arithmetic -- `-`, `+`
 2. Binary arithmetic -- `-`, `+`, `*`, `/`, `\`, `^`
-3. Comparison -- `==`, `!=`, `≈` ([`isapprox`](@ref)), `≉`
+3. Comparison -- `==`, `!=`, `?` ([`isapprox`](@ref)), `?`
 
 Most of the binary arithmetic operators listed above also operate elementwise
 when one argument is scalar: `-`, `+`, and `*` when either argument is scalar,
@@ -551,6 +552,8 @@ elementwise over `a` and `b`, and `maximum(a)`, which finds the largest value wi
 `a`. The same relationship holds for `min.(a,b)` and `minimum(a)`.
 
 ### Broadcasting
+### ブロードキャスト
+
 
 It is sometimes useful to perform element-by-element binary operations on arrays of different
 sizes, such as adding a vector to each column of a matrix. An inefficient way to do this would
@@ -628,7 +631,7 @@ be quite different from conventional arrays. For example, elements might be comp
 rather than stored. However, any concrete `AbstractArray{T,N}` type should generally implement
 at least [`size(A)`](@ref) (returning an `Int` tuple), [`getindex(A,i)`](@ref) and [`getindex(A,i1,...,iN)`](@ref getindex);
 mutable arrays should also implement [`setindex!()`](@ref). It is recommended that these operations
-have nearly constant time complexity, or technically Õ(1) complexity, as otherwise some array
+have nearly constant time complexity, or technically O(1) complexity, as otherwise some array
 functions may be unexpectedly slow. Concrete types should also typically provide a [`similar(A,T=eltype(A),dims=size(A))`](@ref)
 method, which is used to allocate a similar array for [`copy()`](@ref) and other out-of-place
 operations. No matter how an `AbstractArray{T,N}` is represented internally, `T` is the type of

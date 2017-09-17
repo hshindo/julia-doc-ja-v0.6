@@ -294,7 +294,7 @@ and let-blocks. There are some extra rules for [Let Blocks](@ref) and for [For L
 -->
 ```
 ソフトローカルスコープは、for-ループ、while-ループ、内包表記、try-catch-finally-ブロック、およびlet-ブロックに導入されています。
-[Let ブロック](@ref) と [For ループ と 内包表記](@ref) には、いくつかの特別なルールがあります。
+[Letブロック](@ref) と [Forループと内包表記](@ref) には、いくつかの特別なルールがあります。
 
 ```@raw html
 <!--
@@ -581,7 +581,7 @@ See also the closures in the examples in the next two sections.
 ```
 続く2セクションの例にあるクロージャも参照してください。
 [](### Let Blocks)
-### Let ブロック
+### Letブロック
 
 
 ```@raw html
@@ -702,7 +702,7 @@ outer local `x`.
 `let`によって、新しいスコープブロックが導入されるので、内側のローカル変数`x`は外側のローカル変数`x`とは異なります。
 
 [](### For Loops and Comprehensions)
-### For ループと内包表記
+### Forループと内包表記
 
 ```@raw html
 <!--
