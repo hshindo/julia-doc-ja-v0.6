@@ -14,7 +14,15 @@ All code in classic dynamically typed languages is polymorphic: only by explicit
 or when objects fail to support operations at run-time, are the types of any values ever restricted.
 -->
 ```
-
+型システムは伝統的にまったく異なる2つの陣営に分類されてきました。静的型システムと動的型システムです。
+静的型システムでは、すべてのプログラムの式は、実行前に型が算出可能でなくてはなりません。
+動的型システムでは、実行時に処理するデータが利用可能になるまで、型についてなにもわかりません。
+静的型システムでもオブジェクト指向だと少し柔軟で、コンパイル時に値の正確な型がわからなくても
+プログラムを書くことができます。
+異なる型であっても動作するプログラムが書ける能力を多相性といいます。
+古典的な動的型付言語はすべて多相的です。
+型に制約が生じるのは、明示的に型チェックをする場合か、オブジェクトが実行時に操作を維持できなくなった場合
+くらいのものでしょう。
 
 ```@raw html
 <!--
@@ -25,6 +33,10 @@ of function arguments to be deeply integrated with the language. Method dispatch
 detail in [Methods](@ref), but is rooted in the type system presented here.
 -->
 ```
+Juliaの型システムは動的ですが、静的型付システムの利点も、ある程度備えています。ある種の値には、
+型を判定できるのです。これは、効率的なコードを生成するのに大いに役立ち、さらに重要なのは、
+関数の引数の型に対してメソッド・ディスパッチが可能になり、Julia言語に深く統合されていることです。
+メソッド・ディスパッチは[メソッド](@ref)で詳説しますが、ここに示した型システムに基づいているのです。
 
 
 ```@raw html
@@ -36,7 +48,10 @@ into previously "untyped" code. Doing so will typically increase both the perfor
 of these systems, and perhaps somewhat counterintuitively, often significantly simplify them.
 -->
 ```
-
+Juliaで、型を省略した時は、値は任意の型として許されるのが、デフォルトの動作です。
+つまり、型をわざわざ指定しなくても、Juliaなら有用なプログラムが沢山かけるのです。
+しかし必要に応じて、以前は**型を指定していない**コードに徐々に型表記を加えていくことも簡単にできるのです。
+そうすると、一般的には、システムのパフォーマンスと堅牢性が向上し、おそらく直観に反して、しばしば非常に単純化されます。
 
 ```@raw html
 <!--
@@ -53,7 +68,14 @@ object-oriented languages. Other high-level aspects of Julia's type system that 
 up front are:
 -->
 ```
-
+Juliaのことを[型システム](https://en.wikipedia.org/wiki/Type_system) の術語を使って記述すると,動的、名目的、パラメータ的です。
+ジェネリック型はパラメータをとることができ、型の階層関係は、[明示的に宣言](https://en.wikipedia.org/wiki/Nominal_type_system)するのであって、 
+[互換構造から推論](https://en.wikipedia.org/wiki/Structural_type_system)するわけではありません。
+Juliaの型システムの際立った特徴は、具象型が互いのサブタイプとなってはいけない点です。
+すべての具象型は最終的であり、抽象型のスーパータイプを持てるのみです。　
+はじめは、この制約は不当に厳しく思えるかも知れませんが、多くの利点があり、欠点はほとんどないのです。
+振る舞いを継承できるほうが、構造を継承できるよりも重要であり、両方できるようにすると、従来のオブジェクト指向言語では、深刻な困難が生じることが判明しています。
+他に、Juliaの型システムの言及すべき高水準な側面は、
 
 ```@raw html
 <!--
@@ -71,6 +93,11 @@ up front are:
     or restricted.
 -->
 ```
+   * オブジェクトと非オブジェクト値の区別がありません。すべての値は型を持つ真のオブジェクトです。その型はすべて連結している一つの型のグラフに属し、すべてのノードが型として等しく第一級です。
+  * "コンパイル時の型"という考え方は全く無意味です。すべての値は、実行時に実際にとるただ一つの型を持ちます。
+  これはオブジェクト指向言語では「実行時型」と呼ばれ、多相型と静的コンパイルを組み合わせるときは、この違いは重要になります。
+  * 値のみが型を持ち、変数は型を持ちません。変数は値に束縛された単なる名前です。 
+   * 抽象型と具象型の両方とも、他の型によってパラメータ化できます。また、シンボル、[`isbits()`](@ref) が、真の値を返す型である任意の値（本質的に数やブール値のような、他のオブジェクトへのポインタを持たないCの型や構造体に格納されるもの）、そういったもののタプルなどにによってパラメータ化することもできます。型パラメータは、参照や制限をする必要がない場合は省略することができます。
 
 
 ```@raw html
@@ -80,6 +107,7 @@ Many Julia programmers may never feel the need to write code that explicitly use
 kinds of programming, however, become clearer, simpler, faster and more robust with declared types.
 -->
 ```
+Juliaの型システムは、強力で表現力豊かではあるが、わかりやすく、直感的で邪魔にならないように設計されています。多くのJuliaプログラマは、型を明示してコードを書く必要性を決して感じないかもしれません。しかし、プログラムの種類によっては、型を宣言すると、より明快単純で、速く、堅牢になります。
 
 [](## Type Declarations)
 ## 型宣言
@@ -357,7 +385,7 @@ of function arguments that are containers of abstract types; see [Performance Ti
 ```
 
 [](## Primitive Types)
-## プリミティブ型
+## 原始型
 
 
 ```@raw html
@@ -431,7 +459,7 @@ any differently than [`Int8`](@ref) or [`UInt8`](@ref).
 ```
 
 [](## Composite Types)
-## 合成型
+## 複合型
 
 
 ```@raw html
@@ -600,7 +628,7 @@ to be addressed in its own section: [Constructors](@ref man-constructors).
 ```
 
 [](## Mutable Composite Types)
-## 可変合成型
+## 可変複合型
 
 
 ```@raw html
@@ -709,7 +737,7 @@ Every concrete value in the system is an instance of some `DataType`.
 ```
 
 [](## Type Unions)
-## 型の合併
+## 型共用体
 
 
 ```@raw html
@@ -774,7 +802,7 @@ abstract types, and finally parametric bits types.
 ```
 
 [](### Parametric Composite Types)
-### パラメトリック合成型
+### パラメトリック複合型
 
 
 ```@raw html
@@ -1361,7 +1389,7 @@ alias for `Tuple{Vararg{T,N}}`, i.e. a tuple type containing exactly `N` element
 ```
 
 [](#### [Singleton Types](@id man-singleton-types))
-#### [シングレトン型](@id man-singleton-types)
+#### [シングルトン型](@id man-singleton-types)
 
 
 ```@raw html
@@ -1443,7 +1471,7 @@ types.
 ```
 
 [](### Parametric Primitive Types)
-### パラメトリックプリミティブ型
+### パラメトリック原始型
 
 
 ```@raw html
