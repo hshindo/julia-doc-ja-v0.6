@@ -294,7 +294,7 @@ and let-blocks. There are some extra rules for [Let Blocks](@ref) and for [For L
 -->
 ```
 ソフトローカルスコープは、for-ループ、while-ループ、内包表記、try-catch-finally-ブロック、およびlet-ブロックに導入されています。
-[Let ブロック](@ref) と [For ループ と 内包表記](@ref) には、いくつかの特別ルールがあります。
+[Let ブロック](@ref) と [For ループ と 内包表記](@ref) には、いくつかの特別なルールがあります。
 
 ```@raw html
 <!--
@@ -435,7 +435,7 @@ slight differences between functions defined in local vs. global scopes. Conside
 of the last example by moving `bar` to the global scope:
 -->
 ```
-代入の際のグローバル変数とローカル変数の受け継ぎ方の違いから、ローカルスコープとグローバルスコープで定義された関数間に若干の違いが生じる可能性があります。
+代入の際のグローバル変数とローカル変数の受け継ぎ方の違いから、ローカルスコープとグローバルスコープで定義された関数の間に若干の違いが生じる可能性があります。
 前述の例で、`bar`をグローバルスコープに移動するとどうなるか、考えてみてください。
 
 
@@ -525,7 +525,7 @@ Julia provides built-in, efficient functions to test for oddness and evenness ca
 and [`isodd()`](@ref) so the above definitions should only be taken as examples.
 -->
 ```
-ジュリアには、奇数・偶数を判定する、標準装備の効率的な関数[`iseven()`](@ref)と [`isodd()`](@ref) があるので、上記の定義は、単なる例だと思ってください。
+Juliaには、奇数・偶数を判定する、標準装備の効率的な関数[`iseven()`](@ref)と [`isodd()`](@ref) があるので、上記の定義は、単なる例だと思ってください。
 
 [](### Hard vs. Soft Local Scope)
 ### ハードローカルスコープとソフトローカルスコープの比較

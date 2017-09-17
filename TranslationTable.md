@@ -66,7 +66,7 @@
 | assignment form                                 | 代入形式、代入方式                       
 | anonymous function                              | 無名関数                                 
 | tuple                                           | タプル                                      
-| tuple “destructuring”                           | タプル「構造解除」、タプルの「分割」                
+| tuple “destructuring”       　                  | タプル「構造解除」、タプルの「分割」                
 | varargs,variable argument                       | 可変引数                                 
 | Parametrically-constrained Varargs methods      | パラメトリック制約付き可変引数メソッド               
 | Performance Tip                                 | パフォーマンスに関するヒント                          
@@ -80,7 +80,7 @@
 | scope rule                                      | スコープ規則                                 
 | region of code                                  | スコープの範囲                                
 | lexical scope                                   | レキシカルスコープ                                
-| comprehension                                   | コンプリヘンション                                
+| comprehension                                   | コンプリヘンション 、内包表記                              
 | static type system                              | 静的型付け                                
 | dynamic type system                             | 動的型付け                                
 | polymorphism                                    | ポリモーフィズム                                 
@@ -146,10 +146,23 @@
 | contrived                                       | 不自然な                                  
 | cartesian product                               | 直積                                     
 | symmetric coroutines                            | 対称コルーチン                                
-| lightweight　threads                             | 軽量スレッド                                 
+| lightweight　threads                            | 軽量スレッド                                 
 | cooperative multitasking                        | 協調的マルチタスク                             
 | one-shot continuations                          | ワンショット継続                               
 | first-in first-out                              | 先入先出                                 
 | queue                                           | キュー                                      
 | producer                                        | 生産者                                   
 | consumer                                        | 消費者                                   
+| interactive prompt                              | 対話セッション                                
+| introduce                                       | （スコープを）導入する                          
+| pertain                                         | 関連する                                   
+| inherit                                         | (親スコープから変数を)受け継ぐ                    
+| specifically marked                             | わざわざ(local・global などの語句を)つける           
+| visible                                         | (変数を)参照できる                           
+| back-propagate                                  | 逆伝播する                                 
+| all-encompassing                                | すべてを包括する                               
+| allocate                                        | メモリを割り当てる                              
+| intuitive                                       | 直観的な                                  
+| namespace                                       | 名前空間                                 
+| closures                                        | クロージャ                                    
+| iteration                                       | 繰返し                                    
