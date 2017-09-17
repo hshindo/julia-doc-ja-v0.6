@@ -14,9 +14,8 @@ rules; this section spells them out in detail.
 
 変数の**スコープ**とは、変数を参照できるコードの範囲のことです。
 変数のスコープは、変数の名前が衝突するのを避けるのに役立ちます。
-その考え方は直観的です。
-２つの関数は、同じ名前の引数`x`を、それぞれの`x`が同じものを参照することなく、使用できます。
-同様に、異なるコードブロックで、同じ名前を、同じものを参照することなく、使用できる、多くの他のケースがあります。
+この概念は直観的で、２つの関数が、同じ名前の引数`x`を、それぞれの`x`が同じものを参照することなく、使用できるというものです。
+同様に、異なるコードブロックで、同じ名前を、同じものを参照することなく、使用できる多くの他のケースがあります。
 同じ変数名が、いつ同じものを参照し、いつそうではないかを、決める規則は、スコープ規則と呼ばれます。
 このセクションで詳しく説明します。
 
@@ -34,7 +33,7 @@ constructs introducing scope blocks are:
 
 言語の構成要素によっては、**スコープブロック**という、
 変数のスコープとして適切なコードの範囲が導入されています。
-変数のスコープに、ソースコードの勝手な行の範囲を割り当てることはできません。スコープブロックのいずれかを常に割り当てます。
+変数のスコープに、ソースコードの勝手な行の範囲を割り当てることはできません。常にスコープブロックのいずれかを割り当てます。
 Juliaには**グローバルスコープ**と**ローカルスコープ**の2つの主要なスコープがあり、ローカルスコープはネストすることができます。
 スコープブロックを導入する構成要素は次のとおりです。
 
@@ -65,7 +64,7 @@ be explained below as well as some extra rules for certain blocks.
 -->
 ```
 
-注目すべきはこの表にない [begin ブロック]（@ ref man-compound-expressions）と[if ブロック（@ ref man-conditional-evaluation）]です。
+この表にない目立ったものは、 [begin ブロック]（@ ref man-compound-expressions）と[if ブロック]（@ ref man-conditional-evaluation）です。
 これらは新しいスコープブロックを導入**しません**。
 以下、少しずつ規則の違う３つのスコープと、特別な規則のブロックについて説明します。
 
@@ -78,9 +77,8 @@ to the `x` in the global scope of its module `Bar`:
 -->
 ```
 
-Juliaは[レキシカルスコープ](https://en.wikipedia.org/wiki/Scope_%28computer_science%29#Lexical_scoping_vs._dynamic_scoping)を使用しています。
-つまり、関数のスコープは呼び出し元のスコープを受け継がず、関数が定義されたスコープを受け継ぎます。
-たとえば、次のコードでは、`foo`の内側の`x`は、`Bar`モジュールのグローバルスコープ内にある`x`を参照します。
+Juliaは[レキシカルスコープ](https://en.wikipedia.org/wiki/Scope_%28computer_science%29#Lexical_scoping_vs._dynamic_scoping)を使用して、これは、関数のスコープは呼び出し元のスコープを受け継がないで、関数が定義されたスコープを受け継ぐというものです。
+たとえば、次のコードでは、`foo`の内部の`x`は、`Bar`モジュールのグローバルスコープ内にある`x`を参照します。
 
 
 
@@ -97,7 +95,7 @@ and not a `x` in the scope where `foo` is used:
 -->
 ```
 
-`foo`が使われるスコープ内の`x`を参照するわけではありません。
+`foo`が使用されるスコープ内の`x`を参照するわけではありません。
 
 
 ```jldoctest moduleBar
@@ -131,8 +129,8 @@ be changed within their global scope and not from an outside module.
 ```
 各モジュールは、それぞれ、他のすべてのモジュールと分離した新しいグローバルスコープを導入します。
 すべてを包括するスコープは存在しません。
-モジュールは他のモジュールの変数を自分のスコープに導入できて、[usingまたはimport]（@ ref モジュール）文を使うとモジュール全体、dot表記を使うと限定的になります。
-つまり、各モジュールはいわゆる名前空間です。
+モジュールは他のモジュールの変数を自分のスコープに導入できて、[usingまたはimport]（@ ref モジュール）文を使うとモジュール全体の導入、dot表記を使うと限定的な導入になります。
+つまり、各モジュールはいわゆる**名前空間**です。
 変数の束縛が変更されるのは、モジュール内のグローバルスコープのみで、モジュール外では変わらないことに注意してください。
 
 
@@ -186,9 +184,9 @@ qualified access.
 -->
 ```
 ほとんどのコードブロックは、新しいローカルスコープを導入します。上記の表を参照してください。
-ローカルスコープは、**通常は**、親スコープのすべての変数を受け継いで、読み書きが共に可能です。
+ローカルスコープは、**通常は**、読取・書込ともに、親スコープのすべての変数を受け継いでいます。
 ローカルスコープにはハードとソフトの2つの派生型があり、どの変数が受け継がれるのか、規則がわずかに異なります。
-グローバルスコープとは異なり、ローカルスコープは名前空間ではないため、何かしらの限定的なアクセスによって、内側のスコープの変数に対して親スコープから取り出すことができません。
+グローバルスコープとは異なり、ローカルスコープは名前空間ではないため、何かしらの限定的なアクセスによって、内側のスコープの変数を親スコープから取り出すことができません。
 
 
 ```@raw html
@@ -295,8 +293,8 @@ Soft local scopes are introduced by for-loops, while-loops, comprehensions, try-
 and let-blocks. There are some extra rules for [Let Blocks](@ref) and for [For Loops and Comprehensions](@ref).
 -->
 ```
-ソフトループスコープは、for-ループ、while-ループ、内包表記、try-catch-finally-ブロック、およびlet-ブロックに導入されています。
-[Let ブロック](@ref) と [For ループ と 内包表記](@ref) には、いくつかの追加ルールがあります。
+ソフトローカルスコープは、for-ループ、while-ループ、内包表記、try-catch-finally-ブロック、およびlet-ブロックに導入されています。
+[Let ブロック](@ref) と [For ループ と 内包表記](@ref) には、いくつかの特別ルールがあります。
 
 ```@raw html
 <!--
@@ -304,7 +302,7 @@ In the following example the `x` and `y` refer always to the same variables as t
 scope inherits both read and write variables:
 -->
 ```
-次の例では、softローカルスコープによって読み書き可能な変数として受け継がれた、受け継ぎ元の`x`と`y`を常に参照しています。
+次の例では、ソフトローカルスコープは読取・書込の変数を受け継ぐので、`x`と`y`は常に同じ変数を参照しています。
 
 
 ```jldoctest
@@ -325,7 +323,7 @@ when it would change the semantics is (currently) a syntax error:
 -->
 ```
 ソフトスコープ内では、**グローバル**キーワードは必要ありませんが、使っても構いません。
-globalの有無でセマンティクスの変わる（現時点の）唯一のケースは、構文エラーです。
+globalの有無で意味の変わる（現時点の）唯一のケースは、構文エラーです。
 
 ```jldoctest
 julia> let
@@ -367,7 +365,7 @@ and macro-definitions.
 Thus global variables are only inherited for reading but not for writing:
 -->
 ```
-したがって、グローバル変数は、読み込みのためだけ受け継がれ、書き込みのためには受け継がれません。
+したがって、グローバル変数は、読取だけが受け継がれ、書込は受け継がれません。
 
 ```jldoctest
 julia> x, y = 1, 2;
@@ -469,15 +467,15 @@ at the global scope. There are special scoping rules concerning the evaluation o
 keyword function arguments which are described in the [Function section](@ref man-functions).
 -->
 ```
-上記のような微妙な事態は型やマクロの定義にはおこりません。というのも、これらはグローバルスコープにしか現れないからです。
-[Function section]（@ ref man-functions）に記述されている、デフォルトおよびキーワード関数の引数の評価に関する特別なスコープ規則があります。
+上記のような微妙な事態は型やマクロの定義にはおこりません。というのも、これらの定義はグローバルスコープでのみ出現可能だからです。
+関数のキーワード引数のデフォルトの評価には、特別なスコープ規則があり、[Function section]（@ ref man-functions）に記述されています。
 ```@raw html
 <!--
 An assignment introducing a variable used inside a function, type or macro definition need not
 come before its inner usage:
 -->
 ```
-関数・型・マクロ定義の内部で使う変数を導入する代入は、その変数の内部での使用の前である必要はありません。
+関数・型・マクロ定義の内部で変数を導入する場合、その変数に対する代入は、定義の前である必要はありません。
 
 
 ```jldoctest
@@ -581,7 +579,7 @@ julia> counter()
 See also the closures in the examples in the next two sections.
 -->
 ```
-次の2つのセクションの例のクロージャも参照してください。
+続く2セクションの例にあるクロージャも参照してください。
 [](### Let Blocks)
 ### Let ブロック
 
@@ -595,10 +593,10 @@ outlive their scope via closures. The `let` syntax accepts a comma-separated ser
 and variable names:
 -->
 ```
-ローカル変数への代入とは異なり、`let`文は実行するたびに変数の束縛に新たにメモリを割り当てます。
-代入によって既存の値の場所が変更され、`let`が新しい場所を作成します。
-この差は通常は重要ではなく、クロージャを介したスコープ外の変数の場合にのみ検出可能です。
-`let`構文では、カンマで区切った一連の代入と変数名が受理されます。
+ローカル変数に代入する時とは異なり、`let`文は実行するたびに変数の束縛に新たなメモリを割り当てます。
+代入は既存の値の場所を変更し、`let`は新しい場所を生成します。
+通常はこの差が影響することは少なく、検出できるのも、クロージャを介したスコープ外の変数の場合にだけです。
+`let`構文は、カンマで区切った一連の代入と変数名を受け取ります。
 
 
 ```jldoctest
@@ -620,9 +618,9 @@ something like `let x = x` since the two `x` variables are distinct and have sep
 Here is an example where the behavior of `let` is needed:
 -->
 ```
-代入は順番に評価され、それぞれ、、右側がスコープ内で評価されてから、左側の新しい変数が導入されます。
+代入は順番に評価されて、毎回、右側がスコープ内で評価されてから、左側の新しい変数が導入されます。
 したがって`let x = x`のような記述は意味を成します。2つの変数`x`は別物で、別々の記憶域を持つからです。
-`let`の挙動が必要な例を次に示します。
+`let`の挙動が必要な例です。
 
 ```jldoctest
 julia> Fs = Array{Any}(2); i = 1;
@@ -647,9 +645,10 @@ variable `i`, so the two closures behave identically. We can use `let` to create
 for `i`:
 -->
 ```
-ここでは、変数`i`を返す2つのクロージャを作成して格納します。
-しかし、それは常に同じ変数`i`なので、2つのクロージャは同じように動作します。
-`let`を使って、次のような新しい`i`のバインディングを作成することができます。
+
+ここでは、変数`i`を返す2つのクロージャを生成して格納しています。
+しかし、変数`i`は常に同じなので、2つのクロージャは挙動は同一です。
+`let`を使って、次のような新しい`i`の束縛を生成することができます。
 
 
 
@@ -713,10 +712,10 @@ loops which reuse the variables for all iterations. Therefore these constructs a
 `while` loops with `let` blocks inside:
 -->
 ```
-forループおよび[内包表記](@ref) は次のように動作します。
-本体のスコープに導入された新しい変数は、ループの繰り返しごとに新しく割り当てられます。
-これは、`while`るループでは、 すべての反復で変数が再利用されるのとは対照的です。
-つまり、これらは内側で`let`ブロックを使った`while`ループと同様の動作をします。
+forループおよび[内包表記](@ref) の挙動は以下の通りです。
+本体のスコープに導入された新しい変数は、ループの繰返しごとに新しく割り当てられます。
+これは、`while`ループでは、 すべての繰返しで変数が再利用されるのとは対照的です。
+つまり、forループおよび[内包表記](@ref)は、内側で`let`ブロックを使った`while`ループと同様の動作をします。
 ```jldoctest
 julia> Fs = Array{Any}(2);
 
@@ -737,7 +736,7 @@ julia> Fs[2]()
 `for` loops will reuse existing variables for its iteration variable:
 -->
 ```
-forループで反復に使う変数は、既存の変数を再利用します。
+forループで繰返しに使う変数は、既存の変数を再利用します。
 
 
 ```jldoctest
@@ -756,7 +755,7 @@ julia> i
 However, comprehensions do not do this, and always freshly allocate their iteration variables:
 -->
 ```
-しかし、内包表記はこれとは異なり、常に反復用の変数を新しく割り当てます。
+しかし、内包表記はこれとは異なり、常に繰返しの変数を新しく割り当てます。
 
 
 ```jldoctest
@@ -779,7 +778,7 @@ assigned once. This intent can be conveyed to the compiler using the `const` key
 -->
 ```
 特定の不変の値に名前を与えるために変数を使う、ということはよくあります。
-このような変数に対する代入は一度きりです。
+このような変数への代入は一度きりです。
 こうした意図を、次の`const`キーワードを使って、コンパイラに伝えることができます。
 
 ```jldoctest
@@ -797,9 +796,9 @@ their values (or even their types) might change at almost any time. If a global 
 not change, adding a `const` declaration solves this performance problem.
 -->
 ```
-`const`宣言は、グローバルとローカルの両方の変数に利用できますが、特にグローバルに対して有用です。
+`const`宣言は、グローバルとローカルの両方の変数に利用できますが、特にグローバルの時に有益です。
 コンパイラが、グローバル変数を含むコードを最適化することは困難です。
-その値（時には型も）がほとんどどんな時でも変更される可能性があるからです。
+というのも、その値（時には型も）はほとんどいつでも変わりうるからです。
 グローバル変数に変更がない場合、`const`宣言を追加すると、このパフォーマンス上の問題は解決します。
 
 ```@raw html
@@ -817,7 +816,7 @@ Special top-level assignments, such as those performed by the `function` and `st
 are constant by default.
 -->
 ```
-`function`や`struct`キーワードによって実行されるような特殊なトップレベルの代入は、デフォルトでは定数です。
+`function`や`struct`キーワードによって実行されるような、特殊なトップレベルの代入は、デフォルトでは定数です。
 
 
 
@@ -827,5 +826,5 @@ Note that `const` only affects the variable binding; the variable may be bound t
 (such as an array), and that object may still be modified.
 -->
 ```
-`const`宣言が有効なのは変数に束縛されている場合だけなので注意してください。
+`const`宣言が有効なのは、変数に束縛されている場合だけなので注意してください。
 （配列など）可変なオブジェクトに変数を束縛しても、そのオブジェクトは変更されている可能性があります。
