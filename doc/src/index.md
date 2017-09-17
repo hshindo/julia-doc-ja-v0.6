@@ -11,7 +11,7 @@
   * [文字列](@ref man-strings)
   * [関数](@ref man-functions)
   * [制御構造](@ref)
-  * [Scope of Variables](@ref scope-of-variables)
+  * [変数のスコープ](@ref scope-of-variables)
   * [Types](@ref man-types)
   * [メソッド](@ref)
   * [Constructors](@ref man-constructors)

@@ -1,5 +1,5 @@
 [](# [Scope of Variables](@id scope-of-variables))
-# 変数のスコープ(@id scope-of-variables)
+# [変数のスコープ](@id scope-of-variables)
 
 ```@raw html
 <!--
