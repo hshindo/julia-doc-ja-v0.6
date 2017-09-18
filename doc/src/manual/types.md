@@ -50,7 +50,7 @@ of these systems, and perhaps somewhat counterintuitively, often significantly s
 ```
 Juliaで、型を省略した時は、値は任意の型として許されるのが、デフォルトの動作です。
 つまり、型をわざわざ指定しなくても、Juliaなら有用なプログラムが沢山かけるのです。
-しかし必要に応じて、以前は**型を指定していない**コードに徐々に型表記を加えていくことも簡単にできるのです。
+しかし必要に応じて、以前は**型を指定していない**コードに徐々に型注釈を加えていくことも簡単にできるのです。
 そうすると、一般的には、システムのパフォーマンスと堅牢性が向上し、おそらく直観に反して、しばしば非常に単純化されます。
 
 ```@raw html
@@ -93,7 +93,7 @@ Juliaの型システムの際立った特徴は、具象型が互いのサブタ
     or restricted.
 -->
 ```
-   * オブジェクトと非オブジェクト値の区別がありません。すべての値は型を持つ真のオブジェクトです。その型はすべて連結している一つの型のグラフに属し、すべてのノードが型として等しく第一級です。
+   * オブジェクトと非オブジェクトの値の区別がありません。すべての値は型を持つ真のオブジェクトです。その型はすべて連結している一つの型のグラフに属し、すべてのノードが型として等しく第一級です。
   * "コンパイル時の型"という考え方は全く無意味です。すべての値は、実行時に実際にとるただ一つの型を持ちます。
   これはオブジェクト指向言語では「実行時型」と呼ばれ、多相型と静的コンパイルを組み合わせるときは、この違いは重要になります。
   * 値のみが型を持ち、変数は型を持ちません。変数は値に束縛された単なる名前です。 
@@ -123,6 +123,12 @@ There are two primary reasons to do this:
    cases
 -->
 ```
+`::`オペレータは、プログラム内で、式や変数に型注釈を付けるために使用することができます。
+これには主に2つの理由があります。
+
+1.    プログラムに期待する動作を表明して、動作確認に役立てる。
+2.    コンパイラに追加の型情報を提供して、場合によってはパフォーマンスを向上させる。
+
 
 
 ```@raw html
@@ -132,10 +138,16 @@ of". It can be used anywhere to assert that the value of the expression on the l
 of the type on the right. When the type on the right is concrete, the value on the left must have
 that type as its implementation -- recall that all concrete types are final, so no implementation
 is a subtype of any other. When the type is abstract, it suffices for the value to be implemented
-by a concrete type that is a subtype of the abstract type. If the type assertion is not true,
+by a concrete type that is a subtype of the abstract type.  the type assertion is not true,
 an exception is thrown, otherwise, the left-hand value is returned:
 -->
 ```
+計算式に追加した`::`演算子は、 "is an instance of"と読むことができます。
+`::`演算子はどこでも使用できて、演算子の左側の式の値が、右側の型のインスタンスであることを表明します。
+演算子の右側が具象型の場合、左側の値はその型の実装でなければなりません。
+すべて具象型は最終であるため、その実装が他の具象型の実装とはならないことを思い出してください。
+抽象型の場合は、その抽象型のサブタイプである具象型によって値が実装されていれば十分です。
+型表明が真でない場合は例外が投げられ、そうでない場合は左辺の値が返されます。
 
 ```jldoctest
 julia> (1+2)::AbstractFloat
@@ -156,6 +168,11 @@ specified type, like a type declaration in a statically-typed language such as C
 assigned to the variable will be converted to the declared type using [`convert()`](@ref):
 -->
 ```
+`::`を使えば、プログラム内の任意の式に型表明を差し込むことができます。
+
+代入文の左側の変数や、`local`宣言の一部に追加されると、::演算子の意味が少し変わります。
+つまり、C言語のような静的型付きの型宣言のように、変数が常に指定した型を持つという宣言になります。
+変数に代入される値はすべて、 [`convert()`](@ref) を使用して宣言された型に変換されます。
 
 ```jldoctest
 julia> function foo()
@@ -180,6 +197,10 @@ to a variable changed its type unexpectedly.
 This "declaration" behavior only occurs in specific contexts:
 -->
 ```
+この機能は、予期しない変数の型の変更をおこなう代入がある場合に、発生する可能性のあるパフォーマンスの「落とし穴」を回避するのに役立ちます。
+
+この「宣言」の動作は、特定のコンテキストでのみ発生します。
+
 
 ```julia
 local x::Int8  # in a local declaration
@@ -197,6 +218,13 @@ Declarations can also be attached to function definitions:
 -->
 ```
 
+宣言の前であっても、現在のスコープ全体に適用されます。
+型宣言はREPLなどのグローバルスコープでは使用できません。
+というのも、現時点では、Juliaにはまだ定数型のグローバル変数がないからです。
+
+宣言を関数定義に差し込むこともできます。
+
+
 ```julia
 function sinc(x)::Float64
     if x == 0
@@ -213,6 +241,8 @@ Returning from this function behaves just like an assignment to a variable with 
 the value is always converted to `Float64`.
 -->
 ```
+
+この関数の戻り値は、宣言された型を持つ変数への代入と同様に処理されます。値は常に`Float64`に変換されます。
 
 [](## Abstract Types)
 ## 抽象型
