@@ -94,10 +94,9 @@ Juliaの型システムの際立った特徴は、具象型が互いのサブタ
 -->
 ```
    * オブジェクトと非オブジェクトの値の区別がありません。すべての値は型を持つ真のオブジェクトです。その型はすべて連結している一つの型のグラフに属し、すべてのノードが型として等しく第一級です。
-  * "コンパイル時の型"という考え方は全く無意味です。すべての値は、実行時に実際にとるただ一つの型を持ちます。
-  これはオブジェクト指向言語では「実行時型」と呼ばれ、多相型と静的コンパイルを組み合わせるときは、この違いは重要になります。
+  * "コンパイル時の型"という考え方は全く無意味です。すべての値は、実行時に実際にとるただ一つの型を持ちます。これはオブジェクト指向言語では「実行時型」と呼ばれ、多相型と静的コンパイルを組み合わせるときは、この違いは重要になります。
   * 値のみが型を持ち、変数は型を持ちません。変数は値に束縛された単なる名前です。 
-   * 抽象型と具象型の両方とも、他の型によってパラメータ化できます。また、シンボル、[`isbits()`](@ref) が、真の値を返す型である任意の値（本質的に数やブール値のような、他のオブジェクトへのポインタを持たないCの型や構造体に格納されるもの）、そういったもののタプルなどにによってパラメータ化することもできます。型パラメータは、参照や制限をする必要がない場合は省略することができます。
+  * 抽象型と具象型の両方とも、他の型によってパラメータ化できます。また、シンボル、[`isbits()`](@ref) が、真の値を返す型である任意の値（本質的に数やブール値のような、他のオブジェクトへのポインタを持たないCの型や構造体に格納されるもの）、そういったもののタプルなどにによってパラメータ化することもできます。型パラメータは、参照や制限をする必要がない場合は省略することができます。
 
 
 ```@raw html
@@ -197,7 +196,7 @@ to a variable changed its type unexpectedly.
 This "declaration" behavior only occurs in specific contexts:
 -->
 ```
-この機能は、予期しない変数の型の変更をおこなう代入がある場合に、発生する可能性のあるパフォーマンスの「落とし穴」を回避するのに役立ちます。
+この機能は、想定外の変数の型の変更をおこなうような代入がある場合に、発生する可能性のあるパフォーマンスの「落とし穴」を回避するのに役立ちます。
 
 この「宣言」の動作は、特定のコンテキストでのみ発生します。
 
@@ -220,7 +219,8 @@ Declarations can also be attached to function definitions:
 
 宣言の前であっても、現在のスコープ全体に適用されます。
 型宣言はREPLなどのグローバルスコープでは使用できません。
-というのも、現時点では、Juliaにはまだ定数型のグローバル変数がないからです。
+というのも、現時点では、Juliaには
+まだ定数型のグローバル変数がないからです。
 
 宣言を関数定義に差し込むこともできます。
 
@@ -257,7 +257,9 @@ system: they form the conceptual hierarchy which makes Julia's type system more 
 of object implementations.
 -->
 ```
-
+抽象型はインスタンス化することはできません。抽象型とその子孫である具象型を関連付けて型のグラフを書いた時に、ノードとして役に立つだけです。
+型の説明は抽象型から始めましょう。インスタンス化はできないですが、型システムのバックボーンだからです。
+抽象型によって形成される概念的な階層が、Juliaの型システムを、オブジェクトを実装して集めただけのもの以上にしています。
 
 ```@raw html
 <!--
@@ -278,6 +280,19 @@ that is an integer, without restricting an algorithm to a specific type of integ
 -->
 ```
 
+[整数と浮動小数点数](@ref) で導入した、さまざまな数値の具象型を思い出してください。
+[`Int8`](@ref)、 [`UInt8`](@ref)、 [`Int16`](@ref)、 [`UInt16`](@ref)、 [`Int32`](@ref)、 [`UInt32`](@ref)、 [`Int64`](@ref)、 [`UInt64`](@ref)、 [`Int128`](@ref)、
+[`UInt128`](@ref)、 [`Float16`](@ref)、 [`Float32`](@ref)、 [`Float64`](@ref) です。
+これらは表現できる数値の範囲は異なりますが、Int8、Int16、Int32、Int64、Int128 はすべて、符号付き整数型であるという点で共通しています。
+同様にUInt8、UInt16、UInt32、 UInt64、UInt128はすべて、符号なし整数型であり、
+一方で、Float16、Float32、Float64は、整数ではなく浮動小数点型に区別されます。
+コードの断片が意味を成す、ということはよくあります。
+たとえば、関数の引数を特定の種類の整数にだけ指定していても、本当はその特定の**種類**の整数に依存していない場合です。
+たとえば、最大公約数を求めるアルゴリズムはすべての種類の整数で機能しますが、浮動小数点数では機能しません。
+抽象型によって、型を階層にまとめて、適合する具象型のコンテキストと考えることができます。
+これにより、あるアルゴリズムを特定の整数型に制限することなく、任意の整数型に対して簡単にプログラムすることができます。
+
+
 
 ```@raw html
 <!--
@@ -285,6 +300,8 @@ Abstract types are declared using the `abstract type` keyword. The general synta
 abstract type are:
 -->
 ```
+抽象型は`abstract type`キーワードを使用して宣言されます。抽象型を宣言する一般的な構文は次のとおりです。
+
 
 ```
 abstract type «name» end
@@ -299,6 +316,9 @@ name can be optionally followed by `<:` and an already-existing type, indicating
 declared abstract type is a subtype of this "parent" type.
 -->
 ```
+`abstract type`キーワードは、その名前を`«name»`とする、新たな抽象型を導入します。
+この名前の後に`<:`と既存の型を続けて、新たに宣言された抽象型がこの「親」の型のサブタイプであることを示すことができます。
+
 
 
 ```@raw html
@@ -312,7 +332,13 @@ opposite of `Any`: no object is an instance of `Union{}` and all types are super
 Let's consider some of the abstract types that make up Julia's numerical hierarchy:
 -->
 ```
+スーパータイプが指定されていない場合、デフォルトのスーパータイプは`Any`です。
+`Any`は事前に定義された抽象型で、すべてのオブジェクトが`Any`のインスタンスであり、すべての型が`Any`のサブタイプです。
+型理論で`Any`は、それは型のグラフの頂点にあるため、一般的に「トップ」と呼ばれます。
+またJuliaには、事前に定義された抽象型の「底」があり、型のグラフの最下位にあって、`Union{}`と書きます。
+すべてのオブジェクトが`Union{}`のインスタンスではなく、すべての型が`Union{}`のスーパータイプです。
 
+Juliaの数的な階層を構成する抽象型をいくつか考えてみましょう。
 ```julia
 abstract type Number end
 abstract type Real     <: Number end
@@ -335,6 +361,12 @@ floating-point representations of real numbers. Integers are further subdivided 
 [`Signed`](@ref) and [`Unsigned`](@ref) varieties.
 -->
 ```
+[`Number`](@ref) 型は`Any`の直下の子の型であり、[`Real`](@ref) は[`Number`](@ref) の子です。`Real`には子が２つあります（もっとありますが、ここでとりあげるのは2つだけです。後で他のものにも触れます）。
+[`Integer`](@ref) と [`AbstractFloat`](@ref) は数の世界を整数の表現と実数の表現に分けます。
+実数の表現には、もちろん浮動小数点型が含まれますが、有理数などの他の型も含まれます。
+したがって、 `AbstractFloat` は`Real`の真のサブタイプで、実数のうち浮動小数点数のみを含みます。
+整数はさらに[`Signed`](@ref) と [`Unsigned`](@ref) に細分されます。
+
 
 
 ```@raw html
@@ -345,6 +377,8 @@ in expressions as a subtype operator which returns `true` when its left operand 
 its right operand:
 -->
 ```
+通常、`<:`演算子は、"サブタイプ"を意味し、宣言で使用されると、右側の型が新しく宣言する型の直のスーパータイプであることを意味します。
+`<:`演算子は、式の中で、左辺が右辺のサブタイプであるときに真を返すサブタイプ演算子として使用することもできます。
 
 ```jldoctest
 julia> Integer <: Number
@@ -362,6 +396,9 @@ give a simple example, consider:
 -->
 ```
 
+抽象型の重要な用途は、具象型のデフォルトの実装を提供することです。簡単な例を挙げてみましょう。
+
+
 ```julia
 function myplus(x,y)
     x+y
@@ -378,6 +415,8 @@ information on multiple dispatch.)
 -->
 ```
 
+まず注意すべきことは、上記は `x::Any`かつ`y::Any`と引数の宣言をするのと同等なことです。
+この関数がたとえば`myplus(2,5)`のように呼び出されると、ディスパッチャは`myplus`と名がつくメソッドの中で指定された引数にもっとも一致するものを選択します。多重ディスパッチの詳細については、メソッドを参照してください。
 
 ```@raw html
 <!--
@@ -386,6 +425,8 @@ a method called `myplus` specifically for two `Int` arguments based on the gener
 above, i.e., it implicitly defines and compiles:
 -->
 ```
+上記のメソッドより適切なメソッドが見つからない場合、Juliaは内部で、`myplus` を2つの引数を`Int`に指定して、上記のジェネリック関数に基づいた定義とコンパイルをします。つまり、暗黙的に定義とコンパイルをおこないます。
+
 
 ```julia
 function myplus(x::Int,y::Int)
@@ -403,6 +444,11 @@ default method by many combinations of concrete types. Thanks to multiple dispat
 has full control over whether the default or more specific method is used.
 -->
 ```
+最後に、この特定のメソッドを呼び出します。
+
+このように、抽象型を使用すると、プログラマは後でデフォルトのメソッドとして使用できる総称関数を、具象型をたくさん組み合わせて記述できます。
+多重ディスパッチのおかげで、プログラマは、デフォルトのメソッドとより特化したメソッドのどちらを使用するかを完全に制御できます。
+
 
 
 ```@raw html
@@ -413,6 +459,9 @@ concrete types with which it is invoked. (There may be a performance issue, howe
 of function arguments that are containers of abstract types; see [Performance Tips](@ref man-performance-tips).)
 -->
 ```
+注意すべき重要な点は、引数が抽象型である関数をプログラマが使っても、パフォーマンスに損失がないことです。
+というのも関数は、呼び出される時の引数の具象型のタプルそれぞれに対して、再コンパイルされるからです。
+（ただし、抽象型のコンテナである関数の引数の場合は、パフォーマンスの問題がある可能性があります（[パフォーマンスのヒント]（@ ref man-performance-tips）を参照してください）。
 
 [](## Primitive Types)
 ## 原始型
