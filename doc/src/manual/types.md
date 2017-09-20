@@ -873,6 +873,13 @@ They share the same key properties:
   * They may have parameters.
 -->
 ```
+前述の3つのセクションで説明した3種の型は、実のところ、すべて密接に関連しています。
+これらは重要な特徴が共通しています：
+
+* 明示的に宣言されている。
+* 名前がある。
+* 明示的にスーパータイプを宣言している。
+* パラメータを持ちうる。
 
 
 ```@raw html
@@ -881,6 +888,8 @@ Because of these shared properties, these types are internally represented as in
 same concept, `DataType`, which is the type of any of these types:
 -->
 ```
+これらの共通の特徴から、これらの型は内部的に同じコンセプト`DataType`のインスタンスとして表現されます。
+`DataType`はこれらの型のいずれかのことです。
 
 ```jldoctest
 julia> typeof(Real)
@@ -900,6 +909,11 @@ no field names. A composite type is a `DataType` that has field names or is empt
 Every concrete value in the system is an instance of some `DataType`.
 -->
 ```
+`DataType`は抽象型でも具象型でもよい。具象型であれば、特定のサイズ、 記憶領域配置 、および（任意で）フィールド名を持ちます。
+したがって、原始型は、サイズが0ではなく、フィールド名を持たない`DataType`です。
+複合型は、フィールド名を持つか、空（サイズ0）の`DataType`です。
+
+システムのあらゆる具体的な値は、なんらかの`DataType`のインスタンスです。
 
 [](## Type Unions)
 ## 型共用体
@@ -911,6 +925,7 @@ A type union is a special abstract type which includes as objects all instances 
 argument types, constructed using the special `Union` function:
 -->
 ```
+型共用体は特別な抽象型であって、任意の引数の型のインスタンスをオブジェクトとして含み、特殊な関数`Union`を使用して構築されています。
 
 ```jldoctest
 julia> IntOrString = Union{Int,AbstractString}
@@ -933,6 +948,7 @@ The compilers for many languages have an internal union construct for reasoning 
 simply exposes it to the programmer.
 -->
 ```
+多くの言語のコンパイラには、型についての推論のための内部結合構造があります。Juliaはそれを単にプログラマに公開します。
 
 [](## Parametric Types)
 ## パラメトリック型
