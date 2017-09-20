@@ -48,7 +48,7 @@ into previously "untyped" code. Doing so will typically increase both the perfor
 of these systems, and perhaps somewhat counterintuitively, often significantly simplify them.
 -->
 ```
-Juliaで、型を省略した時は、値は任意の型として許されるのが、デフォルトの動作です。
+Juliaで、型を省略した時は、値は任意の型として許容されるのが、デフォルトの動作です。
 つまり、型をわざわざ指定しなくても、Juliaなら有用なプログラムが沢山かけるのです。
 しかし必要に応じて、以前は**型を指定していない**コードに徐々に型注釈を加えていくことも簡単にできるのです。
 そうすると、一般的には、システムのパフォーマンスと堅牢性が向上し、おそらく直観に反して、しばしば非常に単純化されます。
@@ -68,7 +68,7 @@ object-oriented languages. Other high-level aspects of Julia's type system that 
 up front are:
 -->
 ```
-Juliaのことを[型システム](https://en.wikipedia.org/wiki/Type_system) の術語を使って記述すると,動的、名目的、パラメータ的です。
+Juliaのことを[型システム](https://en.wikipedia.org/wiki/Type_system) の術語を使って記述すると,動的、公称的、パラメータ的です。
 ジェネリック型はパラメータをとることができ、型の階層関係は、[明示的に宣言](https://en.wikipedia.org/wiki/Nominal_type_system)するのであって、 
 [互換構造から推論](https://en.wikipedia.org/wiki/Structural_type_system)するわけではありません。
 Juliaの型システムの際立った特徴は、具象型が互いのサブタイプとなってはいけない点です。
@@ -93,7 +93,7 @@ Juliaの型システムの際立った特徴は、具象型が互いのサブタ
     or restricted.
 -->
 ```
-   * オブジェクトと非オブジェクトの値の区別がありません。すべての値は型を持つ真のオブジェクトです。その型はすべて連結している一つの型のグラフに属し、すべてのノードが型として等しく第一級です。
+   * オブジェクトと非オブジェクトで値の区別がありません。すべての値は型を持つ真のオブジェクトです。その型はすべて連結している一つの型のグラフに属し、すべてのノードが型として等しく第一級です。
   * "コンパイル時の型"という考え方は全く無意味です。すべての値は、実行時に実際にとるただ一つの型を持ちます。これはオブジェクト指向言語では「実行時型」と呼ばれ、多相型と静的コンパイルを組み合わせるときは、この違いは重要になります。
   * 値のみが型を持ち、変数は型を持ちません。変数は値に束縛された単なる名前です。 
   * 抽象型と具象型の両方とも、他の型によってパラメータ化できます。また、シンボル、[`isbits()`](@ref) が、真の値を返す型である任意の値（本質的に数やブール値のような、他のオブジェクトへのポインタを持たないCの型や構造体に格納されるもの）、そういったもののタプルなどにによってパラメータ化することもできます。型パラメータは、参照や制限をする必要がない場合は省略することができます。
@@ -259,7 +259,7 @@ of object implementations.
 ```
 抽象型はインスタンス化することはできません。抽象型とその子孫である具象型を関連付けて型のグラフを書いた時に、ノードとして役に立つだけです。
 型の説明は抽象型から始めましょう。インスタンス化はできないですが、型システムのバックボーンだからです。
-抽象型によって形成される概念的な階層が、Juliaの型システムを、オブジェクトを実装して集めただけのもの以上にしています。
+抽象型によって形成される概念的な階層が、Juliaの型システムを、単にオブジェクトを実装した寄せ集め以上のものにしています。
 
 ```@raw html
 <!--
@@ -425,7 +425,7 @@ a method called `myplus` specifically for two `Int` arguments based on the gener
 above, i.e., it implicitly defines and compiles:
 -->
 ```
-上記のメソッドより適切なメソッドが見つからない場合、Juliaは内部で、`myplus` を2つの引数を`Int`に指定して、上記のジェネリック関数に基づいた定義とコンパイルをします。つまり、暗黙的に定義とコンパイルをおこないます。
+上記のメソッドより適切なメソッドが見つからない場合、次にJuliaは内部で、`myplus`という名のメソッドを、上記の総称関数に、2つの引数を`Int`に指定した上で、定義とコンパイルをします。つまり、暗黙的に定義とコンパイルをおこないます。
 
 
 ```julia
@@ -446,7 +446,7 @@ has full control over whether the default or more specific method is used.
 ```
 最後に、この特定のメソッドを呼び出します。
 
-このように、抽象型を使用すると、プログラマは後でデフォルトのメソッドとして使用できる総称関数を、具象型をたくさん組み合わせて記述できます。
+このように、抽象型を使用すると、プログラマは多くの具象型の組み合わせに対応したデフォルトのメソッドとして後で使用できる総称関数を、記述できます。
 多重ディスパッチのおかげで、プログラマは、デフォルトのメソッドとより特化したメソッドのどちらを使用するかを完全に制御できます。
 
 
@@ -459,8 +459,8 @@ concrete types with which it is invoked. (There may be a performance issue, howe
 of function arguments that are containers of abstract types; see [Performance Tips](@ref man-performance-tips).)
 -->
 ```
-注意すべき重要な点は、引数が抽象型である関数をプログラマが使っても、パフォーマンスに損失がないことです。
-というのも関数は、呼び出される時の引数の具象型のタプルそれぞれに対して、再コンパイルされるからです。
+注意すべき重要な点は、引数が抽象型である関数をプログラマが使っても、パフォーマンスが落ちないことです。
+というのも関数は、呼び出される時の具象型の引数のタプルそれぞれに対して、再コンパイルされるからです。
 （ただし、抽象型のコンテナである関数の引数の場合は、パフォーマンスの問題がある可能性があります（[パフォーマンスのヒント]（@ ref man-performance-tips）を参照してください）。
 
 [](## Primitive Types)
@@ -475,6 +475,11 @@ own primitive types, rather than providing only a fixed set of built-in ones. In
 primitive types are all defined in the language itself:
 -->
 ```
+原始型は、データが普通のビットで構成される具象型です。
+原始型の定番の例は、整数と浮動小数点値です。
+ほとんどの言語とは異なり、Juliaでは標準装備の決まった原始型が提供されているだけではなく、独自の原始型を宣言できます。
+実際、標準装備の原始型はすべてJulia自体で定義されています。
+
 
 ```julia
 primitive type Float16 <: AbstractFloat 16 end
@@ -502,6 +507,8 @@ primitive type UInt128 <: Unsigned 128 end
 The general syntaxes for declaring a primitive type are:
 -->
 ```
+原始型を宣言するための一般的な構文は次のとおりです。
+
 
 ```
 primitive type «name» «bits» end
@@ -520,6 +527,13 @@ of [`Bool`](@ref) above therefore means that a boolean value takes eight bits to
 cannot be declared to be any smaller than eight bits.
 -->
 ```
+ビット数は、その型が格納にどれだけ必要とするかを示し、新しい型の名前に使われます。
+原始型は、宣言にどのスーパータイプのサブタイプであるかを付加することができます。
+スーパータイプが省略されている場合、その型はデフォルトでは、`Any`が直接のスーパータイプになります。
+したがって、上記の[`Bool`](@ref) 宣言は、ブール値が格納するために8ビットを要し、[`Integer`](@ref) が直接のスーパータイプであることを意味しています 。
+現在は、8ビットの倍数であるサイズのみがサポートされています。
+したがって、ブール値は本当に必要なのは1ビットだけですが、8ビットより小さい宣言にはできません。
+
 
 
 ```@raw html
@@ -536,6 +550,14 @@ which in turn dictates behavior, then it would be impossible to make [`Bool`](@r
 any differently than [`Int8`](@ref) or [`UInt8`](@ref).
 -->
 ```
+ [`Bool`](@ref)、 [`Int8`](@ref)、 [`UInt8`](@ref) の型はすべて同一の表現を持っています。これらは8ビットのメモリの塊です。
+ しかし、Juliaの型システムは公称的であるため、同一の構造を持っていても互換性はありません。
+ これらの基本的な違いは、スーパータイプが異なることです。
+  [`Bool`](@ref) の直接のスーパータイプは [`Integer`](@ref) 、[`Int8`](@ref) は[`Signed`](@ref)、[`UInt8`](@ref)は [`Unsigned`](@ref)です。
+ [`Bool`](@ref)、 [`Int8`](@ref)、[`UInt8`](@ref) のその他の違いはすべて挙動に関するものです。
+ これらの型のオブジェクトが引数として与えられたときに、関数がどのように動作するよう定義されているかということです。
+ これが公称的な型システムが必要な理由です。もしも構造決定型であった場合、型の構造から、挙動が順番に決まってしまうので、[`Bool`](@ref) が
+ [`Int8`](@ref) や [`UInt8`](@ref) と異なる挙動をとることは不可能になるでしょう。
 
 [](## Composite Types)
 ## 複合型
