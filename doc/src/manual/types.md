@@ -784,13 +784,15 @@ If a composite type is declared with `mutable struct` instead of `struct`, then 
 it can be modified:
 -->
 ```
+`struct`の代わりに`mutable struct`で複合型を宣言すると、インスタンスは変更可能になります。
 
-```jldoctest bartype
+
+```jldoctest
+ bartype
 julia> mutable struct Bar
            baz
            qux::Float64
        end
-
 julia> bar = Bar("Hello", 1.5);
 
 julia> bar.qux = 2.0
@@ -814,7 +816,12 @@ with the same field values would be considered identical, or if they might need 
 over time. If they would be considered identical, the type should probably be immutable.
 -->
 ```
-
+変更可能なオブジェクトは、一般にヒープ上に割り当てられ、メモリアドレスが安定しています。
+変更可能なオブジェクトは、時間とともに値の変わる可能性がある小さなコンテナと似ていて、アドレスだけで確実に識別できます。
+対照的に、不変型のインスタンスは、特定のフィールド値に関連付けられています。
+フィールド値だけで、オブジェクトに関するすべての情報が表示されます。
+型を変更可能にするかどうかを決めるには、同じフィールド値を持つ2つのインスタンスは同一だと考えられるか、あるいは時間がたてば互いに独立に変更する必要があるかどうかを考えます。
+それらが同一であると考えられるならば、その型はおそらく不変にすべきです。
 
 ```@raw html
 <!--
@@ -825,6 +832,11 @@ To recap, two essential properties define immutability in Julia:
   * It is not permitted to modify the fields of a composite immutable type.
 -->
 ```
+要約、Juliaにおいて不変性を特徴づける2つの重要な特性：
+
+* 不変型のオブジェクトは、代入文と関数呼び出しの両方でコピーによって受け渡されますが、変更可能な型は参照渡しされます。
+* 不変な複合型のフィールドを変更することはできません。
+
 
 
 ```@raw html
@@ -839,6 +851,12 @@ routine.  Julia sidesteps the possibility of creating functions with unknown eff
 by forbidding modification of fields of objects passed around by copying.
 -->
 ```
+C/C++を知っている読者にとって、これらの2つの特性がなぜ関連しているのかを検討するのは有益です。
+それらが分離されている場合、つまり、コピーによって渡されたオブジェクトのフィールドが変更された場合、ジェネリックコードの特定のインスタンスについて推論するのがより困難になります。
+たとえば`x`は抽象型の関数の引数で、関数がフィールドを変更したとします。
+`x.isprocessed = true`
+x`の渡し方がコピーか参照かによって、この文は呼び出し側ルーチンの実際の引数を変更する場合と変更しない場合があります。
+Juliaは、こんな場合にどうなるか分からない関数になるのを避けるため、オブジェクトをコピー渡しするときのフィールドの変更を禁止します。
 
 [](## Declared Types)
 ## 宣言された型
