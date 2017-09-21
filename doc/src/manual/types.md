@@ -979,7 +979,7 @@ Juliaの型システムの重要かつ強力な特徴は、パラメトリック
 たとえば、ML、Haskell、Ada、Eiffel、C ++、Java、C＃、F＃、およびScalaなど、少し挙げるだけでも、ジェネリックプログラミング的なものが存在します。
 これらの言語の中には真のパラメトリック多相（ML、Haskell、Scalaなど）に対応するものもあれば、テンプレートベースのジェネリック・プログラミング（C ++、Javaなど）のスタイルに対応するものもあります。
 言語によってジェネリック・プログラミングとパラメトリック型が多種多様であるため、Juliaのパラメトリック型を他の言語と比較することはせず、代わりにJuliaのシステムについて説明することに専念します。
-ただし、Juliaは動的型付け言語であり、コンパイル時にすべての型決定を行う必要はないため、静的型付け言語で生じる従来の困難は、比較的取り扱い安くなっています。
+ただし、Juliaは動的型付け言語であり、コンパイル時にすべての型決定を行う必要はないため、静的型付け言語で生じる従来の困難は、比較的取り扱い易いなっています。
 
 
 
@@ -1003,13 +1003,14 @@ Type parameters are introduced immediately after the type name, surrounded by cu
 -->
 ```
 
+型パラメータは、型名の直後に中括弧で囲んで挿入します。
+
 ```jldoctest pointtype
 julia> struct Point{T}
            x::T
            y::T
        end
 ```
-
 
 ```@raw html
 <!--
@@ -1022,6 +1023,14 @@ number of types: `Point{Float64}`, `Point{AbstractString}`, `Point{Int64}`, etc.
 is now a usable concrete type:
 -->
 ```
+
+この宣言は、新しいパラメトリック型`Point{T}`を定義し、型`T`の2つの "座標"を保持しています。
+`T`ってなんだ？と誰が聞くかもしれません。これがまさしくパラメトリック型のポイントです。
+どんな型（または原始型の値、ここでは明らかに型として使われていますが）でもかまいません。
+ `Point{Float64}`は、`Point` の定義の中の`T`を [`Float64`](@ref)と置き換えて定義した型と同等な具象型です。
+ したがって、一つの宣言が実質的には、`Point{Float64}`、`Point{AbstractString}`、`Point{Int64}`などの無限の宣言に相当します。
+ これらの型それぞれが、現在、利用可能な具象型です。
+
 
 ```jldoctest pointtype
 julia> Point{Float64}
@@ -1041,6 +1050,10 @@ the type `Point{AbstractString}` is a "point" whose "coordinates" are string obj
 etc. as subtypes:
 -->
 ```
+`Point{Float64}`という型は、座標が64ビット浮動小数点値である点であり、`Point{AbstractString}`は、その「座標」が文字列オブジェクトである「点」です（ [文字列](@ref)を参照）。
+
+`Point`はこれ自体が妥当な型オブジェクトで、Point{Float64}`、 `Point{AbstractString}`などをすべてサブタイプとして含んでいます。
+
 
 ```jldoctest pointtype
 julia> Point{Float64} <: Point
@@ -1056,6 +1069,8 @@ true
 Other types, of course, are not subtypes of it:
 -->
 ```
+もちろん、他の型はそれのサブタイプではありません：
+
 
 ```jldoctest pointtype
 julia> Float64 <: Point
@@ -1071,6 +1086,7 @@ false
 Concrete `Point` types with different values of `T` are never subtypes of each other:
 -->
 ```
+`T`の値が異なる具象型`Point`は、決して互いにサブタイプではありません。
 
 ```jldoctest pointtype
 julia> Point{Float64} <: Point{Int64}
@@ -1087,7 +1103,8 @@ false
     This last point is *very* important: even though `Float64 <: Real` we **DO NOT** have `Point{Float64} <: Point{Real}`.
 -->
 ```
-
+!!!警告
+ この最後の点は**非常に**重要です。`Float64 <: Real`は成り立つにもかかわらず、`Point{Float64} <: Point{Real}`は成り立ちません。
 
 ```@raw html
 <!--
@@ -1097,6 +1114,10 @@ of `Point{Float64}` may conceptually be like an instance of `Point{Real}` as wel
 have different representations in memory:
 -->
 ```
+言い換えれば、型理論の用語を使うと、Juliaの型パラメータは [共変（または反変）](https://en.wikipedia.org/wiki/Covariance_and_contravariance_%28computer_science%29)ではなく、不変です。
+これは実用的な理由によるものです。
+概念的には、`Point{Float64}`のインスタンスは`Point{Real}` のインスタンスと似ていますが、メモリ内での表現は２つの型で異なります。
+
 
 
 ```@raw html
@@ -1110,6 +1131,10 @@ have different representations in memory:
 -->
 ```
 
+* `Point{Float64}`のインスタンスは、64ビット値の隣接するペアとしてコンパクトかつ効率的に表現できます。
+* `Point{Real}` のインスタンスは、どんな[`Real`](@ref)のペアでも保持できる必要があります。というのも、`Real`のインスタンスであるオブジェクトは任意のサイズと構造になる可能性があるので、現実的には、`Point{Real}`のインスタンスは、個別に割り当てられた`Real`オブジェクトへのポインタのペアとして表現する必要があります。
+
+
 
 ```@raw html
 <!--
@@ -1122,7 +1147,9 @@ to individually allocated [`Real`](@ref) objects -- which may well be
 declared to be implementations of the `Real` abstract type.
 -->
 ```
-
+`Point{Float64}`オブジェクトに、値を直接を格納できることによって得られる効率は、配列の場合、非常に大きくなります。
+`Array{Float64}`は、64ビットの浮動小数点値の連続したメモリブロックとして格納されますが、`Array{Real}`は個別に割り当てられた[`Real`](@ref) オブジェクトへのポインタの配列でなければなりません。
+-- [ボックス化](https://en.wikipedia.org/wiki/Object_type_%28object-oriented_programming%29#Boxing)されている64ビットの浮動小数点値でも構いませんし、抽象型`Real`の実装と宣言されている任意の大きさの複素数オブジェクトでもかまいません。
 
 ```@raw html
 <!--
@@ -1130,6 +1157,8 @@ Since `Point{Float64}` is not a subtype of `Point{Real}`, the following method c
 to arguments of type `Point{Float64}`:
 -->
 ```
+`Point{Float64}`は、`Point{Real}`のサブタイプではないので、次のメソッドを型`Point{Float64}`の引数に適用することはできません。
+
 
 ```julia
 function norm(p::Point{Real})
@@ -1144,6 +1173,8 @@ A correct way to define a method that accepts all arguments of type `Point{T}` w
 a subtype of [`Real`](@ref) is:
 -->
 ```
+`T`が[`Real`](@ref)のサブタイプである`Point{T}`を、すべて引数として受け取るメソッドを定義する正しい方法は次のとおりです。
+
 
 ```julia
 function norm(p::Point{<:Real})
@@ -1160,7 +1191,9 @@ end
 More examples will be discussed later in [Methods](@ref).
 -->
 ```
+（同等な定義として、`function norm{T<:Real}(p::Point{T})`や、`function norm(p::Point{T} where T<:Real)`があります。（[UnionAll Types](@ref) を参照。）
 
+より多くの例については、後の [メソッド](@ref) で説明します。
 
 ```@raw html
 <!--
@@ -1171,7 +1204,7 @@ which the type parameters are explicitly given and the other in which they are i
 arguments to the object constructor.
 -->
 ```
-
+どのようにしてPointオブジェクトを構成しますか？[コンストラクタ]（@ ref man-constructor）で詳しく説明するコンポジット型のカスタムコンストラクタを定義することは可能ですが、特別なコンストラクタ宣言がない場合、新しいコンポジットオブジェクトを作成するデフォルトの方法が2つあります。型パラメータが明示的に与えられ、型のパラメータがオブジェクトコンストラクタへの引数によって暗示されるもの。
 
 ```@raw html
 <!--
@@ -1179,6 +1212,7 @@ Since the type `Point{Float64}` is a concrete type equivalent to `Point` declare
 in place of `T`, it can be applied as a constructor accordingly:
 -->
 ```
+型`Point{Float64}`は、`T`の場所に[`Float64`](@ref) を置いて宣言した`Point`と同等の具象型なので、`Point`と同様のコンストラクタとして適用できます。
 
 ```jldoctest pointtype
 julia> Point{Float64}(1.0, 2.0)
@@ -1194,6 +1228,9 @@ Point{Float64}
 For the default constructor, exactly one argument must be supplied for each field:
 -->
 ```
+デフォルトのコンストラクタでは、各フィールドにちょうど1つの引数を指定する必要があります。
+
+
 
 ```jldoctest pointtype
 julia> Point{Float64}(1.0)
@@ -1219,6 +1256,11 @@ that reason, you can also apply `Point` itself as a constructor, provided that t
 of the parameter type `T` is unambiguous:
 -->
 ```
+パラメトリック型に対して、デフォルトのコンストラクタは1つしか生成されません。オーバーライドできないためです。このコンストラクタは任意の引数を受け取り、フィールドの型に変換します。
+
+多くの場合、構築したい`Point`オブジェクトの型を提供することは冗長です。
+`Point`コンストラクタ呼び出しの引数の型には、すでに型情報が隠されているからです。
+そのため、`Point`のパラメータ型の値`T`が明白である場合は、自身をコンストラクタとして適用することもできます。
 
 ```jldoctest pointtype
 julia> Point(1.0,2.0)
@@ -1242,6 +1284,8 @@ to `Point` have the same type. When this isn't the case, the constructor will fa
 -->
 ```
 
+`Point`の場合、2つの引数が同じ型を持つ場合にのみ、型Tは明白に暗示されます。これが当てはまらない場合、コンストラクタは次のように失敗して、 [`MethodError`](@ref) が発生します。
+
 ```jldoctest pointtype
 julia> Point(1,2.5)
 ERROR: MethodError: no method matching Point(::Int64, ::Float64)
@@ -1256,6 +1300,7 @@ Constructor methods to appropriately handle such mixed cases can be defined, but
 be discussed until later on in [Constructors](@ref man-constructors).
 -->
 ```
+そのような混合したケースを適切に扱うコンストラクタメソッドは定義できますが、後ほど[コンストラクタ]（@ ref man-constructors）まで議論されることはありません。
 
 [](### Parametric Abstract Types)
 ### パラメトリック抽象型
