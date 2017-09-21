@@ -859,7 +859,7 @@ x`の渡し方がコピーか参照かによって、この文は呼び出し側
 Juliaは、こんな場合にどうなるか分からない関数になるのを避けるため、オブジェクトをコピー渡しするときのフィールドの変更を禁止します。
 
 [](## Declared Types)
-## 宣言された型
+## 宣言型
 
 
 ```@raw html
@@ -973,6 +973,15 @@ easily handled.
 -->
 ```
 
+Juliaの型システムの重要かつ強力な特徴は、パラメトリックであることです。
+型はパラメータを取ることができるので、型宣言は実質的に、ありうるパラメータ組み合わせの分だけ、新しい型の族を導入することになります。
+[ジェネリック・プログラミング](https://en.wikipedia.org/wiki/Generic_programming)、つまり、正確な型を指定しなくても、データ構造やアルゴリズムを特定することができる言語が、程度の差はあれ、たくさんあります。
+たとえば、ML、Haskell、Ada、Eiffel、C ++、Java、C＃、F＃、およびScalaなど、少し挙げるだけでも、ジェネリックプログラミング的なものが存在します。
+これらの言語の中には真のパラメトリック多相（ML、Haskell、Scalaなど）に対応するものもあれば、テンプレートベースのジェネリック・プログラミング（C ++、Javaなど）のスタイルに対応するものもあります。
+言語によってジェネリック・プログラミングとパラメトリック型が多種多様であるため、Juliaのパラメトリック型を他の言語と比較することはせず、代わりにJuliaのシステムについて説明することに専念します。
+ただし、Juliaは動的型付け言語であり、コンパイル時にすべての型決定を行う必要はないため、静的型付け言語で生じる従来の困難は、比較的取り扱い安くなっています。
+
+
 
 ```@raw html
 <!--
@@ -981,6 +990,8 @@ case. We will discuss them in the following order: first, parametric composite t
 abstract types, and finally parametric bits types.
 -->
 ```
+すべての宣言型（`DataType`の仲間）は、それぞれ同じ構文でパラメータ化できます。
+まず、パラメトリック複合型、パラメトリック抽象型、最後にパラメトリック原始型の順に説明します。[訳注1]_
 
 [](### Parametric Composite Types)
 ### パラメトリック複合型
@@ -2463,3 +2474,5 @@ conveniently using `.`-prefixed operators:
 julia> Nullable(2) ./ Nullable(3) .+ Nullable(1.0)
 Nullable{Float64}(1.66667)
 ```
+
+[訳注1]:Juliaはver.0.5と0.6の間で型に関する用語を大きく変えており、この訳ではbit typeをprimitive typeの訳である原始型に訳しています。
