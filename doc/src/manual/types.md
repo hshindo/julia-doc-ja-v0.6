@@ -1326,7 +1326,7 @@ of `T`. As with parametric composite types, each such instance is a subtype of `
 -->
 ```
 
-この宣言で`Pointy{T}`は、型または整数値を表す`T`のためのそれぞれ個別の抽象型です。
+この宣言では`Pointy{T}`は、型または整数値を表す`T`のためのそれぞれ個別の抽象型です。
 パラメトリック複合型と同様に、各インスタンスは`Pointy`のサブタイプです。
 
 ```jldoctest pointytype
@@ -1522,7 +1522,8 @@ the actual definition of Julia's [`Rational`](@ref) immutable type (except that 
 constructor here for simplicity), representing an exact ratio of integers:
 -->
 ```
-このパラメトリック型の機械がどれほど有用であるかの現実的な例を示すために、ここではJuliaのRational不変型の実際の定義があります（単純化のため、ここではコンストラクタを省略します）
+このパラメトリック型という仕組みがどれほど有用であるかの実例として、ここでは整数の比を表すJuliaの[`Rational`](@ref) 不変型の実際の定義を示します。
+（単純化のため、ここではコンストラクタを省略します）
 ```julia
 struct Rational{T<:Integer} <: Real
     num::T
@@ -1554,6 +1555,10 @@ to a parameterized immutable type where each parameter is the type of one field.
 a 2-element tuple type resembles the following immutable type:
 -->
 ```
+タプルは関数本体からその引数だけを抜き出したものです。
+関数の引数の顕著な側面は、その順序と型です。
+したがって、タプル型は、各パラメータが1つのフィールドの型であるパラメトリック複合型に似ています。
+たとえば、2要素タプル型は、次の複合型に似ています。
 
 ```julia
 struct Tuple2{A,B}
@@ -1574,6 +1579,11 @@ However, there are three key differences:
   * Tuples do not have field names; fields are only accessed by index.
 -->
 ```
+ただし、3つの重要な違いがあります。 
+
+* タプル型は、任意の数のパラメータを持つことができます。
+* タプル型は、そのパラメータと**共変**です。`Tuple{Int}`は`Tuple{Any}`のサブタイプです。したがって `Tuple{Any}`は、抽象型と見なされます。タプル型は、そのパラメータが具象型の場合にのみ具象型です。
+* タプルにはフィールド名はありません。フィールドはインデックスによってのみアクセスされます。
 
 
 ```@raw html
@@ -1582,6 +1592,9 @@ Tuple values are written with parentheses and commas. When a tuple is constructe
 tuple type is generated on demand:
 -->
 ```
+タプル値は、括弧とカンマで書かれています。タプルが生成されると、必要に応じて適切なタプル型が生成されます。
+
+
 
 ```jldoctest
 julia> typeof((1,"foo",2.5))
@@ -1594,6 +1607,8 @@ Tuple{Int64,String,Float64}
 Note the implications of covariance:
 -->
 ```
+
+暗黙的な共変に注意してください。
 
 ```jldoctest
 julia> Tuple{Int,AbstractString} <: Tuple{Real,Any}
@@ -1614,6 +1629,8 @@ signature (when the signature matches).
 -->
 ```
 
+直観的には、これは、関数の引数の型が関数のシグネチャのサブタイプであることに相当します（シグネチャが適合する場合）。
+
 [](### Vararg Tuple Types)
 ### 可変引数タプル型
 
@@ -1624,6 +1641,7 @@ The last parameter of a tuple type can be the special type `Vararg`, which denot
 of trailing elements:
 -->
 ```
+前述のタプル型のパラメータは、特殊な型である`可変引数`として、任意の数の後続の要素を示す型とすることができます。
 
 ```jldoctest
 julia> mytupletype = Tuple{AbstractString,Vararg{Int}}
@@ -1652,6 +1670,12 @@ The type `Vararg{T,N}` corresponds to exactly `N` elements of type `T`.  `NTuple
 alias for `Tuple{Vararg{T,N}}`, i.e. a tuple type containing exactly `N` elements of type `T`.
 -->
 ```
+`Vararg{T}`は、0個以上の型`T`に対応することに注意してくださいT。
+可変引数タプル型は、varargsメソッドで受け入れられる引数を表すために使用されます（[可変引数関数](@ref)を参照）。
+
+型`Vararg{T,N}`は、ちょうど`N`個の要素`T`に対応します。
+`NTuple{N,T}`は`Tuple{Vararg{T,N}}`の便利なエイリアスです。
+つまり、ちょうど`N`個の型`T`の要素を含むタプル型です。
 
 [](#### [Singleton Types](@id man-singleton-types))
 #### [シングルトン型](@id man-singleton-types)
@@ -2248,7 +2272,7 @@ about the proper (and improper) uses of `Val`, please read the more extensive di
 ```
 
 [](## [Nullable Types: Representing Missing Values](@id man-nullable-types))
-## [ヌル許容型: 欠損値の表現](@id man-nullable-types)
+## [Null許容型: 欠損値の表現](@id man-nullable-types)
 
 
 ```@raw html
@@ -2280,7 +2304,7 @@ the interface consists of several possible interactions:
 ```
 
 [](### Constructing [`Nullable`](@ref) objects)
-### [`ヌル許容`](@ref) オブジェクトの生成
+### [`Null許容`](@ref) オブジェクトの生成
 
 
 ```@raw html
@@ -2328,7 +2352,7 @@ a single value of type `T` as an argument.
 -->
 ```
 [](### Checking if a `Nullable` object has a value)
-### `ヌル許容`オブジェクトが値を持つかどうかを 検査する
+### `Null許容`オブジェクトが値を持つかどうかを 検査する
 
 
 ```@raw html
@@ -2346,7 +2370,7 @@ false
 ```
 
 [](### Safely accessing the value of a `Nullable` object)
-### `ヌル許容`オブジェクトの値に安全にアクセスする
+### `Null許容`オブジェクトの値に安全にアクセスする
 
 ```@raw html
 <!--
@@ -2407,7 +2431,7 @@ julia> get(Nullable(1.0), 0.0)
 ```
 
 [](### Performing operations on `Nullable` objects)
-### `ヌル許容`オブジェクトの値を効率よく操作する
+### `Null許容`オブジェクトの値を効率よく操作する
 
 
 ```@raw html
