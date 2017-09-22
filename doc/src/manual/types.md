@@ -1688,6 +1688,8 @@ For each type, `T`, the "singleton type" `Type{T}` is an abstract type whose onl
 the object `T`. Since the definition is a little difficult to parse, let's look at some examples:
 -->
 ```
+ここで言及しなければならないは、特殊なパラメトリック抽象型であるシングルトン型です。
+それぞれの型`T`に対して、 "シングルトン型" `Type{T}`は、唯一のインスタンスが`T`のみである抽象型です。。定義を構文解析するのは少し難しいので、いくつかの例を見てみましょう。
 
 ```jldoctest
 julia> isa(Float64, Type{Float64})
@@ -1712,6 +1714,9 @@ all type objects as its instances, including, of course, singleton types:
 -->
 ```
 
+言い換えると、[`isa(A,Type{B})`](@ref) は、`A`と`B`が同じオブジェクトであり、そのオブジェクトが型であるのみ真です。パラメータなしでは、`Type`は、単なる抽象型であり、すべての型オブジェクトをそのインスタンスとして持ちます（もちろん、シングルトン型も含みます）。
+
+
 ```jldoctest
 julia> isa(Type{Float64}, Type)
 true
@@ -1729,6 +1734,9 @@ true
 Any object that is not a type is not an instance of `Type`:
 -->
 ```
+型でないオブジェクトは、`Type`のインスタンスではありません。
+
+
 
 ```jldoctest
 julia> isa(1, Type)
@@ -1748,7 +1756,9 @@ ones) whose behavior depends on a type that is given as an explicit argument rat
 by the type of one of its arguments.
 -->
 ```
-
+[Parametric Methods](@ref)と[conversions](@ref conversion-and-promotion)の議論がすむまで、
+シングルトン型の有用性を説明するのは困難ですが、要するに、関数の挙動を特定の型の`値`だけに特化することができるのです。
+これは、暗黙的ではなく明示的な引数として与えられる型に依存する振る舞いを持つメソッド（特にパラメトリックなもの）を書くのに便利です。
 
 ```@raw html
 <!--
@@ -1758,6 +1768,9 @@ applies to Julia's singleton types, but with that caveat that only type objects 
 types.
 -->
 ```
+人気のある言語の中には、Haskell、Scala、Rubyなど、シングルトン型のあるものがあります。
+一般的な使用法では、「シングルトンタイプ」という用語は、インスタンスが単一の値である型を指します。
+この意味はJuliaのシングルトン型にも当てはまりますが、型オブジェクトだけがシングルトン型を持つという点に注意してください。
 
 [](### Parametric Primitive Types)
 ### パラメトリック原始型
@@ -1769,6 +1782,8 @@ Primitive types can also be declared parametrically. For example, pointers are r
 primitive types which would be declared in Julia like this:
 -->
 ```
+原始型にもパラメータをつけて宣言することができます。
+たとえば、ポインタは原始型として表現できて、Juliaでは以下のように宣言します。
 
 ```julia
 # 32-bit system:
@@ -1789,6 +1804,10 @@ they have identical representations. And of course, all specific pointer types a
 the umbrella `Ptr` type:
 -->
 ```
+典型的なパラメトリック複合型と比較して、これらの宣言のわずかに奇妙な特徴は、型パラメータ`T`が型自体の定義に使用されていないことです。
+つまり、抽象タグであり、本質的には同一の構造を持つ型の族全体を定義し、型パラメータによってのみ区別されます。
+このように、`Ptr{Float64}`と`Ptr{Int64}`は、同じ表現を持っているにもかかわらず、型としては異なります。
+もちろん、すべての特定のポインタ型は、包括的な`Ptr`型のサブタイプです。
 
 ```jldoctest
 julia> Ptr{Float64} <: Ptr
