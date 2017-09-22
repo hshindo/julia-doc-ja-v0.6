@@ -1312,6 +1312,7 @@ Parametric abstract type declarations declare a collection of abstract types, in
 way:
 -->
 ```
+パラメトリック抽象型に対しても、ほぼ同じ方法で、抽象型の一群に対して型宣言を行います。
 
 ```jldoctest pointytype
 julia> abstract type Pointy{T} end
@@ -1324,6 +1325,9 @@ With this declaration, `Pointy{T}` is a distinct abstract type for each type or 
 of `T`. As with parametric composite types, each such instance is a subtype of `Pointy`:
 -->
 ```
+
+この宣言で`Pointy{T}`は、型または整数値を表す`T`のためのそれぞれ個別の抽象型です。
+パラメトリック複合型と同様に、各インスタンスは`Pointy`のサブタイプです。
 
 ```jldoctest pointytype
 julia> Pointy{Int64} <: Pointy
@@ -1339,7 +1343,7 @@ true
 Parametric abstract types are invariant, much as parametric composite types are:
 -->
 ```
-
+パラメトリックな抽象型は、パラメトリックな複合型と同じように不変です。
 ```jldoctest pointytype
 julia> Pointy{Float64} <: Pointy{Real}
 false
@@ -1356,6 +1360,8 @@ The notation `Pointy{<:Real}` can be used to express the Julia analogue of a
 but technically these represent *sets* of types (see [UnionAll Types](@ref)).
 -->
 ```
+Juliaでは、`Pointy{<:Real}`という表記での版の**共変**型のようなもの、`Pointy{>:Int}`で**反変**型のようなものを表現できます。
+しかし、技術的には、これらは型の**集合**を表しています。([UnionAll型](@ref) 参照)
 
 ```jldoctest pointytype
 julia> Pointy{Float64} <: Pointy{<:Real}
@@ -1373,6 +1379,9 @@ parametric abstract types serve the same purpose with respect to parametric comp
 could, for example, have declared `Point{T}` to be a subtype of `Pointy{T}` as follows:
 -->
 ```
+普通の抽象型は、具象型に対する有益な型の階層を作成するのに役立ちますが、パラメトリックな抽象型はパラメトリックな複合型と同様の目的で使います。
+たとえば、次のように`Point{T}`を`Pointy{T}`のサブタイプとして宣言することができます。
+
 
 ```jldoctest pointytype
 julia> struct Point{T} <: Pointy{T}
@@ -1387,6 +1396,8 @@ julia> struct Point{T} <: Pointy{T}
 Given such a declaration, for each choice of `T`, we have `Point{T}` as a subtype of `Pointy{T}`:
 -->
 ```
+このような宣言によって、それぞれ選択した`T`に対して、`Point{T}`は`Pointy{T}`のサブタイプとなります。
+
 
 ```jldoctest pointytype
 julia> Point{Float64} <: Pointy{Float64}
@@ -1405,6 +1416,7 @@ true
 This relationship is also invariant:
 -->
 ```
+この関係も不変です。
 
 ```jldoctest pointytype
 julia> Point{Float64} <: Pointy{Real}
@@ -1423,6 +1435,9 @@ implementation that only requires a single coordinate because the point is on th
 -->
 ```
 
+`Pointy`のようなパラメトリック抽象型はなんの役に立つのでしょうか？
+対角線**x = y**上にあって、座標がどちらか一つ分かればいい点のようなものを実装する場合を考えましょう。
+
 ```jldoctest pointytype
 julia> struct DiagPoint{T} <: Pointy{T}
            x::T
@@ -1440,6 +1455,11 @@ next section, [Methods](@ref).
 -->
 ```
 
+ここで`Point{Float64}`と`DiagPoint{Float64}`は共に、抽象型`Pointy{Float64}`の実装で、これは`T`に他の可能な型をとっても同様です。
+これにより`Point`と`DiagPoint`のどちらを実装するにも、`Pointy`オブジェクトを共通のインタフェースにするようなプログラミングが可能になります。
+しかし、完全な解説は、メソッドとディスパッチを導入する次のセクション[メソッド](@ref) に持ち越します。
+
+
 
 ```@raw html
 <!--
@@ -1447,6 +1467,10 @@ There are situations where it may not make sense for type parameters to range fr
 possible types. In such situations, one can constrain the range of `T` like so:
 -->
 ```
+
+型のパラメータがとりうる型を自由に認めると、意味を成さない場合があります。
+そのような状況では、次のように、`T`の範囲を制限することができます。
+
 
 ```jldoctest realpointytype
 julia> abstract type Pointy{T<:Real} end
@@ -1459,6 +1483,7 @@ With such a declaration, it is acceptable to use any type that is a subtype of
 [`Real`](@ref) in place of `T`, but not types that are not subtypes of `Real`:
 -->
 ```
+この宣言では、`T`の場所には[`Real`](@ref)の任意のサブタイプの使えますが、 `Real`のサブタイプでなければ使えません。
 
 ```jldoctest realpointytype
 julia> Pointy{Float64}
@@ -1480,7 +1505,8 @@ ERROR: TypeError: Pointy: in T, expected T<:Real, got Int64
 Type parameters for parametric composite types can be restricted in the same manner:
 -->
 ```
-
+パラメトリック複合型の型パラメータも、同じ方法で制限できます
+。
 ```julia
 struct Point{T<:Real} <: Pointy{T}
     x::T
@@ -1496,7 +1522,7 @@ the actual definition of Julia's [`Rational`](@ref) immutable type (except that 
 constructor here for simplicity), representing an exact ratio of integers:
 -->
 ```
-
+このパラメトリック型の機械がどれほど有用であるかの現実的な例を示すために、ここではJuliaのRational不変型の実際の定義があります（単純化のため、ここではコンストラクタを省略します）
 ```julia
 struct Rational{T<:Integer} <: Real
     num::T
@@ -1512,6 +1538,8 @@ to being a subtype of [`Integer`](@ref), and a ratio of integers represents a va
 real number line, so any [`Rational`](@ref) is an instance of the [`Real`](@ref) abstraction.
 -->
 ```
+整数値の比率を取る時だけ、意味をなすので、パラメータの型`T`は、[`Integer`](@ref)のサブタイプに限定されています。
+整数の比は数直線上の値を表現するので、任意の[`Rational`](@ref) は、抽象型 [`Real`](@ref) のインスタンスです。
 
 [](### Tuple Types)
 ### タプル型
@@ -2520,4 +2548,4 @@ julia> Nullable(2) ./ Nullable(3) .+ Nullable(1.0)
 Nullable{Float64}(1.66667)
 ```
 
-[訳注1]:Juliaはver.0.5と0.6の間で型に関する用語を大きく変えており、この訳ではbit typeをprimitive typeの訳である原始型に訳しています。
+[訳注1]:Juliaはver.0.5と0.6の間で型に関する用語を大きく変えており、この訳では`bit type`に`primitive type`の訳である原始型を当てています。
