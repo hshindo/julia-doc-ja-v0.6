@@ -2034,7 +2034,7 @@ native pointer on that machine.)
 一方`Int`のサイズは、そのマシン上のネイティブポインタのサイズを反映しています。）
 
 [](## Operations on Types)
-## 型に対する操作
+## 型に対する演算
 
 
 ```@raw html
@@ -2045,13 +2045,15 @@ such as the `<:` operator, which indicates whether its left hand operand is a su
 hand operand.
 -->
 ```
-
+Juliaの型はそれ自体がオブジェクトなので、通常の関数を作用させることができます。
+型の操作や探索に特に役立つ関数が既に導入されて、`<:`などは、演算子の左側が右側のサブタイプであるかどうかを示す演算子です。
 
 ```@raw html
 <!--
 The [`isa`](@ref) function tests if an object is of a given type and returns true or false:
 -->
 ```
+[`isa`](@ref) 関数は、オブジェクトが指定された型であるかどうかを判定し、真か偽をを返します。
 
 ```jldoctest
 julia> isa(1, Int)
@@ -2069,6 +2071,8 @@ of its argument. Since, as noted above, types are objects, they also have types,
 what their types are:
 -->
 ```
+[`typeof()`](@ref) 関数は、既にこのマニュアルで使っていますが、引数の型を返します。
+上記のように、型はオブジェクトであるため、それ自体の型もあり、その型が何であるかを尋ねることができます。
 
 ```jldoctest
 julia> typeof(Rational{Int})
@@ -2088,6 +2092,8 @@ What if we repeat the process? What is the type of a type of a type? As it happe
 all composite values and thus all have a type of `DataType`:
 -->
 ```
+この操作を繰り返すとどうなるでしょうか？型の型の型は何でしょうか？
+既にみたように、型はすべて複合値なので、すべて`DataType`型になります。
 
 ```jldoctest
 julia> typeof(DataType)
@@ -2106,6 +2112,10 @@ Another operation that applies to some types is [`supertype()`](@ref), which rev
 supertype. Only declared types (`DataType`) have unambiguous supertypes:
 -->
 ```
+`DataType`は自身の型でもあります。
+
+別の一部の型に対する演算としては、[`supertype()`](@ref)は型のスーパータイプを示します。
+宣言型（`DataType`）のみが明確なスーパータイプを持っています：
 
 ```jldoctest
 julia> supertype(Float64)
@@ -2128,6 +2138,8 @@ If you apply [`supertype()`](@ref) to other type objects (or non-type objects), 
 is raised:
 -->
 ```
+
+[`supertype()`](@ref) を他の型のオブジェクト（又は型ではないオブジェクト）に適用した場合は、[`MethodError`](@ref) が発生します。
 
 ```jldoctest
 julia> supertype(Union{Float64,Int64})
