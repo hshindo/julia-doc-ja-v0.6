@@ -1981,6 +1981,9 @@ For example, `UInt` is aliased to either [`UInt32`](@ref) or [`UInt64`](@ref) as
 appropriate for the size of pointers on the system:
 -->
 ```
+すでに表現可能な型に新しい名前をつけると便利な場合が時々あります。
+これは簡単な代入文で行うことができます。
+たとえば、`UInt`は、システム上のポインタのサイズに応じて、[`UInt32`](@ref) か [`UInt64`](@ref)　の別名となります。
 
 ```julia-repl
 # 32-bit system:
@@ -1998,6 +2001,7 @@ UInt64
 This is accomplished via the following code in `base/boot.jl`:
 -->
 ```
+これは次のコード`base/boot.jl`の中で実行されます：
 
 ```julia
 if Int === Int64
@@ -2014,7 +2018,8 @@ Of course, this depends on what `Int` is aliased to -- but that is predefined to
 type -- either [`Int32`](@ref) or [`Int64`](@ref).
 -->
 ```
-
+もちろん、これは `Int` が[`Int32`](@ref)と [`Int64`](@ref)のどちらのエイリアスであるかに依存しています。
+このエイリアスは正しい型になるように事前に定義されています。
 
 ```@raw html
 <!--
@@ -2024,6 +2029,9 @@ are specified by the IEEE-754 standard. Whereas the size of `Int` reflects the s
 native pointer on that machine.)
 -->
 ```
+（`Int`や`Float`とは異なり、`Float`は、サイズを特定した[`AbstractFloat`](@ref)の型エイリアスとして存在しません。
+整数レジスタとは異なり、浮動小数点レジスタのサイズは、IEEE-754規格で規定されています。
+一方`Int`のサイズは、そのマシン上のネイティブポインタのサイズを反映しています。）
 
 [](## Operations on Types)
 ## 型に対する操作
