@@ -2160,6 +2160,9 @@ overloading the [`show()`](@ref) function.  For example, suppose we define a typ
 complex numbers in polar form:
 -->
 ```
+型のインスタンスがどのように表示されるかをカスタマイズしたい場合がよくおこります。
+これは、[`show()`](@ref) 関数のオーバーロードによって実現されます。
+たとえば、極座標形式で複素数を表す型を定義するとします。
 
 ```jldoctest polartype
 julia> struct Polar{T<:Real} <: Number
@@ -2183,7 +2186,10 @@ instances of this type display rather simply, with information about the type na
 the field values, as e.g. `Polar{Float64}(3.0,4.0)`.
 -->
 ```
-
+ここでは、さまざまな[`Real`](@ref)型の引数をとり、それらを共通の型に昇格できるような、独自のコンストラクタ関数を追加しました （ [Constructors](@ref man-constructors)と[Conversion and Promotion](@ref conversion-and-promotion)を参照)。
+（もちろん、[`Number`](@ref)型と同じように動作させるためには、他にも多くのメソッドを定義する必要があるでしょう
+（例えば、`+`、 `*`、 `one`、 `zero`、昇格のルールなど）。
+デフォルトでは、この型のインスタンスの表示はかなり単純で、情報は型名とフィールド値だけで、`Polar{Float64}(3.0,4.0)`のようになります。
 
 ```@raw html
 <!--
@@ -2192,11 +2198,11 @@ print the object to a given output object `io` (representing a file, terminal, b
 see [Networking and Streams](@ref)):
 -->
 ```
+代わりに`3.0 * exp(4.0im)`のように表示したい場合は、オブジェクトを出力オブジェクト`io`（ファイル、端末、バッファなどを表します。[Networking and Streams](@ref) ）に出力する次のメソッドを定義します。
 
 ```jldoctest polartype
 julia> Base.show(io::IO, z::Polar) = print(io, z.r, " * exp(", z.Θ, "im)")
 ```
-
 
 ```@raw html
 <!--
@@ -2209,6 +2215,9 @@ format for displaying an object by overloading a three-argument form of `show` t
 `text/plain` MIME type as its second argument (see [Multimedia I/O](@ref)), for example:
 -->
 ```
+`Polar`オブジェクトの表示をより細かく制御することが可能です。
+特に、REPLなどの対話環境で一つのオブジェクトを表示する時には冗長な複数行印刷形式で、オブジェクトを別の（配列などの）オブジェクトの一部として表示する時には簡単な単一行形式でと 、両方を行いたい場合があります。
+デフォルトでは、`show(io, z)`関数が両方の場合に呼び出されますが、三引数の`show`関数で、2番目の引数として`text/plain`MIMEタイプ（[Multimedia I/O](@ref)参照）をとるものをオーバーロードして、ユーザーが定義した**別の**複数行の形式を表示できます。例えば、
 
 ```jldoctest polartype
 julia> Base.show{T}(io::IO, ::MIME"text/plain", z::Polar{T}) =
@@ -2221,6 +2230,8 @@ julia> Base.show{T}(io::IO, ::MIME"text/plain", z::Polar{T}) =
 (Note that `print(..., z)` here will call the 2-argument `show(io, z)` method.) This results in:
 -->
 ```
+
+（ここでは、`print(..., z)`は、2引数の`show(io, z)`メソッドを呼び出すことに注意してください）。この結果こうなります。
 
 ```jldoctest polartype
 julia> Polar(3, 4.0)
@@ -2242,7 +2253,8 @@ which in turn defaults to `show(STDOUT, z)`, but you should *not* define new [`d
 methods unless you are defining a new multimedia display handler (see [Multimedia I/O](@ref)).
 -->
 ```
-
+単一行の`show(io, z)`形式は、依然として`Polar`の値の配列に使用されています。
+技術的には、REPLが、`display(z)`を実行結果の一行を表示するために呼び出します。`show(STDOUT, MIME("text/plain"), z)`が `show(STDOUT, z)`と順番にデフォルトです。しかし、新しいマルチメディアディスプレイハンドラを定義している場合を除いて（[Multimedia I/O](@ref) 参照）、新たに[`display()`](@ref)メソッドを定義すべきではありません。
 
 ```@raw html
 <!--
@@ -2251,6 +2263,8 @@ Moreover, you can also define `show` methods for other MIME types in order to en
 we can define formatted HTML display of `Polar` objects, with superscripts and italics, via:
 -->
 ```
+さらに、`show`メソッドを他のMIMEタイプ向けに定義して、対応している環境（例えばIJulia）では、オブジェクトのより豊かな表示（HTML、画像など）をすることもできます。
+たとえば、`Polar`書式付きのHTML表示を定義して、上付き文字と斜体を使うには、次のようにします。
 
 ```jldoctest polartype
 julia> Base.show{T}(io::IO, ::MIME"text/html", z::Polar{T}) =
@@ -2265,6 +2279,7 @@ A `Polar` object will then display automatically using HTML in an environment th
 display, but you can call `show` manually to get HTML output if you want:
 -->
 ```
+`Polar`オブジェクトは、対応する環境ではHTMLを使用して自動的に表示されますが、必要なら手動で`show`を呼び出して、HTML出力することもできます。
 
 ```jldoctest polartype
 julia> show(STDOUT, "text/html", Polar(3.0,4.0))
@@ -2274,6 +2289,7 @@ julia> show(STDOUT, "text/html", Polar(3.0,4.0))
 ```@raw html
 <p>An HTML renderer would display this as: <code>Polar{Float64}</code> complex number: 3.0 <i>e</i><sup>4.0 <i>i</i></sup></p>
 ```
+
 
 [](## "Value types")
 ## "値型"
