@@ -948,7 +948,7 @@ The compilers for many languages have an internal union construct for reasoning 
 simply exposes it to the programmer.
 -->
 ```
-多くの言語のコンパイラには、型についての推論のための内部結合構造があります。Juliaはそれを単にプログラマに公開します。
+多くの言語のコンパイラには、型についての推論のための内部での共用構造があります。Juliaはそれを単にプログラマに公開しています。
 
 [](## Parametric Types)
 ## パラメトリック型
@@ -1807,7 +1807,7 @@ the umbrella `Ptr` type:
 典型的なパラメトリック複合型と比較して、これらの宣言のわずかに奇妙な特徴は、型パラメータ`T`が型自体の定義に使用されていないことです。
 つまり、抽象タグであり、本質的には同一の構造を持つ型の族全体を定義し、型パラメータによってのみ区別されます。
 このように、`Ptr{Float64}`と`Ptr{Int64}`は、同じ表現を持っているにもかかわらず、型としては異なります。
-もちろん、すべての特定のポインタ型は、包括的な`Ptr`型のサブタイプです。
+もちろん、すべての特定のポインタ型は、`Ptr`型のサブタイプです。
 
 ```jldoctest
 julia> Ptr{Float64} <: Ptr
@@ -1830,7 +1830,11 @@ The answer is that `Ptr` (or other parametric types like `Array`) is a different
 `UnionAll` type. Such a type expresses the *iterated union* of types for all values of some parameter.
 -->
 ```
-
+`Ptr`のようなパラメトリック型はすべてのインスタンス（`Ptr{Int64}`など）のスーパータイプとして機能すると前述しました。
+これはどのように作動するでしょうか？
+`Ptr`自体は通常のデータ型ではありえません。というのも、参照されるデータの型を知らなければ、明らかに、その型をメモリ操作に使用することができないからです。
+答えは、`Ptr`の型（または他の`Array`のようなパラメトリック型）は、`UnionAll`と呼ばれる種類の異なるものです 。
+このような型は、いくつかのパラメータのすべての値に対して型の**反復結合**を表現します。
 
 ```@raw html
 <!--
@@ -1842,6 +1846,11 @@ Each `where` introduces a single type variable, so these expressions are nested 
 multiple parameters, for example `Array{T,N} where N where T`.
 -->
 ```
+UnionAll型は、通常、キーワード`where`を使用して記述されます。
+例えば、`Ptr`は、より正確に`Ptr{T} where T`と書くことができ、ある型の値`T`によって`Ptr{T}`と書ける型である値すべてを意味しています。
+この文脈では、パラメータ`T`は型にまたがる変数のようなものであるため、しばしば「型変数」と呼ばれます。
+それぞれ`where`は一つの型変数を導入しているため、これらの式は複数のパラメータを持つ型に対してネストしています。例えば`Array{T,N} where N where T`のように。
+
 
 
 ```@raw html
@@ -1856,6 +1865,13 @@ Using explicit `where` syntax, any subset of parameters can be fixed. For exampl
 1-dimensional arrays can be written as `Array{T,1} where T`.
 -->
 ```
+型の適用構文`A{B,C}`は、`A`がUnionAll型であることが必須で、まず`B`に一番外側の型変数`A`を代入します。
+結果は別の`UnionAll`型になると予想され、その中に`C`を代入します。なので`A{B,C}`と`A{B}{C}`は同等です。
+これは`Array{Float64}`のように、型を部分的にインスタンス化することができる理由を説明しています。
+最初のパラメータ値は固定されていますが、2番目の値はすべての可能な値にまたがっているからです。
+明示的な`where`構文を使用すると、パラメータの任意の部分集合を固定できます。
+例えば、すべての1次元配列の型は、`Array{T,1} where T`と書くことができます。
+
 
 
 ```@raw html
@@ -1871,7 +1887,13 @@ The syntax `where T>:Int` also works to specify only the lower bound of a type v
 and `Array{>:Int}` is equivalent to `Array{T} where T>:Int`.
 -->
 ```
-
+型変数は、サブタイプの関係を使って制限することができます。
+ `Array{T} where T<:Integer`は、要素の型が[`Integer`](@ref)のなんらかの型になる配列すべてを指しています [`Integer`](@ref)。
+ 構文`Array{<:Integer}`は`Array{T} where T<:Integer`の便利な簡略表記です。
+ 型変数は、下限と上限の両方を持つことができます。
+  `Array{T} where Int<:T<:Number`は `Int`を含むことができる[`Number`](@ref)のすべての配列を指します（少なくとも、それ以上の大きさでなければなりません）。
+  構文`where T>:Int`はまた、型変数の下限のみを指定していて、
+  `Array{>:Int}`は、`Array{T} where T>:Int`同等です。
 
 ```@raw html
 <!--
@@ -1881,7 +1903,9 @@ whose first element is some [`Real`](@ref), and whose second element is an `Arra
 kind of array whose element type contains the type of the first tuple element.
 -->
 ```
-
+`where`式はネストするので、型変数の束縛は外部の型変数を参照できます。
+例えば、`Tuple{T,Array{S}} where S<:AbstractArray{T} where T<:Real`は、第1要素は[`Real`](@ref)の何かで、
+第2要素は、各要素が第1要素の型を含む型である配列の**配列**である、2要素-タプルを参照します。
 
 ```@raw html
 <!--
@@ -1889,6 +1913,8 @@ The `where` keyword itself can be nested inside a more complex declaration. For 
 consider the two types created by the following declarations:
 -->
 ```
+`where`キーワード自体は、より複雑な宣言の中にネストすることができます。
+たとえば、次の宣言で作成される2つの型を考えてみましょう。
 
 ```jldoctest
 julia> const T1 = Array{Array{T,1} where T, 1}
@@ -1907,7 +1933,11 @@ On the other hand, type `T2` defines a 1-dimensional array of 1-dimensional arra
 same type.  Note that `T2` is an abstract type, e.g., `Array{Array{Int,1},1} <: T2`, whereas `T1` is a concrete type. As a consequence, `T1` can be constructed with a zero-argument constructor `a=T1()` but `T2` cannot.
 -->
 ```
-
+型`T1`は、1次元配列の1次元配列を定義します。
+内側の配列は同じ型のオブジェクトで構成されますが、この型は内側の配列ごとに異なる場合があります。
+一方、型`T2`は、内側の配列がすべて同じ型でなければならない1次元配列の1次元配列を定義します。
+これ`T2`は抽象型であり、`Array{Array{Int,1},1} <: T2`であるのに対して、`T1`は具象型です。
+したがって、`T1`は引数のないコンストラクタで`a=T1()`のように構築することはできますが、`T2`ではできません。
 
 ```@raw html
 <!--
@@ -1915,6 +1945,7 @@ There is a convenient syntax for naming such types, similar to the short form of
 definition syntax:
 -->
 ```
+このような型を命名する便利な構文がありますが、これは関数定義の短い形の構文と似ています：
 
 ```julia
 Vector{T} = Array{T,1}
@@ -1932,6 +1963,11 @@ to write just `Vector` for the abstract type including all one-dimensional dense
 element type.
 -->
 ```
+これは`const Vector = Array{T,1} where T`と同等です。
+`Vector{Float64}`と書くのは、`Array{Float64,1}`と書くのと同等です。
+傘型の `Vector`は、要素の種類に関係なく、2番目のパラメータ（配列の次元数）が1のすべての`Array`オブジェクトをインスタンスとして持ちます。
+パラメトリック型を常に完全に指定しなければならない言語では、これは特に有用ではないかもしれません。
+しかしJuliaでは、`Vector`と書くだけで、任意の要素型のすべての1次元の密な配列を含む抽象型を表すことができます。
 
 [](## Type Aliases)
 ## 型エイリアス
