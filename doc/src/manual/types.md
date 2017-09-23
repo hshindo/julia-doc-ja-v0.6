@@ -2396,7 +2396,10 @@ a minimal interface designed to ensure that interactions with missing values are
 the interface consists of several possible interactions:
 -->
 ```
-
+多くの設定では、値が存在するのかどうかわからない型`T`とやるとりする必要があります。
+これらの設定を処理するために、Juliaは、 [`Nullable{T}`](@ref)と呼ばれる、0個または1個の値を含む特殊なコンテナ型と考えることができる、パラメトリック型を用意しています。
+`Nullable{T}`は、欠損値のやりとりが安全であることを保証するように設計された最小限のインターフェースを提供します。
+このインタフェースはいくつかの相互作用から成り立っています。
 
 ```@raw html
 <!--
@@ -2415,6 +2418,14 @@ the interface consists of several possible interactions:
 -->
 ```
 
+* `Nullable`オブジェクトを構築します。
+* `Nullable`オブジェクトに欠損値があるかどうかを確認します。
+* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値が見つからない時は、[`NullException`](@ref)がスローされることを保証します。
+* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値が見つからない時は、デフォルト値の`T`が返されることを保証します。
+* `Nullable`オブジェクトの値（存在する場合）に操作を実行し、`Nullable`の結果を取得します。元の値がない場合、結果は失われます。
+* `Nullable`オブジェクトの値（存在する場合）に検査を実行し、`Nullable`オブジェクト自体が存在しないか、検査が失敗したかの結果を取得します。
+* 単一の`Nullable`オブジェクトに対して一般的な操作を実行し、欠落しているデータを伝播します。
+
 [](### Constructing [`Nullable`](@ref) objects)
 ### [`Null許容`](@ref) オブジェクトの生成
 
@@ -2424,6 +2435,7 @@ the interface consists of several possible interactions:
 To construct an object representing a missing value of type `T`, use the `Nullable{T}()` function:
 -->
 ```
+`T`型の欠損値を表すオブジェクトを作成するには、`Nullable{T}()`関数を使用します。
 
 ```jldoctest
 julia> x1 = Nullable{Int64}()
@@ -2443,6 +2455,7 @@ To construct an object representing a non-missing value of type `T`, use the `Nu
 function:
 -->
 ```
+`T`型の欠損していない値を表すオブジェクトを作成するには、次のNullable(x::T) 関数を使用します。
 
 ```jldoctest
 julia> x1 = Nullable(1)
@@ -2463,6 +2476,9 @@ in one style, you provide a type, `T`, as a function parameter; in the other sty
 a single value of type `T` as an argument.
 -->
 ```
+`Nullable`オブジェクトを構築するこれらの2つの方法の本質的な違いに注意してください。
+一方のスタイルでは、関数パラメータとして型`T`を提供します。他方のスタイルではT、型`T`の単一の値を引数として提供します。
+
 [](### Checking if a `Nullable` object has a value)
 ### `Null許容`オブジェクトが値を持つかどうかを 検査する
 
@@ -2472,6 +2488,7 @@ a single value of type `T` as an argument.
 You can check if a `Nullable` object has any value using [`isnull()`](@ref):
 -->
 ```
+`Nullable`オブジェクトに [`isnull()`](@ref) を使用して値があるかどうかを調べることができます。
 
 ```jldoctest
 julia> isnull(Nullable{Float64}())
@@ -2495,6 +2512,7 @@ false
 You can safely access the value of a `Nullable` object using [`get()`](@ref):
 -->
 ```
+`Nullable`オブジェクトに [`get()`](@ref) を使用して、オブジェクトの値に安全にアクセスできます。
 
 ```jldoctest
 julia> get(Nullable{Float64}())
@@ -2514,7 +2532,8 @@ error will be thrown. The error-throwing nature of the `get()` function ensures 
 attempt to access a missing value immediately fails.
 -->
 ```
-
+`Nullable{Float64}`として値が存在しない場合は、[`NullException`](@ref) エラーが投げられます。
+エラーを投げられる際の状況から、`get()`関数は欠損値にアクセスしようとする試みがすぐに失敗することを保証します。
 
 ```@raw html
 <!--
@@ -2523,6 +2542,8 @@ object's value turns out to be missing, you can provide this default value as a 
 to `get()`:
 -->
 ```
+
+適切なデフォルト値が存在する状況の下で、`Nullable` オブジェクトの値が欠落していることが判明した場合に、このデフォルト値を`get()`の2番目の引数として指定できます。
 
 ```jldoctest
 julia> get(Nullable{Float64}(), 0.0)
@@ -2541,6 +2562,10 @@ julia> get(Nullable(1.0), 0.0)
     manually if needed.
 -->
 ```
+
+!!! ヒント 
+`get()`に、渡されるデフォルト値の型と`Nullable`オブジェクトの型が一致していることを確認して、型が不安定なためにパフォーマンスが低下する可能性を避けて下さい。
+必要に応じて手動で[`convert()`](@ref)を使用してください。
 
 [](### Performing operations on `Nullable` objects)
 ### `Null許容`オブジェクトの値を効率よく操作する
