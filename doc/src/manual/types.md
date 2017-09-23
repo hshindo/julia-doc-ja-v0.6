@@ -48,7 +48,7 @@ into previously "untyped" code. Doing so will typically increase both the perfor
 of these systems, and perhaps somewhat counterintuitively, often significantly simplify them.
 -->
 ```
-Juliaで、型を省略した時は、値は任意の型として許容されるのが、デフォルトの動作です。
+Juliaで、型を省略した時は、値がどんな型であっても許されるのが、デフォルトの動作です。
 つまり、型をわざわざ指定しなくても、Juliaなら有用なプログラムが沢山かけるのです。
 しかし必要に応じて、以前は**型を指定していない**コードに徐々に型注釈を加えていくことも簡単にできるのです。
 そうすると、一般的には、システムのパフォーマンスと堅牢性が向上し、おそらく直観に反して、しばしば非常に単純化されます。
@@ -2568,7 +2568,7 @@ julia> get(Nullable(1.0), 0.0)
 必要に応じて手動で[`convert()`](@ref)を使用してください。
 
 [](### Performing operations on `Nullable` objects)
-### `Null許容`オブジェクトの値を効率よく操作する
+### `Null許容`オブジェクトの操作を実行する
 
 
 ```@raw html
@@ -2580,6 +2580,11 @@ action. However, there are some common use cases where the code could be more
 concise or clear by using a higher-order function.
 -->
 ```
+`Nullable`オブジェクトは欠落している可能性のある値を表しています。
+コードをすべてこれらのオブジェクトを使用してを書く時に、まず値が欠落していないかどうかを[`isnull()`](@ref) で検査してから、
+適切な処置を行うことは可能です。
+しかし、高階関数を使うことで、コードがより簡潔になったり明確になったりする可能性のある一般的な使用例がいくつかあります。
+
 
 
 ```@raw html
@@ -2592,22 +2597,30 @@ The [`map`](@ref) function takes as arguments a function `f` and a `Nullable` va
    `f(get(x))` as value.
 -->
 ```
+ [`map`](@ref)関数は、引数として関数`f`と`Nullable`の値`x`を取ります。
+ この関数は`Nullable`を生成します。
+
+ -   もし`x`が欠損値があれば、欠損値を生成する。
+ -   もし`x`が値を持っている時は、それは`f(get(x))`を値として含む`Nullable`を生成する 。
+
 
 
 ```@raw html
 <!--
 This is useful for performing simple operations on values that might be missing
 if the desired behaviour is to simply propagate the missing values forward.
-
-The [`filter`](@ref) function takes as arguments a predicate function `p`
-(that is, a function returning a boolean) and a `Nullable` value `x`.
-It produces a `Nullable` value:
 -->
 ```
-
+欠損している可能性のある値に対して、単純な操作を実行する場合に、欠落しているときに単に伝播させたいだけの時便利です。
 
 ```@raw html
 <!--
+The [`filter`](@ref) function takes as arguments a predicate function `p`
+(that is, a function returning a boolean) and a `Nullable` value `x`.
+It produces a `Nullable` value:
+
+
+
  - If `x` is a missing value, then it produces a missing value;
  - If `p(get(x))` is true, then it produces the original value `x`;
  - If `p(get(x))` is false, then it produces a missing value.
@@ -2615,12 +2628,21 @@ It produces a `Nullable` value:
 -->
 ```
 
+[`filter`](@ref)関数は、述語関数`p`（つまり、ブール値を返す関数）と`Nullable`の値`x`を引数としてとります。
+この関数は値を生成する：
+
+   - もし`x`が欠損値があれば、欠損値を生成する。
+   - もし`p(get(x))`がtrueの場合、元の値`x`が生成されます。
+   - もし`p(get(x))`ががfalseの場合、欠損値が生成されます。
+
+
 ```@raw html
 <!--
 In this way, `filter` can be thought of as selecting only allowable
 values, and converting non-allowable values to missing values.
 -->
 ```
+このようにして、`filter`は許容値のみを選択し、許容できない値を欠損値に変換していると考えられる。
 
 
 ```@raw html
@@ -2632,6 +2654,11 @@ will motivate the need for `broadcast`. Suppose we have a function that computes
 greater of two real roots of a quadratic equation, using the quadratic formula:
 -->
 ```
+
+`map`と`filter`は特定の場合に有用である一方で、断然、最も有用な高階関数は[`broadcast`](@ref)です。
+`broadcast`は多種多様のケースで扱うことができ、既存の操作を作動させ、`Nullable`を伝播することを含みます。
+ある例が、`broadcast()`の必要性を動機付けます。
+二次方程式の2つの実数根のうち大きい方を2次式の公式を使って計算する関数があるとします。
 
 ```jldoctest nullableroot
 julia> root(a::Real, b::Real, c::Real) = (-b + √(b^2 - 4a*c)) / 2a
@@ -2645,7 +2672,7 @@ We may verify that the result of `root(1, -9, 20)` is `5.0`, as we expect,
 since `5.0` is the greater of two real roots of the quadratic equation.
 -->
 ```
-
+`root(1, -9, 20)`の結果は`5.0`だと、期待どおり確認できるでしょう。`5.0`は二次方程式の二つの実根の大きい方だからです。
 
 ```@raw html
 <!--
@@ -2660,14 +2687,22 @@ values forward; that is, if any input is missing, we simply produce a missing
 output.
 -->
 ```
-
+2次方程式の最大の実数根を見つけたいのだけれども、方程式の係数が欠損している可能性がある場合を考えてみましょう。
+データセットに欠損値があることは、実際にデータを扱う際によく起こるため、対処できるようにするのは重要です。
+しかし、すべての係数がわからなければ、方程式の根を見つけることはできません。
+これに対する最良の解決方法は、個々の事例で変わるでしょうが、
+おそらくエラーを投げるべきでしょう。
+ただし、この例では、欠落値を次に伝播することが最善の解決策であると仮定します。
+つまり、入力が欠落している場合は、単に出力を欠落したままにします。
 
 ```@raw html
 <!--
 The `broadcast()` function makes this task easy; we can simply pass the
-`root` function we wrote to `broadcast`:
+`root` function we wrote to `broadcast`
 -->
 ```
+`broadcast()`関数によって簡単に、この処理を行えます。私たちが書いた関数`root`を単に`broadcast`渡せばいいのです 。
+
 
 ```jldoctest nullableroot
 julia> broadcast(root, Nullable(1), Nullable(-9), Nullable(20))
@@ -2691,6 +2726,10 @@ using a dot notation:
 -->
 ```
 
+1つ以上の入力が欠落している場合、`broadcast()`の出力は、欠けたままです。
+
+`broadcast()`関数には、ドット表記を使用する特別な糖衣構文が存在します。
+
 ```jldoctest nullableroot
 julia> root.(Nullable(1), Nullable(-9), Nullable(20))
 Nullable{Float64}(5.0)
@@ -2704,9 +2743,11 @@ conveniently using `.`-prefixed operators:
 -->
 ```
 
+特に、通常の算術演算子は、演算子の前に`.`をつけると、便利に`broadcast()`することができます。
+
 ```jldoctest
 julia> Nullable(2) ./ Nullable(3) .+ Nullable(1.0)
 Nullable{Float64}(1.66667)
 ```
 
-[訳注1]:Juliaはver.0.5と0.6の間で型に関する用語を大きく変えており、この訳では`bit type`に`primitive type`の訳である原始型を当てています。
+[訳注1]:Juliaはver0.5とver0.6の間で型に関する用語を大きく変えており、この訳では`bit type`にver0.6の`primitive type`の訳である原始型を当てています。
