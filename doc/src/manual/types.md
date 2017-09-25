@@ -1557,7 +1557,7 @@ a 2-element tuple type resembles the following immutable type:
 ```
 タプルは関数本体からその引数だけを抜き出したものです。
 関数の引数の顕著な側面は、その順序と型です。
-したがって、タプル型は、各パラメータが1つのフィールドの型であるパラメトリック複合型に似ています。
+よって、タプル型は、パラメトリック複合型で各パラメータが1つのフィールドの型であるものと似ています。
 たとえば、2要素タプル型は、次の複合型に似ています。
 
 ```julia
@@ -1641,7 +1641,7 @@ The last parameter of a tuple type can be the special type `Vararg`, which denot
 of trailing elements:
 -->
 ```
-前述のタプル型のパラメータは、特殊な型である`可変引数`として、任意の数の後続の要素を示す型とすることができます。
+タプル型の最後のパラメータは、特殊な型である`可変引数`として、任意の数の後続の要素を示す型とすることができます。
 
 ```jldoctest
 julia> mytupletype = Tuple{AbstractString,Vararg{Int}}
@@ -1670,10 +1670,10 @@ The type `Vararg{T,N}` corresponds to exactly `N` elements of type `T`.  `NTuple
 alias for `Tuple{Vararg{T,N}}`, i.e. a tuple type containing exactly `N` elements of type `T`.
 -->
 ```
-`Vararg{T}`は、0個以上の型`T`に対応することに注意してくださいT。
-可変引数タプル型は、varargsメソッドで受け入れられる引数を表すために使用されます（[可変引数関数](@ref)を参照）。
+`Vararg{T}`は、0個以上の型`T`に対応することに注意してください。
+可変引数タプル型は、varargsメソッドによって受け入れられる引数を表すために使用されます（[可変引数関数](@ref)を参照）。
 
-型`Vararg{T,N}`は、ちょうど`N`個の要素`T`に対応します。
+型`Vararg{T,N}`は、ちょうど`N`個の型`T`に対応します。
 `NTuple{N,T}`は`Tuple{Vararg{T,N}}`の便利なエイリアスです。
 つまり、ちょうど`N`個の型`T`の要素を含むタプル型です。
 
