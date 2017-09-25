@@ -257,7 +257,8 @@ system: they form the conceptual hierarchy which makes Julia's type system more 
 of object implementations.
 -->
 ```
-抽象型はインスタンス化することはできません。型のグラフの中で、ノードになるだけです。それゆえ、抽象型とその子孫となる具象型を対応付けると、抽象型は具象型の集合を記述しているといえます。
+抽象型はインスタンス化することはできません。型のグラフの中で、ノードになるだけです。
+そして、抽象型を子孫となる具象型を対応付けると、抽象型は具象型の集合を記述しているといえます。
 型の説明は抽象型から始めましょう。インスタンス化はできないですが、型システムのバックボーンだからです。
 抽象型は概念的な階層を形成して、Juliaの型システムを、単なるオブジェクトの実装の寄せ集め以上のものにしています。
 
@@ -723,7 +724,7 @@ after construction. This may seem odd at first, but it has several advantages:
 `struct`で宣言された複合型オブジェクトは**不変**です。生成後に変更することはできません。
 これは最初は奇妙に思えるかもしれませんが、いくつかの利点があります：
 
-* より効率的にすることができます。構造体には効率的に配列に詰め込めるものもあり、場合によっては、不変オブジェクトへのメモリの割り当てを完全に避けることができます。
+* より効率的にすることができます。構造体には効率的に配列にパックできるものもあり、場合によっては、不変オブジェクトへのメモリの割り当てを完全に避けることができます。
 * 型のコンストラクタの規定する不変性に違反することはできません。
 * 不変オブジェクトを使用するコードは、理解しやすくなります。
 
@@ -1482,7 +1483,7 @@ With such a declaration, it is acceptable to use any type that is a subtype of
 [`Real`](@ref) in place of `T`, but not types that are not subtypes of `Real`:
 -->
 ```
-この宣言では、`T`には[`Real`](@ref)の任意のサブタイプが受け入れられますが、 `Real`のサブタイプでなければ受け入れられません。
+この宣言では、`T`は[`Real`](@ref)の任意のサブタイプが受け入れますが、 `Real`のサブタイプでなければ受け入れません。
 
 ```jldoctest realpointytype
 julia> Pointy{Float64}
@@ -1689,7 +1690,7 @@ the object `T`. Since the definition is a little difficult to parse, let's look 
 -->
 ```
 ここで言及すべきは、特殊なパラメトリック抽象型であるシングルトン型です。
-それぞれの型`T`に対して、 "シングルトン型" `Type{T}`は、インスタンスが`T`唯一つのみである抽象型です。
+それぞれの型`T`に対して、 "シングルトン型" `Type{T}`は、インスタンスが`T`唯一つだけの抽象型です。
 定義を構文解析するのは少し難しいので、いくつかの例を見てみましょう。
 
 ```jldoctest
@@ -1715,7 +1716,8 @@ all type objects as its instances, including, of course, singleton types:
 -->
 ```
 
-換言すると、[`isa(A,Type{B})`](@ref) は、`A`と`B`が同じオブジェクトであり、そのオブジェクトが型であるのみ真です。パラメータをつけなければ、`Type`は、単なる抽象型であり、すべての型オブジェクトをそのインスタンスとして持っています（もちろん、シングルトン型も含みます）。
+言い換えると、[`isa(A,Type{B})`](@ref) は、`A`と`B`が同じオブジェクトであり、そのオブジェクトが型であるのみ真です。
+パラメータをつけなければ、`Type`は、単なる抽象型であり、すべての型オブジェクトをそのインスタンスとして持っています（もちろん、シングルトン型も含みます）。
 
 
 ```jldoctest
@@ -1759,7 +1761,7 @@ by the type of one of its arguments.
 ```
 [Parametric Methods](@ref)と[conversions](@ref conversion-and-promotion)の議論がすむまで、
 シングルトン型の有用性を説明するのは困難ですが、要するに、関数の挙動を特定の型の**値**だけに特化することができるのです。
-これは挙動が型に依存する（特にパラメトリックなもの）メソッドで、その型が暗黙的に推論されるのではなく明示的な引数として与えられるものを書くのに役立ちます。
+これは挙動が型に依存する（特にパラメトリックな）メソッドで、その型が暗黙的に推論されるのではなく明示的な引数として与えられるものを書くのに役立ちます。
 
 ```@raw html
 <!--
@@ -1769,8 +1771,8 @@ applies to Julia's singleton types, but with that caveat that only type objects 
 types.
 -->
 ```
-人気のある言語の中には、Haskell、Scala、Rubyなど、シングルトン型のあるものがあります。
-一般的な使用法では、「シングルトンタイプ」という用語は、インスタンスが単一の値である型を指します。
+人気のある言語の中には、Haskell、Scala、Rubyなど、シングルトン型があるものがあります。
+一般的な使用法では、「シングルトンタイプ」という用語は、唯一のインスタンスがで単一の値である型を指します。
 この意味はJuliaのシングルトン型にも当てはまりますが、型オブジェクトだけがシングルトン型を持つという点に注意してください。
 
 [](### Parametric Primitive Types)
@@ -1805,10 +1807,10 @@ they have identical representations. And of course, all specific pointer types a
 the umbrella `Ptr` type:
 -->
 ```
-一般的なパラメトリック複合型と比較して、これらの宣言のわずかに奇妙な特徴は、型パラメータ`T`が型自体の定義に使用されていないことです。
-つまり、型は抽象的なタグであり、本質的には同一の構造を持つ型の族全体を定義し、型パラメータによってのみ区別されます。
-このように、`Ptr{Float64}`と`Ptr{Int64}`は、同一の表現を持っているにもかかわらず、型としては異なります。
-もちろん、すべての特定のポインタ型は、包括型`Ptr`型のサブタイプです。
+一般的なパラメトリック複合型と比べて、この宣言のちょっと変な特徴は、型パラメータ`T`が型自体の定義に使われていないことです。
+つまり、型は抽象的なタグであり、型の族全体を本質的に同一の構造に対して定義し、型パラメータだけで差別化されています。
+このように、`Ptr{Float64}`と`Ptr{Int64}`は、表現は同一であっても、型としては異なります。
+もちろん、すべての個別のポインタ型は、包括型`Ptr`のサブタイプです。
 
 ```jldoctest
 julia> Ptr{Float64} <: Ptr
@@ -1831,11 +1833,12 @@ The answer is that `Ptr` (or other parametric types like `Array`) is a different
 `UnionAll` type. Such a type expresses the *iterated union* of types for all values of some parameter.
 -->
 ```
-`Ptr`のようなパラメトリック型はすべてのインスタンス（`Ptr{Int64}`など）のスーパータイプとして機能すると前述しました。
+`Ptr`のようなパラメトリック型はすべてのインスタンス（`Ptr{Int64}`など）のスーパータイプのように振る舞うと前述しました。
 これはどのように作動するでしょうか？
-`Ptr`自体は通常のデータ型ではありえません。というのも、参照されるデータの型を知らなければ、明らかに、その型をメモリ操作に使用することができないからです。
+`Ptr`自体は通常のデータ型ではありえません。というのも、参照されるデータの型を知らなければ、
+明らかに、その型をメモリ操作に使用することができないからです。
 答えは、`Ptr`の型（または他の`Array`のようなパラメトリック型）は、`全合併型`と呼ばれる種類の異なるものです 。
-このような型は、いくつかのパラメータのすべての値に対して型の**反復結合**を表現します。
+この型は、いくつかあるパラメータのすべての値に対して**繰返しの合併した**型を表現します。
 
 ```@raw html
 <!--
@@ -1850,7 +1853,7 @@ multiple parameters, for example `Array{T,N} where N where T`.
 全合併型は、通常、キーワード`where`を使用して記述されます。
 例えば、`Ptr`は、より正確に`Ptr{T} where T`と書くことができ、ある型の値`T`によって`Ptr{T}`と書ける型である値すべてを意味しています。
 この文脈では、パラメータ`T`は型にまたがる変数のようなものであるため、しばしば「型変数」と呼ばれます。
-それぞれ`where`は一つの型変数を導入しているため、これらの式は複数のパラメータを持つ型に対してネストしています。例えば`Array{T,N} where N where T`のように。
+それぞれ`where`は型変数を一つ導入しているため、これらの式は複数のパラメータを持つ型ではネストしています。例えば`Array{T,N} where N where T`のように。
 
 
 
@@ -1866,11 +1869,11 @@ Using explicit `where` syntax, any subset of parameters can be fixed. For exampl
 1-dimensional arrays can be written as `Array{T,1} where T`.
 -->
 ```
-型の適用構文`A{B,C}`は、`A`が全合併型であることが必須で、まず`B`に一番外側の型変数`A`を代入します。
-結果は別の`全合併`型になると予想され、その中に`C`を代入します。なので`A{B,C}`と`A{B}{C}`は同等です。
+型の適用構文`A{B,C}`は、`A`が全合併型であることが必須で、まず`B`を一番外側の型変数`A`の中で置換します。
+結果は別の`全合併`型になると予想され、その中で`C`に置換します。なので`A{B,C}`と`A{B}{C}`は同等です。
 これは`Array{Float64}`のように、型を部分的にインスタンス化することができる理由を説明しています。
 最初のパラメータ値は固定されていますが、2番目の値はすべての可能な値にまたがっているからです。
-明示的な`where`構文を使用すると、パラメータの任意の部分集合を固定できます。
+明示的な`where`構文を使用すると、パラメータを任意の部分集合に固定できます。
 例えば、すべての1次元配列の型は、`Array{T,1} where T`と書くことができます。
 
 
@@ -1888,11 +1891,11 @@ The syntax `where T>:Int` also works to specify only the lower bound of a type v
 and `Array{>:Int}` is equivalent to `Array{T} where T>:Int`.
 -->
 ```
-型変数は、サブタイプの関係を使って制限することができます。
- `Array{T} where T<:Integer`は、要素の型が[`Integer`](@ref)のなんらかの型になる配列すべてを指しています [`Integer`](@ref)。
+型変数は、サブタイプの関係によって制限することができます。
+ `Array{T} where T<:Integer`は、配列で要素の型がある種の[`Integer`](@ref)になるものすべてを指しています。
  構文`Array{<:Integer}`は`Array{T} where T<:Integer`の便利な簡略表記です。
  型変数は、下限と上限の両方を持つことができます。
-  `Array{T} where Int<:T<:Number`は `Int`を含むことができる[`Number`](@ref)のすべての配列を指します（少なくとも、それ以上の大きさでなければなりません）。
+  `Array{T} where Int<:T<:Number`は `Int`を含みうる[`Number`](@ref)の配列すべてを指します（少なくとも、`T` は`Int`以上の大きさでなければなりません）。
   構文`where T>:Int`はまた、型変数の下限のみを指定していて、
   `Array{>:Int}`は、`Array{T} where T>:Int`同等です。
 
@@ -1904,9 +1907,9 @@ whose first element is some [`Real`](@ref), and whose second element is an `Arra
 kind of array whose element type contains the type of the first tuple element.
 -->
 ```
-`where`式はネストするので、型変数の束縛は外部の型変数を参照できます。
+`where`式はネストするので、型変数を制限する際は外部の型変数を参照できます。
 例えば、`Tuple{T,Array{S}} where S<:AbstractArray{T} where T<:Real`は、第1要素は[`Real`](@ref)の何かで、
-第2要素は、各要素が第1要素の型を含む型である配列の**配列**である、2要素-タプルを参照します。
+第2要素は、各要素が第1要素の型を含む型である配列の**配列**の、2要素-タプルを参照します。
 
 ```@raw html
 <!--
@@ -1934,10 +1937,10 @@ On the other hand, type `T2` defines a 1-dimensional array of 1-dimensional arra
 same type.  Note that `T2` is an abstract type, e.g., `Array{Array{Int,1},1} <: T2`, whereas `T1` is a concrete type. As a consequence, `T1` can be constructed with a zero-argument constructor `a=T1()` but `T2` cannot.
 -->
 ```
-型`T1`は、1次元配列の1次元配列を定義します。
+型`T1`は、1次元配列を要素とする、1次元配列を定義します。
 内側の配列は同じ型のオブジェクトで構成されますが、この型は内側の配列ごとに異なる場合があります。
-一方、型`T2`は、内側の配列がすべて同じ型でなければならない1次元配列の1次元配列を定義します。
-これ`T2`は抽象型であり、`Array{Array{Int,1},1} <: T2`であるのに対して、`T1`は具象型です。
+一方、型`T2`は、すべての内側の配列の型が等しい1次元配列の1次元配列を定義します。
+`T2`は抽象型であり、`Array{Array{Int,1},1} <: T2`であるのに対して、`T1`は具象型である点に注意してください。
 したがって、`T1`は引数のないコンストラクタで`a=T1()`のように構築することはできますが、`T2`ではできません。
 
 ```@raw html
@@ -1966,8 +1969,8 @@ element type.
 ```
 これは`const Vector = Array{T,1} where T`と同等です。
 `Vector{Float64}`と書くのは、`Array{Float64,1}`と書くのと同等です。
-傘型の `Vector`は、要素の種類に関係なく、2番目のパラメータ（配列の次元数）が1のすべての`Array`オブジェクトをインスタンスとして持ちます。
-パラメトリック型を常に完全に指定しなければならない言語では、これは特に有用ではないかもしれません。
+包括型の `Vector`は、2番目のパラメータ（配列の次元数）が1である、すべての`Array`オブジェクトを、要素の種類に関係なく、インスタンスとして持ちます。
+パラメトリック型を常に完全に指定しなければならない言語では、これはそんなに有用ではないかもしれません。
 しかしJuliaでは、`Vector`と書くだけで、任意の要素型のすべての1次元の密な配列を含む抽象型を表すことができます。
 
 [](## Type Aliases)
