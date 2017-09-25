@@ -1325,7 +1325,7 @@ of `T`. As with parametric composite types, each such instance is a subtype of `
 -->
 ```
 
-この宣言では`Pointy{T}`は、型または整数値を表す`T`のためのそれぞれ個別の抽象型です。
+この宣言では`Pointy{T}`は、型または整数値を表す`T`それぞれに対して個別の抽象型です。
 パラメトリック複合型と同様に、各インスタンスは`Pointy`のサブタイプです。
 
 ```jldoctest pointytype
@@ -1359,8 +1359,8 @@ The notation `Pointy{<:Real}` can be used to express the Julia analogue of a
 but technically these represent *sets* of types (see [UnionAll Types](@ref)).
 -->
 ```
-Juliaでは、`Pointy{<:Real}`という表記での版の**共変**型のようなもの、`Pointy{>:Int}`で**反変**型のようなものを表現できます。
-しかし、技術的には、これらは型の**集合**を表しています。([UnionAll型](@ref) 参照)
+Juliaでは、`Pointy{<:Real}`という表記で**共変**型のようなもの、`Pointy{>:Int}`で**反変**型のようなものを表現できます。
+しかし、技術的には、これらは型の**集合**を表しています。([全合併型](@ref) 参照)
 
 ```jldoctest pointytype
 julia> Pointy{Float64} <: Pointy{<:Real}
@@ -1378,7 +1378,7 @@ parametric abstract types serve the same purpose with respect to parametric comp
 could, for example, have declared `Point{T}` to be a subtype of `Pointy{T}` as follows:
 -->
 ```
-普通の抽象型は、具象型に対する有益な型の階層を作成するのに役立ちますが、パラメトリックな抽象型はパラメトリックな複合型と同様の目的で使います。
+普通の抽象型は、具象型に対して役に立つ型の階層を作成するのに役立ちますが、パラメトリックな抽象型はパラメトリックな複合型と同じような目的で使います。
 たとえば、次のように`Point{T}`を`Pointy{T}`のサブタイプとして宣言することができます。
 
 
@@ -1395,7 +1395,7 @@ julia> struct Point{T} <: Pointy{T}
 Given such a declaration, for each choice of `T`, we have `Point{T}` as a subtype of `Pointy{T}`:
 -->
 ```
-このような宣言によって、それぞれ選択した`T`に対して、`Point{T}`は`Pointy{T}`のサブタイプとなります。
+この宣言で、それぞれ選んた`T`に対して、`Point{T}`は`Pointy{T}`のサブタイプとなります。
 
 
 ```jldoctest pointytype
@@ -1454,9 +1454,9 @@ next section, [Methods](@ref).
 -->
 ```
 
-ここで`Point{Float64}`と`DiagPoint{Float64}`は共に、抽象型`Pointy{Float64}`の実装で、これは`T`に他の可能な型をとっても同様です。
+ここで`Point{Float64}`と`DiagPoint{Float64}`は共に、抽象型`Pointy{Float64}`の実装で、これは`T`に他の可能な型を代入しても同様です。
 これにより`Point`と`DiagPoint`のどちらを実装するにも、`Pointy`オブジェクトを共通のインタフェースにするようなプログラミングが可能になります。
-しかし、完全な解説は、メソッドとディスパッチを導入する次のセクション[メソッド](@ref) に持ち越します。
+しかし、完全な解説は、メソッドとディスパッチを導入する次のセクション[Methods](@ref) に持ち越します。
 
 
 
@@ -1482,7 +1482,7 @@ With such a declaration, it is acceptable to use any type that is a subtype of
 [`Real`](@ref) in place of `T`, but not types that are not subtypes of `Real`:
 -->
 ```
-この宣言では、`T`の場所には[`Real`](@ref)の任意のサブタイプの使えますが、 `Real`のサブタイプでなければ使えません。
+この宣言では、`T`には[`Real`](@ref)の任意のサブタイプが受け入れられますが、 `Real`のサブタイプでなければ受け入れられません。
 
 ```jldoctest realpointytype
 julia> Pointy{Float64}
@@ -1521,7 +1521,8 @@ the actual definition of Julia's [`Rational`](@ref) immutable type (except that 
 constructor here for simplicity), representing an exact ratio of integers:
 -->
 ```
-このパラメトリック型という仕組みがどれほど有用であるかの実例として、ここでは整数の比を表すJuliaの[`Rational`](@ref) 不変型の実際の定義を示します。
+現実の世界でパラメトリック型という仕組みがどれほど役立つかという例として、
+ここでは整数の比を表す[`Rational`](@ref) 不変型の、Juliaでの実際の定義を示します。
 （単純化のため、ここではコンストラクタを省略します）
 ```julia
 struct Rational{T<:Integer} <: Real
