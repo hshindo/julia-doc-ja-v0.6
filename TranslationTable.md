@@ -66,7 +66,7 @@
 | assignment form                                 | 代入形式、代入方式                       
 | anonymous function                              | 無名関数                                 
 | tuple                                           | タプル                                      
-| tuple “destructuring”       　                  | タプル「構造解除」、タプルの「分割」                
+| tuple “destructuring”                         | タプル「構造解除」、タプルの「分割」                
 | varargs,variable argument                       | 可変引数                                 
 | Parametrically-constrained Varargs methods      | パラメトリック制約付き可変引数メソッド               
 | Performance Tip                                 | パフォーマンスに関するヒント                          
@@ -80,7 +80,7 @@
 | scope rule                                      | スコープ規則                                 
 | region of code                                  | スコープの範囲                                
 | lexical scope                                   | レキシカルスコープ                                
-| comprehension                                   | コンプリヘンション 、内包表記                              
+| comprehension                                   | コンプリヘンション 、内包表記                     
 | static type system                              | 静的型付け                                
 | dynamic type system                             | 動的型付け                                
 | polymorphism                                    | ポリモーフィズム                                 
@@ -146,7 +146,7 @@
 | contrived                                       | 不自然な                                  
 | cartesian product                               | 直積                                     
 | symmetric coroutines                            | 対称コルーチン                                
-| lightweight　threads                            | 軽量スレッド                                 
+| lightweight　threads                             | 軽量スレッド                                 
 | cooperative multitasking                        | 協調的マルチタスク                             
 | one-shot continuations                          | ワンショット継続                               
 | first-in first-out                              | 先入先出                                 
@@ -166,3 +166,31 @@
 | namespace                                       | 名前空間                                 
 | closures                                        | クロージャ                                    
 | iteration                                       | 繰返し                                    
+| Abstract Type                                   | 抽象型                                   
+| Primitive Types                                 | 原始型                                   
+| Composite Types                                 | 複合型                                   
+| Type Unions                                     | 合併型                                   
+| Type Aliases                                    | 型の別名                                  
+| Value types                                     | 値型                                     
+| Nullable Types                                  | null許容型                               
+| concrete type                                   | 具象型                                   
+| Declared Types                                  | 宣言型                                   
+| umbrella type                                   | 包括型                                   
+| Missing Values                                  | 欠損値                                   
+| type assertion                                  | 型表明                                   
+| assertion                                       | 表明                                     
+| nominative                                      | 公称的                                   
+| gotchas                                         | 落とし穴                                   
+| attached                                        | （宣言・表明を）差し込む                     
+| type graph                                      | 型のグラフ                                   
+| plain old                                       | 普通の                                    
+| bags of                                         | たくさんの                                    
+| go hand in hand                                 | 伴う,                                     
+| sidestep                                        | 避ける                                     
+| immediate values                                | 即値、リテラル                               
+| worth noting                                    | 注目に値する                                
+| recap                                           | まとめ                                      
+| unambiguous                                     | 曖昧さがない、明確な                          
+| exploit                                         | 利用する                                   
+| unobtrusive                                     | 目立たない                                  
+| final                                           | ファイナル                                    
