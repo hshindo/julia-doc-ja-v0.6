@@ -2402,8 +2402,8 @@ a minimal interface designed to ensure that interactions with missing values are
 the interface consists of several possible interactions:
 -->
 ```
-多くの設定では、値が存在するのかどうかわからない型`T`とやるとりする必要があります。
-これらの設定を処理するために、Juliaは、 [`Nullable{T}`](@ref)と呼ばれる、0個または1個の値を含む特殊なコンテナ型と考えることができる、パラメトリック型を用意しています。
+多くの状況では、型が`T`の存否のわからない値を取り扱う必要があります。
+これらの状況を処理するために、Juliaは、 [`Nullable{T}`](@ref)と呼ばれる、0個または1個の値を含む特殊なコンテナ型と考えることができる、パラメトリック型を用意しています。
 `Nullable{T}`は、欠損値のやりとりが安全であることを保証するように設計された最小限のインターフェースを提供します。
 このインタフェースはいくつかの相互作用から成り立っています。
 
@@ -2426,9 +2426,9 @@ the interface consists of several possible interactions:
 
 * `Nullable`オブジェクトを構築します。
 * `Nullable`オブジェクトに欠損値があるかどうかを確認します。
-* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値が見つからない時は、[`NullException`](@ref)がスローされることを保証します。
-* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値が見つからない時は、デフォルト値の`T`が返されることを保証します。
-* `Nullable`オブジェクトの値（存在する場合）に操作を実行し、`Nullable`の結果を取得します。元の値がない場合、結果は失われます。
+* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値が欠落している時は、[`NullException`](@ref)が投げられることを保証します。
+* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値がｃ時は、型`T`のデフォルト値が返されることを保証します。
+* `Nullable`オブジェクトの値（存在する場合）に操作を実行し、`Nullable`の結果を取得します。元が欠損値の場合、結果もが欠損値になります。
 * `Nullable`オブジェクトの値（存在する場合）に検査を実行し、`Nullable`オブジェクト自体が存在しないか、検査が失敗したかの結果を取得します。
 * 単一の`Nullable`オブジェクトに対して一般的な操作を実行し、欠落しているデータを伝播します。
 
@@ -2482,8 +2482,8 @@ in one style, you provide a type, `T`, as a function parameter; in the other sty
 a single value of type `T` as an argument.
 -->
 ```
-`Nullable`オブジェクトを構築するこれらの2つの方法の本質的な違いに注意してください。
-一方のスタイルでは、関数パラメータとして型`T`を提供します。他方のスタイルではT、型`T`の単一の値を引数として提供します。
+`Nullable`オブジェクトを構築するこれらの2つの方法の核となる違いに注意してください。
+一方は、関数パラメータに型`T`を与えます。他方はT、型`T`の単一の値を引数として与えます。
 
 [](### Checking if a `Nullable` object has a value)
 ### `Null許容`オブジェクトが値を持つかどうかを 検査する
@@ -2494,7 +2494,7 @@ a single value of type `T` as an argument.
 You can check if a `Nullable` object has any value using [`isnull()`](@ref):
 -->
 ```
-`Nullable`オブジェクトに [`isnull()`](@ref) を使用して値があるかどうかを調べることができます。
+`Nullable`オブジェクトに [`isnull()`](@ref) を使用して値を持つかどうかを調べることができます。
 
 ```jldoctest
 julia> isnull(Nullable{Float64}())
@@ -2538,8 +2538,8 @@ error will be thrown. The error-throwing nature of the `get()` function ensures 
 attempt to access a missing value immediately fails.
 -->
 ```
-`Nullable{Float64}`として値が存在しない場合は、[`NullException`](@ref) エラーが投げられます。
-エラーを投げられる際の状況から、`get()`関数は欠損値にアクセスしようとする試みがすぐに失敗することを保証します。
+`Nullable{Float64}`のように値が存在しない場合は、[`NullException`](@ref) エラーが投げられます。
+エラーを投げるという本質から、`get()`関数は欠損値にアクセスしようとする試みがすぐに失敗することを保証します。
 
 ```@raw html
 <!--
@@ -2549,7 +2549,7 @@ to `get()`:
 -->
 ```
 
-適切なデフォルト値が存在する状況の下で、`Nullable` オブジェクトの値が欠落していることが判明した場合に、このデフォルト値を`get()`の2番目の引数として指定できます。
+適切なデフォルト値が存在して、`Nullable` オブジェクトの値が欠落していることが判明した場合に、このデフォルト値を`get()`の2番目の引数として指定できます。
 
 ```jldoctest
 julia> get(Nullable{Float64}(), 0.0)
@@ -2570,7 +2570,7 @@ julia> get(Nullable(1.0), 0.0)
 ```
 
 !!! ヒント 
-`get()`に、渡されるデフォルト値の型と`Nullable`オブジェクトの型が一致していることを確認して、型が不安定なためにパフォーマンスが低下する可能性を避けて下さい。
+`get()`に渡されるデフォルト値の型と、`Nullable`オブジェクトの型の一致を確認して、型が不安定なためにパフォーマンスが低下しないようにして下さい。
 必要に応じて手動で[`convert()`](@ref)を使用してください。
 
 [](### Performing operations on `Nullable` objects)
@@ -2586,8 +2586,8 @@ action. However, there are some common use cases where the code could be more
 concise or clear by using a higher-order function.
 -->
 ```
-`Nullable`オブジェクトは欠落している可能性のある値を表しています。
-コードをすべてこれらのオブジェクトを使用してを書く時に、まず値が欠落していないかどうかを[`isnull()`](@ref) で検査してから、
+`Nullable`オブジェクトは欠落しているかもしれない値を表しています。
+これらのオブジェクトを使用するコードは、すべて書く時に、まず値が欠落していないかどうかを[`isnull()`](@ref) で検査してから、
 適切な処置を行うことは可能です。
 しかし、高階関数を使うことで、コードがより簡潔になったり明確になったりする可能性のある一般的な使用例がいくつかあります。
 
@@ -2617,7 +2617,7 @@ This is useful for performing simple operations on values that might be missing
 if the desired behaviour is to simply propagate the missing values forward.
 -->
 ```
-欠損している可能性のある値に対して、単純な操作を実行する場合に、欠落しているときに単に伝播させたいだけの時便利です。
+[`map`](@ref)関数が役に立つのは、欠損の可能性のある値に対して、単純な操作を実行し、欠損値に対しては単に伝播すればいいだけの場合です。
 
 ```@raw html
 <!--
@@ -2648,7 +2648,7 @@ In this way, `filter` can be thought of as selecting only allowable
 values, and converting non-allowable values to missing values.
 -->
 ```
-このようにして、`filter`は許容値のみを選択し、許容できない値を欠損値に変換していると考えられる。
+このように、`filter`は許容できる値のみを選択し、許容できない値を欠損値に変換していると考えられます。
 
 
 ```@raw html
@@ -2661,9 +2661,9 @@ greater of two real roots of a quadratic equation, using the quadratic formula:
 -->
 ```
 
-`map`と`filter`は特定の場合に有用である一方で、断然、最も有用な高階関数は[`broadcast`](@ref)です。
-`broadcast`は多種多様のケースで扱うことができ、既存の操作を作動させ、`Nullable`を伝播することを含みます。
-ある例が、`broadcast()`の必要性を動機付けます。
+`map`と`filter`は特定の場合に有用ですが、断然、最も有用な高階関数は[`broadcast`](@ref)です。
+`broadcast`は多様な場面で利用できて、`Nullable`を使って、存在するデータには操作を行い、欠損は伝播させる場合も含みます。
+`broadcast()`の必要性がわかる例を示しましょう。
 二次方程式の2つの実数根のうち大きい方を2次式の公式を使って計算する関数があるとします。
 
 ```jldoctest nullableroot
@@ -2678,12 +2678,12 @@ We may verify that the result of `root(1, -9, 20)` is `5.0`, as we expect,
 since `5.0` is the greater of two real roots of the quadratic equation.
 -->
 ```
-`root(1, -9, 20)`の結果は`5.0`だと、期待どおり確認できるでしょう。`5.0`は二次方程式の二つの実根の大きい方だからです。
+`root(1, -9, 20)`の結果は`5.0`だと、予想どおりの確認ができるでしょう。`5.0`は二次方程式の二つの実根の大きい方だからです。
 
 ```@raw html
 <!--
 Suppose now that we want to find the greatest real root of a quadratic
-equations where the coefficients might be missing values. Having missing values
+equations where the coefficients migt be missing values. Having missing values
 in datasets is a common occurrence in real-world data, and so it is important
 to be able to deal with them. But we cannot find the roots of an equation if we
 do not know all the coefficients. The best solution to this will depend on the
@@ -2698,7 +2698,7 @@ output.
 しかし、すべての係数がわからなければ、方程式の根を見つけることはできません。
 これに対する最良の解決方法は、個々の事例で変わるでしょうが、
 おそらくエラーを投げるべきでしょう。
-ただし、この例では、欠落値を次に伝播することが最善の解決策であると仮定します。
+ただし、この例では、欠落値を次に伝播することが最善策であると想定します。
 つまり、入力が欠落している場合は、単に出力を欠落したままにします。
 
 ```@raw html
@@ -2707,7 +2707,7 @@ The `broadcast()` function makes this task easy; we can simply pass the
 `root` function we wrote to `broadcast`
 -->
 ```
-`broadcast()`関数によって簡単に、この処理を行えます。私たちが書いた関数`root`を単に`broadcast`渡せばいいのです 。
+`broadcast()`関数によって簡単に、この処理を行えます。先程記述した関数`root`を単に`broadcast`渡せばいいのです 。
 
 
 ```jldoctest nullableroot
@@ -2749,7 +2749,7 @@ conveniently using `.`-prefixed operators:
 -->
 ```
 
-特に、通常の算術演算子は、演算子の前に`.`をつけると、便利に`broadcast()`することができます。
+通常の算術演算子に対しては、特に便利に`broadcast()`を使うことができて、演算子の前に`.`をつければいいだけです。
 
 ```jldoctest
 julia> Nullable(2) ./ Nullable(3) .+ Nullable(1.0)
