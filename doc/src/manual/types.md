@@ -2049,14 +2049,15 @@ hand operand.
 -->
 ```
 Juliaの型はそれ自体がオブジェクトなので、通常の関数を作用させることができます。
-型の操作や探索に特に役立つ関数が既に導入されて、`<:`などは、演算子の左側が右側のサブタイプであるかどうかを示す演算子です。
+特に型の操作や探索に役立つ関数が既に導入されています。
+`<:`などは、演算子の左側が右側のサブタイプであるかどうかを示す演算子です。
 
 ```@raw html
 <!--
 The [`isa`](@ref) function tests if an object is of a given type and returns true or false:
 -->
 ```
-[`isa`](@ref) 関数は、オブジェクトが指定された型であるかどうかを判定し、真か偽をを返します。
+[`isa`](@ref) 関数は、オブジェクトが指定された型であるかどうかを検査し、真か偽をを返します。
 
 ```jldoctest
 julia> isa(1, Int)
@@ -2074,8 +2075,8 @@ of its argument. Since, as noted above, types are objects, they also have types,
 what their types are:
 -->
 ```
-[`typeof()`](@ref) 関数は、既にこのマニュアルで使っていますが、引数の型を返します。
-上記のように、型はオブジェクトであるため、それ自体の型もあり、その型が何であるかを尋ねることができます。
+[`typeof()`](@ref) 関数は、既にこのマニュアルの例で使っていますが、引数の型を返します。
+上記のように、型はオブジェクトであり、それ自体の型もあるので、その型が何であるかを尋ねることができます。
 
 ```jldoctest
 julia> typeof(Rational{Int})
