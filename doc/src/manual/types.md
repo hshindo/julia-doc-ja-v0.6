@@ -2310,8 +2310,8 @@ parameter in `Array{T,N}`, where `T` is a type (e.g., [`Float64`](@ref)) but `N`
 -->
 ```
 Juliaでは、`true` や `false`のような**値**によって、ディスパッチすることができません。
-ただしJuliaでは、パラメトリック型に対してディスパッチすることができて、その型パラメータとして「プレーンビット」の値（型、シンボル、整数、浮動小数点数、タプルなど）を含めることができます。
-一般的な例は、`Array{T,N}`の次元のパラメータであり、この時`T`は型は（たとえば [`Float64`](@ref)）ですが、`N`はただの`Int`型です。
+しかしJuliaでは、パラメトリック型に対してディスパッチができて、その型パラメータとして「プレーンビット」値（型、シンボル、整数、浮動小数点数、タプルなど）を含めることができます。
+一般的な例は、`Array{T,N}`に使われる次元のパラメータであり、この時`T`は型（ [`Float64`](@ref)など）ですが、`N`はただの`Int`型です。
 
 
 
@@ -2325,9 +2325,9 @@ elaborate hierarchy.
 `Val` is defined as:
 -->
 ```
-値をパラメータとする独自のカスタム型を作成して、そのディスパッチを制御することができます。
+値をパラメータとするカスタム型を作成して、そのカスタム型によってディスパッチを制御することができます。
 この考え方を説明するために、パラメトリック型の`Val{T}`を導入しましょう。
-それほど洗練された型の階層を必要としない場合に、慣習的にこの方法を利用する時にこの型は使われます。
+手の込んだ階層の必要ない時は、こうした手法には慣用的にこの型を使います。
 
 `Val{T}`は次のように定義します。
 
@@ -2346,7 +2346,7 @@ library accept `Val` types as arguments, and you can also use it to write your o
 ```
 
 `Val`の実装は、これ以上はありません。
-Juliaの標準ライブラリの関数のなかには`Val`型を引数として受け取りものもあり、また`Val`型をを使って独自の関数を書くこともできます。例えば、
+Juliaの標準ライブラリの関数には`Val`型を引数にとるものもあり、また独自の関数を書く時にも、`Val`型は使えます。例えば、
 
 ```jldoctest valtype
 julia> firstlast(::Type{Val{true}}) = "First"
@@ -2369,7 +2369,7 @@ For consistency across Julia, the call site should always pass a `Val`*type* rat
 an *instance*, i.e., use `foo(Val{:bar})` rather than `foo(Val{:bar}())`.
 -->
 ```
-Juliaを使う際に一貫性を保つために、呼び出し側は、常に`Val`のインスタンスを作るのではなく、`Val`の**型**を渡す必要があります。
+Juliaでは一貫性のために、呼び出し側は、常に`Val`の**インスタンス**を作るのではなく、`Val`の**型**を渡す必要があります。
 `foo(Val{:bar}())`ではなく`foo(Val{:bar})`です。
 
 
@@ -2382,7 +2382,7 @@ in unfavorable cases, you can easily end up making the performance of your code 
 about the proper (and improper) uses of `Val`, please read the more extensive discussion in [the performance tips](@ref man-performance-tips).
 -->
 ```
-`Val`を含めて、パラメトリックな「値」型の誤用は非常に簡単だということは注目に値します。
+`Val`を含めて、パラメトリックな「値」型は非常に誤用しやすい点に注意してください。
 望ましくない場合として、コードのパフォーマンスを大幅に**悪化**させる可能性があります。
 特に、上記のように実際のようなコードを記述したいとは決して思わないでしょう。
 適切な（そして不適切な）`Val`の使い方の詳細については、[the performance tips](@ref man-performance-tips)の広範に渡る議論を読んでください。
