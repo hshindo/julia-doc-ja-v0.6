@@ -861,6 +861,7 @@ respects the column-based memory layout of the `Matrix` and fills it one column 
 first element to appear in a slice expression should be coupled with the inner-most loop.
 
 ## Pre-allocating outputs
+## 出力の事前割り当て
 
 If your function returns an `Array` or some other complex type, it may have to allocate memory.
  Unfortunately, oftentimes allocation and its converse, garbage collection, are substantial bottlenecks.

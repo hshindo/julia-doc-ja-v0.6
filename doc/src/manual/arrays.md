@@ -120,6 +120,7 @@ julia> Int8[[1 2] [3 4]]
 ```
 
 ### Comprehensions
+### 内包表記
 
 Comprehensions provide a general and powerful way to construct arrays. Comprehension syntax is
 similar to set construction notation in mathematics:
@@ -551,6 +552,7 @@ elementwise over `a` and `b`, and `maximum(a)`, which finds the largest value wi
 `a`. The same relationship holds for `min.(a,b)` and `minimum(a)`.
 
 ### Broadcasting
+### ブロードキャスト
 
 It is sometimes useful to perform element-by-element binary operations on arrays of different
 sizes, such as adding a vector to each column of a matrix. An inefficient way to do this would
