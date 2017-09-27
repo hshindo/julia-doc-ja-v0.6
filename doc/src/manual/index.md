@@ -10,7 +10,7 @@
   * [Functions](@ref)
   * [制御構造](@ref)
   * [変数のスコープ](@ref scope-of-variables)
-  * [Types](@ref man-types)
+  * [型](@ref man-型)
   * [メソッド](@ref)
   * [Constructors](@ref man-constructors)
   * [Conversion and Promotion](@ref conversion-and-promotion)
