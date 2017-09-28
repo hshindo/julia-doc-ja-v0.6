@@ -392,6 +392,7 @@ It is possible to define a set of function methods such that there is no unique 
 method applicable to some combinations of arguments:
 -->
 ```
+ある種の引数の組み合わせに対しては、最も適合するメソッドが一意に定まらない、関数メソッドの組み合わせを定義することは可能です。
 
 ```jldoctest gofxy
 julia> g(x::Float64, y) = 2x + y
@@ -420,6 +421,10 @@ rather than arbitrarily picking a method. You can avoid method ambiguities by sp
 method for the intersection case:
 -->
 ```
+ここでの関数呼び出し`g(2.0, 3.0)`は、`g(Float64, Any)`と`g(Any, Float64)` のメソッドによって処理可能ですが、どちらがより適合しているとは決められません。
+このような場合、Juliaは勝手にメソッドを選択するのではなく、[`MethodError`](@ref)を発生させます。 
+共通する場合に適切なメソッドを指定することで、メソッドの曖昧さをなくすことができます。
+
 
 ```jldoctest gofxy
 julia> g(x::Float64, y::Float64) = 2x + 2y
@@ -445,9 +450,12 @@ In more complex cases, resolving method ambiguities involves a certain
 element of design; this topic is explored further [below](@ref man-method-design-ambiguities).
 -->
 ```
+曖昧さのないメソッドを最初に定義することが推奨されます。というのも、一時的であれば、より適合するメソッドが定義されるまで、曖昧さが残るからです。
+
+より複雑なケースでは、メソッドの曖昧さを解決するには一定の設計要素が必要になります。この話題は[below]（@ ref man-method-design-ambiguities）をさらに詳しく解説しています。
 
 [](## Parametric Methods)
-## パラメトリックメソッド
+## パラメトリックメソッド\
 
 
 
