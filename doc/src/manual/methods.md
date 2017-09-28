@@ -99,6 +99,11 @@ have many methods defining their behavior over various possible combinations of 
 and count.
 -->
 ```
+今までの例では、引数の型に制約のない、単一のメソッドを持つ関数しか定義していませんでした。
+そのような関数は、従来の動的型付け言語と同じように動作します。
+にもかかわらず、私たちは知らない間に、ほぼ継続的に多重ディスパッチとメソッドを使用してきました。
+前述の`+`関数のような、Juliaの標準的な関数と演算子はすべて、引数の型と個数のさまざまな組み合わせで動作を定義された、多くのメソッドを持っています。
+
 
 
 ```@raw html
@@ -107,6 +112,7 @@ When defining a function, one can optionally constrain the types of parameters i
 to, using the `::` type-assertion operator, introduced in the section on [Composite Types](@ref):
 -->
 ```
+関数を定義するときには、[複合型](@ref)に関するセクションで紹介した`::`型表明演算子を使って、適用可能なパラメータの型を、必要に応じて、制限することができます。
 
 ```jldoctest fofxy
 julia> f(x::Float64, y::Float64) = 2x + y
@@ -120,6 +126,8 @@ This function definition applies only to calls where `x` and `y` are both values
 [`Float64`](@ref):
 -->
 ```
+この関数定義は、`x`と`y`の両方の値の型が[`Float64`](@ref)のみ、呼び出しに適用されます。
+
 
 ```jldoctest fofxy
 julia> f(2.0, 3.0)
@@ -132,6 +140,8 @@ julia> f(2.0, 3.0)
 Applying it to any other types of arguments will result in a [`MethodError`](@ref):
 -->
 ```
+これを他の型の引数に適用すると、次のような[`MethodError`](@ref)になります。
+
 
 ```jldoctest fofxy
 julia> f(2.0, 3)
@@ -165,6 +175,12 @@ more general methods where the declared parameter types are abstract:
 -->
 ```
 
+これを見て分かるように、引数は正確に[`Float64`](@ref)型のものでなければなりません。
+整数や32ビット浮動小数点数などの他の数値型は、自動的には64ビット浮動小数点に変換されず、文字列も数字として解析されません。
+`Float64`は具象型で、具象型はJuliaでは、サブクラス化できないので、このような定義は型の正確な引数のみに適用することができます。
+しかし、宣言されたパラメータ型が抽象的な時は、より一般的なメソッドを書くと、けっこう役に立ちます。
+
+
 ```jldoctest fofxy
 julia> f(x::Number, y::Number) = 2x - y
 f (generic function with 2 methods)
@@ -182,6 +198,10 @@ handling disparate numeric types is delegated to the arithmetic operations in th
 expression `2x - y`.
 -->
 ```
+このメソッド定義は[`Number`](@ref)のインスタンスである任意の引数のペアに適用されます。
+それらがそれぞれ数値である限り、同じ型である必要はありません。
+異なる数値型を処理する問題は、式`2x - y`の算術演算に委譲されます。
+
 
 
 ```@raw html
@@ -197,6 +217,11 @@ float but the other one is not, then the `f(Float64,Float64)` method cannot be c
 the more general `f(Number,Number)` method must be used:
 -->
 ```
+複数のメソッドを持つ関数を定義するには、異なる数と型の引数に対して関数を複数回定義するだけです。
+最初のメソッド定義では関数オブジェクトを作成され、後続のメソッド定義では既存の関数オブジェクトに新しいメソッドが追加されます。
+関数の適用時に、引数の数と型が最も一致するメソッド定義が実行されます。
+したがって、上の2つのメソッド定義はまとめて、抽象型`Number`のインスタンスのペアすべてに対して`f`の動作を定義しますが、値[`Float64`](@ref)のペアに固有の動作は異なります。
+引数の1つが64ビット浮動小数点数で、もう1つがそうでない場合、この`f(Float64,Float64)`メソッドは呼び出すことができず、より一般的な`f(Number,Number)`メソッドを使用する必要があります。
 
 ```jldoctest fofxy
 julia> f(2.0, 3.0)
@@ -225,6 +250,13 @@ For non-numeric values, and for fewer or more than two arguments, the function `
 and applying it will still result in a [`MethodError`](@ref):
 -->
 ```
+`2x + y`という定義は、最初の場合にのみ使用されますが、`2x - y`という定義は、他で使用されています。
+関数の引数の自動キャストや変換は一度も実行されません。
+Juliaでは、すべての変換は魔法ではなく完全に明示的です。
+しかし、[Conversion and Promotion]（@ ref conversion-and-promotion）は、十分に高度な技術を巧みに応用すると魔法と区別できないほどになりうることを示しています。[^ Clarke61]
+
+数値以外の値や2つ以上の引数の場合、関数`f`は未定義のままであり、そのまま適用すると次のように[`MethodError`](@ref)がおこります。
+
 
 ```jldoctest fofxy
 julia> f("foo", 3)
@@ -246,6 +278,8 @@ You can easily see which methods exist for a function by entering the function o
 an interactive session:
 -->
 ```
+対話セッションで関数オブジェクト自体を入力すると、関数にどんなメソッドが存在するかを簡単に確認できます。
+
 
 ```jldoctest fofxy
 julia> f
@@ -259,6 +293,8 @@ This output tells us that `f` is a function object with two methods. To find out
 of those methods are, use the [`methods()`](@ref) function:
 -->
 ```
+この出力は、`f`が2つのメソッドを持つ関数オブジェクトであることを示しています。
+これらのメソッドのシグネチャを調べるには、次の[`methods()`](@ref)関数を使用します。
 
 ```julia-repl
 julia> methods(f)
@@ -270,6 +306,7 @@ f(x::Number, y::Number) in Main at none:1
 
 ```@raw html
 <!--
+
 which shows that `f` has two methods, one taking two `Float64` arguments and one taking arguments
 of type `Number`. It also indicates the file and line number where the methods were defined: because
 these methods were defined at the REPL, we get the apparent line number `none:1`.
@@ -279,6 +316,14 @@ meaning that it is unconstrained since all values in Julia are instances of the 
 `Any`. Thus, we can define a catch-all method for `f` like so:
 -->
 ```
+
+すると表示されるのは、`f`の二つのメソッドで、一方は2つの`Float64`の引数を取り、他方は型が`Number`の引数を取ります。
+また、メソッドが定義されたファイルと行番号も表示されます。
+これらのメソッドはREPLで定義されているため、見かけの行番号`none:1`が表示されます。
+
+`::`による型宣言がない場合、メソッドのパラメータの型はデフォルトでは`Any`であり、Juliaのすべての値が抽象型`Any`のインスタンスであるため、制約がないことを意味しています 。
+したがって、`f`のcatch-allメソッドを以下のように定義することができます。
+
 
 ```jldoctest fofxy
 julia> f(x,y) = println("Whoa there, Nelly.")
@@ -299,6 +344,9 @@ most powerful and central feature of the Julia language. Core operations typical
 of methods:
 -->
 ```
+このcatch-allは、ある引数のペアに対する他のメソッド定義ほど限定的ではないため、他のメソッド定義が適用されない引数のペアに対してのみ呼び出されます。
+
+単純な考え方のように見えますが、値の型に対する多重ディスパッチは、おそらくJulia言語の最も強力で中心的な機能です。中心となる演算には通常数十種類のメソッドがあります。
 
 ```julia-repl
 julia> methods(+)
@@ -332,6 +380,7 @@ abstractly express high-level algorithms decoupled from implementation details, 
 specialized code to handle each case at run time.
 -->
 ```
+多重ディスパッチと柔軟なパラメトリック型システムによって、Juliaに備わった能力は、実装の詳細から切り離された高水準のアルゴリズムを抽象的に表現し、実行時に各ケースを処理する効率的で特定されたコードを生成することです。
 
 [](## [Method Ambiguities](@id man-ambiguities))
 ## [メソッドの曖昧さ](@id man-ambiguities)
