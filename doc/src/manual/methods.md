@@ -842,6 +842,8 @@ to a "varargs" function ([可変引数関数](@ref)).  The notation `Vararg{T,N}
 such a constraint.  For example:
 -->
 ```
+関数パラメータは、 "varargs"関数([可変引数関数](@ref))に渡す引数の数を制限するためにも使用できます。
+`Vararg{T,N}`という記法は、そのような制約を示すために使用されます。例えば：
 
 ```jldoctest
 julia> bar(a,b,x::Vararg{Any,2}) = (a,b,x)
@@ -867,15 +869,21 @@ Closest candidates are:
 More usefully, it is possible to constrain varargs methods by a parameter. For example:
 -->
 ```
+さらに便利なことに、パラメータでvarargsメソッドを制約することができます。例えば：
 
 ```julia
 function getindex(A::AbstractArray{T,N}, indexes::Vararg{Number,N}) where {T,N}
 ```
 
+```@raw html
+<!--
 would be called only when the number of `indexes` matches the dimensionality of the array.
+-->
+```
+`indexes`の数が配列の次元の数と一致する場合にのみ呼び出されます。
 
 [](## Note on Optional and keyword Arguments)
-## 省略可能引数とキーワード引数の注意点
+## オプション引数とキーワード引数の注意点
 
 
 ```@raw html
@@ -884,6 +892,7 @@ As mentioned briefly in [関数](@ref man-functions), optional arguments are imp
 method definitions. For example, this definition:
 -->
 ```
+[関数]（@ ref man-functions）で簡単に述べたように、オプション引数は複数のメソッド定義の構文として実装されています。たとえば、次の定義があります。
 
 ```julia
 f(a=1,b=2) = a+2b
@@ -895,6 +904,7 @@ f(a=1,b=2) = a+2b
 translates to the following three methods:
 -->
 ```
+次の3つのメソッドに変換されます。
 
 ```julia
 f(a,b) = a+2b
@@ -910,6 +920,10 @@ because `f(1,2)` invokes the first method of `f` above. However, this need not a
 If you define a fourth method that is more specialized for integers:
 -->
 ```
+つまり、`f()`を呼び出すのと`f(1,2)`を呼び出すのと同等なことを意味します。
+この場合、結果は`5`で、というのも`f(1,2)`は最初の`f`メソッドを呼び出すためです。
+しかし、必ずしもそうである必要はなく、整数に特化した4番目のメソッドを定義した場合は、次のようになります。
+
 
 ```julia
 f(a::Int,b::Int) = a-2b
@@ -924,7 +938,7 @@ arguments which method is invoked. When optional arguments are defined in terms 
 the type of the optional argument may even change at run-time.
 -->
 ```
-
+`f()`と`f(1,2)`の結果は両方とも`-3`です。言い換えれば、オプション引数は、その関数の特定のメソッドではなく、関数自体に結び付けられます。オプション引数の型によって、どのメソッドが呼び出されるかが変わります。オプション引数がグローバル変数で定義されている場合、オプション引数の型は実行時に変更されることさえあります。
 
 ```@raw html
 <!--
@@ -933,6 +947,7 @@ they do not participate in method dispatch. Methods are dispatched based only on
 with keyword arguments processed after the matching method is identified.
 -->
 ```
+キーワード引数は、通常の位置による引数とはまったく異なって動作します。特に、メソッドディスパッチには加わりません。メソッドは、位置による引数にだけに基づいてディスパッチされ、一致するメソッドが特定された後にキーワード引数が処理されます。
 
 [](## Function-like objects)
 ## 関数のようなオブジェクト
