@@ -659,6 +659,10 @@ including Tasks and Threads (and any previously defined `@generated` functions).
 Let's start with an example to see what this means:
 -->
 ```
+メソッドの再定義や、新しいメソッドの追加は、その変更が即座に反映されないことを認識しておくことが重要です。
+これは、Juliaが静的にコードを推論してコンパイルする際に、通常のJITトリックやオーバーヘッドがなくてすむ鍵となります。
+実際、新しいメソッド定義は、タスクおよびスレッド（およびそれ以前に定義された@generated関数）を含め、現在の実行時環境ではまったく見えません。
+これが何を意味するかを見てみましょう。
 
 ```julia-repl
 julia> function tryeval()
@@ -690,6 +694,10 @@ But neither you, nor any of your callers, nor the functions they call, or etc.
 can call this new method definition!
 -->
 ```
+この例では、`newfun`の新しい定義は作成されましたが、すぐには呼び出せないことに注意してください。
+新しいグローバルな関数はすぐに`tryeval`関数から見えるので、`return newfun`（カッコなし）と書くことができます。
+しかし、あなたも、関数からも、その関数を呼び出す関数からも、この新しいメソッド定義を呼び出すことはできません！
+
 
 
 ```@raw html
@@ -697,11 +705,13 @@ can call this new method definition!
 But there's an exception: future calls to `newfun` *from the REPL* work as expected,
 being able to both see and call the new definition of `newfun`.
 
-However, future calls to `tryeval` will continue to see the definition of `newfun` as it was
+However, future calls to `tryeval` will continue to see the definition of `newfun`as it was
 *at the previous statement at the REPL*, and thus before that call to `tryeval`.
 -->
 ```
+しかし、例外はあります。`newfun`への **REPLからの**今後の呼び出しは、期待通りに動作し、`newfun`の新しい定義を参照して呼び出すことができます。
 
+しかし、`tryeval`への今後の呼び出しが、参照し続ける`newfun`の定義は、次回`tryeval`を呼び出すまでは**REPLで前回行った**ものです。
 
 ```@raw html
 <!--
@@ -716,6 +726,14 @@ In the example above, we see that the "current world" (in which the method `newf
 is one greater than the task-local "runtime world" that was fixed when the execution of `tryeval` started.
 -->
 ```
+これがどのように動作するかを見るために自身で試してみたいと思うかもしれません。
+
+この行動の実装は「世界年齢のカウンター」です。
+この単調に増加する値は、各メソッド定義の操作を追跡します。
+これにより、「実行時環境から見えるメソッド定義の集合」を、単一の数値「世界年齢」として記述することができます。
+また、年齢を比較するだけで、2つの世界で利用できるメソッドを比較することもできます。
+上記の例では、メソッド`newfun()`が存在する「現在の世界」が、`tryeval`開始時に設定されたタスクローカルの「実行時の世界」よりも１つ大きいことがわかります。
+
 
 
 ```@raw html
@@ -724,6 +742,9 @@ Sometimes it is necessary to get around this (for example, if you are implementi
 Fortunately, there is an easy solution: call the function using [`Base.invokelatest`](@ref):
 -->
 ```
+場合によってはこれを回避する必要があります（たとえば、上記のREPLを実装している場合など）。
+幸いにも、簡単な解決策があって、[`Base.invokelatest`](@ref)を使って関数を呼び出せば、いいのです。
+
 
 ```jldoctest
 julia> function tryeval2()
@@ -743,6 +764,8 @@ Finally, let's take a look at some more complex examples where this rule comes i
 Define a function `f(x)`, which initially has one method:
 -->
 ```
+最後に、このルールが適用されるより複雑な例を、いくつか見てみましょう。最初は1つのメソッドを持つ関数`f(x)`を定義します。
+
 
 ```jldoctest redefinemethod
 julia> f(x) = "original definition"
@@ -755,6 +778,8 @@ f (generic function with 1 method)
 Start some other operations that use `f(x)`:
 -->
 ```
+
+他の`f(x)`を使う操作を開始する：
 
 ```jldoctest redefinemethod
 julia> g(x) = f(x)
@@ -769,6 +794,9 @@ julia> t = @async f(wait()); yield();
 Now we add some new methods to `f(x)`:
 -->
 ```
+ここでいくつかの新しいメソッドを`f(x)`に追加します。
+
+
 
 ```jldoctest redefinemethod
 julia> f(x::Int) = "definition for Int"
@@ -784,6 +812,8 @@ f (generic function with 3 methods)
 Compare how these results differ:
 -->
 ```
+これらの結果がどのように異なるかを比較する：
+
 
 ```jldoctest redefinemethod
 julia> f(1)
