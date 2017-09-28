@@ -962,6 +962,11 @@ For example, you can define a type that stores the coefficients of a polynomial,
 a function evaluating the polynomial:
 -->
 ```
+メソッドは型に関連付けられているので、その型にメソッドを追加することで、任意のJuliaオブジェクトを「呼び出し可能」にすることができます。（このような「呼び出し可能な」オブジェクトは、「ファンクタ」と呼ばれることもあります）
+
+たとえば、係数を保持する多項式の型を定義できますが、多項式を評価する関数のように動作します。
+
+
 
 ```jldoctest polynomial
 julia> struct Polynomial{R}
@@ -984,6 +989,7 @@ Notice that the function is specified by type instead of by name. In the functio
 refer to the object that was called. A `Polynomial` can be used as follows:
 -->
 ```
+関数が名前ではなく型によって指定されていることに注意してください。関数本体で`p`は、呼び出されたオブジェクトを参照しています。`Polynomial`は次のように使用できます。
 
 ```jldoctest polynomial
 julia> p = Polynomial([1,10,100])
@@ -1001,6 +1007,8 @@ to their surrounding environment) work in Julia, discussed [later in the manual]
 -->
 ```
 
+この機構は、型のコンストラクタとクロージャ（周囲の環境を参照する内部関数）がJuliaでどのように機能するかの鍵でもあります。 [マニュアルの後の方](@ref constructors-and-conversion)で検討します。
+
 [](## Empty generic functions)
 ## 空のジェネリック関数
 
@@ -1013,6 +1021,8 @@ purpose of documentation or code readability. The syntax for this is an empty `f
 without a tuple of arguments:
 -->
 ```
+
+時には、まだメソッドを追加しない状態で、ジェネリック関数を導入すると便利です。これは、インタフェース定義を実装から分離するために使えます。また、文書化したり、コードの読みやすくしたりするためにもできます。この構文は、引数のタプルがない空の関数ブロックです。
 
 ```julia
 function emptyfunc
