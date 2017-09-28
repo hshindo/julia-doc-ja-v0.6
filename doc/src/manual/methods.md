@@ -1041,6 +1041,9 @@ more complex method hierarchies it is not uncommon for
 [ambiguities](@ref man-ambiguities) to arise.
 -->
 ```
+Juliaのメソッドの多相性はその最も強力な機能の1つですが、この力を利用したために設計上の困難が持ち上がる可能性があります。
+特に、より複雑なメソッドの階層が複雑なときは、[ambiguities](@ref man-ambiguities) が発生することは珍しくありません。
+
 
 
 ```@raw html
@@ -1048,6 +1051,9 @@ more complex method hierarchies it is not uncommon for
 Above, it was pointed out that one can resolve ambiguities like
 -->
 ```
+
+上述では、あいまいさを解決できると指摘しましたが
+
 
 ```julia
 f(x, y::Int) = 1
@@ -1060,6 +1066,7 @@ f(x::Int, y) = 2
 by defining a method
 -->
 ```
+メソッドを定義すると
 
 ```julia
 f(x::Int, y::Int) = 3
@@ -1078,6 +1085,12 @@ while to think carefully about alternative strategies.
 Below we discuss particular challenges and some alternative ways to resolve such issues.
 -->
 ```
+
+これはしばしば正しい戦略です。しかし、この助言にを盲目的に追従すると、非生産的になる可能性があります。
+特に、ジェネリック関数のメソッドが多くなればなるほど、あいまいになる可能性が増します。
+メソッドの階層がこの単純な例よりも複雑にならば、代わりの戦略を注意深く検討する価値があります。
+
+以下では、特定の課題と、その問題を解決するための代替方法について説明します。
 
 [](### Tuple and NTuple arguments)
 ### タプルとNタプル引数
