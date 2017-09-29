@@ -1101,6 +1101,7 @@ Below we discuss particular challenges and some alternative ways to resolve such
 `Tuple` (and `NTuple`) arguments present special challenges. For example,
 -->
 ```
+`Tuple`（および`NTuple`）の引数には、特殊な課題があります。例えば、
 
 ```julia
 f(x::NTuple{N,Int}) where {N} = 1
@@ -1116,6 +1117,9 @@ called. To resolve the ambiguity, one approach is define a method for
 the empty tuple:
 -->
 ```
+`N == 0`の可能性があるため、曖昧です。`Int`と`Float64`のどちらのほうを呼び出すか、決める要素がありません。
+曖昧さを解決するには、空のタプル用のメソッドを定義する方法があります。
+
 
 ```julia
 f(x::Tuple{}) = 3
@@ -1128,6 +1132,9 @@ Alternatively, for all methods but one you can insist that there is at
 least one element in the tuple:
 -->
 ```
+
+あるいは、1つのメソッドを除いた、すべてのメソッドに対して、少なくとも1つの要素がタプルにあると主張することができます。
+
 
 ```julia
 f(x::NTuple{N,Int}) where {N} = 1           # this is the fallback
