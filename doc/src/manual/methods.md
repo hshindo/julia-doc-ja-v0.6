@@ -1233,6 +1233,8 @@ where (for example) you dispatch on the first argument and then call
 an internal method:
 -->
 ```
+複数の引数にディスパッチする必要があり、組み合わせが多すぎて、定義仕切れない場合は、「名前のカスケード」（たとえば）最初の引数にディスパッチしてから内部的なメソッドを呼び出す）の導入を検討します。
+
 
 ```julia
 f(x::A, y) = _fA(x, y)
@@ -1247,6 +1249,8 @@ concern about ambiguities with each other with respect to `x`.
 -->
 ```
 
+そうすれば、内部メソッドの `_fA`と`_fB`は、`x`に関しては曖昧さを気にせずに、`y`に対してディスパッチできます。
+
 
 ```@raw html
 <!--
@@ -1258,6 +1262,9 @@ internal methods `_fA` and `_fB`, and this blurs the lines between
 exported and internal methods.
 -->
 ```
+この戦略には、少なくとも1つの重要な欠点があることに注意してください。
+多くの場合、公開した関数`f`のさらに限定した定義するようなカスタマイズをユーザーがすることはできません。
+代わりに、彼らはあなたの内部メソッドの`_fA`と`_fB`の特殊化を定義する必要があり、これは、公開した関数と内部メソッドの間に線をぼかします。
 
 [](### Abstract containers and element types)
 ### 抽象コンテナと要素の型
@@ -1269,6 +1276,9 @@ Where possible, try to avoid defining methods that dispatch on
 specific element types of abstract containers. For example,
 -->
 ```
+可能であれば、抽象コンテナの特定の要素型にディスパッチするメソッドを定義しないようにしてください。例えば、
+
+
 
 ```julia
 -(A::AbstractArray{T}, b::Date) where {T<:Date}
@@ -1280,6 +1290,7 @@ specific element types of abstract containers. For example,
 generates ambiguities for anyone who defines a method
 -->
 ```
+メソッドを定義する人のためにあいまいさを生成する
 
 ```julia
 -(A::MyArrayType{T}, b::T) where {T}
@@ -1296,7 +1307,9 @@ sure this method is implemented with generic calls (like `similar` and
 [orthogonalize](@ref man-methods-orthogonalize) your methods.
 -->
 ```
-
+最良の方法は、これらのメソッドの**いずれかを**定義することを避けることです。
+代わりに、汎用メソッドに頼って、`-(A::AbstractArray, b)`このメソッドが各コンテナ型や要素の型ごとに**別々の**適切なことを行うジェネリックな呼び出し（`similar`や `-`など）で 実装されていることを確認します。
+これはあなたのメソッドを[直交化]（@ ref man-methods-orthogonalize）するアドバイスのちょっと複雑な変形です。
 
 ```@raw html
 <!--
@@ -1307,6 +1320,10 @@ can't be modified or eliminated.  As a last resort, one developer can
 define the "band-aid" method
 -->
 ```
+このアプローチが不可能な場合、あいまいさを解決することについて他の開発者との議論を開始する価値があります。
+1つのメソッドが最初に定義されているからといって、必ずしもそのメソッドを変更または削除することはできません。
+最後の手段として、1人の開発者が「救済」メソッドを定義できます
+
 
 ```julia
 -(A::MyArrayType{T}, b::Date) where {T<:Date} = ...
@@ -1320,7 +1337,7 @@ that resolves the ambiguity by brute force.
 ```
 
 [](### Complex method "cascades" with default arguments)
-### Complex method "cascades" with default arguments
+### 複雑なメソッドに"多段的に"デフォルト引数を使う
 
 
 ```@raw html
@@ -1332,6 +1349,8 @@ algorithm and you have a method that handles the edges of the signal
 by applying padding:
 -->
 ```
+"多段的に"デフォルト値を設定するメソッドを定義する場合、ありうるデフォルト値に対応する引数を見落とさないように注意してください。たとえば、デジタルフィルタリングアルゴリズムを作成していて、パディングを適用して信号のエッジを処理する方法があるとします。
+
 
 ```julia
 function myfilter(A, kernel, ::Replicate)
@@ -1346,6 +1365,7 @@ end
 This will run afoul of a method that supplies default padding:
 -->
 ```
+これは、デフォルトのパディングを提供するメソッドと衝突します：
 
 ```julia
 myfilter(A, kernel) = myfilter(A, kernel, Replicate()) # replicate the edge by default
@@ -1359,6 +1379,9 @@ Together, these two methods generate an infinite recursion with `A` constantly g
 The better design would be to define your call hierarchy like this:
 -->
 ```
+一緒に、これらの2つのメソッドは、一貫して大きくなる`A`の無限再帰を生成します。
+
+より良い設計は、次のように呼び出しの階層を定義することです。
 
 ```julia
 struct NoPad end  # indicate that no padding is desired, or that it's already applied
@@ -1387,6 +1410,8 @@ reduced likelihood of ambiguities. Moreover, it extends the "public"
 explicitly can call the `NoPad` variant directly.
 -->
 ```
+`NoPad`は、他の種類のパディングと同じ引数位置に指定されているため、ディスパッチの階層を整理しやすく、曖昧さの可能性が低くなります。さらに、"パブリック"の`myfilter`インターフェースを拡張します。パディングを明示的にコントロールしたいユーザーは、`NoPad`のメソッドを直接呼び出すことができます。
+
 
 
 ```@raw html
