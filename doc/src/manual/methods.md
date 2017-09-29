@@ -1153,6 +1153,8 @@ design. For example, instead of writing multiple variants:
 -->
 ```
 
+ディスパッチに2つ以上の引数を使いたい場合は、「ラッパー」関数を使うと、単純な設計になるかどうかを検討してください。たとえば、複数のバリアントを記述する代わりに
+
 ```julia
 f(x::A, y::A) = ...
 f(x::A, y::B) = ...
@@ -1166,6 +1168,7 @@ f(x::B, y::B) = ...
 you might consider defining
 -->
 ```
+あなたは、こう定義するかもしれない。
 
 ```julia
 f(x::A, y::A) = ...
@@ -1182,7 +1185,9 @@ in which separate concepts are assigned to separate methods. Here, `g`
 will most likely need a fallback definition
 -->
 ```
+`g`が引数を型`A`に変換します。これは、一般的な原理である[直交設計](https://en.wikipedia.org/wiki/Orthogonality_(programming))のより非常に具体的な例であり、 別々の概念が別個の方法に割り当てられています。ここで`g`は、おそらくフォールバックの定義が必要です
 
+g（x :: A）= x
 ```julia
 g(x::A) = x
 ```
@@ -1194,6 +1199,7 @@ A related strategy exploits `promote` to bring `x` and `y` to a common
 type:
 -->
 ```
+関連する戦略は、`昇格`を利用して`x`と`y`を共通の型に変換
 
 ```julia
 f(x::T, y::T) where {T} = ...
@@ -1211,6 +1217,8 @@ used as an alternative; when promotion fails it will still throw an
 error, but one that fails faster with a more specific error message.
 -->
 ```
+この設計のリスクの1つは、 `x`と`y`を同じ型に変換する適切な昇格メソッドがなくて、2番目のメソッドが無限に繰り返し実行され、スタックオーバーフローが発生する可能性があります。
+エクスポートされていない関数`Base.promote_noncircular`を代わりに使用できます。昇格に失敗した場合でもエラーは発生しますが、もっと早く失敗してより具体的なエラーメッセージが表示されます。
 
 [](### Dispatch on one argument at a time)
 ### 一度に一引数のディスパッチ
