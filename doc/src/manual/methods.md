@@ -588,7 +588,7 @@ Just as you can put subtype constraints on type parameters in type declarations 
 you can also constrain type parameters of methods:
 -->
 ```
-型宣言（[パラメトリック](@ref)型を参照）に出てくる型パラメータにサブタイプ制約を入れることができるのと同様に、メソッドの型パラメータも制約することができます。
+型宣言（[パラメトリック](@ref)型を参照）に出てくる型パラメータにサブタイプ制約を付加できるのと同様に、メソッドの型パラメータも制約することができます。
 
 ```jldoctest
 julia> same_type_numeric(x::T, y::T) where {T<:Number} = true
@@ -659,10 +659,10 @@ including Tasks and Threads (and any previously defined `@generated` functions).
 Let's start with an example to see what this means:
 -->
 ```
-メソッドの再定義や、新しいメソッドの追加は、その変更が即座に反映されないことを認識しておくことが重要です。
-これは、Juliaが静的にコードを推論してコンパイルする際に、通常のJITトリックやオーバーヘッドがなくてすむ鍵となります。
+メソッドの再定義や、新しいメソッドの追加は、その変更が即座に反映されない、という認識は重要です。
+これは、Juliaが静的にコードを推論しコンパイルする際に、通常のJITトリックやオーバーヘッドがなくてすむ鍵となります。
 実際、新しいメソッド定義は、タスクおよびスレッド（およびそれ以前に定義された@generated関数）を含め、現在の実行時環境ではまったく見えません。
-これが何を意味するかを見てみましょう。
+これが何を意味するかを例をあげて見てみましょう。
 
 ```julia-repl
 julia> function tryeval()
@@ -696,8 +696,8 @@ can call this new method definition!
 ```
 この例では、`newfun`の新しい定義は作成されましたが、すぐには呼び出せないことに注意してください。
 新しいグローバルな関数はすぐに`tryeval`関数から見えるので、`return newfun`（カッコなし）と書くことができます。
-しかし、あなたも、関数からも、その関数を呼び出す関数からも、この新しいメソッド定義を呼び出すことはできません！
-
+しかし、あなたも、呼ぶ関数からも、呼ばれる関数からも、この新しいメソッド定義を呼び出すことはできません！
+[訳注:この文の前後は意味がとれませんでした。]
 
 
 ```@raw html
@@ -711,7 +711,7 @@ However, future calls to `tryeval` will continue to see the definition of `newfu
 ```
 しかし、例外はあります。`newfun`への **REPLからの**今後の呼び出しは、期待通りに動作し、`newfun`の新しい定義を参照して呼び出すことができます。
 
-しかし、`tryeval`への今後の呼び出しが、参照し続ける`newfun`の定義は、次回`tryeval`を呼び出すまでは**REPLで前回行った**ものです。
+しかし、`tryeval`への今後の呼び出しが、参照し続ける`newfun`の定義は、次回`tryeval`を呼び出すまでは**REPLで前回行った**ものです。前回の`tryeval`の呼び出しも同様だったのです。
 
 ```@raw html
 <!--
@@ -728,10 +728,10 @@ is one greater than the task-local "runtime world" that was fixed when the execu
 ```
 これがどのように動作するかを見るために自身で試してみたいと思うかもしれません。
 
-この行動の実装は「世界年齢のカウンター」です。
+この行動の実装は「世界の世代のカウンター」です。
 この単調に増加する値は、各メソッド定義の操作を追跡します。
-これにより、「実行時環境から見えるメソッド定義の集合」を、単一の数値「世界年齢」として記述することができます。
-また、年齢を比較するだけで、2つの世界で利用できるメソッドを比較することもできます。
+これにより、「実行時環境から見えるメソッド定義の集合」を、単一の数値「世界世代」として記述することができます。
+また、世代を比較するだけで、2つの世界で利用できるメソッドを比較することもできます。
 上記の例では、メソッド`newfun()`が存在する「現在の世界」が、`tryeval`開始時に設定されたタスクローカルの「実行時の世界」よりも１つ大きいことがわかります。
 
 
@@ -779,7 +779,7 @@ Start some other operations that use `f(x)`:
 -->
 ```
 
-他の`f(x)`を使う操作を開始する：
+他の`f(x)`を使う操作を開始します。
 
 ```jldoctest redefinemethod
 julia> g(x) = f(x)
@@ -812,7 +812,7 @@ f (generic function with 3 methods)
 Compare how these results differ:
 -->
 ```
-これらの結果がどのように異なるかを比較する：
+これらの結果がどのように異なるかを比較します。
 
 
 ```jldoctest redefinemethod
@@ -842,8 +842,8 @@ to a "varargs" function ([可変引数関数](@ref)).  The notation `Vararg{T,N}
 such a constraint.  For example:
 -->
 ```
-関数パラメータは、 "varargs"関数([可変引数関数](@ref))に渡す引数の数を制限するためにも使用できます。
-`Vararg{T,N}`という記法は、そのような制約を示すために使用されます。例えば：
+関数のパラメータは、 "varargs"関数([可変引数関数](@ref))が受け取る引数の数を制限するためにも使用できます。
+`Vararg{T,N}`という記法は、そういう制約のために使用われます。例えば：
 
 ```jldoctest
 julia> bar(a,b,x::Vararg{Any,2}) = (a,b,x)
@@ -869,7 +869,7 @@ Closest candidates are:
 More usefully, it is possible to constrain varargs methods by a parameter. For example:
 -->
 ```
-さらに便利なことに、パラメータでvarargsメソッドを制約することができます。例えば：
+さらに便利なことに、パラメータで可変引数メソッドを制約することができます。例えば：
 
 ```julia
 function getindex(A::AbstractArray{T,N}, indexes::Vararg{Number,N}) where {T,N}
