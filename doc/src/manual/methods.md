@@ -126,7 +126,7 @@ This function definition applies only to calls where `x` and `y` are both values
 [`Float64`](@ref):
 -->
 ```
-この関数定義は、`x`と`y`の値の型が両方とも[`Float64`](@ref)の時だけ、呼び出しに適用されます。
+この関数定義は、`x`と`y`の値の型が両方とも[`Float64`](@ref)である呼び出しにだけ、適用されます。
 
 
 ```jldoctest fofxy
@@ -177,7 +177,7 @@ more general methods where the declared parameter types are abstract:
 
 これを見て分かるように、引数はちょうど[`Float64`](@ref)型でなければなりません。
 他の整数や32ビット浮動小数点数などの数値型は、自動的に64ビット浮動小数点数に変換されず、文字列も数字として解析されません。
-`Float64`は具象型で、具象型はJuliaでは、サブクラス化できないので、このような定義はちょうど`Float64`型の引数のみに適用することができます。
+`Float64`は具象型で、具象型はJuliaでは、サブクラス化できないので、このような定義はちょうど`Float64`型の引数のみに適用ができます。
 しかし、宣言するパラメータの型が抽象的な、よりジェネリックなメソッドを書くと、けっこう役に立つかもしれません。。
 
 
@@ -392,7 +392,7 @@ It is possible to define a set of function methods such that there is no unique 
 method applicable to some combinations of arguments:
 -->
 ```
-ある種の引数の組み合わせに対しては、最も適合するメソッドが一意に定まらない、関数メソッドの組み合わせを定義することは可能です。
+ある種の引数の組み合わせに対しては、最も適合するメソッドが一意に定まらない、関数メソッドの組み合わせに、定義がなってしまうことはあり得ます。
 
 ```jldoctest gofxy
 julia> g(x::Float64, y) = 2x + y
@@ -422,8 +422,8 @@ method for the intersection case:
 -->
 ```
 ここでの関数呼び出し`g(2.0, 3.0)`は、`g(Float64, Any)`と`g(Any, Float64)` のメソッドによって処理可能ですが、どちらがより適合しているとは決められません。
-このような場合、Juliaは勝手にメソッドを選択するのではなく、[`MethodError`](@ref)を発生させます。 
-共通する場合に適切なメソッドを指定することで、メソッドの曖昧さをなくすことができます。
+このような場合、Juliaは勝手にメソッドを選択せずに、[`MethodError`](@ref)を発生させます。 
+共通する場合に特化したメソッドを指定することで、メソッドの曖昧さをなくすことができます。
 
 
 ```jldoctest gofxy
@@ -450,7 +450,7 @@ In more complex cases, resolving method ambiguities involves a certain
 element of design; this topic is explored further [below](@ref man-method-design-ambiguities).
 -->
 ```
-曖昧さのないメソッドを最初に定義することが推奨されます。というのも、一時的であれば、より適合するメソッドが定義されるまで、曖昧さが残るからです。
+曖昧さのないメソッドを最初に定義することが推奨されます。というのも、一時的にせよ、より特化したメソッドが定義されるまで、曖昧さが残るからです。
 
 より複雑なケースでは、メソッドの曖昧さを解決するには一定の設計要素が必要になります。この話題は[below]（@ ref man-method-design-ambiguities）をさらに詳しく解説しています。
 
