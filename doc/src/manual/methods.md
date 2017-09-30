@@ -947,7 +947,7 @@ they do not participate in method dispatch. Methods are dispatched based only on
 with keyword arguments processed after the matching method is identified.
 -->
 ```
-キーワード引数は、通常の位置による引数とはまったく異なって動作します。特に、メソッドディスパッチには加わりません。メソッドは、位置による引数にだけに基づいてディスパッチされ、一致するメソッドが特定された後にキーワード引数が処理されます。
+キーワード引数は、通常の位置による引数とはまったく異なった動作をします。特に、メソッドディスパッチには加わりません。メソッドは、位置による引数にだけに基づいてディスパッチされ、一致するメソッドが特定された後にキーワード引数が処理されます。
 
 [](## Function-like objects)
 ## 関数のようなオブジェクト
@@ -989,7 +989,7 @@ Notice that the function is specified by type instead of by name. In the functio
 refer to the object that was called. A `Polynomial` can be used as follows:
 -->
 ```
-関数が名前ではなく型によって指定されていることに注意してください。関数本体で`p`は、呼び出されたオブジェクトを参照しています。`Polynomial`は次のように使用できます。
+関数が名前ではなく型によって指定されていることに注意してください。関数本体で`p`は、呼ばれたオブジェクトを参照しています。`Polynomial`は以下のように使います。
 
 ```jldoctest polynomial
 julia> p = Polynomial([1,10,100])
@@ -1007,7 +1007,7 @@ to their surrounding environment) work in Julia, discussed [later in the manual]
 -->
 ```
 
-この機構は、型のコンストラクタとクロージャ（周囲の環境を参照する内部関数）がJuliaでどのように機能するかの鍵でもあります。 [マニュアルの後の方](@ref constructors-and-conversion)で検討します。
+このしくみは、型のコンストラクタとクロージャ（周囲の環境を参照する内部関数）がJuliaでどのように作用するかの鍵でもあります。 [マニュアルの後の方](@ref constructors-and-conversion)で検討します。
 
 [](## Empty generic functions)
 ## 空のジェネリック関数
@@ -1022,7 +1022,7 @@ without a tuple of arguments:
 -->
 ```
 
-時には、まだメソッドを追加しない状態で、ジェネリック関数を導入すると便利です。これは、インタフェース定義を実装から分離するために使えます。また、文書化したり、コードの読みやすくしたりするためにもできます。この構文は、引数のタプルがない空の関数ブロックです。
+まだメソッドを追加しない状態で、ジェネリック関数を導入すると便利になる時があります。これは、インタフェースの定義を実装から分離するために使えます。また、文書化したり、コードの読みやすくしたりするためにもできます。この構文は、引数のタプルがない空の関数のブロックです。
 
 ```julia
 function emptyfunc
