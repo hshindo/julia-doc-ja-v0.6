@@ -194,3 +194,8 @@
 | exploit                                         | 利用する                                   
 | unobtrusive                                     | 目立たない                                  
 | final                                           | ファイナル                                    
+| fall under                                      | 当てはまる                                   
+| cascade                                         | 多段的に                                  
+| fallback                                        | フォールバック                                  
+| exported                                        | 公開した                                   
+| specific                                        | 特化した                                   
