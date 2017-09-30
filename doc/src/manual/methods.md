@@ -1022,7 +1022,7 @@ without a tuple of arguments:
 -->
 ```
 
-まだメソッドを追加しない状態で、ジェネリック関数を導入すると便利になる時があります。これは、インタフェースの定義を実装から分離するために使えます。また、文書化したり、コードの読みやすくしたりするためにもできます。この構文は、引数のタプルがない空の関数のブロックです。
+まだなにもメソッドを追加しない状態で、ジェネリック関数を導入すると便利になる時があります。これは、インタフェースの定義を実装から分離するために使えます。また、文書化したり、コードの読みやすくしたりするためにもできます。この構文は、引数のタプルがない空の関数のブロックです。
 
 ```julia
 function emptyfunc
@@ -1041,8 +1041,8 @@ more complex method hierarchies it is not uncommon for
 [ambiguities](@ref man-ambiguities) to arise.
 -->
 ```
-Juliaのメソッドの多相性はその最も強力な機能の1つですが、この力を利用したために設計上の困難が持ち上がる可能性があります。
-特に、より複雑なメソッドの階層が複雑なときは、[ambiguities](@ref man-ambiguities) が発生することは珍しくありません。
+Juliaのメソッドの多相性は、最も強力な機能の1つですが、この力を利用すると、設計上の困難が生じる可能性があります。
+特に、よりメソッドの階層が複雑なときは、[曖昧さ](@ref man-ambiguities) が発生することは珍しくありません。
 
 
 
@@ -1052,7 +1052,7 @@ Above, it was pointed out that one can resolve ambiguities like
 -->
 ```
 
-上述では、あいまいさを解決できると指摘しましたが
+以前、以下のように曖昧さを解決できると指摘しましたが
 
 
 ```julia
@@ -1066,7 +1066,7 @@ f(x::Int, y) = 2
 by defining a method
 -->
 ```
-メソッドを定義すると
+メソッドを定義することによって
 
 ```julia
 f(x::Int, y::Int) = 3
@@ -1086,9 +1086,9 @@ Below we discuss particular challenges and some alternative ways to resolve such
 -->
 ```
 
-これはしばしば正しい戦略です。しかし、この助言にを盲目的に追従すると、非生産的になる可能性があります。
+これが正しい戦略となる場合はよくでてきます。しかし、この助言に盲従すると、非生産的になる可能性があります。
 特に、ジェネリック関数のメソッドが多くなればなるほど、あいまいになる可能性が増します。
-メソッドの階層がこの単純な例よりも複雑にならば、代わりの戦略を注意深く検討する価値があります。
+メソッドの階層がこの単純な例よりも複雑ならば、代替となる戦略も注意深く検討する価値があります。
 
 以下では、特定の課題と、その問題を解決するための代替方法について説明します。
 
@@ -1117,8 +1117,8 @@ called. To resolve the ambiguity, one approach is define a method for
 the empty tuple:
 -->
 ```
-`N == 0`の可能性があるため、曖昧です。`Int`と`Float64`のどちらのほうを呼び出すか、決める要素がありません。
-曖昧さを解決するには、空のタプル用のメソッドを定義する方法があります。
+`N == 0`の可能性があるため、曖昧です。`Int`と`Float64`のどちらのほうを呼び出すべきか、決定する要因がありません。
+この曖昧さを解決するには、空のタプルに対してメソッドを定義するという方法があります。
 
 
 ```julia
@@ -1133,7 +1133,7 @@ least one element in the tuple:
 -->
 ```
 
-あるいは、1つのメソッドを除いた、すべてのメソッドに対して、少なくとも1つの要素がタプルにあると主張することができます。
+あるいは、1つのメソッドを除いた、すべてのメソッドに対して、少なくとも1つの要素がタプルにあるような定義ができます。
 
 
 ```julia
@@ -1153,7 +1153,7 @@ design. For example, instead of writing multiple variants:
 -->
 ```
 
-ディスパッチに2つ以上の引数を使いたい場合は、「ラッパー」関数を使うと、単純な設計になるかどうかを検討してください。たとえば、複数のバリアントを記述する代わりに
+ディスパッチに2つ以上の引数を使いたい場合は、「ラッパー」関数を使うと、単純な設計になるかどうかを検討してください。たとえば、複数のメソッドを記述する代わりに
 
 ```julia
 f(x::A, y::A) = ...
@@ -1185,7 +1185,7 @@ in which separate concepts are assigned to separate methods. Here, `g`
 will most likely need a fallback definition
 -->
 ```
-`g`が引数を型`A`に変換します。これは、一般的な原理である[直交設計](https://en.wikipedia.org/wiki/Orthogonality_(programming))のより非常に具体的な例であり、 別々の概念が別個の方法に割り当てられています。ここで`g`は、おそらくフォールバックの定義が必要です
+この例では、`g`が引数を型`A`に変換します。これは、一般的な原理である[直交設計](https://en.wikipedia.org/wiki/Orthogonality_(programming))のとても具体的な例であり、 メソッドごとに別の概念が割り当てられています。ここで`g`は、おそらくフォールバックの定義が必要です
 
 g（x :: A）= x
 ```julia
@@ -1199,7 +1199,7 @@ A related strategy exploits `promote` to bring `x` and `y` to a common
 type:
 -->
 ```
-関連する戦略は、`昇格`を利用して`x`と`y`を共通の型に変換
+関連する戦略として、`昇格`を利用して`x`と`y`を共通の型に変換する、というのもあります。
 
 ```julia
 f(x::T, y::T) where {T} = ...
@@ -1218,10 +1218,10 @@ error, but one that fails faster with a more specific error message.
 -->
 ```
 この設計のリスクの1つは、 `x`と`y`を同じ型に変換する適切な昇格メソッドがなくて、2番目のメソッドが無限に繰り返し実行され、スタックオーバーフローが発生する可能性があります。
-エクスポートされていない関数`Base.promote_noncircular`を代わりに使用できます。昇格に失敗した場合でもエラーは発生しますが、もっと早く失敗してより具体的なエラーメッセージが表示されます。
+公開されていない関数`Base.promote_noncircular`を代わりに使用できます。昇格に失敗した場合でもエラーは発生しますが、もっと早く失敗してより具体的なエラーメッセージが表示されます。
 
 [](### Dispatch on one argument at a time)
-### 一度に一引数のディスパッチ
+### 一引数をいちどにディスパッチ
 
 
 ```@raw html
@@ -1233,7 +1233,7 @@ where (for example) you dispatch on the first argument and then call
 an internal method:
 -->
 ```
-複数の引数にディスパッチする必要があり、組み合わせが多すぎて、定義仕切れない場合は、「名前のカスケード」（たとえば）最初の引数にディスパッチしてから内部的なメソッドを呼び出す）の導入を検討します。
+複数の引数にディスパッチする必要があり、メソッドの組み合わせが多すぎて、フォールバックを現実的には定義しきれない場合は、「名前のカスケード」（たとえば）最初の引数にディスパッチしてから内部的なメソッドを呼び出す）の導入を検討します。
 
 
 ```julia
@@ -1264,7 +1264,7 @@ exported and internal methods.
 ```
 この戦略には、少なくとも1つの重要な欠点があることに注意してください。
 多くの場合、公開した関数`f`のさらに限定した定義するようなカスタマイズをユーザーがすることはできません。
-代わりに、彼らはあなたの内部メソッドの`_fA`と`_fB`の特殊化を定義する必要があり、これは、公開した関数と内部メソッドの間に線をぼかします。
+代わりに、彼らはあなたの内部メソッドの`_fA`と`_fB`の特殊化を定義する必要があり、これは、公開した関数と内部メソッドの境界をぼかします。
 
 [](### Abstract containers and element types)
 ### 抽象コンテナと要素の型
@@ -1276,7 +1276,7 @@ Where possible, try to avoid defining methods that dispatch on
 specific element types of abstract containers. For example,
 -->
 ```
-可能であれば、抽象コンテナの特定の要素型にディスパッチするメソッドを定義しないようにしてください。例えば、
+可能であれば、抽象型コンテナに特定の要素型をディスパッチするようなメソッドを定義しないでください。例えば、
 
 
 
@@ -1290,7 +1290,7 @@ specific element types of abstract containers. For example,
 generates ambiguities for anyone who defines a method
 -->
 ```
-メソッドを定義する人のためにあいまいさを生成する
+この場合、メソッドを定義しようとすると曖昧さが生じます。
 
 ```julia
 -(A::MyArrayType{T}, b::T) where {T}
@@ -1308,8 +1308,8 @@ sure this method is implemented with generic calls (like `similar` and
 -->
 ```
 最良の方法は、これらのメソッドの**いずれかを**定義することを避けることです。
-代わりに、汎用メソッドに頼って、`-(A::AbstractArray, b)`このメソッドが各コンテナ型や要素の型ごとに**別々の**適切なことを行うジェネリックな呼び出し（`similar`や `-`など）で 実装されていることを確認します。
-これはあなたのメソッドを[直交化]（@ ref man-methods-orthogonalize）するアドバイスのちょっと複雑な変形です。
+代わりに、ジェネリックメソッドの`-(A::AbstractArray, b)`に依存して、このメソッドが各コンテナ型や要素の型ごとに**別々に**適切なことを行うジェネリックな呼び出し（`similar`や `-`など）で 実装されていることを確認します。
+これはメソッドを[直交化]（@ ref man-methods-orthogonalize）する助言のちょっと複雑な変種です。
 
 ```@raw html
 <!--
@@ -1320,9 +1320,9 @@ can't be modified or eliminated.  As a last resort, one developer can
 define the "band-aid" method
 -->
 ```
-このアプローチが不可能な場合、あいまいさを解決することについて他の開発者との議論を開始する価値があります。
-1つのメソッドが最初に定義されているからといって、必ずしもそのメソッドを変更または削除することはできません。
-最後の手段として、1人の開発者が「救済」メソッドを定義できます
+このアプローチが不可能な場合、曖昧さを解決するために他の開発者と議論を始める価値があります。
+最初に1つのメソッドが定義されているからといって、必ずしもそのメソッドを変更や削除できないわけではないからです。
+最後の手段として、1人の開発者が「救済」メソッドを定義するという手があります。
 
 
 ```julia
@@ -1335,6 +1335,7 @@ define the "band-aid" method
 that resolves the ambiguity by brute force.
 -->
 ```
+力技で、曖昧さを解決しています。
 
 [](### Complex method "cascades" with default arguments)
 ### 複雑なメソッドに"多段的に"デフォルト引数を使う
@@ -1349,7 +1350,7 @@ algorithm and you have a method that handles the edges of the signal
 by applying padding:
 -->
 ```
-"多段的に"デフォルト値を設定するメソッドを定義する場合、ありうるデフォルト値に対応する引数を見落とさないように注意してください。たとえば、デジタルフィルタリングアルゴリズムを作成していて、パディングを適用して信号のエッジを処理する方法があるとします。
+"多段的に"デフォルト値を設定するメソッドを定義する場合、ありうるデフォルト値に対応する引数を見落とさないように注意してください。たとえば、デジタルフィルタリングアルゴリズムを作成していて、信号のエッジをパディングを適用して処理する方法があるとします。
 
 
 ```julia
@@ -1365,7 +1366,7 @@ end
 This will run afoul of a method that supplies default padding:
 -->
 ```
-これは、デフォルトのパディングを提供するメソッドと衝突します：
+これは、デフォルトのパディングを行うメソッドと衝突します：
 
 ```julia
 myfilter(A, kernel) = myfilter(A, kernel, Replicate()) # replicate the edge by default
@@ -1379,7 +1380,7 @@ Together, these two methods generate an infinite recursion with `A` constantly g
 The better design would be to define your call hierarchy like this:
 -->
 ```
-一緒に、これらの2つのメソッドは、一貫して大きくなる`A`の無限再帰を生成します。
+これらの2つのメソッドは、一緒になって、常に大きくなる`A`の無限再帰を生成します。
 
 より良い設計は、次のように呼び出しの階層を定義することです。
 
@@ -1410,7 +1411,7 @@ reduced likelihood of ambiguities. Moreover, it extends the "public"
 explicitly can call the `NoPad` variant directly.
 -->
 ```
-`NoPad`は、他の種類のパディングと同じ引数位置に指定されているため、ディスパッチの階層を整理しやすく、曖昧さの可能性が低くなります。さらに、"パブリック"の`myfilter`インターフェースを拡張します。パディングを明示的にコントロールしたいユーザーは、`NoPad`のメソッドを直接呼び出すことができます。
+`NoPad`は、他の種類のパディングと同じ引数の位置で指定されているため、ディスパッチの階層を整理しやすく、曖昧になる可能性が低くなります。さらに、"パブリック"の`myfilter`インターフェースを拡張します。パディングを明示的にコントロールしたいユーザーは、`NoPad`のメソッドを直接呼び出すことができます。
 
 
 
