@@ -892,7 +892,7 @@ As mentioned briefly in [関数](@ref man-functions), optional arguments are imp
 method definitions. For example, this definition:
 -->
 ```
-[関数]（@ ref man-functions）で簡単に述べたように、オプション引数は複数のメソッド定義の構文として実装されています。たとえば、次の定義があります。
+[関数]（@ ref man-functions）で簡単に述べたように、オプション引数は複数のメソッドを定義する構文として実装されています。例として、この定義を見てみましょう。
 
 ```julia
 f(a=1,b=2) = a+2b
@@ -904,7 +904,7 @@ f(a=1,b=2) = a+2b
 translates to the following three methods:
 -->
 ```
-次の3つのメソッドに変換されます。
+これは以下の3つのメソッドに変換されます。
 
 ```julia
 f(a,b) = a+2b
@@ -920,9 +920,9 @@ because `f(1,2)` invokes the first method of `f` above. However, this need not a
 If you define a fourth method that is more specialized for integers:
 -->
 ```
-つまり、`f()`を呼び出すのと`f(1,2)`を呼び出すのと同等なことを意味します。
-この場合、結果は`5`で、というのも`f(1,2)`は最初の`f`メソッドを呼び出すためです。
-しかし、必ずしもそうである必要はなく、整数に特化した4番目のメソッドを定義した場合は、次のようになります。
+これは、`f()`の呼び出しと`f(1,2)`の呼び出しは同等なことを意味します。
+この場合、結果は`5`で、`f(1,2)`は最初の`f`メソッドを呼び出すからです。
+しかし、必ずこうする必要はなく、整数に特化した4番目のメソッドを定義した場合は、次のようになります。
 
 
 ```julia
