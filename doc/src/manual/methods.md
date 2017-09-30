@@ -465,7 +465,7 @@ Method definitions can optionally have type parameters qualifying the signature:
 -->
 ```
 
-メソッド定義には、シグネチャを修飾する型パラメータを必要に応じてつけることができます。
+メソッド定義で、任意で型パラメータをつけて、シグネチャを細かく指定することができます。
 
 
 ```jldoctest same_typefunc
@@ -485,8 +485,8 @@ overall, this defines a boolean function that checks whether its two arguments a
 type:
 -->
 ```
-第1のメソッドは、両方の引数が同じ具象型の時、どんな型であっても適用します。第2のメソッドは他のすべての場合をカバーするガラクタ入れのように機能するときに適用します。
-したがって、これは全体的に、2つの引数が同じ型であるかどうかを検査するブール関数を定義します。
+第1のメソッドは、両方の引数が同じ具象型の時、それがどんな型であっても適用されます。第2のメソッドは他のすべての場合をカバーするcatch-allとして働きます。
+したがって、これは全体として、2つの引数が同じ型であるかどうかを検査するブール関数の定義になっています。
 
 
 
@@ -526,7 +526,7 @@ type `Vector{T}` in the method signature:
 
 そのような定義はシグネチャがUnionAll型であるメソッドに対応します([全合併型](@ref) 参照)。
 
-Juliaでは、このようなディスパッチによる関数の動作の定義は、まったく共通していて、慣用的でさえあります。メソッドの型パラメータは、引数の型として使用することに限定されず、関数の本体または本体のシグネチャに値がある場所であればどこでも使用できます。メソッドの型パラメータ`T`が、メソッドのシグネチャのパラメトリック型に対する型パラメータ`Vector{T}`として使用される例を次に示します。
+Juliaでは、このようにディスパッチを使って関数の動作を定義するのは、まったく普通であって、慣用的でさえあります。メソッドの型パラメータは、引数の型として使えるだけでなく、関数の本体または関数のシグネチャの、値がある場所であればどこでも使えます。メソッドの型パラメータ`T`が、メソッドのシグネチャのパラメトリック型に対する型パラメータ`Vector{T}`として使用される例を次に示します。
 
 
 ```jldoctest
@@ -566,7 +566,7 @@ is appended to, or else a [`MethodError`](@ref) is raised. In the following exam
 `T` is used as the return value:
 -->
 ```
-ご覧のように、追加された要素の型は、追加されるベクトルの要素の型と一致しなければなりません。でなければ、[`MethodError`](@ref) が生成されます。
+ご覧のように、追加する要素の型は、追加されるベクトルの要素の型と一致しなければなりません。でなければ、[`MethodError`](@ref) が生成されます。
 次の例では、メソッドの型パラメータ `T`が戻り値として使用されています。
 
 
@@ -588,7 +588,7 @@ Just as you can put subtype constraints on type parameters in type declarations 
 you can also constrain type parameters of methods:
 -->
 ```
-型宣言（[パラメトリック](@ref)型を参照）の型パラメータにサブタイプ制約を入れることができるのと同様に、メソッドの型パラメータも制約することができます。
+型宣言（[パラメトリック](@ref)型を参照）に出てくる型パラメータにサブタイプ制約を入れることができるのと同様に、メソッドの型パラメータも制約することができます。
 
 ```jldoctest
 julia> same_type_numeric(x::T, y::T) where {T<:Number} = true
@@ -626,7 +626,7 @@ The `same_type_numeric` function behaves much like the `same_type` function defi
 is only defined for pairs of numbers.
 -->
 ```
-この`same_type_numeric`関数は、上で定義した関数`same_type`と非常によく似た動作をしますが、数値の組に対してのみ定義されています。
+この`same_type_numeric`関数は、以前に定義した関数`same_type`と非常によく似た動作をしますが、数値の組に対してのみ定義されています。
 
 ```@raw html
 <!--
@@ -639,7 +639,7 @@ nested `where`, e.g. `where S<:Real where T`.
 -->
 ```
 
-パラメトリックメソッドでは、型の作成に使用される`where`式と同じ構文を使用できます（[全合併型](@ref)を参照）。パラメータが1つしかない場合は、中括弧（`where {T}`）を省略することができますが、わかりやすいようにしばしばつけられます。複数のパラメータは、例えば、カンマで分離できたり(例`where {T, S<:Real}`)、またはネストされた`where`使用して記述されます。（例`where S<:Real where T`）
+パラメトリックメソッドでは、型の作成に使用される`where`式と同じ構文を使用できます（[全合併型](@ref)を参照）。パラメータが1つしかない場合は、中括弧（`where {T}`）を省略することができますが、わかりやくするために、よく好んでつけられます。複数のパラメータは、例えば、カンマで区切ったり(例`where {T, S<:Real}`)、またはネストされた`where`を使ったりして記述されます。（例`where S<:Real where T`）
 
 
 [](Rdefining Methods)
