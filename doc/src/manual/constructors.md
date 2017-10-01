@@ -84,6 +84,13 @@ by simply defining new methods. For example, let's say you want to add a constru
 fields. This is simple:
 -->
 ```
+コンストラクタは、Juliaの他の関数と同じように、全体の動作がメソッドの動作の組み合わせで定義されています。
+したがって、新しいメソッドを定義するだけで、コンストラクタに機能を追加できます。
+たとえば、`Foo`オブジェクトのコンストラクタメソッドを追加する とします。
+このオブジェクトは、1つの引数のみを取り、`bar`フィールドと`baz`フィールドの両方に指定された値を使用します。
+これは簡単です。
+
+
 
 ```jldoctest footype
 julia> Foo(x) = Foo(x,x)
@@ -93,8 +100,14 @@ julia> Foo(1)
 Foo(1, 1)
 ```
 
+
+```@raw html
+<!--
 You could also add a zero-argument `Foo` constructor method that supplies default values for both
 of the `bar` and `baz` fields:
+-->
+```
+また、引数のない`Foo`コンストラクタ・メソッドを追加して、`bar`フィールドと`baz`フィールドの両方にデフォルト値を設定することもできます。
 
 ```jldoctest footype
 julia> Foo() = Foo(0)
@@ -114,6 +127,10 @@ are called *outer* constructor methods. Outer constructor methods can only ever 
 by calling another constructor method, such as the automatically provided default ones.
 -->
 ```
+ここでは、引数のないコンストラクターメソッドは、1引数のコンストラクターメソッドを呼び出し、次に、自動的に生成される2引数のコンストラクターメソッドを呼び出します。
+まもなく明らかにする理由から、このような通常のメソッドとして宣言して追加されたコンストラクタメソッドは、外部コンストラクタメソッドと呼ばれます。
+外部のコンストラクタメソッドは、デフォルト値を自動的に提供するメソッドなど、別の既存のコンストラクタメソッドを呼び出すことでのみ、新しいインスタンスを作成することができます。
+
 
 [](## Inner Constructor Methods)
 ## 内側コンストラクタメソッド
