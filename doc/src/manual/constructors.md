@@ -11,6 +11,12 @@ composite types were introduced. For example:
 -->
 ```
 
+コンストラクタ[^ 1]は新しいオブジェクト、特に[複合型](@ref)のインスタンスを作成する関数です。
+Juliaでは、型オブジェクトはコンストラクタ関数としても機能します。
+型オブジェクトを引数タプルに適用すると、新しいインスタンスが作成されます。
+これは、複合型を紹介したときにすでに簡単に触れました。例えば、
+
+
 ```jldoctest footype
 julia> struct Foo
            bar
@@ -42,12 +48,27 @@ addresses all of these cases and more.
 -->
 ```
 
+多くの型では、フィールド値を束縛して一緒にして新しいオブジェクトを作成することは、常にインスタンスを作成するために必要なものです。
+しかし、複合オブジェクトを作成するときにはより多くの機能が必要になる場合があります。
+場合によっては、引数を検査したり変換したりして、強制的に不変にする必要があります。
+[再帰的なデータ構造](https://en.wikipedia.org/wiki/Recursion_%28computer_science%29#Recursive_data_structures_.28structural_recursion.29)、特に自己参照可能な構造は、オブジェクト作成とは別のステップとして、はじめは不完全な状態で作成してからプログラム的に変更しないと、きれいに構築できないことがよくあります。
+場合によっては、実際のフィールドと比べて、パラメータの数が少ない、または型の異なるオブジェクトを構築できるのが便利な場合もあります。
+Juliaのオブジェクトコンストラクタは、これらのすべてのケースに対応しています。
+
+
+
+
+```@raw html
+<!--
 [^1]:
     Nomenclature: while the term "constructor" generally refers to the entire function which constructs
     objects of a type, it is common to abuse terminology slightly and refer to specific constructor
     methods as "constructors". In such situations, it is generally clear from context that the term
     is used to mean "constructor method" rather than "constructor function", especially as it is often
     used in the sense of singling out a particular method of the constructor from all of the others.
+-->
+```
+^ 1]：命名法：「コンストラクタ」という用語は一般に、あるタイプのオブジェクトを構成する関数全体を指しますが、用語を少し乱用し、特定のコンストラクタメソッドを「コンストラクタ」と呼びます。このような状況では、コンストラクタ関数ではなく、コンストラクタメソッド、特にほかのすべてから特定のコンストラクタメソッドをす単独で指して使っていることが、一般的に文脈から分かります
 
 [](## Outer Constructor Methods)
 ## 外側コンストラクタメソッド
