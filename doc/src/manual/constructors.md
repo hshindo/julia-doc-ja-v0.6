@@ -305,6 +305,10 @@ obvious, let us briefly explain it. Consider the following recursive type declar
 -->
 ```
 
+まだ話の出ていない最後の問題は、自己参照オブジェクト、さらに一般的には再帰的なデータ構造の生成です。
+根源的な難しさはすぐには分からないでしょうから、簡単に説明しましょう。次の再帰型宣言を考えてみましょう。
+
+
 ```jldoctest selfrefer
 julia> mutable struct SelfReferential
            obj::SelfReferential
@@ -320,6 +324,10 @@ If `a` is an instance of `SelfReferential`, then a second instance can be create
 -->
 ```
 
+この型は、どうやってインスタンス化するかを考えるなければ、問題なく見えるかもしれません。
+`a`が`SelfReferential`のインスタンスであれば、呼び出しによって2つ目のインスタンスを作成できます。
+
+
 ```julia-repl
 julia> b = SelfReferential(a)
 ```
@@ -333,6 +341,9 @@ of `SelfReferential` with an unassigned `obj` field, and using that incomplete i
 value for the `obj` field of another instance, such as, for example, itself.
 -->
 ```
+しかし、`obj`フィールドに有効な値として代入するインスタンスが存在しない場合、最初のインスタンスはどうやって作成するのでしょうか？
+唯一の解決策は、`obj`フィールドに代入のない初期化の不完全な`SelfReferential`のインスタンスを作成し、別のインスタンス(例えば自分自身)の`obj`フィールドの有効な値としてその不完全なインスタンスを使用することです。
+
 
 
 ```@raw html
@@ -345,6 +356,12 @@ at defining the `SelfReferential` type, with a zero-argument inner constructor r
 having `obj` fields pointing to themselves:
 -->
 ```
+初期化の不完全なオブジェクトを作成できるように、Juliaは、引数が型のフィールド数より少なくても`new`関数を呼び出すことができます。
+この`new`関数は、未指定のフィールドは初期化されていないままで、オブジェクトが返します。
+そして、内部コンストラクタメソッドは不完全なオブジェクトを利用できて、初期化を完了してからオブジェクトを返します。
+ここでは、`SelfReferential`型を定義する際にもう1つの亀裂があります。
+引数のない内部コンストラクタは、`obj`フィールドが自身を指すインスタンスを返します。
+
 
 ```jldoctest selfrefer2
 julia> mutable struct SelfReferential
@@ -360,6 +377,8 @@ julia> mutable struct SelfReferential
 We can verify that this constructor works and constructs objects that are, in fact, self-referential:
 -->
 ```
+このコンストラクタが動作していることを検証して、実は自己参照型のオブジェクトを作成できます。
+
 
 ```jldoctest selfrefer2
 julia> x = SelfReferential();
@@ -381,6 +400,8 @@ Although it is generally a good idea to return a fully initialized object from a
 incompletely initialized objects can be returned:
 -->
 ```
+内部コンストラクタが完全に初期化されたオブジェクトを返すことは一般的には良い考えですが、初期化の不完全なオブジェクトを返すこともできます。
+
 
 ```jldoctest incomplete
 julia> mutable struct Incomplete
@@ -399,6 +420,8 @@ reference is an immediate error:
 -->
 ```
 
+フィールドの初期化されていないオブジェクトを作成することはできますが、参照が初期化されていないのにアクセスすると、即刻エラーが生じます。
+
 ```jldoctest incomplete
 julia> z.xx
 ERROR: UndefRefError: access to undefined reference
@@ -414,6 +437,14 @@ and immutable structs of other plain data types. The initial contents of a plain
 undefined:
 -->
 ```
+
+このため、`null`値を継続的にチェックする必要がなくなります。
+ただし、すべてのオブジェクトフィールドが参照であるとは限りません。
+Juliaは、いくつかの型を「プレーンデータ」とみなします。
+つまり、すべてのデータが自己完結型であり、他のオブジェクトを参照していないことを意味します。
+プレーンデータ型は、原始型（例Int：）と他のプレーンデータ型の不変な複合型から構成されます。
+プレーンなデータ型は、最初の内容は未定義です：
+
 
 ```julia-repl
 julia> struct HasPlain
@@ -433,6 +464,10 @@ Arrays of plain data types exhibit the same behavior.
 You can pass incomplete objects to other functions from inner constructors to delegate their completion:
 -->
 ```
+プレーンデータ型の配列は同じ動作を示します。
+
+不完全なオブジェクトを内部コンストラクタによって他の関数​​に渡し、その完了を委任することができます。
+
 
 ```jldoctest
 julia> mutable struct Lazy
@@ -449,6 +484,7 @@ try to access the `xx` field of the `Lazy` object before it has been initialized
 be thrown immediately.
 -->
 ```
+コンストラクタから返される不完全なオブジェクトと同じように、`complete_me`など呼び出し先が初期化する前に`Lazy`オブジェクトの`xx`フィールドにアクセスしようとすると、すぐにエラーが投げられます。
 
 [](## Parametric Constructors)
 ## パラメトリックコンストラクタ
