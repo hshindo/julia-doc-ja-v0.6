@@ -885,7 +885,10 @@ table for the `Type` type. This mans that you can declare more flexible construc
 for abstract types, by explicitly defining methods for the appropriate types.
 -->
 ```
-
+Juliaでは、`T(args...)`というコンストラクターは、他の呼び出し可能なオブジェクトと同じように実装されていて、引数の組の型に対して
+メソッドが追加されます。
+型の型は`Type`であり、すべてのコンストラクターのメソッドは`Type`型のメソッド・テーブルに格納されます。
+つまり、適切な型に対するメソッドを明示的に定義することで、抽象型のコンストラクタなど、より柔軟にコンストラクタを宣言することができます。
 
 ```@raw html
 <!--
@@ -895,6 +898,10 @@ is found. For example, if no constructor `T(args...) = ...` exists `Base.convert
 is called.
 -->
 ```
+ただし、コンストラクタを定義する** 替わりに**、`Base.convert`メソッドを追加を考慮したほうがいい場合もあります。
+Juliaでは、一致するコンストラクタが見つからない場合には、[`convert()`](@ref) が呼ばれるからです。
+たとえば、コンストラクター`T(args...) = ...`が存在しない場合は、`Base.convert(::Type{T}, args...) = ...` が呼び出されます。
+
 
 
 ```@raw html
@@ -906,6 +913,11 @@ throws an `InexactError`.  If you want to define a constructor for a lossless co
 one type to another, you should probably define a `convert` method instead.
 -->
 ```
+Julia全体で、`convert`はあるタイプを別のタイプに変換する必要があるとき（たとえば、代入や[`ccall`](@ref)など）広く使用されます、
+一般的には、変換が可逆の時のみ定義すべきで、そうした時のみうまくいくでしょう。
+たとえば、`convert(Int, 3.0)`は`3`を生成しますが、`convert(Int, 3.2)`は `InexactError`を投げます。
+あるタイプから別のタイプへの可逆変換をするコンストラクタを定義したい場合は、おそらく`convert`メソッドを定義する必要があるでしょう。
+
 
 
 ```@raw html
@@ -916,10 +928,12 @@ For example, the `Array{Int}()` constructor creates a zero-dimensional `Array` o
 but is not really a "conversion" from `Int` to an `Array`.
 -->
 ```
+一方、コンストラクタが可逆変換ではない場合、または「変換」を全くつかわない場合は、`convert`メソッドではなくコンストラクタとして残す方がよいでしょう。
+例えば、`Array{Int}()`コンストラクタはゼロ次元の`Int`型の`Array`を生成します。しかしこれは、`Int`から`Array`への「変換」ではありません。
 
 [](## Outer-only constructors)
 
-## 外側限定コンストラクタ
+## 外部限定コンストラクタ
 
 
 ```@raw html
