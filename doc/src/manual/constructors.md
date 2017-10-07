@@ -722,6 +722,9 @@ parametric composite type and its constructor methods. To that end, here is the 
 which implements Julia's [有理数](@ref):
 -->
 ```
+おそらく、これらの要素すべてを結びつける最良の方法は、パラメトリック複合型とそのコンストラクタメソッドの実例を見てみることです。
+そこで、 [`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl)　の始めの方でJuliaで使われる[有理数](@ref)を実装している部分を（少し修正していますが）見てみましょう。
+
 
 ```jldoctest rational
 julia> struct OurRational{T<:Integer} <: Real
@@ -779,6 +782,9 @@ and `den::T` indicate that the data held in a `OurRational{T}` object are a pair
 `T`, one representing the rational value's numerator and the other representing its denominator.
 -->
 ```
+最初の行 の`struct OurRational{T<:Integer} <: Real` では、`OurRational`という型は、整数型の1つの型パラメータをとり、それ自体は実数型であることを宣言しています。
+フィールドの宣言である`num::T` と`den::T`は、`OurRational{T}`オブジェクトに保持されているデータが、有理数の分子と分母を表す型`T`の 整数のペアであることを示しています。
+
 
 
 ```@raw html
@@ -793,6 +799,13 @@ this is the only inner constructor for `OurRational`, we can be certain that `Ou
 always constructed in this normalized form.
 -->
 ```
+面白くなってきました。
+`OurRational`には内部コンストラクタメソッドが1つあって、`num`と`den`の両方が0ではないことを検査し、すべての有理数は、分母が非負の「既約分数」で構成されることを保証します。
+これは、与えられた分子と分母の値を、最大公約数で割ることで得られ、最大公約数は`gcd`関数を使って計算されます。
+`gcd`関数は、引数の最大公約数を最初の引数（ここでは`den`）に一致する符号で返すため、
+割り算の後に得られる新しい`den`の値は非負であることが保証されます。
+これは`OurRational`の唯一の内部コンストラクターであるため、`OurRational`オブジェクトは常にこの正規化された形式で構築されていると断言できます。
+
 
 
 ```@raw html
@@ -805,6 +818,12 @@ outer constructor for arguments of matching type. The third outer constructor tu
 into rationals by supplying a value of `1` as the denominator.
 -->
 ```
+`OurRational`は利便性のためにいくつかの外部コンストラクターメソッドも提供しています。
+一つ目は、分子と分母の型が同じ場合、その型から型パラメータ`T`を推論する「標準」汎化コンストラクタです。
+二つ目は、与えられた分子と分母の値の型が異なる場合に適用されます。
+それらを共通の型に昇格させ、その後、型の一致する引数に対して動作する外部コンストラクタに生成を委譲します。
+三つ目の外部コンストラクタは、分母としての値`1`を供給することによって整数値を有理数に変換します。
+
 
 
 ```@raw html
@@ -822,6 +841,14 @@ Finally, applying
 number whose real and imaginary parts are rationals:
 -->
 ```
+外側のコンストラクタ定義に続いて、[`//`](@ref) 演算子のための多数のメソッドがあります。これは、有理数を書くための構文です。
+こういった定義がなければ、[`//`](@ref) は、構文だけで完全に意味のない未定義の演算子です。
+その後、 [有理数](@ref)説明したような動作をします。その動作は全部、このファイルの数行で定義されています。
+第一の、そして最も基本的な定義は、`a`と`b`が整数の時に、これらに`OurRational`コンストラクタを適用して`a//b`を生成します。
+ [`//`](@ref)の被演算子の1つが既に有理数である場合、少し違って新しい有理数を比の結果として生成します。
+この動作は実際には有理数と整数の除算と同一です。
+最後に、 [`//`](@ref)を複素有理数に適用して、`Complex{OurRational}`のインスタンスを作成します。
+これは実部と虚部が有理数である複素数をあらわします。
 
 ```jldoctest rational
 julia> ans = (1 + 2im)//(1 - 2im);
@@ -842,6 +869,9 @@ The interested reader should consider perusing the rest of [`rational.jl`](https
 it is short, self-contained, and implements an entire basic Julia type.
 -->
 ```
+したがって、[`//`](@ref)演算子は通常`OurRational`のインスタンスを返しますが、引数のいずれかが複素数の場合、替わりに`Complex{OurRational}`のインスタンスを返します。
+興味のある読者は、[`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl)の残りの部分を熟読するといいでしょう。
+短くてファイル内で参照が完結し、Juliaの基本的な型である有理数型全体が実装されています。
 
 [](## [Constructors and Conversion](@id constructors-and-conversion))
 ## [コンストラクタと変換](@id constructors-and-conversion)
