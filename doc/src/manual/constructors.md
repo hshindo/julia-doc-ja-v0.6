@@ -946,6 +946,12 @@ making an instance. However, in some cases one would rather not provide inner co
 that specific type parameters cannot be requested manually.
 -->
 ```
+これまで見てきたように、一般的なパラメトリック型には、型パラメータが既知のときに呼び出される内部コンストラクタがあります。
+例えば、`Point`ではなく`Point{Int}`が適用されます。
+必要に応じて、型パラメータを自動的に決定する外部コンストラクタを追加することができます。例えば、`Point(1,2)`から`Point{Int}`を呼び出すことができます。
+外部のコンストラクタは内部のコンストラクタを呼び出して、インスタンスを作成する中核的な作業を行います。
+しかし、場合によっては内部コンストラクタが存在せず、特定の型パラメータを手動で要求することはできません。
+
 
 
 ```@raw html
@@ -954,6 +960,8 @@ For example, say we define a type that stores a vector along with an accurate re
 its sum:
 -->
 ```
+たとえば、ベクトルを格納し、その合計を正確に表現する型を定義するとします。
+
 
 ```jldoctest
 julia> struct SummedArray{T<:Number,S<:Number}
@@ -976,6 +984,11 @@ constructor only for `SummedArray`, but inside the `type` definition block to su
 generation of default constructors:
 -->
 ```
+問題は、`S`を`T`より大きな型にして、多くの要素の合計を求める際に情報損失を少なくしたいということです。
+たとえば、`T` を[`Int32`](@ref)、`S`を [`Int64`](@ref)とします。
+よって、ユーザーが`SummedArray{Int32,Int32}`といった型のインスタンスを構築できるようなインターフェイスは避けたいと考えています。
+これを行う1つの方法は、`SummedArray`コンストラクタの提供のみを行い、`type`定義ブロックの中でデフォルトのコンストラクタの生成を抑止することです。
+
 
 ```jldoctest
 julia> struct SummedArray{T<:Number,S<:Number}
@@ -1002,3 +1015,7 @@ specifying parameters for the type to be constructed, i.e. this call will return
 to `new{}` are automatically derived from the type being constructed when possible.
 -->
 ```
+このコンストラクタは`SummedArray(a)`という構文によって呼び出されます。
+`new{T,S}`という構文で、構築する型のパラメータを指定できます。
+つまり、この呼び出しは`SummedArray{T,S}`を返します。
+ `new{T,S}`を任意のコンストラクタ定義で使用することができますが、便宜上、`new{}`に対するパラメータは、可能な場合は、構築される型から自動的に派生させます。
