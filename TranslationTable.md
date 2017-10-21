@@ -199,3 +199,7 @@
 | fallback                                        | フォールバック                                  
 | exported                                        | 公開した                                   
 | specific                                        | 特化した                                   
+| innocuous                                       | 無害の、問題ない                            
+| lowest term                                     | 既約分数                                 
+| lossless                                        | 可逆                                     
+| take a crack at                                 | 試みる                                     
