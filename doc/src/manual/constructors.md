@@ -288,7 +288,7 @@ separation is typically quite natural.
 できるだけ内部コンストラクタメソッドを少なくするのは良い方法だと考えられています。
 そのメソッドは、すべての引数を明示的に取り、必須であるエラーチェックと変換を強制するものだけにします。
 デフォルト値や補助的な変換を提供する便利なコンストラクタメソッドを追加する時は、内部コンストラクタを呼び出す外部コンストラクタとして作成し、重い作業を行うようにすべきです。
-このように分離するのは、通常まったく当然なことです。
+このように分離するのは、通常まったく自然なことです。
 
 
 
@@ -304,7 +304,7 @@ obvious, let us briefly explain it. Consider the following recursive type declar
 -->
 ```
 
-まだ話の出ていない最後の問題は、自己参照オブジェクト、さらに一般的には再帰的なデータ構造の生成です。
+まだ説明していない最後の問題は、自己参照オブジェクト、さらに一般的には再帰的なデータ構造の生成です。
 根源的な難しさはすぐには分からないでしょうから、簡単に説明しましょう。次の再帰型宣言を考えてみましょう。
 
 
@@ -323,8 +323,8 @@ If `a` is an instance of `SelfReferential`, then a second instance can be create
 -->
 ```
 
-この型は、どうやってインスタンス化するかを考えるなければ、問題なく見えるかもしれません。
-`a`が`SelfReferential`のインスタンスであれば、呼び出しによって2つ目のインスタンスを作成できます。
+この型は、どうやってインスタンス化するかを考えなければ、問題ないように見えるかもしれません。
+`a`という`SelfReferential`のインスタンスがあれば、呼び出しによって2つ目のインスタンスを作成できます。
 
 
 ```julia-repl
@@ -340,8 +340,8 @@ of `SelfReferential` with an unassigned `obj` field, and using that incomplete i
 value for the `obj` field of another instance, such as, for example, itself.
 -->
 ```
-しかし、`obj`フィールドに有効な値として代入するインスタンスが存在しない場合、最初のインスタンスはどうやって作成するのでしょうか？
-唯一の解決策は、`obj`フィールドに代入のない初期化の不完全な`SelfReferential`のインスタンスを作成し、別のインスタンス(例えば自分自身)の`obj`フィールドの有効な値としてその不完全なインスタンスを使用することです。
+しかし、`obj`フィールドに使う有効な値のインスタンスがなければ、最初のインスタンスはどうやって作成するのでしょうか？
+唯一の解決法は、`obj`フィールドに、なにも代入されていない初期化の不完全な`SelfReferential`のインスタンスを作成し、その不完全なインスタンスを`obj`フィールドの有効な値として別のインスタンス(例えば自分自身)に使うという方法です。
 
 
 
@@ -355,11 +355,11 @@ at defining the `SelfReferential` type, with a zero-argument inner constructor r
 having `obj` fields pointing to themselves:
 -->
 ```
-初期化の不完全なオブジェクトを作成できるように、Juliaは、引数が型のフィールド数より少なくても`new`関数を呼び出すことができます。
-この`new`関数は、未指定のフィールドは初期化されていないままで、オブジェクトが返します。
-そして、内部コンストラクタメソッドは不完全なオブジェクトを利用できて、初期化を完了してからオブジェクトを返します。
-ここでは、`SelfReferential`型を定義する際にもう1つの亀裂があります。
-引数のない内部コンストラクタは、`obj`フィールドが自身を指すインスタンスを返します。
+初期化が不完全でもオブジェクトを作成できるように、Juliaでは、引数が型のフィールド数より少なくても`new`関数を呼び出すことができます。
+この`new`関数は、未指定のフィールドは初期化しないままで、オブジェクトを返します。
+そのため、内部コンストラクタメソッドは不完全なオブジェクトを利用でき、オブジェクトを返す前に初期化を完了します。
+ここで、`SelfReferential`型の別の例を挙げてみましょう。
+この例では、引数のない内部コンストラクタが、`obj`フィールドが自身を指すインスタンスを返します。
 
 
 ```jldoctest selfrefer2
@@ -376,7 +376,7 @@ julia> mutable struct SelfReferential
 We can verify that this constructor works and constructs objects that are, in fact, self-referential:
 -->
 ```
-このコンストラクタが動作していることを検証して、実は自己参照型のオブジェクトを作成できます。
+このコンストラクタが実際に動作して、自己参照型のオブジェクトを作成することを、検証できます。
 
 
 ```jldoctest selfrefer2
@@ -399,7 +399,7 @@ Although it is generally a good idea to return a fully initialized object from a
 incompletely initialized objects can be returned:
 -->
 ```
-内部コンストラクタが完全に初期化されたオブジェクトを返すことは一般的には良い考えですが、初期化の不完全なオブジェクトを返すこともできます。
+内部コンストラクタが完全に初期化されたオブジェクトを返す方が通常は良い手法ですが、初期化の不完全なオブジェクトを返すこともできます。
 
 
 ```jldoctest incomplete
@@ -418,8 +418,7 @@ While you are allowed to create objects with uninitialized fields, any access to
 reference is an immediate error:
 -->
 ```
-
-フィールドの初期化されていないオブジェクトを作成することはできますが、参照が初期化されていないのにアクセスすると、即刻エラーが生じます。
+初期化されていないフィールドを持つオブジェクトを作成することはできますが、初期化されていない参照にアクセスすると、即座にエラーが生じます。
 
 ```jldoctest incomplete
 julia> z.xx
@@ -440,9 +439,9 @@ undefined:
 このため、`null`値を継続的にチェックする必要がなくなります。
 ただし、すべてのオブジェクトフィールドが参照であるとは限りません。
 Juliaは、いくつかの型を「プレーンデータ」とみなします。
-つまり、すべてのデータが自己完結型であり、他のオブジェクトを参照していないことを意味します。
-プレーンデータ型は、原始型（例Int：）と他のプレーンデータ型の不変な複合型から構成されます。
-プレーンなデータ型は、最初の内容は未定義です：
+「プレーンデータ」とは、すべてのデータが自身に含まれ、他のオブジェクトを参照していないことを意味します。
+プレーンデータ型には、原始型（`Int`など）や、他のプレーンデータ型から成る不変な複合型があります。
+プレーンなデータ型は、初期状態ではの内容が定義されていません。
 
 
 ```julia-repl
@@ -463,9 +462,9 @@ Arrays of plain data types exhibit the same behavior.
 You can pass incomplete objects to other functions from inner constructors to delegate their completion:
 -->
 ```
-プレーンデータ型の配列は同じ動作を示します。
+プレーンデータ型の配列は同様な動作をします。
 
-不完全なオブジェクトを内部コンストラクタによって他の関数​​に渡し、その完了を委任することができます。
+不完全なオブジェクトを内部コンストラクタから他の関数​​に渡して、完成を委譲することができます。
 
 
 ```jldoctest
