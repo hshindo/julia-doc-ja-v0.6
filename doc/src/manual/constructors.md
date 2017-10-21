@@ -496,9 +496,9 @@ given type parameters or with type parameters implied by the types of the argume
 constructor. Here are some examples:
 -->
 ```
-パラメトリック型は、コンストラクタのストーリーにいくつかの妙案を付け加えます。
-[パラメトリック型](@ref) を思い出してください。
-デフォルトでは、パラメトリック複合型をインスタンス化する際の型の指定は、明示的に型パラメータを使うこともできるし、引数から暗黙的に推論させることもできます。
+パラメトリック型の場合は、今までのコンストラクタの話に新たな面が加わります。
+[パラメトリック型](@ref) のことを復習しましょう。
+デフォルトでは、パラメトリック複合型をインスタンス化する際の型の指定は、明示的に型パラメータを使う方法と、引数から暗黙的に推論させる方法があります。
 いくつか例を示します。
 
 
@@ -546,11 +546,10 @@ arguments must agree -- otherwise the `T` cannot be determined -- but any pair o
 arguments with matching type may be given to the generic `Point` constructor.
 -->
 ```
-御覧のように、コンストラクタを明示的に型パラメータを指定して呼び出すと、引数は暗黙的にフィールドの型に変換されます。
+御覧のように、明示的に型パラメータを指定してコンストラクタを呼び出すと、引数は暗黙的にフィールドの型に変換されます。
 `Point{Int64}(1,2)`とすると動作しますが、`Point{Int64}(1.0,2.5)`とすると、 `2.5` を [`Int64`](@ref) に変換する際に、
 [`InexactError`](@ref) が発生します。
-型が`Point(1,2)`のようにコンストラクタ呼び出しの引数によって暗黙的に指定されている場合、引数の型どうしは一致する必要があります。
-そうでなければ、`T`を決定できません。任意の実引数のペアは、型が一致していれば、汎化`Point`コンストラクタに渡すことができます。
+`Point(1,2)`のように、コンストラクタ呼び出しの引数によって、型が暗黙的に指定されている場合、引数の型どうしは一致させる必要があります。でなければ、`T`を決定できません。任意の実引数のペアは、型が一致していれば、汎化`Point`コンストラクタに渡すことができます。
 
 `
 
@@ -566,11 +565,10 @@ This automatic provision of constructors is equivalent to the following explicit
 -->
 ```
 
-ここで実際に見てきたことは、`Point`、`Point{Float64}`、`Point{Int64}`すべてが異なるコンストラクタ関数だということです。
-実際、`Point{T}`は、それぞれの型`T`ごとに異なるコンストラクタ関数があります。
-明示的に内部コンストラクタを定義しなければ、複合型の宣言`Point{T<:Real}`は 、自動的に内部コンストラクタ`Point{T}`を作成し、`T<:Real`を満たすそれぞれの型に対して、パラメータを使わない内部コンストラクタのように振る舞います。
-また、型のそろった実引数のペアをとる単一の汎化外部コンストラクタ`Point`も作成します。
-このコンストラクタの自動生成は、次の明示的宣言と同じです。
+ここで見てきたことは、`Point`、`Point{Float64}`、`Point{Int64}`すべてが異なるコンストラクタ関数だということです。
+実際、`Point{T}`は、型`T`ごとにそれぞれ異なるコンストラクタ関数があります。
+明示的に内部コンストラクタを定義しない場合は、複合型の宣言`Point{T<:Real}`は 、`T<:Real`を満たすそれぞれの型に対して、自動的に内部コンストラクタ`Point{T}`を生成し、パラメータを使わないデフォルトの内部コンストラクタのように振る舞います。
+こうしたコンストラクタの自動生成は、以下の明示的な宣言と同等です。
 
 
 ```jldoctest parametric2
@@ -597,11 +595,11 @@ same type, calls like `Point(1,2.5)`, with arguments of different types, result 
 errors.
 -->
 ```
-各コンストラクタの定義と、それを呼び出す際の形式はように見えることに注意してください。
-`Point{Int64}(1,2)`のように呼び出すと、`型`ブロックの中では、定義の`Point{T}(x,y)`が呼び出されます。
-一方、外部コンストラクタ宣言は、実数の同じ型の組にのみ適用される汎化コンストラクタ`Point`のメソッドを定義します。
-この宣言は、`Point(1,2)` や`Point(1.0,2.5)`のように型パラメータのないコンストラクタ呼び出しを行います。
-このメソッドの宣言では、引数が同じ型のものに制限されるため、`Point(1,2.5)`のような異なる型の引数を持つ呼び出しは、 "no method"のエラーがおこります。
+各コンストラクタの定義と呼び出しは、同じような形式であることに注意してください。
+`Point{Int64}(1,2)`のように呼び出すと、`型`ブロック内の定義`Point{T}(x,y)`が呼び出されます。
+一方、外部コンストラクタの宣言では、実数の同じ型の組にのみ適用される汎化コンストラクタ`Point`のメソッドが定義されています。
+この宣言によって、`Point(1,2)` や`Point(1.0,2.5)`のように明示的に型パラメータをつけないコンストラクタの呼び出しが可能になります。
+このメソッドの宣言では、引数が同じ型のものに制限されるため、`Point(1,2.5)`のような異なる型の引数を持つ呼び出しは、 "no method"のエラーがおこします。
 
 
 
@@ -612,8 +610,8 @@ value `1` to the floating-point value `1.0`. The simplest way to achieve this is
 following additional outer constructor method:
 -->
 ```
-`Point(1,2.5)`を整数値`1`を浮動小数点値`1.0`に「昇格」させて、コンストラクタ呼び出しとして動作させたいとします。
-これを実現する最も簡単な方法は、以下の外部コンストラクタメソッドの定義を追加することです。
+`Point(1,2.5)`のようにコンストラクタを呼び出す時、整数値`1`を浮動小数点値`1.0`に「昇格」させたいとします。
+これを実現する最も簡単な方法は、以下のように外部コンストラクタメソッドの定義を追加することです。
 
 
 ```jldoctest parametric2
@@ -629,8 +627,8 @@ and then delegates construction to the general constructor for the case where bo
 successfully creates a point of type `Point{Float64}`:
 -->
 ```
-このメソッドは、[`convert()`](@ref)関数を使用して 、 `x` を [`Float64`](@ref) に変換し、両方の引数が[`Float64`](@ref)の時に使用できる汎化コンストラクタに委譲します。
-こうして、以前は[`MethodError`](@ref)の生じたメソッド定義から、今までは`Point{Float64}`型を正常に作成できるようになりました。
+このメソッドは、[`convert()`](@ref)関数を使用して、`x` を [`Float64`](@ref) に変換し、両方の引数が[`Float64`](@ref)の時に使用できる汎化コンストラクタに委譲します。
+こうして、以前は[`MethodError`](@ref)の生じたメソッド定義から、`Point{Float64}`型の値を正常に作成できるようになりました。
 
 
 ```jldoctest parametric2
@@ -647,7 +645,7 @@ Point{Float64}
 However, other similar calls still don't work:
 -->
 ```
-しかし、他の似たような呼び出しはまだ動作しません：
+しかし、他の似たような呼び出しはまだ動作しません。
 
 
 ```jldoctest parametric2
@@ -665,7 +663,7 @@ At the risk of spoiling the suspense, we can reveal here that all it takes is th
 method definition to make all calls to the general `Point` constructor work as one would expect:
 -->
 ```
-このような呼び出しをうまく動作させる一般的な方法については、[Conversion and Promotion]（@ ref conversion-and-promotion）を参照してください。
+このような呼び出しをうまく動作させる一般的な方法については、[変換と昇格]（@ ref conversion-and-promotion）を参照してください。
 今までの話が無駄になるかもしれませんが、白状してしまうと、汎化コンストラクタ`Point`を様々な引数に対して期待どおりに動作させるには、外部メソッドの定義を以下のようにすればいいのです。
 
 
@@ -682,7 +680,7 @@ numeric operators like [`+`](@ref) do, and works for all kinds of real numbers:
 -->
 ```
 この`promote`関数はすべての引数を共通の型、この場合は [`Float64`](@ref)に変換します。
-このメソッド定義では、`Point`コンストラクタは、算術演算子の [`+`](@ref)と同じように引数を昇格するので、あらゆる種類の実数に対して動作します。
+このようにメソッドを定義すると、`Point`コンストラクタは、算術演算子の [`+`](@ref)と同じように引数を昇格するので、あらゆる種類の実数に対して動作します。
 
 
 ```jldoctest parametric2
@@ -705,8 +703,8 @@ since constructors can leverage all of the power of the type system, methods, an
 defining sophisticated behavior is typically quite simple.
 -->
 ```
-したがって、Juliaのデフォルトでは、型パラメータコンストラクタの暗黙的な型の扱いはかなり厳格ですが、それらをより気軽で、しかし理にかなった方法で動作させることは可能です。
-さらに、コンストラクタは型システム、メソッド、および多重ディスパッチのすべての機能を活用できるため、洗練された動作を定義するのは通常非常に簡単です。
+したがって、デフォルトではJuliaの型パラメータコンストラクタの暗黙的な型の扱いはかなり厳格ですが、それらをより気軽で、しかし理にかなった方法で動作させることが可能です。
+さらに、コンストラクタは型システム、メソッド、および多重ディスパッチのすべての機能を活用できるため、洗練された動作を定義するのは通常は非常に簡単です。
 
 [](## Case Study: Rational)
 ## 事例研究: 有理数
