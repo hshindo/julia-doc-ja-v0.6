@@ -881,10 +881,9 @@ table for the `Type` type. This mans that you can declare more flexible construc
 for abstract types, by explicitly defining methods for the appropriate types.
 -->
 ```
-Juliaでは、`T(args...)`というコンストラクタは、他の呼び出し可能なオブジェクトと同じように実装されていて、引数の組の型に対して
-メソッドが追加されます。
+Juliaでは、`T(args...)`というコンストラクタは、他の呼び出し可能なオブジェクトと同じように実装されています。つまり型に対してメソッドが付加されています。
 型の型は`Type`であり、すべてのコンストラクタのメソッドは`Type`型のメソッド・テーブルに格納されます。
-つまり、適切な型に対するメソッドを明示的に定義することで、抽象型のコンストラクタなど、より柔軟にコンストラクタを宣言することができます。
+そのため、適切な型に対してメソッドを明示的に定義すると、抽象型のコンストラクタなど、より柔軟にコンストラクタを宣言することができます。
 
 ```@raw html
 <!--
@@ -894,9 +893,9 @@ is found. For example, if no constructor `T(args...) = ...` exists `Base.convert
 is called.
 -->
 ```
-ただし、コンストラクタを定義する** 替わりに**、`Base.convert`メソッドを追加を考慮したほうがいい場合もあります。
-Juliaでは、一致するコンストラクタが見つからない場合には、[`convert()`](@ref) が呼ばれるからです。
-たとえば、コンストラクタ`T(args...) = ...`が存在しない場合は、`Base.convert(::Type{T}, args...) = ...` が呼び出されます。
+ただし、コンストラクタを定義する** 替わりに**、`Base.convert`メソッドを追加したほうがいい場合もあります。
+Juliaでは、適切なコンストラクタが見つからない場合には、[`convert()`](@ref) が呼ばれるからです。
+たとえば、`T(args...) = ...`というコンストラクタが存在しない場合は、`Base.convert(::Type{T}, args...) = ...` が呼び出されます。
 
 
 
@@ -909,10 +908,10 @@ throws an `InexactError`.  If you want to define a constructor for a lossless co
 one type to another, you should probably define a `convert` method instead.
 -->
 ```
-Julia全体で、`convert`はあるタイプを別のタイプに変換する必要があるとき（たとえば、代入や[`ccall`](@ref)など）広く使用されます、
-一般的には、変換が可逆の時のみ定義すべきで、そうした時のみうまくいくでしょう。
+`convert`はあるタイプを別のタイプに変換する必要があるとき（たとえば、代入や[`ccall`](@ref)など）、Julia全体で広範囲に使用されます。
+通常は、`convert`は変換が可逆の時にのみ定義すべきで、うまくいくのもそうした時のみでしょう。
 たとえば、`convert(Int, 3.0)`は`3`を生成しますが、`convert(Int, 3.2)`は `InexactError`を投げます。
-あるタイプから別のタイプへの可逆変換をするコンストラクタを定義したい場合は、おそらく`convert`メソッドを定義する必要があるでしょう。
+あるタイプから別のタイプへの可逆変換をするコンストラクタを定義したい場合は、おそらく`convert`メソッドを定義すべきでしょう。
 
 
 
@@ -924,8 +923,8 @@ For example, the `Array{Int}()` constructor creates a zero-dimensional `Array` o
 but is not really a "conversion" from `Int` to an `Array`.
 -->
 ```
-一方、コンストラクタが可逆変換ではない場合、または「変換」を全くつかわない場合は、`convert`メソッドではなくコンストラクタとして残す方がよいでしょう。
-例えば、`Array{Int}()`コンストラクタはゼロ次元の`Int`型の`Array`を生成します。しかしこれは、`Int`から`Array`への「変換」ではありません。
+一方、コンストラクタが可逆変換ではない場合、または「変換」を表していない場合は、`convert`メソッドではなくコンストラクタのままにしたほうががよいでしょう。
+例えば、`Array{Int}()`コンストラクタは、ゼロ次元の`Int`型の`Array`を生成します。しかしこれはまったく、`Int`から`Array`への「変換」ではありません。
 
 [](## Outer-only constructors)
 
@@ -946,7 +945,7 @@ that specific type parameters cannot be requested manually.
 例えば、`Point`ではなく`Point{Int}`が適用されます。
 必要に応じて、型パラメータを自動的に決定する外部コンストラクタを追加することができます。例えば、`Point(1,2)`から`Point{Int}`を呼び出すことができます。
 外部のコンストラクタは内部のコンストラクタを呼び出して、インスタンスを作成する中核的な作業を行います。
-しかし、場合によっては内部コンストラクタが存在せず、特定の型パラメータを手動で要求することはできません。
+しかし、特定の型パラメータを手動で呼び出せないように、内部コンストラクタを提供したくない場合もあります。
 
 
 
@@ -956,7 +955,7 @@ For example, say we define a type that stores a vector along with an accurate re
 its sum:
 -->
 ```
-たとえば、ベクトルを格納し、その合計を正確に表現する型を定義するとします。
+たとえば、ベクトルを格納し、さらにその合計を正確に表現する型を定義するとします。
 
 
 ```jldoctest
@@ -980,10 +979,10 @@ constructor only for `SummedArray`, but inside the `type` definition block to su
 generation of default constructors:
 -->
 ```
-問題は、`S`を`T`より大きな型にして、多くの要素の合計を求める際に情報損失を少なくしたいということです。
+ここで問題は、`S`を`T`より大きな型にして、多くの要素の合計を求める際に情報損失を少なくしたいということです。
 たとえば、`T` を[`Int32`](@ref)、`S`を [`Int64`](@ref)とします。
-よって、ユーザーが`SummedArray{Int32,Int32}`といった型のインスタンスを構築できるようなインターフェイスは避けたいと考えています。
-これを行う1つの方法は、`SummedArray`コンストラクタの提供のみを行い、`type`定義ブロックの中でデフォルトのコンストラクタの生成を抑止することです。
+そして、ユーザーが`SummedArray{Int32,Int32}`といった型のインスタンスを構築できるようなインターフェイスは避けたいと考えています。
+これを行う方法の1つは、`SummedArray`コンストラクタの提供のみを行い、`型`定義ブロックの中でデフォルトのコンストラクタの生成を抑止することです。
 
 
 ```jldoctest
@@ -1014,4 +1013,4 @@ to `new{}` are automatically derived from the type being constructed when possib
 このコンストラクタは`SummedArray(a)`という構文によって呼び出されます。
 `new{T,S}`という構文で、構築する型のパラメータを指定できます。
 つまり、この呼び出しは`SummedArray{T,S}`を返します。
- `new{T,S}`を任意のコンストラクタ定義で使用することができますが、便宜上、`new{}`に対するパラメータは、可能な場合は、構築される型から自動的に派生させます。
+ `new{T,S}`を任意のコンストラクタ定義で使用することができますが、便宜のため、`new{}`に対するパラメータは、可能な場合は、生成される型から自動的に推定されます。
