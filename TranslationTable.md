@@ -94,7 +94,7 @@
 | parametric polymorphism                         | パラメトリック多様型                            
 | Singleton Types                                 | シングルトン型                                 
 | signature                                       | 特徴                                     
-| catch-all                                       | 包括的な                                  
+| catch-all                                       | 包括的な 、全捕捉                                 
 | core operations                                 | コアオペレーション                                
 | functor                                         | functor                                  
 | outer constructor methods                       | アウターコンストラクタメソッド、外部コンストラクタメソッド                        

@@ -2,6 +2,7 @@
 # [変換と昇格](@id conversion-and-promotion)
 
 
+
 ```@raw html
 <!--
 Julia has a system for promoting arguments of mathematical operators to a common type, which has
@@ -12,6 +13,7 @@ types and apply it to functions besides built-in mathematical operators. Traditi
 languages fall into two camps with respect to promotion of arithmetic arguments:
 -->
 ```
+Juliaには、[整数と浮動小数点数](@ref)、[算術処理と基本的な関数] (@ref)、[型]（@ ref man-types）、[メソッド](@ref)、その他のさまざまなセクションで述べられているように、算術演算子の引数を共通型に昇格するためのシステムがあります。この章では、この昇格システムがどのように機能するのか、それを新しいタイプに拡張して標準装備の算術演算子以外の関数にも適用する方法について説明します。従来より、プログラミング言語は算術演算の引数の昇格の観点からは、2つの陣営に分類されています。
 
  
  ```@raw html
@@ -28,7 +30,8 @@ languages fall into two camps with respect to promotion of arithmetic arguments:
     part of specifications and implementations for such languages.
 -->
  ```
- 
+ *  **標準装備の算術型と演算子の自動昇格** ほとんどの言語では、標準装備の数値型を、`+`、 `-`、`*`、`/`などの中置構文の算術演算子の被演算子として使うときには、自動的に共通の型に昇格して、想定される結果を生成します。少し例を挙げると、  C、Java、Perl、Pythonなどはすべて、`1 + 1.5`の合計を、浮動小数点値の`2.5`として正しく計算することが、できますが、`+`の被演算子の一つは整数です。こういうシステムは便利であり、通常はプログラマには完全に見えないように慎重に設計されています。こんな式を書くときに昇格が起こっていると意識的に考えている人はほとんどいませんが、コンパイラやインタプリタは、足し算を行う前に変換を必ずおこないます。整数と浮動小数点数はそのまま加えることはできないからです。このような自動変換の複雑なルールは、必然的にこのような言語の仕様と実装の一部になります。
+
  
  ```@raw html
  <!--
@@ -42,7 +45,9 @@ languages fall into two camps with respect to promotion of arithmetic arguments:
     types.
 -->
  ```
- 
+   * **自動昇格がない**この陣営にはAdaとMLなどの非常に「厳密」な型付けされた言語があります。こういった言語では、すべての変換をプログラマが明示的に指定する必要があります。したがって、例に挙げた`1 + 1.5`という式は、AdaとMLでは共にコンパイルエラーになります。これを避けるには`real(1) + 1.5`のように書いて、加算を実行する前に整数`1`を浮動小数点値に明示的に変換する必要があります。しかし、常に明示的に変換しなければならないのは非常に不便なので、Adaでさえもある程度の自動変換が行われます。整数リテラルは想定どおりに整数型に自動的に昇格され、浮動小数点リテラルも同様に適切な浮動小数点型に昇格されます。
+
+
 
 ```@raw html
 <!--
@@ -60,6 +65,14 @@ promotion system by defining methods for conversion to and from other types, and
 of promotion rules defining what types they should promote to when mixed with other types.
 -->
 ```
+
+ある観点からは、Juliaは 「自動昇格のない」カテゴリに分類されます。
+算術演算子は特殊な構文を持つ関数に過ぎず、関数の引数は決して自動的に変換されません。
+しかし、様々な型の混合した引数に算術演算を適用することは、多相的な多重ディスパッチの極端な一例に過ぎず、
+Juliaの型でディスパッチするシステムで扱うのに適しています。
+Juliaには、数式演算子を全捕捉するディスパッチ規則が事前に定義されており、被演算子の型の組み合わせに特化した実装が存在しないときに呼び出されます。
+この全捕捉規則は、まずユーザーの定義可能な昇格規則を使用してすべての被演算子を共通の型に昇格させ、結果の値に該当する同じ型に対する演算子の特化した実装を呼び出します。
+ユーザー定義型に対して、他の型と互いに変換するメソッドを定義し、他の型と混合するときにどの型に昇格するかを定義するいくつかの昇格規則をいくつか決めてやれば、この昇格システムに簡単に追加できます。
 
 [](## Conversion)
 ## 変換
