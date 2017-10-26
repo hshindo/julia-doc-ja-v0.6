@@ -97,8 +97,8 @@
 | catch-all                                       | 包括的な                                  
 | core operations                                 | コアオペレーション                                
 | functor                                         | functor                                  
-| outer constructor methods                       | アウターコンストラクタメソッド                          
-| inner constructor methods                       | インナーコンストラクタメソッド                          
+| outer constructor methods                       | アウターコンストラクタメソッド、外部コンストラクタメソッド                        
+| inner constructor methods                       | インナーコンストラクタメソッド 、内部コンストラクタメソッド                         
 | conversion and promotion                        | 変換とプロモーション                             
 | lossless conversion                             | 可逆変換                                 
 | interface                                       | インタフェース                                  
