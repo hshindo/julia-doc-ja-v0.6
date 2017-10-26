@@ -86,6 +86,9 @@ to that type; the returned value is the value converted to an instance of given 
 way to understand this function is to see it in action:
 -->
 ```
+さまざまな型に値を変換するのは、`convert`関数によって実行されます。この`convert`関数は通常、2つの引数をとります。
+一番目は型オブジェクトであり、2番目はその型に変換する値です。戻り値は指定された型に変換された値です。この関数を理解する最も簡単な方法は、実際の動作を確認することです。
+
 
 ```jldoctest
 julia> x = 12
@@ -124,6 +127,7 @@ Conversion isn't always possible, in which case a no method error is thrown indi
 doesn't know how to perform the requested conversion:
 -->
 ```
+変換が常に可能であるとは限りません。そんな時、`convert`関数が要求された変換を実行する方法がわからないことを示すnoメソッドエラーが投げられます。
 
 ```jldoctest
 julia> convert(AbstractFloat, "foo")
@@ -142,6 +146,7 @@ of numbers, and only a very limited subset of them are. Therefore in Julia the d
 function must be used to perform this operation, making it more explicit.
 -->
 ```
+いくつかの言語では文字列を数値として解析したり、書式付きの数値を文字列として変換したりしますが（多くの動的言語でhは自動的に変換が行われます）、Juliaはそうではありません。文字列の中には数値として解析できるものもありますが、ほとんどの文字列は数値の妥当な表現ではなく、数は非常に限られています。したがって、Juliaでは、この操作を実行するために専用の関数`parse()` を明示的に使用する必要があります。
 
 [](### Defining New Conversions)
 ### 新しい変換の定義
