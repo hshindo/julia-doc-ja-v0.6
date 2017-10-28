@@ -311,6 +311,14 @@ For instance, although every [`Int32`](@ref) value can also be represented as a 
 `Int32` is not a subtype of `Float64`.
 -->
 ```
+昇格とは、型の異なる複数の値を単一の共通型に変換することを指します。
+値の変換される共通型は元の値をすべて忠実に表現できるという条件は、必須ではありませんが、通常は満たすよう期待されています。
+この意味では、値が「より大きな」型に変換されるため、「昇格」という用語が適切です。
+つまり、すべての入力値を単一の共通型で表すことができます。
+しかし重要なことですが、昇格をオブジェクト指向の（構造的）スーパータイプやJuliaの抽象スーパータイプという概念と混同しないでください。
+昇格は型の階層とは関係がなく、代替的な表現どうしの変換にのみ関係する概念です。
+たとえば、すべての [`Int32`](@ref) の値は[`Float64`](@ref)の値として表現できますが、 `Int32`は`Float64`のサブタイプではありません。
+
 
 
 ```@raw html
@@ -321,6 +329,9 @@ type, or throws an exception if promotion is not possible. The most common use c
 is to convert numeric arguments to a common type:
 -->
 ```
+
+共通の「より大きな」型への昇格をjuliaで実行するには、`promote`関数を使います。
+この関数は、任意の数の引数をとり、同じ数の共通の型に変換された値のタプルを返すか、昇格が不可能な場合は例外を投げます。昇格の一番普通の使い方は、数値の引数を共通の型に変換することです。
 
 ```jldoctest
 julia> promote(1, 2.5)
@@ -354,6 +365,7 @@ promoted to the appropriate kind of complex value.
 -->
 ```
 
+浮動小数点値は、浮動小数点数の引数の型の中で最大のものに昇格されます。整数値は、ネイティブマシンのワードサイズと整数の引数の型の最大のものとのどちらか大きい方に昇格されます。整数と浮動小数点数が混合した場合は、すべての値を保持するのに十分な大きさの浮動小数点型に昇格されます。整数と有理数が混合した場合は有理数に昇格されます。有理数と浮動小数点数の混合した場合は、浮動小数点数に昇格されます。複素数値と実数値の混合した場合は、複素数の適切な型に昇格されます。
 
 ```@raw html
 <!--
@@ -363,6 +375,10 @@ like the arithmetic operators `+`, `-`, `*` and `/`. Here are some of the catch-
 given in [`promotion.jl`](https://github.com/JuliaLang/julia/blob/master/base/promotion.jl):
 -->
 ```
+昇格の使用法についてはこれがすべてです。あとはどのように賢く応用するかという話だけです。
+最も一般的な賢い応用は、 `+`、 `-`、 `*` 、`/`のような算術演算子用の全捕捉メソッドの定義です。
+ここで [`promotion.jl`](https://github.com/JuliaLang/julia/blob/master/base/promotion.jl)で定義された
+全捕捉メソッドの一部を見てみましょう。
 
 ```julia
 +(x::Number, y::Number) = +(promote(x,y)...)
@@ -387,6 +403,14 @@ common type. For example, recall that [`rational.jl`](https://github.com/JuliaLa
 provides the following outer constructor method:
 -->
 ```
+これらのメソッド定義では、数値のペアを加算、減算、乗算、および除算するためのより特化した規則がない場合、値を共通型に昇格してからやり直します。
+これだけです：算術演算の一般的な数値型への昇格を心配する必要はありません。
+それはちょうど自動的に起こります。
+他のいくつかの算術関数や数学関数の全捕捉昇格メソッドの定義が[`promotion.jl`](https://github.com/JuliaLang/julia/blob/master/base/promotion.jl)にありますが、
+それ以外には、Juliaの標準ライブラリで要求される`promote`の呼び出しはほとんどありません。
+外部コンストラクターメソッドで使われる一番普通の`promote`の使い方は、利便性をあげるため、異なる型の混ざったコンストラクター呼び出しを可能にすることでしょう。
+これば、異なる型に対して適切な共通型に昇格し、同じ型のフィールドを持つ内部型に委譲できるようにして実現します。
+たとえば [`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl)によって、いかのような外部コンストラクタメソッドが利用可能になります。
 
 ```julia
 Rational(n::Integer, d::Integer) = Rational(promote(n,d)...)
@@ -398,6 +422,7 @@ Rational(n::Integer, d::Integer) = Rational(promote(n,d)...)
 This allows calls like the following to work:
 -->
 ```
+これにより、次のような呼び出しが可能になります。
 
 ```jldoctest
 julia> Rational(Int8(15),Int32(-5))
@@ -415,6 +440,8 @@ types to constructor functions explicitly, but sometimes, especially for numeric
 can be convenient to do promotion automatically.
 -->
 ```
+
+ほとんどのユーザー定義型では、コンストラクター関数に想定される型をプログラマーに明示的に指定させることを勧めしますが、特に数値問題の場合は、自動的に昇格させるのが便利です。
 
 [](### Defining Promotion Rules)
 ### 昇格規則の定義
