@@ -1301,7 +1301,7 @@ Constructor methods to appropriately handle such mixed cases can be defined, but
 be discussed until later on in [Constructors](@ref man-constructors).
 -->
 ```
-そのような混合したケースを適切に扱うコンストラクタメソッドは定義できますが、後の[Constructors]（@ ref man-constructors）まで議論を保留します。
+そのような混合したケースを適切に扱うコンストラクタメソッドは定義できますが、後の[コンストラクタ]（@ ref man-constructors）まで議論を保留します。
 
 [](### Parametric Abstract Types)
 ### パラメトリック抽象型
