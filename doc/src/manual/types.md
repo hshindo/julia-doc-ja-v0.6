@@ -1690,8 +1690,8 @@ For each type, `T`, the "singleton type" `Type{T}` is an abstract type whose onl
 the object `T`. Since the definition is a little difficult to parse, let's look at some examples:
 -->
 ```
-ここで言及すべきは、特殊なパラメトリック抽象型であるシングルトン型です。
-それぞれの型`T`に対して、 "シングルトン型" `Type{T}`は、インスタンスが`T`唯一つだけの抽象型です。
+ここで、特殊なパラメトリック抽象型であるシングルトン型について触れておくべきでしょう。
+型`T`それぞれに対して、 "シングルトン型" `Type{T}`は、インスタンスが`T`唯一つだけの抽象型です。
 定義を構文解析するのは少し難しいので、いくつかの例を見てみましょう。
 
 ```jldoctest
@@ -1718,7 +1718,7 @@ all type objects as its instances, including, of course, singleton types:
 ```
 
 言い換えると、[`isa(A,Type{B})`](@ref) は、`A`と`B`が同じオブジェクトであり、そのオブジェクトが型であるのみ真です。
-パラメータをつけなければ、`Type`は、単なる抽象型であり、すべての型オブジェクトをそのインスタンスとして持っています（もちろん、シングルトン型も含みます）。
+パラメータをつけない`Type`は、単なる抽象型であり、すべての型オブジェクトをそのインスタンスとします（もちろん、シングルトン型も含みます）。
 
 
 ```jldoctest
@@ -1738,7 +1738,7 @@ true
 Any object that is not a type is not an instance of `Type`:
 -->
 ```
-型でないオブジェクトは、`Type`のインスタンスではありません。
+型ではないオブジェクトは、`Type`のインスタンスではありません。
 
 
 
@@ -1760,8 +1760,8 @@ ones) whose behavior depends on a type that is given as an explicit argument rat
 by the type of one of its arguments.
 -->
 ```
-[パラメトリックメソッド](@ref)と[conversions](@ref conversion-and-promotion)の議論がすむまで、
-シングルトン型の有用性を説明するのは困難ですが、要するに、関数の挙動を特定の型の**値**だけに特化することができるのです。
+[パラメトリックメソッド](@ref)と[変換](@ref conversion-and-promotion)の議論がすむまで、
+シングルトン型がどう役に立つのかを説明するのは難しいですが、手短にいうと、関数の挙動を特定の型の**値**だけに特化することができるのです。
 これは挙動が型に依存する（特にパラメトリックな）メソッドで、その型が暗黙的に推論されるのではなく明示的な引数として与えられるものを書くのに役立ちます。
 
 ```@raw html
@@ -1772,9 +1772,9 @@ applies to Julia's singleton types, but with that caveat that only type objects 
 types.
 -->
 ```
-人気のある言語の中には、Haskell、Scala、Rubyなど、シングルトン型があるものがあります。
-一般的な使用法では、「シングルトンタイプ」という用語は、唯一のインスタンスがで単一の値である型を指します。
-この意味はJuliaのシングルトン型にも当てはまりますが、型オブジェクトだけがシングルトン型を持つという点に注意してください。
+Haskell、Scala、Rubyなどの人気のある言語には、シングルトン型が備わっています。
+通常の用法では、「シングルトン型」という術語は、唯一のインスタンスがで単一の値である型を指します。
+この意味はJuliaのシングルトン型にも当てはまりますが、型オブジェクトだけがシングルトン型になるという点に注意してください。
 
 [](### Parametric Primitive Types)
 ### パラメトリック原始型

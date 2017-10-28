@@ -159,6 +159,10 @@ is to it. For example, the method to convert a real number to a boolean is this:
 -->
 ```
 
+新しく変換を定義するには、`convert()`に新たなメソッドを加えます。それだけです。たとえば、実数をブール値に変換するメソッドは次のとおりです。
+
+
+
 ```julia
 convert(::Type{Bool}, x::Real) = x==0 ? false : x==1 ? true : throw(InexactError())
 ```
@@ -177,6 +181,15 @@ determines whether a numeric value is true or false as a boolean,
 by comparing it to one and zero:
 -->
 ```
+このメソッドの1番目の引数の型は[シングルトン型]（@ ref man-singleton-types） の`Type{Bool}`で、この型の唯一のインスタンスは[`Bool`](@ref)だけです。
+したがって、このメソッドは、最初の引数が型の値である`Bool`の場合にのみ呼び出されます。
+最初の引数の構文に注目してください。
+`::`という記号の前に書くはずの引数名は省略され、型だけを書いています。
+こういったJuliaの関数の引数に対する構文は、引数の値は関数本体でまったく使わないけれど、型の指定はしたい時に使います。
+この例では、型はシングルトンであるため、その値を関数本体内で使用する理由はありません。
+このメソッドを呼び出すと、数値を1および0と比較して、真偽値を決定します。
+
+
 
 ```jldoctest
 julia> convert(Bool, 1)
@@ -202,6 +215,8 @@ especially for parametric types. The example above is meant to be pedagogical, a
 actual Julia behaviour. This is the actual implementation in Julia:
 -->
 ```
+変換メソッドのシグネチャは、この例よりもかなり複雑です。特にパラメトリック型のシグネチャは複雑です。上記の例は教育用で、実際のJuliaの動作ではありません。Juliaの実際の実装はこのようになります。
+
 
 ```julia
 convert(::Type{T}, z::Complex) where {T<:Real} =
