@@ -458,6 +458,12 @@ type. Thus, by defining the rule:
 -->
 ```
 
+原則的には`promote`関数のメソッドを直接定義することができますが、そのためには、すべてのおこりうる引数の型の置換に対して多くの冗長な定義が必要になります。
+その代わりに、`promote`関数の挙動の定義を、`promote_rue`という補助的な関数を使い、メソッドを定義することによって行うことができます。
+この`promote_rule`関数はペアの型オブジェクトを引数に取って、別の型オブジェクトを返します。
+こうして規則を定義することによって、引数型のインスタンスは返される型に昇格されます。
+
+
 ```julia
 promote_rule(::Type{Float64}, ::Type{Float32}) = Float64
 ```
@@ -470,6 +476,10 @@ be promoted to 64-bit floating-point. The promotion type does not need to be one
 types, however; the following promotion rules both occur in Julia's standard library:
 -->
 ```
+
+64ビット浮動小数点数と32ビット浮動小数点数を一緒に昇格するときは、64ビット浮動小数点値に昇格する必要があります。
+ただし、昇格後の型は引数の型の1つである必要はありません。
+Juliaの標準ライブラリでは、次の昇格規則が共に発生します。
 
 ```julia
 promote_rule(::Type{UInt8}, ::Type{Int8}) = Int
@@ -487,6 +497,10 @@ is used in the promotion process.
 -->
 ```
 
+後者の場合、昇格後の型は[`BigInt`](@ref)になります。
+というのも`BigInt`だけが、任意の精度の整数演算に対して整数を保持する大きさを持つの唯一の型だからです。
+`promote_rule(::Type{A}, ::Type{B})`と `promote_rule(::Type{B}, ::Type{A})`の両方を定義する必要はない点に注意してください。`promote_rule`は、昇格の処理の際に、対称性を前提として使われます。
+
 
 ```@raw html
 <!--
@@ -496,6 +510,11 @@ to `promote` should be promoted. Thus, if one wants to know, in absence of actua
 type a collection of values of certain types would promote to, one can use `promote_type`:
 -->
 ```
+この`promote_rule`関数はビルドブロックとして使って、`promote_type`という第2の関数を定義します。
+`promote_type`関数は、任意の数の型オブジェクトを引数にとり、これらの値の共通の型を返します。
+この型は`promote`関数が引数を昇格後にとるべき型となります。
+したがって、実際の値が存在しなくても、`promote_type`を使えば、型の値の集合が昇格するとどんな型になるかを調べることができます。
+
 
 ```jldoctest
 julia> promote_type(Int8, UInt16)
@@ -511,6 +530,10 @@ reader can read the code in [`promotion.jl`](https://github.com/JuliaLang/julia/
 which defines the complete promotion mechanism in about 35 lines.
 -->
 ```
+
+内部的には、`promote_type`は`promote`の内部で、引数値を昇格してどんな型に変換するかを決定するために使用されますが、`promote_type`単体でも有用なことがあります。
+興味のある読者は約35行で完全な昇格の仕組みを定義するコードを [`promotion.jl`](https://github.com/JuliaLang/julia/blob/master/base/promotion.jl)で読むことができます。
+
 
 [](### Case Study: Rational Promotions)
 ### 事例研究: 有理数の昇格
