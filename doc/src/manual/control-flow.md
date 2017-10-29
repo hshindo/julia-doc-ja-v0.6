@@ -1243,7 +1243,7 @@ end
 The `catch` clause is not strictly necessary; when omitted, the default return value is `nothing`.
 -->
 ```
-この`catch`節は厳密には必要ではありません。省略された場合、デフォルトの戻り値は`nothing`です。
+この`catch`節は必ずしも必要ではありません。省略された場合、デフォルトの戻り値は`nothing`です。
 
 
 ```jldoctest
@@ -1259,7 +1259,7 @@ is desirable. Julia provides the [`rethrow()`](@ref), [`backtrace()`](@ref) and 
 functions for more advanced error handling.
 -->
 ```
-`try/catch`文が強力なのは、深く入れ子になった計算から、関数呼び出しを重ねたはるかに高いレベルまで、飛び越えて戻ることができることにあります。エラーが発生していない場合でも、スタックを飛び越えて戻ってより高いレベルに値を渡す機能はほしいものです。
+`try/catch`文が強力なのは、深くネストした計算から、関数呼び出しを重ねたはるかに高いレベルまで、飛び越えて戻ることができることにあります。エラーが発生していない場合でも、スタックを飛び越えて戻ってより高いレベルに値を渡す機能はほしいものです。
 Juliaでは [`rethrow()`](@ref), [`backtrace()`](@ref) and [`catch_backtrace()`](@ref) といった さらに高度なエラー処理のための関数が用意されています。
 
 [](### `finally` Clauses)

@@ -149,7 +149,7 @@ of numbers, and only a very limited subset of them are. Therefore in Julia the d
 function must be used to perform this operation, making it more explicit.
 -->
 ```
-言語の中には文字列を解析して数値とみなしたり、書式付きの数値を変換して文字列とみなしたりするものがありますが、（多くの動的言語では自動的に変換が行われます）、Juliaではそうではありません。文字列の中には数値として解析できるものもありますが、ほとんどの文字列は数値としては妥当な表現ではなく、非常に限られた一部だけです。そのため、Juliaでは、こういった操作は、専用の関数`parse()` を使って明示的に行う必要があります。
+言語の中には文字列を解析して数値とみなしたり、書式付きの数値を変換して文字列とみなしたりするものがありますが、（多くの動的言語では自動的に変換が行われます）、Juliaはそうではありません。文字列の中には数値として解析できるものもありますが、ほとんどの文字列は数値としては妥当な表現ではなく、非常に限られた一部のみです。そのため、Juliaでは、こういった操作は、専用の関数`parse()` を使って明示的に行う必要があります。
 
 [](### Defining New Conversions)
 ### 新しい変換の定義
@@ -218,7 +218,7 @@ especially for parametric types. The example above is meant to be pedagogical, a
 actual Julia behaviour. This is the actual implementation in Julia:
 -->
 ```
-変換メソッドのシグネチャは、この例よりもかなり複雑です。特にパラメトリック型のシグネチャは複雑です。上記の例は教育用で、実際のJuliaの動作ではありません。実際のJuliaの実装はこれです。
+変換メソッドのシグネチャは、この例よりもかなり複雑です。特にパラメトリック型のシグネチャは複雑です。上記の例は教育用で、実際のJuliaの動作ではありません。実際のJuliaの実装はこうです。
 
 
 ```julia
@@ -237,7 +237,7 @@ To continue our case study of Julia's [`Rational`](@ref) type, here are the conv
 right after the declaration of the type and its constructors:
 -->
 ```
-Juliaの[`Rational`](@ref)型についての事例研究を進め、ここでは、[`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl)で宣言されている変換を見てみましょう。これ型とコンストラクタの宣言の直後に書かれています。
+Juliaの[`Rational`](@ref)型の事例研究を継続し、ここでは、[`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl)で宣言されている変換を見てみましょう。これは、型とコンストラクタの宣言の直後に書かれています。
 
 ```julia
 convert(::Type{Rational{T}}, x::Rational) where {T<:Integer} = Rational(convert(T,x.num),convert(T,x.den))
@@ -279,9 +279,9 @@ have `a//b == convert(Rational{Int64}, a/b)`.
 
 最初の4つの変換メソッドは、有理数型への変換を行います。
 第1のメソッドは、分子と分母を適切な整数型に変換して、ある有理数の型から別の有理数の型に変換します。
-第2のメソッドは、分母に1を置いて、整数に対して同じ変換を行います。
-第3のメソッドは、整数比を所与の許容範囲内で浮動小数点数に近似する標準アルゴリズムを実装して、
-第4のメソッドは、所与の機械イプシロンを閾値として第3のメソッドを適用します。
+第2のメソッドは、分母に1を置いて、整数に対して同様な変換を行います。
+第3のメソッドは、整数の比を所与の許容誤差内で浮動小数点数に近似する標準的なアルゴリズムを実装して、
+第4のメソッドは、所与の計算機イプシロンを閾値として第3のメソッドを適用します。
 概ね、`a//b == convert(Rational{Int64}, a/b)`という式が成り立たなければなりません。
 
 
@@ -294,8 +294,8 @@ truncated integer division (rounded towards zero).
 -->
 ```
 最後の2つの変換メソッドは、有理数型から浮動小数点型および整数型への変換を行います。
-浮動小数点数に変換するには、分子と分母の両方を浮動小数点数型に変換してから除算するだけです。
-整数に変換するには、整数の除算を切り捨てる（ゼロに丸められる）`div`演算子を使用できます。
+浮動小数点数に変換するには、分子と分母の両方を浮動小数点数型に変換してから除算するだけいいです。
+整数に変換するには、整数の除算を切り捨てる（ゼロに丸める）`div`演算子を使用できます。
 
 [](## Promotion)
 ## 昇格
