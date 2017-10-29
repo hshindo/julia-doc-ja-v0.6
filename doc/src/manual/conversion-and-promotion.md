@@ -545,6 +545,7 @@ Finally, we finish off our ongoing case study of Julia's rational number type, w
 sophisticated use of the promotion mechanism with the following promotion rules:
 -->
 ```
+とうとう、これまで進めてきたJuliaの有理数型の事例研究が完成します。これは、以下の昇格規則による比較的洗練された手法による昇格メカニズムを利用しています。
 
 ```julia
 promote_rule(::Type{Rational{T}}, ::Type{S}) where {T<:Integer,S<:Integer} = Rational{promote_type(T,S)}
@@ -564,6 +565,9 @@ same type as promoting the numerator/denominator type with the float.
 -->
 ```
 
+第1の規則は、有理数型と整数型を昇格すると、有理数型に昇格し、その分子/分母の型は元の有理数の分子/分母の型と整数型を昇格した型になることを示しています。
+第2の規則は、2つの異なる有理数型を昇格すると、同様の論理を適用して、各有理数型の分子/分母の型を昇格した型分子/分母の型とするような有理数型に昇格することを示しています。
+最後の3つ目の規則は、有理数型と浮動小数点型を昇格すると、浮動小数点型に昇格し、その型は有理数型の分子/分母の型と浮動小数点数型を昇格した結果と同じ型になることを示しています。
 
 ```@raw html
 <!--
@@ -574,3 +578,7 @@ conversion methods and promotion rules in the same manner, any user-defined nume
 just as naturally with Julia's predefined numerics.
 -->
 ```
+この少数の昇格規則と、[前述の変換メソッド]（@ ref man-rational-conversion）だけで十分、有理数型をまったく自然にJuliaの他の数値型、つまり 整数、浮動小数点数、および複素数と共用することが可能になります。
+同様に、適切な変換メソッドと昇格規則によって、ユーザー定義の数値型は、Juliaで事前に定義されている数値型と自然に共用することが可能になります。
+
+    ©2017 GitHub
