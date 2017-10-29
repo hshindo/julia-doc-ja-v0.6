@@ -1,11 +1,22 @@
+[](# Interfaces)
 # Interfaces
 
+
+```@raw html
+<!--
 A lot of the power and extensibility in Julia comes from a collection of informal interfaces.
  By extending a few specific methods to work for a custom type, objects of that type not only
 receive those functionalities, but they are also able to be used in other methods that are written
 to generically build upon those behaviors.
+-->
+```
 
+[](## [Iteration](@id man-interface-iteration))
 ## [Iteration](@id man-interface-iteration)
+
+
+```@raw html
+<!--
 
 | Required methods               |                        | Brief description                                                                     |
 |:------------------------------ |:---------------------- |:------------------------------------------------------------------------------------- |
@@ -31,6 +42,12 @@ to generically build upon those behaviors.
 | `HasEltype()`                                | `eltype(IterType)` |
 | `EltypeUnknown()`                            | (*none*)           |
 
+-->
+```
+
+
+```@raw html
+<!--
 Sequential iteration is implemented by the methods [`start()`](@ref), [`done()`](@ref), and [`next()`](@ref). Instead
 of mutating objects as they are iterated over, Julia provides these three methods to keep track
 of the iteration state externally from the object. The `start(iter)` method returns the initial
@@ -38,9 +55,16 @@ state for the iterable object `iter`. That state gets passed along to `done(iter
 tests if there are any elements remaining, and `next(iter, state)`, which returns a tuple containing
 the current element and an updated `state`. The `state` object can be anything, and is generally
 considered to be an implementation detail private to the iterable object.
+-->
+```
 
+
+```@raw html
+<!--
 Any object defines these three methods is iterable and can be used in the [many functions that rely upon iteration](@ref lib-collections-iteration).
 It can also be used directly in a `for` loop since the syntax:
+-->
+```
 
 ```julia
 for i in iter   # or  "for i = iter"
@@ -48,7 +72,12 @@ for i in iter   # or  "for i = iter"
 end
 ```
 
+
+```@raw html
+<!--
 is translated into:
+-->
+```
 
 ```julia
 state = start(iter)
@@ -58,7 +87,12 @@ while !done(iter, state)
 end
 ```
 
+
+```@raw html
+<!--
 A simple example is an iterable sequence of square numbers with a defined length:
+-->
+```
 
 ```jldoctest squaretype
 julia> struct Squares
@@ -76,8 +110,13 @@ julia> Base.eltype(::Type{Squares}) = Int # Note that this is defined for the ty
 julia> Base.length(S::Squares) = S.count
 ```
 
+
+```@raw html
+<!--
 With only [`start`](@ref), [`next`](@ref), and [`done`](@ref) definitions, the `Squares` type is already pretty powerful.
 We can iterate over all the elements:
+-->
+```
 
 ```jldoctest squaretype
 julia> for i in Squares(7)
@@ -92,7 +131,12 @@ julia> for i in Squares(7)
 49
 ```
 
+
+```@raw html
+<!--
 We can use many of the builtin methods that work with iterables, like [`in()`](@ref), [`mean()`](@ref) and [`std()`](@ref):
+-->
+```
 
 ```jldoctest squaretype
 julia> 25 in Squares(10)
@@ -105,14 +149,24 @@ julia> std(Squares(100))
 3024.355854282583
 ```
 
+
+```@raw html
+<!--
 There are a few more methods we can extend to give Julia more information about this iterable
 collection.  We know that the elements in a `Squares` sequence will always be `Int`. By extending
 the [`eltype()`](@ref) method, we can give that information to Julia and help it make more specialized
 code in the more complicated methods. We also know the number of elements in our sequence, so
 we can extend [`length()`](@ref), too.
+-->
+```
 
+
+```@raw html
+<!--
 Now, when we ask Julia to [`collect()`](@ref) all the elements into an array it can preallocate a `Vector{Int}`
 of the right size instead of blindly [`push!`](@ref)ing each element into a `Vector{Any}`:
+-->
+```
 
 ```jldoctest squaretype
 julia> collect(Squares(10))' # transposed to save space
@@ -120,9 +174,14 @@ julia> collect(Squares(10))' # transposed to save space
  1  4  9  16  25  36  49  64  81  100
 ```
 
+
+```@raw html
+<!--
 While we can rely upon generic implementations, we can also extend specific methods where we know
 there is a simpler algorithm. For example, there's a formula to compute the sum of squares, so
 we can override the generic iterative version with a more performant solution:
+-->
+```
 
 ```jldoctest squaretype
 julia> Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
@@ -131,22 +190,38 @@ julia> sum(Squares(1803))
 1955361914
 ```
 
+
+```@raw html
+<!--
 This is a very common pattern throughout the Julia standard library: a small set of required methods
 define an informal interface that enable many fancier behaviors. In some cases, types will want
 to additionally specialize those extra behaviors when they know a more efficient algorithm can
 be used in their specific case.
+-->
+```
 
+[](## Indexing)
 ## Indexing
 
+
+```@raw html
+<!--
 | Methods to implement | Brief description                |
 |:-------------------- |:-------------------------------- |
 | `getindex(X, i)`     | `X[i]`, indexed element access   |
 | `setindex!(X, v, i)` | `X[i] = v`, indexed assignment   |
 | `endof(X)`           | The last index, used in `X[end]` |
+-->
+```
 
+
+```@raw html
+<!--
 For the `Squares` iterable above, we can easily compute the `i`th element of the sequence by squaring
 it.  We can expose this as an indexing expression `S[i]`. To opt into this behavior, `Squares`
 simply needs to define [`getindex()`](@ref):
+-->
+```
 
 ```jldoctest squaretype
 julia> function Base.getindex(S::Squares, i::Int)
@@ -158,8 +233,13 @@ julia> Squares(100)[23]
 529
 ```
 
+
+```@raw html
+<!--
 Additionally, to support the syntax `S[end]`, we must define [`endof()`](@ref) to specify the last valid
 index:
+-->
+```
 
 ```jldoctest squaretype
 julia> Base.endof(S::Squares) = length(S)
@@ -168,9 +248,14 @@ julia> Squares(23)[end]
 529
 ```
 
+
+```@raw html
+<!--
 Note, though, that the above *only* defines [`getindex()`](@ref) with one integer index. Indexing with
 anything other than an `Int` will throw a [`MethodError`](@ref) saying that there was no matching method.
 In order to support indexing with ranges or vectors of `Int`s, separate methods must be written:
+-->
+```
 
 ```jldoctest squaretype
 julia> Base.getindex(S::Squares, i::Number) = S[convert(Int, i)]
@@ -184,13 +269,22 @@ julia> Squares(10)[[3,4.,5]]
  25
 ```
 
+
+```@raw html
+<!--
 While this is starting to support more of the [indexing operations supported by some of the builtin types](@ref man-array-indexing),
 there's still quite a number of behaviors missing. This `Squares` sequence is starting to look
 more and more like a vector as we've added behaviors to it. Instead of defining all these behaviors
 ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref).
+-->
+```
 
+[](## [Abstract Arrays](@id man-interface-array))
 ## [Abstract Arrays](@id man-interface-array)
 
+
+```@raw html
+<!--
 | Methods to implement                            |                                          | Brief description                                                                     |
 |:----------------------------------------------- |:---------------------------------------- |:------------------------------------------------------------------------------------- |
 | `size(A)`                                       |                                          | Returns a tuple containing the dimensions of `A`                                      |
@@ -212,11 +306,21 @@ ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref
 | `indices(A)`                                    | `map(OneTo, size(A))`                    | Return the `AbstractUnitRange` of valid indices                                       |
 | `Base.similar(A, ::Type{S}, inds::NTuple{Ind})` | `similar(A, S, Base.to_shape(inds))`     | Return a mutable array with the specified indices `inds` (see below)                  |
 | `Base.similar(T::Union{Type,Function}, inds)`   | `T(Base.to_shape(inds))`                 | Return an array similar to `T` with the specified indices `inds` (see below)          |
+-->
+```
 
+
+```@raw html
+<!--
 If a type is defined as a subtype of `AbstractArray`, it inherits a very large set of rich behaviors
 including iteration and multidimensional indexing built on top of single-element access.  See
 the [arrays manual page](@ref man-multi-dim-arrays) and [standard library section](@ref lib-arrays) for more supported methods.
+-->
+```
 
+
+```@raw html
+<!--
 A key part in defining an `AbstractArray` subtype is [`IndexStyle`](@ref). Since indexing is
 such an important part of an array and often occurs in hot loops, it's important to make both
 indexing and indexed assignment as efficient as possible.  Array data structures are typically
@@ -225,7 +329,12 @@ defined in one of two ways: either it most efficiently accesses its elements usi
  These two modalities are identified by Julia as `IndexLinear()` and `IndexCartesian()`.
  Converting a linear index to multiple indexing subscripts is typically very expensive, so this
 provides a traits-based mechanism to enable efficient generic code for all array types.
+-->
+```
 
+
+```@raw html
+<!--
 This distinction determines which scalar indexing methods the type must define. `IndexLinear()`
 arrays are simple: just define `getindex(A::ArrayType, i::Int)`.  When the array is subsequently
 indexed with a multidimensional set of indices, the fallback `getindex(A::AbstractArray, I...)()`
@@ -236,6 +345,8 @@ so it just defines `getindex(A::SparseMatrixCSC, i::Int, j::Int)()`.  The same h
 
 Returning to the sequence of squares from above, we could instead define it as a subtype of an
 `AbstractArray{Int, 1}`:
+-->
+```
 
 ```jldoctest squarevectype
 julia> struct SquaresVector <: AbstractArray{Int, 1}
@@ -249,10 +360,15 @@ julia> Base.IndexStyle(::Type{<:SquaresVector}) = IndexLinear()
 julia> Base.getindex(S::SquaresVector, i::Int) = i*i
 ```
 
+
+```@raw html
+<!--
 Note that it's very important to specify the two parameters of the `AbstractArray`; the first
 defines the [`eltype()`](@ref), and the second defines the [`ndims()`](@ref). That supertype and those three
 methods are all it takes for `SquaresVector` to be an iterable, indexable, and completely functional
 array:
+-->
+```
 
 ```jldoctest squarevectype
 julia> s = SquaresVector(7)
@@ -279,8 +395,13 @@ julia> s ⋅ s # dot(s, s)
 4676
 ```
 
+
+```@raw html
+<!--
 As a more complicated example, let's define our own toy N-dimensional sparse-like array type built
 on top of [`Dict`](@ref):
+-->
+```
 
 ```jldoctest squarevectype
 julia> struct SparseArray{T,N} <: AbstractArray{T,N}
@@ -301,9 +422,14 @@ julia> Base.getindex(A::SparseArray{T,N}, I::Vararg{Int,N}) where {T,N} = get(A.
 julia> Base.setindex!(A::SparseArray{T,N}, v, I::Vararg{Int,N}) where {T,N} = (A.data[I] = v)
 ```
 
+
+```@raw html
+<!--
 Notice that this is an `IndexCartesian` array, so we must manually define [`getindex()`](@ref) and [`setindex!()`](@ref)
 at the dimensionality of the array. Unlike the `SquaresVector`, we are able to define [`setindex!()`](@ref),
 and so we can mutate the array:
+-->
+```
 
 ```jldoctest squarevectype
 julia> A = SparseArray(Float64, 3, 3)
@@ -325,11 +451,16 @@ julia> A[:] = 1:length(A); A
  3.0  6.0  9.0
 ```
 
+
+```@raw html
+<!--
 The result of indexing an `AbstractArray` can itself be an array (for instance when indexing by
 a `Range`). The `AbstractArray` fallback methods use [`similar()`](@ref) to allocate an `Array` of the
 appropriate size and element type, which is filled in using the basic indexing method described
 above. However, when implementing an array wrapper you often want the result to be wrapped as
 well:
+-->
+```
 
 ```jldoctest squarevectype
 julia> A[1:2,:]
@@ -338,11 +469,16 @@ julia> A[1:2,:]
  2.0  5.0  8.0
 ```
 
+
+```@raw html
+<!--
 In this example it is accomplished by defining `Base.similar{T}(A::SparseArray, ::Type{T}, dims::Dims)`
 to create the appropriate wrapped array. (Note that while `similar` supports 1- and 2-argument
 forms, in most case you only need to specialize the 3-argument form.) For this to work it's important
 that `SparseArray` is mutable (supports `setindex!`). Defining `similar()`, `getindex()` and
 `setindex!()` for `SparseArray` also makes it possible to [`copy()`](@ref) the array:
+-->
+```
 
 ```jldoctest squarevectype
 julia> copy(A)
@@ -352,8 +488,13 @@ julia> copy(A)
  3.0  6.0  9.0
 ```
 
+
+```@raw html
+<!--
 In addition to all the iterable and indexable methods from above, these types can also interact
 with each other and use most of the methods defined in the standard library for `AbstractArrays`:
+-->
+```
 
 ```jldoctest squarevectype
 julia> A[SquaresVector(3)]
@@ -366,7 +507,12 @@ julia> dot(A[:,1],A[:,2])
 32.0
 ```
 
+
+```@raw html
+<!--
 If you are defining an array type that allows non-traditional indexing (indices that start at
 something other than 1), you should specialize `indices`. You should also specialize [`similar`](@ref)
 so that the `dims` argument (ordinarily a `Dims` size-tuple) can accept `AbstractUnitRange` objects,
 perhaps range-types `Ind` of your own design. For more information, see [Arrays with custom indices](@ref).
+-->
+```
