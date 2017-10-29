@@ -466,10 +466,10 @@ type. Thus, by defining the rule:
 -->
 ```
 
-原則的には`promote`関数のメソッドを直接定義することができますが、そのためには、すべてのおこりうる引数の型の置換に対して多くの冗長な定義が必要になります。
-その代わりに、`promote`関数の挙動の定義を、`promote_rue`という補助的な関数を使い、メソッドを定義することによって行うことができます。
-この`promote_rule`関数はペアの型オブジェクトを引数に取って、別の型オブジェクトを返します。
-こうして規則を定義することによって、引数型のインスタンスは返される型に昇格されます。
+原理的には`promote`関数のメソッドを直接定義することができますが、そのためには、すべてのおこりうる引数の型の置換に対して多くの冗長な定義が必要になります。
+その代わりに、`promote`関数の挙動の定義を、`promote_rule`という補助的な関数を使ってメソッドを定義することによって行うことができます。
+この`promote_rule`関数は、型オブジェクトのペアを引数に取って、別の型オブジェクトを返しますが、
+これは引数の型のインスタンスが戻り値の型に昇格されることを意図しているので、そのように規則を定義します。
 
 
 ```julia
@@ -486,8 +486,8 @@ types, however; the following promotion rules both occur in Julia's standard lib
 ```
 
 64ビット浮動小数点数と32ビット浮動小数点数を一緒に昇格するときは、64ビット浮動小数点値に昇格する必要があります。
-ただし、昇格後の型は引数の型の1つである必要はありません。
-Juliaの標準ライブラリでは、次の昇格規則が共に発生します。
+しかし昇格後の型は引数の型の1つである必要はありません。
+次の昇格規則は共にJuliaの標準ライブラリにあるものです。
 
 ```julia
 promote_rule(::Type{UInt8}, ::Type{Int8}) = Int
@@ -518,9 +518,9 @@ to `promote` should be promoted. Thus, if one wants to know, in absence of actua
 type a collection of values of certain types would promote to, one can use `promote_type`:
 -->
 ```
-この`promote_rule`関数はビルドブロックとして使って、`promote_type`という第2の関数を定義します。
+`promote_rule`関数を構成要素として使って、`promote_type`という二次的な関数を定義します。
 `promote_type`関数は、任意の数の型オブジェクトを引数にとり、これらの値の共通の型を返します。
-この型は`promote`関数が引数を昇格後にとるべき型となります。
+この型が`promote`関数が引数を昇格後にとるべき型となります。
 したがって、実際の値が存在しなくても、`promote_type`を使えば、型の値の集合が昇格するとどんな型になるかを調べることができます。
 
 
@@ -553,7 +553,7 @@ Finally, we finish off our ongoing case study of Julia's rational number type, w
 sophisticated use of the promotion mechanism with the following promotion rules:
 -->
 ```
-とうとう、これまで進めてきたJuliaの有理数型の事例研究が完成します。これは、以下の昇格規則による比較的洗練された手法による昇格メカニズムを利用しています。
+とうとう、ここまで進めてきたJuliaの有理数型の事例研究が完成します。ここでは、以下の昇格規則による昇格メカニズムを比較的洗練された手法で利用しています。
 
 ```julia
 promote_rule(::Type{Rational{T}}, ::Type{S}) where {T<:Integer,S<:Integer} = Rational{promote_type(T,S)}
@@ -574,7 +574,7 @@ same type as promoting the numerator/denominator type with the float.
 ```
 
 第1の規則は、有理数型と整数型を昇格すると、有理数型に昇格し、その分子/分母の型は元の有理数の分子/分母の型と整数型を昇格した型になることを示しています。
-第2の規則は、2つの異なる有理数型を昇格すると、同様の論理を適用して、各有理数型の分子/分母の型を昇格した型分子/分母の型とするような有理数型に昇格することを示しています。
+第2の規則は、2つの異なる有理数型を昇格すると、同様の論理を適用して、各有理数型の分子/分母の型を昇格した型を分子/分母の型とするような有理数型に昇格することを示しています。
 最後の3つ目の規則は、有理数型と浮動小数点型を昇格すると、浮動小数点型に昇格し、その型は有理数型の分子/分母の型と浮動小数点数型を昇格した結果と同じ型になることを示しています。
 
 ```@raw html
@@ -586,7 +586,7 @@ conversion methods and promotion rules in the same manner, any user-defined nume
 just as naturally with Julia's predefined numerics.
 -->
 ```
-この少数の昇格規則と、[前述の変換メソッド]（@ ref man-rational-conversion）だけで十分、有理数型をまったく自然にJuliaの他の数値型、つまり 整数、浮動小数点数、および複素数と共用することが可能になります。
-同様に、適切な変換メソッドと昇格規則によって、ユーザー定義の数値型は、Juliaで事前に定義されている数値型と自然に共用することが可能になります。
+この少数の昇格規則と、[前述の変換メソッド]（@ ref man-rational-conversion）だけで十分、有理数型をとても自然にJuliaの他の数値型、つまり 整数、浮動小数点数、複素数と一緒に使うことができます。
+同様に、適切な変換メソッドと昇格規則を定義すれば、どんなユーザー定義の数値型でも自然に、Juliaで事前定義されている数値型と一緒に使うことができます。
 
     ©2017 GitHub
