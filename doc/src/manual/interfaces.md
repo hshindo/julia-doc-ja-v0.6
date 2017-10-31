@@ -1,5 +1,5 @@
 [](# Interfaces)
-# Interfaces
+# インターフェース
 
 
 ```@raw html
@@ -11,8 +11,13 @@ to generically build upon those behaviors.
 -->
 ```
 
+Juliaの力と拡張性の多くは、さまざまなさしあたりのインターフェースに由来します。
+独自の型に特化して動くメソッドを(汎化的に)拡張すると、その型のオブジェクトから利用できるだけでなく、汎化的に記述された他のメソッドからも使用できます。
+
+
+
 [](## [Iteration](@id man-interface-iteration))
-## [Iteration](@id man-interface-iteration)
+## [繰返し](@id man-interface-iteration)
 
 
 ```@raw html
@@ -44,6 +49,29 @@ to generically build upon those behaviors.
 
 -->
 ```
+| 必須メソッド               |                        | 概説                                                                     |
+|:------------------------------ |:---------------------- |:------------------------------------------------------------------------------------- |
+| `start(iter)`                  |                        | 繰り返しの初期状態を返します。                                                   |
+| `next(iter, state)`            |                        | 現在のアイテムと次の状態を返します。                                           |
+| `done(iter, state)`            |                        | 残りのアイテムがあるかどうか検査します。                                                |
+| **重要な必須ではないメソッド** | **デフォルトのメソッド** | **概説**                                                                 |
+| `iteratorsize(IterType)`       | `HasLength()`          | `HasLength()`, `HasShape()`, `IsInfinite()`,  `SizeUnknown()` の中で適切なもの一つ|
+| `iteratoreltype(IterType)`     | `HasEltype()`          | `EltypeUnknown()`と`HasEltype()`のどちらか適切のもの                              |
+| `eltype(IterType)`             | `Any`                  | `next()`が返すアイテムの型                                               |
+| `length(iter)`                 | (*undefined*)          | アイテムの数(既知の場合)                                                         |
+| `size(iter, [dim...])`         | (*undefined*)          | 各次元のアイテムの数(既知の場合)                                           |
+
+| `iteratorsize(IterType)`の戻り値 | 必要なメソッド                           |
+|:------------------------------------------ |:------------------------------------------ |
+| `HasLength()`                              | `length(iter)`                             |
+| `HasShape()`                               | `length(iter)`と`size(iter, [dim...])` |
+| `IsInfinite()`                             | (*none*)                                   |
+| `SizeUnknown()`                            | (*none*)                                   |
+
+|  `iteratoreltype(IterType)`の戻り値  |必要なメソッド  |
+|:-------------------------------------------- |:------------------ |
+| `HasEltype()`                                | `eltype(IterType)` |
+| `EltypeUnknown()`                            | (*none*)           |
 
 
 ```@raw html
@@ -57,6 +85,13 @@ the current element and an updated `state`. The `state` object can be anything, 
 considered to be an implementation detail private to the iterable object.
 -->
 ```
+順次行われる繰返しは、[`start()`](@ref), [`done()`](@ref),[`next()`] (@ref) のメソッドによって実装されます。
+Juliaでの繰返しは、処理の行われるオブジェクトに変更を加えるのではなく、これらの3つのメソッドを使用して、オブジェクトの外部から繰り返しの状態を追跡します。
+この`start(iter)`メソッドは、イテラブルオブジェクト`iter`の初期状態を返します。
+その状態は`done(iter, state)`や`next(iter, state)`に渡されます。
+`done(iter, state)`は残りの要素があるかどうかを検査し、`next(iter, state)`は現在の要素と更新された`state`オブジェクトを含むタプルを返します。
+`state`オブジェクトは何でも構いませんが、通常はイテラブルオブジェクト内でプライベートな実装の詳細であると考えられています。
+
 
 
 ```@raw html
@@ -65,6 +100,9 @@ Any object defines these three methods is iterable and can be used in the [many 
 It can also be used directly in a `for` loop since the syntax:
 -->
 ```
+これらの3つのメソッドを定義するオブジェクトはすべてイテラブルであり、[繰返しに依存する多くの関数]（@ ref lib-collections-iteration）で使用できます。
+また以下の構文から`for`ループ内で直接使用することもできます。
+
 
 ```julia
 for i in iter   # or  "for i = iter"
@@ -78,6 +116,7 @@ end
 is translated into:
 -->
 ```
+はこのように変換されます。
 
 ```julia
 state = start(iter)
@@ -93,6 +132,8 @@ end
 A simple example is an iterable sequence of square numbers with a defined length:
 -->
 ```
+簡単な例は、長さの決まった平方数のイテラブルなシーケンスです。
+
 
 ```jldoctest squaretype
 julia> struct Squares
@@ -117,6 +158,9 @@ With only [`start`](@ref), [`next`](@ref), and [`done`](@ref) definitions, the `
 We can iterate over all the elements:
 -->
 ```
+[`start`](@ref), [`next`](@ref),  [`done`](@ref) の定義だけでも、`Squares`型はすでにかなり強力です。
+すべての要素を繰り返し処理を行えます。
+
 
 ```jldoctest squaretype
 julia> for i in Squares(7)
@@ -137,6 +181,8 @@ julia> for i in Squares(7)
 We can use many of the builtin methods that work with iterables, like [`in()`](@ref), [`mean()`](@ref) and [`std()`](@ref):
 -->
 ```
+[`in()`](@ref), [`mean()`](@ref), [`std()`](@ref) のような多くの標準装備のメソッドがイテラブルオブジェクトで動作します。
+
 
 ```jldoctest squaretype
 julia> 25 in Squares(10)
@@ -159,6 +205,11 @@ code in the more complicated methods. We also know the number of elements in our
 we can extend [`length()`](@ref), too.
 -->
 ```
+イテラブルコレクションについて詳しい情報を与えるような拡張のできるメソッドがJuliaにいくつかあります。
+`Squares`シーケンス内の要素は常に`Int`であることがわかります。
+ [`eltype()`](@ref)メソッドを拡張し、この情報をJuliaに渡して、より複雑なメソッドでより特化したコードを作成することができます。
+シーケンスの要素数もわかっているので[`length()`](@ref)も拡張することもできます。
+
 
 
 ```@raw html
@@ -167,6 +218,9 @@ Now, when we ask Julia to [`collect()`](@ref) all the elements into an array it 
 of the right size instead of blindly [`push!`](@ref)ing each element into a `Vector{Any}`:
 -->
 ```
+ここまでくれば、Juliaで、 すべての要素を[`collect()`](@ref) によって、配列化し
+`Vector{Int}`に 正しいサイズに事前に割り当てることができます。[`push!`](@ref)を使って盲目的に各要素を`Vector{Any}`におしこまなくてもよいのです。
+
 
 ```jldoctest squaretype
 julia> collect(Squares(10))' # transposed to save space
@@ -182,6 +236,9 @@ there is a simpler algorithm. For example, there's a formula to compute the sum 
 we can override the generic iterative version with a more performant solution:
 -->
 ```
+汎用的な実装に使うこともできますが、より単純なアルゴリズムがあると知っている場合は特化したメソッドに拡張することもできます。
+たとえば、平方和を算出する公式があれば、一般的な繰返しをより効果的な解法で上書きすることができます。
+
 
 ```jldoctest squaretype
 julia> Base.sum(S::Squares) = (n = S.count; return n*(n+1)*(2n+1)÷6)
@@ -199,6 +256,9 @@ to additionally specialize those extra behaviors when they know a more efficient
 be used in their specific case.
 -->
 ```
+これは、Julia標準ライブラリ全体で非常によくあるパターンです。
+少数の必須メソッドは、多くのより魅力的な動作を可能にするさしあたりのインターフェイスを定義します。
+より効率的なアルゴリズムを使用でき場合には、さらに型に特化した動作をさせることができます。
 
 [](## Indexing)
 ## Indexing
