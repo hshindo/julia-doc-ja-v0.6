@@ -261,7 +261,7 @@ be used in their specific case.
 より効率的なアルゴリズムを使用でき場合には、さらに型に特化した動作をさせることができます。
 
 [](## Indexing)
-## Indexing
+## インデックス付け
 
 
 ```@raw html
@@ -274,6 +274,12 @@ be used in their specific case.
 -->
 ```
 
+| 実装すべきメソッド | 概説                |
+|:-------------------- |:-------------------------------- |
+| `getindex(X, i)`     | `X[i]`, インデックスによる要素の参照   |
+| `setindex!(X, v, i)` | `X[i] = v`,  インデックスによる代入   |
+| `endof(X)`           | インデックスの最後尾,  `X[end]`で使われる |
+
 
 ```@raw html
 <!--
@@ -282,6 +288,10 @@ it.  We can expose this as an indexing expression `S[i]`. To opt into this behav
 simply needs to define [`getindex()`](@ref):
 -->
 ```
+上記の`Squares`イテラブルでは、シーケンスの第`i`要素を2乗によって簡単に算出することができます。
+これを`S[i]`というインデックス式として公開することができます。
+この振る舞いを選択するには、`Squares` に対して [`getindex()`](@ref) を定義する必要があるだけです。
+
 
 ```jldoctest squaretype
 julia> function Base.getindex(S::Squares, i::Int)
@@ -300,6 +310,8 @@ Additionally, to support the syntax `S[end]`, we must define [`endof()`](@ref) t
 index:
 -->
 ```
+さらに、`S[end]`構文を使えるようにするには、[`endof()`](@ref)を定義して有効な最後尾のインデックスを指定する必要があります。
+
 
 ```jldoctest squaretype
 julia> Base.endof(S::Squares) = length(S)
@@ -316,6 +328,10 @@ anything other than an `Int` will throw a [`MethodError`](@ref) saying that ther
 In order to support indexing with ranges or vectors of `Int`s, separate methods must be written:
 -->
 ```
+ただし、上記は [`getindex()`](@ref) を1つの整数インデックスで**のみ**定義していることに注意してください。
+`Int`以外のものを使ってインデックスを使うと [`MethodError`](@ref) を投げて、適合するメソッドが存在しないというメッセージが表示されるでしょう。
+範囲や`Int`のベクトルに対してインデックスをつかう場合は、別のメソッドを記述する必要があります。
+
 
 ```jldoctest squaretype
 julia> Base.getindex(S::Squares, i::Number) = S[convert(Int, i)]
@@ -338,9 +354,12 @@ more and more like a vector as we've added behaviors to it. Instead of defining 
 ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref).
 -->
 ```
+これは、[一部の標準装備の型で可能なインデックス作成操作]（@ ref man-array-indexing）をがかなり使えるようになり始めていますが、依然として動作しないものが多くあります。
+この`Squares`シーケンスは、さらに動作を付加してやると、ますますベクトルのように見え始めています。
+これらの動作すべてを自分たちで定義するのではなく、正式に [`AbstractArray`](@ref)のサブタイプとして定義することができます。
 
 [](## [Abstract Arrays](@id man-interface-array))
-## [Abstract Arrays](@id man-interface-array)
+## [抽象配列](@id man-interface-array)
 
 
 ```@raw html
