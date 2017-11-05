@@ -12,7 +12,7 @@ to generically build upon those behaviors.
 ```
 
 Juliaに仮に実装されている様々なインターフェースは、この言語の力と拡張性の源となっています。
-このインターフェースをさらに独自の型に特化して動作するメソッドに拡張すると、その型のオブジェクトでは、特化したメソッドは直接呼び出しても、そのメソッドを使って汎化的に記述されたメソッドの中でも機能します。
+このインターフェースを独自型に特化したメソッドに拡張すると、そのメソッドは直接呼び出す場合はもちろん、そのメソッドを使っている他のメソッドで汎化的に記述されたものの内部でも、その型のオブジェクトでは機能します。
 
 
 
@@ -288,9 +288,9 @@ it.  We can expose this as an indexing expression `S[i]`. To opt into this behav
 simply needs to define [`getindex()`](@ref):
 -->
 ```
-上記の`Squares`イテラブルでは、シーケンスの第`i`要素を2乗によって簡単に算出することができます。
-これを`S[i]`というインデックス式として公開することができます。
-この振る舞いを選択するには、`Squares` に対して [`getindex()`](@ref) を定義する必要があるだけです。
+上記の`Squares`イテラブルでは、数列の`i`番目は、2乗すれば簡単に算出できます。
+`S[i]`というインデックス式で、これを公開することができです。
+`Squares` に[`getindex()`](@ref) を定義すればいいだけです。
 
 
 ```jldoctest squaretype
@@ -354,9 +354,9 @@ more and more like a vector as we've added behaviors to it. Instead of defining 
 ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref).
 -->
 ```
-これは、[一部の標準装備の型で可能なインデックス作成操作]（@ ref man-array-indexing）をがかなり使えるようになり始めていますが、依然として動作しないものが多くあります。
-この`Squares`シーケンスは、さらに動作を付加してやると、ますますベクトルのように見え始めています。
-これらの動作すべてを自分たちで定義するのではなく、正式に [`AbstractArray`](@ref)のサブタイプとして定義することができます。
+[一部の標準装備の型で可能なインデックス操作]（@ ref man-array-indexing）をがけっこう使えるようになりましたが、依然として動作しないものが多くあります。
+この`Squares`シーケンスに、もっと動作を加えると、ますますベクトルのように見えます。
+これらの動作はすべてを自前で定義しなくても、正式な [`AbstractArray`](@ref)のサブタイプとして定義することができます。
 
 [](## [Abstract Arrays](@id man-interface-array))
 ## [抽象配列](@id man-interface-array)
@@ -390,7 +390,7 @@ ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref
 | 実装すべきメソッド                            |                                          | 概説                                                                     |
 |:----------------------------------------------- |:---------------------------------------- |:------------------------------------------------------------------------------------- |
 | `size(A)`                                       |                                          | `A`の次元を含むタプルを返す                                      |
-| `getindex(A, i::Int)`                           |                                          | ( `IndexLinear`インデックスが一次の場合)一次のスカラインデックスによる読取                                              |
+| `getindex(A, i::Int)`                           |                                          | ( `IndexLinear`インデックスが一次の場合)一次のスカラインデックスによる参照                                              |
 | `getindex(A, I::Vararg{Int, N})`                |                                          | ( `IndexCartesian`,インデックスが多次元で`N = ndims(A)`次元がNの場合) N次元のスカラインデックス                 |
 | `setindex!(A, v, i::Int)`                       |                                          | ( `IndexLinear`インデックスが一次の場合) 一次のスカラインデックスによる代入                                           |
 | `setindex!(A, v, I::Vararg{Int, N})`            |                                          | ( `IndexCartesian`, インデックスが多次元で `N = ndims(A)`次元がNの場合) N次元の スカラインデックスによる代入       |
@@ -455,7 +455,7 @@ provides a traits-based mechanism to enable efficient generic code for all array
 -->
 ```
 `AbstractArray`のサブタイプを定義するときに重要な部分は[`IndexStyle`](@ref) です。
-インデックスは配列の重要な部分であり、頻繁にループで使わわれるため、インデックスによる読取と代入をできるだけ効率的に行うことは重要です。
+インデックスは配列の重要な部分であり、頻繁にループで使わわれるため、インデックスによる参照と代入をできるだけ効率的に行うことは重要です。
 配列のデータ構造は、通常、２つの方法のいずれかで定義されます。
 一方は、インデックス（線形インデクシング）をただ一つ使用して要素にアクセスする最も効率のよい方法で、もう一方は、本質的にはすべての次元に対してインデックスを指定して要素にアクセスする方法です。
 これらの2つのモードは、Juliaでは`IndexLinear()`と`IndexCartesian()`によって同定されます。
