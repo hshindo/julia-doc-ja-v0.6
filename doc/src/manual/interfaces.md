@@ -12,7 +12,7 @@ to generically build upon those behaviors.
 ```
 
 Juliaに仮に実装されている様々なインターフェースは、この言語の力と拡張性の源となっています。
-このインターフェースを独自型に特化したメソッドに拡張すると、そのメソッドは直接呼び出す場合はもちろん、そのメソッドを使っている他のメソッドで汎化的に記述されたものの内部でも、その型のオブジェクトでは機能します。
+このインターフェースを独自型に特化したメソッドに拡張すると、その型のオブジェクトでは、特化したメソッドは直接呼び出しても、そのメソッドを利用して汎化的に記述されたメソッドの中でも機能します。
 
 
 
@@ -367,7 +367,7 @@ ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref
 | Methods to implement                            |                                          | Brief description                                                                     |
 |:----------------------------------------------- |:---------------------------------------- |:------------------------------------------------------------------------------------- |
 | `size(A)`                                       |                                          | Returns a tuple containing the dimensions of `A`                                      |
-| `getindex(A, i::Int)`                           |                                          | (if `IndexLinear`) Linear scalar indexing                                              |
+| `getindex(A, i::Int)`                           |                                      ｓ    | (if `IndexLinear`) Linear scalar indexing                                              |
 | `getindex(A, I::Vararg{Int, N})`                |                                          | (if `IndexCartesian`, where `N = ndims(A)`) N-dimensional scalar indexing                 |
 | `setindex!(A, v, i::Int)`                       |                                          | (if `IndexLinear`) Scalar indexed assignment                                           |
 | `setindex!(A, v, I::Vararg{Int, N})`            |                                          | (if `IndexCartesian`, where `N = ndims(A)`) N-dimensional scalar indexed assignment       |
@@ -390,46 +390,25 @@ ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref
 | 実装すべきメソッド                            |                                          | 概説                                                                     |
 |:----------------------------------------------- |:---------------------------------------- |:------------------------------------------------------------------------------------- |
 | `size(A)`                                       |                                          | `A`の次元を含むタプルを返す                                      |
-| `getindex(A, i::Int)`                           |                                          | ( `IndexLinear`インデックスが一次の場合)一次のスカラインデックスによる参照                                              |
-| `getindex(A, I::Vararg{Int, N})`                |                                          | ( `IndexCartesian`,インデックスが多次元で`N = ndims(A)`次元がNの場合) N次元のスカラインデックス                 |
-| `setindex!(A, v, i::Int)`                       |                                          | ( `IndexLinear`インデックスが一次の場合) 一次のスカラインデックスによる代入                                           |
-| `setindex!(A, v, I::Vararg{Int, N})`            |                                          | ( `IndexCartesian`, インデックスが多次元で `N = ndims(A)`次元がNの場合) N次元の スカラインデックスによる代入       |
+| `getindex(A, i::Int)`                           |                                          | ( `IndexLinear`)一次のスカラインデックスによる参照                                              |
+| `getindex(A, I::Vararg{Int, N})`                |                                          | ( `IndexCartesian`,`N = ndims(A)`) N次元のスカラインデックスにによる参照                |
+| `setindex!(A, v, i::Int)`                       |                                          | ( `IndexLinear`) 一次のスカラインデックスによる代入                                           |
+| `setindex!(A, v, I::Vararg{Int, N})`            |                                          | ( `IndexCartesian`, `N = ndims(A)`) N次元のスカラインデックスによる代入       |
 | **省略可能なメソッド**                            | **デフォルトの定義**                   | **概説**                                                                 |
-| `IndexStyle(::Type)`                            | `IndexCartesian()`                       | Returns either `IndexLinear()` or `IndexCartesian()`. See the description below.      |
-| `getindex(A, I...)`                             | defined in terms of scalar `getindex()`  | [Multidimensional and nonscalar indexing](@ref man-array-indexing)                    |
-| `setindex!(A, I...)`                            | defined in terms of scalar `setindex!()` | [Multidimensional and nonscalar indexed assignment](@ref man-array-indexing)          |
-| `start()`/`next()`/`done()`                     | defined in terms of scalar `getindex()`  | Iteration                                                                             |
-| `length(A)`                                     | `prod(size(A))`                          | Number of elements                                                                    |
-| `similar(A)`                                    | `similar(A, eltype(A), size(A))`         | Return a mutable array with the same shape and element type                           |
-| `similar(A, ::Type{S})`                         | `similar(A, S, size(A))`                 | Return a mutable array with the same shape and the specified element type             |
-| `similar(A, dims::NTuple{Int})`                 | `similar(A, eltype(A), dims)`            | Return a mutable array with the same element type and size *dims*                     |
-| `similar(A, ::Type{S}, dims::NTuple{Int})`      | `Array{S}(dims)`                         | Return a mutable array with the specified element type and size                       |
-| **Non-traditional indices**                     | **Default definition**                   | **Brief description**                                                                 |
-| `indices(A)`                                    | `map(OneTo, size(A))`                    | Return the `AbstractUnitRange` of valid indices                                       |
-| `Base.similar(A, ::Type{S}, inds::NTuple{Ind})` | `similar(A, S, Base.to_shape(inds))`     | Return a mutable array with the specified indices `inds` (see below)                  |
-| `Base.similar(T::Union{Type,Function}, inds)`   | `T(Base.to_shape(inds))`                 | Return an array similar to `T` with the specified indices `inds` (see below)          |
+| `IndexStyle(::Type)`                            | `IndexCartesian()`                       |  `IndexLinear()` と `IndexCartesian()`のどちらかを返す。下記参照      |
+| `getindex(A, I...)`                             | スカラーの  `getindex()`による定義  | [多次元で非スカラーのインデックスによる参照](@ref man-array-indexing)                    |
+| `setindex!(A, I...)`                            | スカラーの `setindex!()`による定義 | [多次元で非スカラーのインデックスによる代入](@ref man-array-indexing)          |
+| `start()`/`next()`/`done()`                     | スカラーの `getindex()`による定義  | 繰返し                                                                             |
+| `length(A)`                                     | `prod(size(A))`                          | 要素の数                                                                    |
+| `similar(A)`                                    | `similar(A, eltype(A), size(A))`         | 同形・同要素型の可変配列を返す                          |
+| `similar(A, ::Type{S})`                         | `similar(A, S, size(A))`                 | 同形・指定要素型の可変配列を返す|
+| `similar(A, dims::NTuple{Int})`                 | `similar(A, eltype(A), dims)`            | 同要素型でサイズ**dims**の可変配列を返す |
+| `similar(A, ::Type{S}, dims::NTuple{Int})`      | `Array{S}(dims)`                         | 指定形・指定要素型の可変配列を返す|
+| **通常とは異なるインデックス**                     | **デフォルトの定義**                   | **概説**                                                                 |
+| `indices(A)`                                    | `map(OneTo, size(A))`                    | 妥当なインデックスの`AbstractUnitRange`を返す                                       |
+| `Base.similar(A, ::Type{S}, inds::NTuple{Ind})` | `similar(A, S, Base.to_shape(inds))`     | `inds`で指定したインデックスの可変配列を返す (下記参照)                  |
+| `Base.similar(T::Union{Type,Function}, inds)`   | `T(Base.to_shape(inds))`                 | `inds`で指定したインデックスの`T`と同様な可変配列を返す (下記参照)          |
 
-
-実装方法 	  	簡単な説明
-size(A) 	  	次元を含むタプルを返します。 A
-getindex(A, i::Int) 	  	（if IndexLinear）リニアスカラーインデックス
-getindex(A, I::Vararg{Int, N}) 	  	（if IndexCartesian、where N = ndims(A)）N次元のスカラ索引付け
-setindex!(A, v, i::Int) 	  	（if IndexLinear）スカラインデックス付き割り当て
-setindex!(A, v, I::Vararg{Int, N}) 	  	（if IndexCartesian、where N = ndims(A)）N次元のスカラ索引付け
-オプションのメソッド 	デフォルト定義 	簡単な説明
-IndexStyle(::Type) 	IndexCartesian() 	いずれかIndexLinear()またはを返しますIndexCartesian()。以下の説明を参照してください。
-getindex(A, I...) 	スカラーの観点から定義される getindex() 	[多次元および非スカラーのインデックス作成]（@ ref man-array-indexing）
-setindex!(A, I...) 	スカラーの観点から定義される setindex!() 	[多次元および非スカラーのインデックス割り当て]（@ ref man-array-indexing）
-start()/ next()/done() 	スカラーの観点から定義される getindex() 	反復
-length(A) 	prod(size(A)) 	要素の数
-similar(A) 	similar(A, eltype(A), size(A)) 	同じ形状と要素の型を持つ可変配列を返す
-similar(A, ::Type{S}) 	similar(A, S, size(A)) 	同じ形状と指定された要素型の変更可能な配列を返します。
-similar(A, dims::NTuple{Int}) 	similar(A, eltype(A), dims) 	同じ要素型とサイズを可変配列を返し暗くなります
-similar(A, ::Type{S}, dims::NTuple{Int}) 	Array{S}(dims) 	指定された要素の型とサイズを持つ変更可能な配列を返します。
-非伝統的な指標 	デフォルト定義 	簡単な説明
-indices(A) 	map(OneTo, size(A)) 	AbstractUnitRange有効なインデックスを返します。
-Base.similar(A, ::Type{S}, inds::NTuple{Ind}) 	similar(A, S, Base.to_shape(inds)) 	指定されたインデックスを持つ変更可能な配列を返しますinds（下記参照）
-Base.similar(T::Union{Type,Function}, inds)
 
 ```@raw html
 <!--
