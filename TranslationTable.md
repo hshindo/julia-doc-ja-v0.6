@@ -209,3 +209,6 @@
 | not　strictly necessary                         | 必須ではない、必ずしも必要ない                              
 | building block                                  | 構成要素                                                    
 | dedicated                                       | 専用の                                                      
+|informal interface	|仮に実装されたインターフェース
+|indexing         	|インデックスによる参照
+|indexed assignment	|インデックスによる代入
