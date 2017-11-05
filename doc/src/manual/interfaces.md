@@ -390,9 +390,9 @@ ourselves, we can officially define it as a subtype of an [`AbstractArray`](@ref
 | 実装すべきメソッド                            |                                          | 概説                                                                     |
 |:----------------------------------------------- |:---------------------------------------- |:------------------------------------------------------------------------------------- |
 | `size(A)`                                       |                                          | `A`の次元を含むタプルを返す                                      |
-| `getindex(A, i::Int)`                           |                                          | ( `IndexLinear`)一次のスカラインデックスによる参照                                              |
+| `getindex(A, i::Int)`                           |                                          | ( `IndexLinear`)線形スカラインデックスによる参照                                              |
 | `getindex(A, I::Vararg{Int, N})`                |                                          | ( `IndexCartesian`,`N = ndims(A)`) N次元のスカラインデックスにによる参照                |
-| `setindex!(A, v, i::Int)`                       |                                          | ( `IndexLinear`) 一次のスカラインデックスによる代入                                           |
+| `setindex!(A, v, i::Int)`                       |                                          | ( `IndexLinear`) 線形スカラインデックスによる代入                                           |
 | `setindex!(A, v, I::Vararg{Int, N})`            |                                          | ( `IndexCartesian`, `N = ndims(A)`) N次元のスカラインデックスによる代入       |
 | **省略可能なメソッド**                            | **デフォルトの定義**                   | **概説**                                                                 |
 | `IndexStyle(::Type)`                            | `IndexCartesian()`                       |  `IndexLinear()` と `IndexCartesian()`のどちらかを返す。下記参照      |
@@ -416,8 +416,9 @@ If a type is defined as a subtype of `AbstractArray`, it inherits a very large s
 including iteration and multidimensional indexing built on top of single-element access.  See
 the [arrays manual page](@ref man-multi-dim-arrays) and [standard library section](@ref lib-arrays) for more supported methods.
 -->
-型が`AbstractArray`のサブタイプとして定義されている場合は、1要素アクセスの上に構築された反復処理および多次元索引付けを含む非常に大きな一連の多様な動作を継承します。
-利用可能なその他のメソッドについては、[多次元配列のマニュアルページ]（@ ref man-multi-dim-arrays）と[標準ライブラリの配列のセクション]（@ ref lib-arrays）を参照してください。
+```
+`AbstractArray`のサブタイプとして定義された型は、多様な動作を数多く継承していて、反復処理や、1要素アクセスをもとに構築された多次元インデックスなどが利用できます。
+その他の利用可能なメソッドについては、[多次元配列のマニュアルページ]（@ ref man-multi-dim-arrays）と[標準ライブラリの配列のセクション]（@ ref lib-arrays）を参照してください。
 
 
 
@@ -433,12 +434,12 @@ defined in one of two ways: either it most efficiently accesses its elements usi
 provides a traits-based mechanism to enable efficient generic code for all array types.
 -->
 ```
-`AbstractArray`のサブタイプを定義するときに重要な部分は[`IndexStyle`](@ref) です。
-インデックスは配列の重要な部分であり、頻繁にループで使わわれるため、インデックスによる参照と代入をできるだけ効率的に行うことは重要です。
-配列のデータ構造は、通常、２つの方法のいずれかで定義されます。
-一方は、インデックス（線形インデクシング）をただ一つ使用して要素にアクセスする最も効率のよい方法で、もう一方は、本質的にはすべての次元に対してインデックスを指定して要素にアクセスする方法です。
+`AbstractArray`のサブタイプの定義で重要な部分は[`IndexStyle`](@ref) です。
+インデックスは配列の重要な部分であり、頻繁にループで使わわれるため、インデックスによる参照と代入をできる限り効率的に行うことは重要です。
+配列のデータ構造は、通常、２つの手法のいずれかが定義に採用されます。
+一方は、インデックス（線形インデクシング）をただ一つ使用して要素にアクセスする最も効率のよい手法で、もう一方は、本質的にはすべての次元に対してインデックスを指定して要素にアクセスする手法です。
 これらの2つのモードは、Juliaでは`IndexLinear()`と`IndexCartesian()`によって同定されます。
-線形インデックスを多重インデックスの添字に変換するのは、通常非常にコストがかかるので、すべての配列の型に対して効率的な汎化的なコードを可能にするトレイトを使ったメカニズムを提供します。
+線形インデックスを多重インデックスの添字に変換するのは、通常非常にコストがかかるので、すべての配列の型に対して効率的で汎化的なコードを可能にするトレイトを使ったメカニズムが備わっています。
 
 
 
@@ -455,7 +456,7 @@ so it just defines `getindex(A::SparseMatrixCSC, i::Int, j::Int)()`.  The same h
 ```
 この`IndexStyle`の違いによって、どのスカラーインデックスのメソッドを型に対して定義しなければならないかが決定します。
 `IndexLinear()`の配列は単純で、`getindex(A::ArrayType, i::Int)`を定義するだけです。
-配列が多次元でインデックスの集合によって順次インデックス付けされている場合、フォールバックの`getindex(A::AbstractArray, I...)()` はインデックスを一次インデックスひとつに効率的に変換し、上記のメソッドを呼び出します。
+配列が多次元で複数のインデックスによってインデックス付けされている場合、フォールバックの`getindex(A::AbstractArray, I...)()` はインデックスを線形インデックスひとつに効率的に変換し、上記のメソッドを呼び出します。
 一方、`IndexCartesian()` の配列は、`ndims(A)`、`Int`の指定によって利用可能となる次元すべてに対して、メソッドを定義する必要があります。
 たとえば、標準装備の`SparseMatrixCSC`型は2次元しか利用可能ではないため、`getindex(A::SparseMatrixCSC, i::Int, j::Int)()`だけを定義しています。`setindex!()`に関しても同様です。
 
@@ -468,7 +469,7 @@ Returning to the sequence of squares from above, we could instead define it as a
 `AbstractArray{Int, 1}`:
 -->
 ```
-上記の二乗の数列に戻ると、別の定義として、`AbstractArray{Int, 1}`のサブタイプを定義することもできます。
+上記の二乗の数列に戻ると、別の手法として`AbstractArray{Int, 1}`のサブタイプを定義することもできます。
 
 
 ```jldoctest squarevectype
@@ -529,7 +530,7 @@ As a more complicated example, let's define our own toy N-dimensional sparse-lik
 on top of [`Dict`](@ref):
 -->
 ```
-より複雑な例として、N次元で疎な配列型のおもちゃのようなものを[`Dict`](@ref)を土台として定義しましょう。
+より複雑な例として、N次元で疎な配列型のおもちゃのようなものを[`Dict`](@ref)を使って定義しましょう。
 
 
 ```jldoctest squarevectype
@@ -594,7 +595,7 @@ well:
 -->
 ```
 `AbstractArray`をインデックスによって読み取った値は、それ自体が配列になることもあります（たとえば、`Range`を使ってインデックス付けした場合）。
-`AbstractArray`のフォールバックしたメソッドは[`similar()`](@ref) を利用して、適切なサイズと基本型の`配列`をメモリに割り当て、上述した基本的なインデックスのメソッドを使ってを行値を埋めていきます。
+`AbstractArray`のフォールバックしたメソッドは[`similar()`](@ref) を利用して、適切なサイズと基本型の`配列`をメモリに割り当て、上述した基本的なインデックスのメソッドを使ってを値を埋めていきます。
 しかし、配列のラッパーが実装されているときには、当然、結果をラップしたくなることもよくあるでしょう。
 
 
