@@ -11,8 +11,8 @@ to generically build upon those behaviors.
 -->
 ```
 
-Juliaの力と拡張性の多くは、さまざまなさしあたりのインターフェースに由来します。
-独自の型に特化して動くメソッドを(汎化的に)拡張すると、その型のオブジェクトから利用できるだけでなく、汎化的に記述された他のメソッドからも使用できます。
+Juliaに仮に実装されている様々なインターフェースは、この言語の力と拡張性の源となっています。
+このインターフェースをさらに独自の型に特化して動作するメソッドに拡張すると、その型のオブジェクトでは、特化したメソッドは直接呼び出しても、そのメソッドを使って汎化的に記述されたメソッドの中でも機能します。
 
 
 
@@ -85,12 +85,12 @@ the current element and an updated `state`. The `state` object can be anything, 
 considered to be an implementation detail private to the iterable object.
 -->
 ```
-順次行われる繰返しは、[`start()`](@ref), [`done()`](@ref),[`next()`] (@ref) のメソッドによって実装されます。
-Juliaでの繰返しは、処理の行われるオブジェクトに変更を加えるのではなく、これらの3つのメソッドを使用して、オブジェクトの外部から繰り返しの状態を追跡します。
-この`start(iter)`メソッドは、イテラブルオブジェクト`iter`の初期状態を返します。
-その状態は`done(iter, state)`や`next(iter, state)`に渡されます。
+順次実行される繰返しは、[`start()`](@ref), [`done()`](@ref), [`next()`] (@ref) のメソッドをつかって実装されています。
+Juliaでは、繰返し処理の状態の追跡は、この3つのメソッドを使用してオブジェクトの外部から行い、処理の行われるオブジェクトには変更を加えません。
+この`start(iter)`メソッドは、イテラブルオブジェクト`iter`の初期状態を返し、
+その状態は`done(iter, state)`、`next(iter, state)`と順に渡されます。
 `done(iter, state)`は残りの要素があるかどうかを検査し、`next(iter, state)`は現在の要素と更新された`state`オブジェクトを含むタプルを返します。
-`state`オブジェクトは何でも構いませんが、通常はイテラブルオブジェクト内でプライベートな実装の詳細であると考えられています。
+`state`オブジェクトは何でも構いませんが、通常はイテラブルオブジェクト内でプライベートな実装の詳細を示すものでしょう。
 
 
 
@@ -100,8 +100,8 @@ Any object defines these three methods is iterable and can be used in the [many 
 It can also be used directly in a `for` loop since the syntax:
 -->
 ```
-これらの3つのメソッドを定義するオブジェクトはすべてイテラブルであり、[繰返しに依存する多くの関数]（@ ref lib-collections-iteration）で使用できます。
-また以下の構文から`for`ループ内で直接使用することもできます。
+これらの3つのメソッドを定義するオブジェクトはすべてイテラブルであり、[繰返しを使う多くの関数]（@ ref lib-collections-iteration）で使用できます。
+また以下のような構文で`for`ループ内で直接使用することもできます。
 
 
 ```julia
@@ -132,7 +132,7 @@ end
 A simple example is an iterable sequence of square numbers with a defined length:
 -->
 ```
-簡単な例は、長さの決まった平方数のイテラブルなシーケンスです。
+簡単な例は、イテラブルな長さの決まった平方数の数列です。
 
 
 ```jldoctest squaretype
@@ -159,7 +159,7 @@ We can iterate over all the elements:
 -->
 ```
 [`start`](@ref), [`next`](@ref),  [`done`](@ref) の定義だけでも、`Squares`型はすでにかなり強力です。
-すべての要素を繰り返し処理を行えます。
+すべての要素に対する繰り返し処理を実行できます。
 
 
 ```jldoctest squaretype
@@ -205,9 +205,9 @@ code in the more complicated methods. We also know the number of elements in our
 we can extend [`length()`](@ref), too.
 -->
 ```
-イテラブルコレクションについて詳しい情報を与えるような拡張のできるメソッドがJuliaにいくつかあります。
-`Squares`シーケンス内の要素は常に`Int`であることがわかります。
- [`eltype()`](@ref)メソッドを拡張し、この情報をJuliaに渡して、より複雑なメソッドでより特化したコードを作成することができます。
+対象とするイテラブルコレクションに関する詳しい情報を与えるために、拡張して使うメソッドがJuliaにはいくつかあります。
+`Squares`の数列の要素は常に`Int`であることがわかります。
+ [`eltype()`](@ref)メソッドを拡張して、この情報をJuliaに渡して、もっと複雑なメソッドでも、もっと型に特化したコードを作成する手助けをすることができます。
 シーケンスの要素数もわかっているので[`length()`](@ref)も拡張することもできます。
 
 
@@ -218,8 +218,8 @@ Now, when we ask Julia to [`collect()`](@ref) all the elements into an array it 
 of the right size instead of blindly [`push!`](@ref)ing each element into a `Vector{Any}`:
 -->
 ```
-ここまでくれば、Juliaで、 すべての要素を[`collect()`](@ref) によって、配列化し
-`Vector{Int}`に 正しいサイズに事前に割り当てることができます。[`push!`](@ref)を使って盲目的に各要素を`Vector{Any}`におしこまなくてもよいのです。
+ここまでくれば、Juliaで、 すべての要素を[`collect()`](@ref) を使って配列化する際に、
+`Vector{Int}`のように 正しいサイズに事前に割り当てることができます。[`push!`](@ref)を使って盲目的に各要素を`Vector{Any}`におしこまなくてもよいのです。
 
 
 ```jldoctest squaretype
@@ -236,8 +236,8 @@ there is a simpler algorithm. For example, there's a formula to compute the sum 
 we can override the generic iterative version with a more performant solution:
 -->
 ```
-汎用的な実装に使うこともできますが、より単純なアルゴリズムがあると知っている場合は特化したメソッドに拡張することもできます。
-たとえば、平方和を算出する公式があれば、一般的な繰返しをより効果的な解法で上書きすることができます。
+汎化的な実装のまま使うこともできますが、もっと単純なアルゴリズムがあると分かっている場合は、特化したメソッドに拡張することもできます。
+たとえば、平方和を算出する公式があれば、汎化的な繰返しをもっと効率的な解法で上書きすることができます。
 
 
 ```jldoctest squaretype
@@ -256,12 +256,12 @@ to additionally specialize those extra behaviors when they know a more efficient
 be used in their specific case.
 -->
 ```
-これは、Julia標準ライブラリ全体で非常によくあるパターンです。
-少数の必須メソッドは、多くのより魅力的な動作を可能にするさしあたりのインターフェイスを定義します。
-より効率的なアルゴリズムを使用でき場合には、さらに型に特化した動作をさせることができます。
+これは、Julia標準ライブラリ全体に非常によくあるパターンです。
+少数の必須メソッドによって、仮実装のインターフェイスが定義されていますが、多くの便利な動作が利用可能です。
+もっと効率的なアルゴリズムを使用できる場合には、さらに型に特化させてその動作を行うことができます。
 
 [](## Indexing)
-## インデックス付け
+## インデックス
 
 
 ```@raw html
