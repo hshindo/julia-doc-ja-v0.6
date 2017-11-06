@@ -12,7 +12,7 @@ to generically build upon those behaviors.
 ```
 
 Juliaに仮に実装されている様々なインターフェースは、この言語の力と拡張性の源となっています。
-このインターフェースを独自型に特化したメソッドに拡張すると、その型のオブジェクトでは、特化したメソッドは直接呼び出しても、そのメソッドを利用して汎化的に記述されたメソッドの中でも機能します。
+このインターフェースを独自型に特化したメソッドに拡張すると、特化したメソッドは、直接呼び出しても、汎化的に記述されたメソッドから呼び出しても、その型のオブジェクトでは機能します。
 
 
 
@@ -85,8 +85,8 @@ the current element and an updated `state`. The `state` object can be anything, 
 considered to be an implementation detail private to the iterable object.
 -->
 ```
-順次実行される繰返しは、[`start()`](@ref), [`done()`](@ref), [`next()`] (@ref) のメソッドをつかって実装されています。
-Juliaでは、繰返し処理の状態の追跡は、この3つのメソッドを使用してオブジェクトの外部から行い、処理の行われるオブジェクトには変更を加えません。
+順次実行される繰返し処理は、[`start()`](@ref), [`done()`](@ref), [`next()`] (@ref) のメソッドをつかって実装されています。
+Juliaでは、繰返し処理の状態の追跡は、この3つのメソッドを使ってオブジェクトの外部から行われ、処理の行われるオブジェクトには変更を加えません。
 この`start(iter)`メソッドは、イテラブルオブジェクト`iter`の初期状態を返し、
 その状態は`done(iter, state)`、`next(iter, state)`と順に渡されます。
 `done(iter, state)`は残りの要素があるかどうかを検査し、`next(iter, state)`は現在の要素と更新された`state`オブジェクトを含むタプルを返します。
@@ -100,7 +100,7 @@ Any object defines these three methods is iterable and can be used in the [many 
 It can also be used directly in a `for` loop since the syntax:
 -->
 ```
-これらの3つのメソッドを定義するオブジェクトはすべてイテラブルであり、[繰返しを使う多くの関数]（@ ref lib-collections-iteration）で使用できます。
+これらの3つのメソッドが定義されたオブジェクトはすべてイテラブルであり、[繰返しを使う多数の関数]（@ ref lib-collections-iteration）で使用できます。
 また以下のような構文で`for`ループ内で直接使用することもできます。
 
 
@@ -116,7 +116,7 @@ end
 is translated into:
 -->
 ```
-はこのように変換されます。
+上記の構文は以下のように変換されます。
 
 ```julia
 state = start(iter)
@@ -205,9 +205,9 @@ code in the more complicated methods. We also know the number of elements in our
 we can extend [`length()`](@ref), too.
 -->
 ```
-対象とするイテラブルコレクションに関する詳しい情報を与えるために、拡張して使うメソッドがJuliaにはいくつかあります。
-`Squares`の数列の要素は常に`Int`であることがわかります。
- [`eltype()`](@ref)メソッドを拡張して、この情報をJuliaに渡して、もっと複雑なメソッドでも、もっと型に特化したコードを作成する手助けをすることができます。
+さらに、対象とするイテラブルコレクションに関する詳しい情報を与えるために、拡張して使うメソッドがJuliaにはいくつかあります。
+`Squares`の数列の要素は常に`Int`であることがわかっています。
+ [`eltype()`](@ref)メソッドを拡張して、この情報をJuliaに渡すと、もっと複雑なメソッドでも、もっと型に特化したコードを作成するのに役立てることができます。
 シーケンスの要素数もわかっているので[`length()`](@ref)も拡張することもできます。
 
 
@@ -257,7 +257,7 @@ be used in their specific case.
 -->
 ```
 これは、Julia標準ライブラリ全体に非常によくあるパターンです。
-少数の必須メソッドによって、仮実装のインターフェイスが定義されていますが、多くの便利な動作が利用可能です。
+少数の必須メソッドによって仮実装のインターフェイスが定義され、多くの便利な動作が利用可能となっています。
 もっと効率的なアルゴリズムを使用できる場合には、さらに型に特化させてその動作を行うことができます。
 
 [](## Indexing)
@@ -437,9 +437,9 @@ provides a traits-based mechanism to enable efficient generic code for all array
 `AbstractArray`のサブタイプの定義で重要な部分は[`IndexStyle`](@ref) です。
 インデックスは配列の重要な部分であり、頻繁にループで使わわれるため、インデックスによる参照と代入をできる限り効率的に行うことは重要です。
 配列のデータ構造は、通常、２つの手法のいずれかが定義に採用されます。
-一方は、インデックス（線形インデクシング）をただ一つ使用して要素にアクセスする最も効率のよい手法で、もう一方は、本質的にはすべての次元に対してインデックスを指定して要素にアクセスする手法です。
+一方は、インデックス（線形インデックス）をただ一つ使用して要素にアクセスする最も効率のよい手法で、もう一方は、本質的にはすべての次元に対してインデックスを指定して要素にアクセスする手法です。
 これらの2つのモードは、Juliaでは`IndexLinear()`と`IndexCartesian()`によって同定されます。
-線形インデックスを多重インデックスの添字に変換するのは、通常非常にコストがかかるので、すべての配列の型に対して効率的で汎化的なコードを可能にするトレイトを使ったメカニズムが備わっています。
+線形インデックスを多重インデックスの添字に変換するのは、通常非常にコストがかかるので、`IndexStyle`ごとにトレイトに基づくメカニズムを使って、すべての配列の型に対して効率的で汎化的なコードを可能にするメカニズムが備わっています。
 
 
 
@@ -456,7 +456,7 @@ so it just defines `getindex(A::SparseMatrixCSC, i::Int, j::Int)()`.  The same h
 ```
 この`IndexStyle`の違いによって、どのスカラーインデックスのメソッドを型に対して定義しなければならないかが決定します。
 `IndexLinear()`の配列は単純で、`getindex(A::ArrayType, i::Int)`を定義するだけです。
-配列が多次元で複数のインデックスによってインデックス付けされている場合、フォールバックの`getindex(A::AbstractArray, I...)()` はインデックスを線形インデックスひとつに効率的に変換し、上記のメソッドを呼び出します。
+配列が多次元で複数のインデックスによってインデックス付けされている場合、補助的な関数の`getindex(A::AbstractArray, I...)()` はインデックスを線形インデックスに効率的に変換し、前述のメソッドを呼び出します。
 一方、`IndexCartesian()` の配列は、`ndims(A)`、`Int`の指定によって利用可能となる次元すべてに対して、メソッドを定義する必要があります。
 たとえば、標準装備の`SparseMatrixCSC`型は2次元しか利用可能ではないため、`getindex(A::SparseMatrixCSC, i::Int, j::Int)()`だけを定義しています。`setindex!()`に関しても同様です。
 
@@ -560,8 +560,8 @@ at the dimensionality of the array. Unlike the `SquaresVector`, we are able to d
 and so we can mutate the array:
 -->
 ```
-これは`IndexCartesian`の配列のため、 [`getindex()`](@ref) と[`setindex!()`](@ref) を次元ごとに手動で定義する必要がある点に注意してください。
-`SquaresVector`配列とは違って、[`setindex!()`](@ref)を定義できるので、配列に変更を加えることができます：
+これは`IndexCartesian`の配列なので、 [`getindex()`](@ref) と[`setindex!()`](@ref) を次元ごとに手動で定義する必要がある点に注意してください。
+`SquaresVector`配列とは違って、[`setindex!()`](@ref)を定義できるので、配列を更新することができます：
 
 
 ```jldoctest squarevectype
@@ -594,8 +594,8 @@ above. However, when implementing an array wrapper you often want the result to 
 well:
 -->
 ```
-`AbstractArray`をインデックスによって読み取った値は、それ自体が配列になることもあります（たとえば、`Range`を使ってインデックス付けした場合）。
-`AbstractArray`のフォールバックしたメソッドは[`similar()`](@ref) を利用して、適切なサイズと基本型の`配列`をメモリに割り当て、上述した基本的なインデックスのメソッドを使ってを値を埋めていきます。
+`AbstractArray`をインデックスを使って参照した値は、それ自体が配列になることもあります（たとえば、`Range`を使ってインデックス参照した場合）。
+`AbstractArray`の派生した(コンストラクタ)メソッドは[`similar()`](@ref) を利用して、適切なサイズと基本型の`配列`をメモリに割り当て、上述した基本的なインデックスのメソッドを使ってを値を埋めていきます。
 しかし、配列のラッパーが実装されているときには、当然、結果をラップしたくなることもよくあるでしょう。
 
 
@@ -618,7 +618,7 @@ that `SparseArray` is mutable (supports `setindex!`). Defining `similar()`, `get
 ```
 この例では`Base.similar{T}(A::SparseArray, ::Type{T}, dims::Dims)`を定義して、適切にラップされた配列を作成しています。
 （`similar`は1引数や2引数の場合も動作しますが、ほとんどの場合、3引数に特化した場合だけが必要になる点に注意してください。）
-これが動作するには`SparseArray`が更新可能（`setindex!`を利用可能）であることが重要です。
+これが動作するには`SparseArray`が可変（`setindex!`を利用可能）であることが重要です。
 `similar()`、`getindex()`、`setindex!()`を`SparseArray`に定義すると、配列を [`copy()`](@ref)することができるようになります。
 
 
@@ -637,7 +637,7 @@ In addition to all the iterable and indexable methods from above, these types ca
 with each other and use most of the methods defined in the standard library for `AbstractArrays`:
 -->
 ```
-上記のすべての反復可能なメソッドとインデックス可能なメソッドのほかにも、これらの型は相互に利用することができ、標準ライブラリで定義されている`AbstractArrays`のほとんどのメソッドを使用できます。
+上記のすべての反復可能なメソッドとインデックス可能なメソッドのほかにも、これらの型は相互に利用することができ、標準ライブラリで定義されている`AbstractArrays`向けのメソッドをほとんど利用できます。
 
 
 ```jldoctest squarevectype
@@ -660,6 +660,6 @@ so that the `dims` argument (ordinarily a `Dims` size-tuple) can accept `Abstrac
 perhaps range-types `Ind` of your own design. For more information, see [Arrays with custom indices](@ref).
 -->
 ```
-通常ではない（1以外から始まる)インデックスを使うには、`indices`を特化する必要があります。
-また引数の`dims`（通常は`Dims`のサイズのタプル）が`AbstractUnitRange`オブジェクト、おそらく独自に設計したの範囲型の`Ind`を受けとれるようにするには、[`similar`](@ref)を特化する必要があります。
+通常ではない（1以外から始まる)インデックスを使うには、`indices`を特化させる必要があります。
+また引数の`dims`（通常は`Dims`のサイズのタプル）が`AbstractUnitRange`オブジェクト、ひょっとすると独自設計の範囲型である`Ind`を受けとれるようにするには、[`similar`](@ref)を特化する必要があります。
 詳細については、[Arrays with custom indices](@ref)を参照してください。

@@ -196,7 +196,7 @@
 | final                                           | ファイナル                                                  
 | fall under                                      | 当てはまる                                                  
 | cascade                                         | 多段的に                                                    
-| fallback                                        | フォールバック                                              
+| fallback                                        | フォールバック、補助的な、二次的な                                              
 | exported                                        | 公開した                                                    
 | specific                                        | 特化した                                                    
 | innocuous                                       | 無害の、問題ない                                            
