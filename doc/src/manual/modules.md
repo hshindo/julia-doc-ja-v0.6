@@ -55,7 +55,7 @@ This module defines a type `MyType`, and two functions. Function `foo` and type 
 and so will be available for importing into other modules.  Function `bar` is private to `MyModule`.
 -->
 ```
-表記スタイル上の留意点は、モジュールの本体は字下げすべきではないことでしょう。これは通常、字下げをすると、ファイル全体を字下げすることになりがちだからです。
+表記スタイル上の注意点は、モジュールの本体は字下げすべきではないことでしょう。これは通常、字下げをすると、ファイル全体を字下げすることになりがちだからです。
 
 このモジュールでは、型の`MyType`と2つの関数が定義されています。
 関数`foo`と型`MyType`はエクスポートされているので、他のモジュールはインポートして利用することができます。
@@ -111,7 +111,7 @@ with the same name. Imported variables are read-only; assigning to a global vari
 a variable owned by the current module, or else raises an error.
 -->
 ```
-キーワード`importall`を使うと、指定したモジュールのエクスポートされたすべての名前を明示的にインポートできて、
+キーワード`importall`を使うと、指定したモジュールのエクスポートしているすべての名前を明示的にインポートできて、
 `import`を使って個々にインポートするのと同じ効果があります。
 
 変数が`using`や`import`を通じて参照可能になると、モジュールは同じ名前の変数を作成しないことがあります。
@@ -119,7 +119,7 @@ a variable owned by the current module, or else raises an error.
 グローバル変数への代入は、常に現在のモジュールに所属する変数に対して行われます。うまくいかない場合は、エラーが発生します。
 
 [](## Summary of module usage)
-## モジュールの用法の要約
+## モジュールの用法のまとめ
 
 
 ```@raw html
@@ -128,6 +128,8 @@ To load a module, two main keywords can be used: `using` and `import`. To unders
 consider the following example:
 -->
 ```
+モジュールのロードには、主に二つのキーワード`using`と`import`を使用することができます。
+この違いを理解するために、次の例を考えてください。
 
 ```julia
 module MyModule
@@ -149,7 +151,8 @@ the non-exported function `p`. There are several different ways to load the Modu
 functions into the current workspace:
 -->
 ```
-
+このモジュールには、xとy関数を（キーワード`export`を使って）エクスポートした関数`x`,`y`と、エクスポートしていない関数`p`があります。
+このモジュールとその内部の関数を、現在のワークスペースにロードするには、いくつかの方法があります。
 
 ```@raw html
 <!--
@@ -164,6 +167,15 @@ functions into the current workspace:
 | `importall MyModule`            | All `export`ed names (`x` and `y`)                                              | `x` and `y`                                 |
 -->
 ```
+| インポートするコマンド                 | スコープに導入されるもの                                                     | メソッドの拡張に利用可能なもの              |
+|:------------------------------- |:------------------------------------------------------------------------------- |:------------------------------------------- |
+| `using MyModule`                | すべての`エクスポート`された名前 (`x`と`y`), `MyModule.x`, `MyModule.y`,`MyModule.p` | `MyModule.x`, `MyModule.y`,`MyModule.p` |
+| `using MyModule.x, MyModule.p`  | `x`と`p`                                                                     |                                             |
+| `using MyModule: x, p`          | `x`と`p`                                                                     |                                             |
+| `import MyModule`               | `MyModule.x`, `MyModule.y`,`MyModule.p`                                     | `MyModule.x`, `MyModule.y`,`MyModule.p` |
+| `import MyModule.x, MyModule.p` | `x`と`p`                                                                     | `x`と`p`                                |
+| `import MyModule: x, p`         | `x`と`p`                                                                     | `x`と`p`                                 |
+| `importall MyModule`            | すべての`エクスポート`された名前 (`x`と`y`)                                              | `x`と`p`                                |
 
 [](### Modules and files)
 ### モジュールとファイル
