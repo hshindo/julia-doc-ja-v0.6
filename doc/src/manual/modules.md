@@ -15,8 +15,8 @@ is shown for illustrative purposes:
 -->
 ```
 Juliaのモジュールは独立した変数ワークスペースで、新しいグローバルスコープが導入されます。
-それらは`module Name ... end`の内部で、構文的に区切られています。
-モジュールを使うと、自分のコードを他の誰かのコードと一緒に使用しても、名前の競合を心配することなく、トップレベルの定義（別名グローバル変数）を作成できます。
+それぞれが構文的に`module Name ... end`の内部へと区切られています。
+モジュールを使うと、トップレベルの定義（別名グローバル変数）を作成できて、自分のコードを他の誰かのコードと一緒に使っても、名前の競合を心配しなくてすみます。
 モジュール内では、他のモジュールのどの名前を（インポートして）表示するかを制御したり、自分のモジュールの名前を（エクスポートして）公開するかを指定することができます。
 
 次の例は、モジュールの主な機能を示しています。
@@ -53,7 +53,18 @@ whole files being indented.
 
 This module defines a type `MyType`, and two functions. Function `foo` and type `MyType` are exported,
 and so will be available for importing into other modules.  Function `bar` is private to `MyModule`.
+-->
+```
+表記スタイル上の留意点は、モジュールの本体は字下げすべきではないことでしょう。これは通常、字下げをすると、ファイル全体を字下げすることになりがちだからです。
 
+このモジュールでは、型の`MyType`と2つの関数が定義されています。
+関数`foo`と型`MyType`はエクスポートされているので、他のモジュールはインポートして利用することができます。
+`bar`は`MyModule`内でプライベートな関数です。
+
+
+
+```@raw html
+<!--
 The statement `using Lib` means that a module called `Lib` will be available for resolving names
 as needed. When a global variable is encountered that has no definition in the current module,
 the system will search for it among variables exported by `Lib` and import it if it is found there.
@@ -61,11 +72,10 @@ This means that all uses of that global within the current module will resolve t
 of that variable in `Lib`.
 -->
 ```
-スタイルは、モジュールの本体をインデントしないことに注意してください。これは、通常、ファイル全体がインデントされるためです。
 
-このモジュールは型MyTypeと2つの関数を定義します。機能fooとタイプMyTypeはエクスポートされるので、他のモジュールにインポートすることもできます。機能barは私的なものMyModuleです。
-
-この文using Libは、呼び出されたモジュールLibが必要に応じて名前を解決するために利用できることを意味します。現在のモジュールに定義されていないグローバル変数Libが見つかった場合、システムはエクスポートされた変数の中で変数を検索し、見つかった場合はインポートします。これは、現在のモジュール内のそのグローバルのすべての使用がその変数の定義に解決されることを意味しますLib。
+`using Lib`という宣言文をかくと、必要に応じて`Lib`というモジュールを名前の解決に利用できます。
+現在のモジュールに定義されていないグローバル変数が見つかった場合、システムは`Lib`からエクスポートされた変数の中から検索し、見つかった場合はインポートします。
+これは、現在のモジュール内で使用されるグローバル変数はすべて、`Lib`内の変数として解決されることを意味します。
 
 
 ```@raw html
@@ -80,11 +90,14 @@ In `MyModule` above we wanted to add a method to the standard `show` function, s
 `import Base.show`. Functions whose names are only visible via `using` cannot be extended.
 -->
 ```
-この文using BigLib: thing1, thing2は構文のショートカットですusing BigLib.thing1, BigLib.thing2。
+`using BigLib: thing1, thing2`という文は`using BigLib.thing1, BigLib.thing2`の簡易構文です。
 
-importキーワードはすべて同じ構文をサポートしていusingますが、一度に単一の名前で動作します。途中で検索するモジュールは追加しませんusing。新しいメソッドで拡張するために関数をインポートする必要があるというimport点でも異なります。usingimport
+`import`キーワードは`using`とまったく同じ構文で利用可能ですが、一度に一つの名前にしか作用しません。
+モジュールに対して`using`のような探索を行いません。
+また`import`が`using`と異なるのは、関数をインポートして新しいメソッドで拡張する時は、必ず`import`を使わなければならないという点です。
 
-ではMyModule上記の我々は、標準的にメソッドを追加したいshow機能ので、我々は書かなければなりませんでした import Base.show。名前がビアだけで表示される関数は、using拡張することはできません。
+上記の`MyModule`で、標準関数の`show`にメソッドを追加したい場合は`import Base.show`と書かなければなりません。
+`using`を通じてのみ名前の参照できる関数は、拡張することはできません。
 
 
 
@@ -98,9 +111,12 @@ with the same name. Imported variables are read-only; assigning to a global vari
 a variable owned by the current module, or else raises an error.
 -->
 ```
-キーワードimportallは、指定されたモジュールによってエクスポートされたすべての名前を明示的にインポートし importます。
+キーワード`importall`を使うと、指定したモジュールのエクスポートされたすべての名前を明示的にインポートできて、
+`import`を使って個々にインポートするのと同じ効果があります。
 
-変数がusingor importで表示されると、モジュールは同じ名前の変数を作成しないことがあります。インポートされた変数は読み取り専用です。グローバル変数に割り当てることは、常に現在のモジュールが所有する変数に影響を与えます。そうでない場合は、エラーが発生します。
+変数が`using`や`import`を通じて参照可能になると、モジュールは同じ名前の変数を作成しないことがあります。
+インポートされた変数は読み取り専用です。
+グローバル変数への代入は、常に現在のモジュールに所属する変数に対して行われます。うまくいかない場合は、エラーが発生します。
 
 [](## Summary of module usage)
 ## モジュールの用法の要約
