@@ -16,7 +16,7 @@ is shown for illustrative purposes:
 ```
 Juliaのモジュールは独立した変数ワークスペースで、新しいグローバルスコープが導入されます。
 それぞれが構文的に`module Name ... end`の内部へと区切られています。
-モジュールを使うと、トップレベルの定義（別名グローバル変数）を作成できて、自分のコードを他の誰かのコードと一緒に使っても、名前の競合を心配しなくてすみます。
+モジュールを使うと、（グローバル変数として知られる）最上位の定義を作成できて、自分のコードを他の誰かのコードと一緒に使っても、名前の競合を心配しなくてすみます。
 モジュール内では、他のモジュールのどの名前を（インポートして）表示するかを制御したり、自分のモジュールの名前を（エクスポートして）公開するかを指定することができます。
 
 次の例は、モジュールの主な機能を示しています。
@@ -187,6 +187,9 @@ Files and file names are mostly unrelated to modules; modules are associated onl
 expressions. One can have multiple files per module, and multiple modules per file:
 -->
 ```
+ファイルやファイル名は、モジュールとはほとんど関係ありません。
+モジュールと関連するのは、モジュール式だけです。
+1つのモジュールが複数のファイルにまたがったり、1つのファイルに複数のモジュールを入れたりすることができます。
 
 ```julia
 module Foo
@@ -205,6 +208,11 @@ to run the same code with different base definitions, for example testing code b
 "safe" versions of some operators:
 -->
 ```
+異なるモジュールに同じコードを組み込むと、mixinのような動作を実現できます。
+これを利用して、同じコードでもベースの定義が異なる状態で実行することができます。
+たとえば、演算子のいくつかを「安全な」バージョンでコードを実行するなどの場合です。
+
+
 
 ```julia
 module Normal
@@ -231,17 +239,23 @@ defined at the prompt go in Main, and `whos()` lists variables in Main.
 Core contains all identifiers considered "built in" to the language, i.e. part of the core language
 and not libraries. Every module implicitly specifies `using Core`, since you can't do anything
 without those definitions.
--->
-```
 
-
-```@raw html
-<!--
 Base is the standard library (the contents of base/). All modules implicitly contain `using Base`,
 since this is needed in the vast majority of cases.
 -->
 ```
+標準モジュールには、3つの重要なものがあります。
+Mainモジュール、Coreモジュール、Baseモジュールです。
 
+Mainは最上位のモジュールであり、Juliaは初期状態ではMainを現在のモジュールとして設定します。
+プロンプトで定義された変数はMainに入り、Mainの変数は`whos()`を使って列挙できます。
+
+Coreには、言語に"組込済"のすべての識別子、つまりライブラリではなく言語の核の一部が含まれます。
+これらの定義がないと何もできないので、すべてのモジュールは暗黙的に`using Core`の宣言がなされています。
+
+Baseは標準ライブラリ（base/の中身）です。
+これは大部分の場合に必要となるので、すべてのモジュールには暗黙的に`using Base`の宣言がなされています。
+ 
 [](### Default top-level definitions and bare modules)
 ### Default top-level definitions and bare modules
 
