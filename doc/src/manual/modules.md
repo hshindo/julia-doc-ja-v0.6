@@ -250,15 +250,14 @@ Mainモジュール、Coreモジュール、Baseモジュールです。
 Mainは最上位のモジュールであり、Juliaは初期状態ではMainを現在のモジュールとして設定します。
 プロンプトで定義された変数はMainに入り、Mainの変数は`whos()`を使って列挙できます。
 
-Coreには、言語に"組込済"のすべての識別子、つまりライブラリではなく言語の核の一部が含まれます。
+Coreには、言語に"組込済"のすべての識別子、つまりライブラリではなく言語の核の一部とみなされるものが含まれています。
 これらの定義がないと何もできないので、すべてのモジュールは暗黙的に`using Core`の宣言がなされています。
 
 Baseは標準ライブラリ（base/の中身）です。
 これは大部分の場合に必要となるので、すべてのモジュールには暗黙的に`using Base`の宣言がなされています。
  
 [](### Default top-level definitions and bare modules)
-### Default top-level definitions and bare modules
-
+### デフォルトの最上位の定義とベアモジュール
 
 
 ```@raw html
@@ -271,6 +270,10 @@ instead (note: `Core` is still imported, as per above). In terms of `baremodule`
 `module` looks like this:
 -->
 ```
+モジュールは、`using Base`のほかに、そのモジュールのコンテキストに沿って式を評価する `eval` 関数の定義を自動的に取り込みます。
+
+これらのデフォルトの定義が不要の場合は、キーワード `baremodule` を使用してモジュールを定義することができます （上記のように Core はインポートされます）。
+ `baremodule`を使うと、標準的な`モジュール`の動作は次のように書けます。
 
 ```
 baremodule Mod
@@ -286,8 +289,7 @@ end
 ```
 
 [](### Relative and absolute module paths)
-### Relative and absolute module paths
-
+### 相対モジュールパスと絶対モジュールパス
 
 ```@raw html
 <!--
@@ -301,7 +303,12 @@ path, for example `using Base.Sort`. The second is to use a relative path, which
 to import submodules of the current module or any of its enclosing modules:
 -->
 ```
+`using Foo`文が書かれている場合、システムは `Main` 内の `Foo` を検索します。 モジュールが存在しない場合、システムは require("Foo") を試行し、通常はインストールされたパッケージからコードがロードされます。
 
+しかし、モジュールの中にはサブモジュールが含まれているものがあり、`Main`から直接利用できないモジュールにアクセスする必要となります。
+ これを行うには2つの方法があります。
+ 1つ目は `using Base.Sort` などの絶対パスを使用する方法です。
+ 2つ目は相対パスを使用し、サブモジュールを含む現在のモジュールなどからのインポートを容易にする方法です。
 ```
 module Parent
 
@@ -326,6 +333,13 @@ look for `Utils` in `Parent`'s enclosing module rather than in `Parent` itself.
 Note that relative-import qualifiers are only valid in `using` and `import` statements.
 -->
 ```
+ここではモジュール `Parent` にサブモジュール `Utils` が含まれるので、`Utils` の内容は `Parent` のコードから参照できる必要があります。
+ これは、`using`の パスをピリオドから始めれば可能です。
+先頭のピリオドを追加すると、モジュール階層の追加レベルが上がります。
+例えば `using ..Utils` は、 `Parent` 自体ではなく `Parent` が囲むモジュール内で `Utils` を検索します。
+
+相対インポート修飾子は、`using` および `import` 文でのみ有効であることに注意してください。
+
 
 [](### Module file paths)
 ### Module file paths
