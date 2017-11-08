@@ -342,7 +342,7 @@ Note that relative-import qualifiers are only valid in `using` and `import` stat
 
 
 [](### Module file paths)
-### Module file paths
+### モジュールファイルパス
 
 
 ```@raw html
@@ -351,6 +351,7 @@ The global variable [`LOAD_PATH`](@ref) contains the directories Julia searches 
 `require`. It can be extended using [`push!`](@ref):
 -->
 ```
+グローバル変数[`LOAD_PATH`](@ref)には、Juliaが`require`を呼び出す時にモジュールを検索するディレクトリが含まれています 。 これは[`push!`](@ref)を使って拡張することができます。
 
 ```julia
 push!(LOAD_PATH, "/Path/To/My/Module/")
@@ -363,9 +364,11 @@ Putting this statement in the file `~/.juliarc.jl` will extend [`LOAD_PATH`](@re
 Alternatively, the module load path can be extended by defining the environment variable `JULIA_LOAD_PATH`.
 -->
 ```
+この文を`~/.juliarc.jl`ファイルに書き込むと、Juliaの起動時ごとに[`LOAD_PATH`](@ref)が拡張されます。
+あるいは、環境変数の`JULIA_LOAD_PATH`を定義してモジュールのロードパスを拡張することもできます。
 
 [](### Namespace miscellanea)
-### Namespace miscellanea
+### 名前空間に関する雑記
 
 
 ```@raw html
@@ -374,10 +377,16 @@ If a name is qualified (e.g. `Base.sin`), then it can be accessed even if it is 
 This is often useful when debugging. It can also have methods added to it by using the qualified
 name as the function name. However, due to syntactic ambiguities that arise, if you wish to add
 methods to a function in a different module whose name contains only symbols, such as an operator,
+
 `Base.+` for example, you must use `Base.:+` to refer to it. If the operator is more than one
 character in length you must surround it in brackets, such as: `Base.:(==)`.
 -->
 ```
+名前が修飾子をつけると（例えば`Base.sin`）、名前がエクスポートされていなくてもアクセスできます。
+これは、デバッグ時に便利です。
+また、修飾子のついた関数に対してメソッドを追加することもできます。
+しかし、構文上のあいまいさを避けるため、別のモジュールにある、演算子のような記号だけからなる名前の関数（例えば`Base.+`）にメソッドを追加する場合 `Base.:+`のように参照する必要があります。
+演算子が２文字以上の場合は、`Base.:(==)`のよう括弧で囲む必要があります。
 
 
 ```@raw html
@@ -393,9 +402,17 @@ A variable can be "reserved" for the current module without assigning to it by d
 after load time.
 -->
 ```
+インポートやエクスポートの文中では、マクロ名は`@`をつけて`import Mod.@mac`のように書きます。
+他のモジュールのマクロは、`Mod.@mac`や`@Mod.mac`のようにして呼び出すことができます。
+
+`M.x = y`という構文で、別のモジュールのグローバルに代入することはできません。
+グローバル変数の代入は常にローカルなモジュールで行われます。
+
+変数は、`global x`のように最上位で宣言することによって、代入をせずに、現在のモジュールに対して "予約"することができます。
+これは、ロード後に初期化されるグローバルの名前の競合を防ぐために利用できます。
 
 [](### Module initialization and precompilation)
-### Module initialization and precompilation
+### モジュールの初期化とプレコンパイル
 
 
 ```@raw html
