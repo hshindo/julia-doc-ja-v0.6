@@ -430,7 +430,15 @@ imports, the Julia build, files it includes, or explicit dependencies declared b
 in the module file(s).
 -->
 ```
+大きなモジュールはロードに数秒かかることがあり、これはモジュール内のすべてのステートメントを実行する際に、大量のコードをコンパイルすることが多いためです。
+Juliaには、モジュールをプリコンパイルして、この時間を短縮する機能があります。
 
+逐次的にモジュールをプリコンパイルするには、モジュールファイルの先頭に（module開始前に）`__precompile__()`を追加します。
+こうすると、はじめてインポートされるときに自動的にコンパイルされます。
+また、手動で`Base.compilecache(modulename)`を呼び出すこともできます。
+実行結果のキャッシュファイルは`Base.LOAD_CACHE_PATH[1]`に保存されます。
+その後、依存関係のいずれかが変更されると、モジュールはインポート時に自動的に再コンパイルされます。
+依存関係とは、インポートするモジュール、Juliaのビルド、含まれるファイル、または`include_dependency(path)`と モジュールファイルで宣言された明示的な依存関係のことです。
 
 ```@raw html
 <!--
@@ -447,7 +455,11 @@ to the source reflected in the running system, you should call `reload("Module")
 you changed, and any module that depended on it in which you want to see the change reflected.
 -->
 ```
+ファイル依存関係の場合、変更は、`include`によってロードされたファイル、または`include_dependency`によって明示的に追加された各ファイルの変更時刻（mtime）が変更されていないか、または最も近い秒に切り捨てられた変更時刻に等しいかどうかを調べることによって判断されます（mtimeを秒未満の精度でコピーできないシステムに対応するため）。
+また、`require`中の検索ロジックによって選択されたファイルへのパスがプリコンパイル・ファイルを作成したパスと一致するかどうかも考慮されます。
 
+また、現在のプロセスにすでにロードされている依存関係を考慮に入れ、ファイルが変更や削除されても、実行中のシステムとプリコンパイル・キャッシュとの間の非互換性を避けるために、それらのモジュールを再コンパイルしません。
+実行中のシステムにソースに加えた変更を反映させたい場合は、変更したモジュールやそれに依存しているモジュールを、変更を反映したい場所で、`reload("Module")`のように呼び出す必要があります。
 
 ```@raw html
 <!--
@@ -460,6 +472,11 @@ put `__precompile__(false)` in the module file to cause `Base.compilecache` to t
 `__precompile__()`. Failure to do so can result in a runtime error when loading the module.
 -->
 ```
+また、モジュールをプリコンパイルすると、そこにインポートされたモジュールも再帰的にプリコンパイルされます。
+モジュールをプリコンパイルするのが**安全でない**ことが(下記のような理由で)分かっている場合、そのモジュールに`__precompile__(false)`と書いて、`Base.compilecache`がエラーを投げて、（他のプリコンパイル済みモジュールがインポートするのを防ぐ）必要があります。
+
+`__precompile__()`はすべての依存先でも`__precompile__()`を使用していない限り、モジュール内で使用すべきではありません。
+そうしないと、モジュールをロードするときにランタイムエラーが発生する可能性があります。
 
 
 ```@raw html
@@ -476,6 +493,11 @@ if it is being loaded into an incremental compile (`--output-incremental=yes`), 
 is being loaded into a full-compilation process.
 -->
 ```
+ただし、モジュールをプリコンパイルして動作するようにするには、**実行時**の初期化処理と、**コンパイル時**の処理をモジュール内で明確に分離する必要がでてくるかもしれません。
+この用途に、Juliaではモジュール内で`__init__()`関数を定義して、実行時に必ず発生する初期化処理を記述することができます。
+この関数は、コンパイル時には呼び出されません（`--output-*`や`__precompile__()`）。
+もちろん、必要に応じて手動で呼び出すこともできますが、デフォルトでは、この関数はローカルマシンの計算状態を扱うことが想定されているので、コンパイル後のイメージに捕捉される必要はありませんし、されるべきでもありません。
+`__init__()`関数はモジュールがプロセスにロードされた後で呼び出され、これはインクリメンタルコンパイル（`--output-incremental=yes`）でロードされる場合も含まれますが、フルコンパイルプロセスにロードされている場合は含まれません。
 
 
 ```@raw html
@@ -489,6 +511,10 @@ enclosing module.
 -->
 ```
 
+特にモジュール内に、`function __init__()`が定義されている場合は、`__init__()`はモジュールがロードされた直後に、（例えば`import`、`using`、`require`によって）初めての実行時に（すなわち、`__init__`は一度だけ、モジュール内のすべての文の後にモジュールが実行されてから）Juliaから呼び出されます。
+`__init__` はモジュールが完全にインポートされた後に呼び出されるため、サブモジュールまたはその他のインポートされたモジュールにある`__init__`は、それを囲むモジュールの`__init__`の前に呼び出されます。
+
+
 
 ```@raw html
 <!--
@@ -501,6 +527,10 @@ be initialized at runtime (not at compile time) because the pointer address will
 to run.  You could accomplish this by defining the following `__init__` function in your module:
 -->
 ```
+`__init__`の2つの典型的な用途は、外部Cライブラリの実行時の初期化関数を呼び出すことと、外部ライブラリによって返されるポインタをもつグローバル定数を初期化することです。
+たとえば、実行時に初期化関数`foo_init()`を呼び出す必要のあるCライブラリ`libfoo`を呼び出すとします。
+また`libfoo`で定義された`void *foo_data()`関数の戻り値を保持するグローバル定数`foo_data_ptr`も定義したいとします。
+ポインタのアドレスが実行ごとに変わるため、この定数は実行時（コンパイル時ではなく）に初期化する必要があります。__init__モジュール内で次のような`__init__`関数を定義することでこれを達成できます：
 
 ```julia
 const foo_data_ptr = Ref{Ptr{Void}}(0)
@@ -527,6 +557,17 @@ null pointers unless they are hidden inside an isbits object). This includes the
 of the Julia functions `cfunction` and `pointer`.
 -->
 ```
+グローバル変数を`__init__`のような関数の内部に定義することは本当に可能であることに注意してください。
+これは動的言語を使用する利点の1つです。
+しかし、これをグローバルスコープにおける定数とすることで、型がコンパイラに認識され、より最適化されたコードを生成できるようにすることができます。
+明らかに、`foo_data_ptr`に依存するモジュール内のその他のグローバルも`__init__`で初期化する必要があります。
+
+`ccall`によって生成されたわけではないほとんどのJuliaオブジェクトなどの定数は、`__init__`に配置する必要はありません。
+その定義は、プリコンパイルして、キャッシュされたモジュールイメージからロードできます。
+これには、配列のようなヒープに割り当てられた複雑なオブジェクトが含まれます。
+しかし、生のポインタ値を返すルーチンは、実行時にプリコンパイルを実行するために呼び出さなければなりません（Ptrオブジェクトはisbitsオブジェクト内に隠されていない限り、NULLポインタになります）。
+これには、Juliaの関数`cfunction`や`pointer`の戻り値が含まれます。
+
 
 
 ```@raw html
@@ -543,6 +584,13 @@ dictionary type, which is specially handled by precompilation so that it is safe
 at compile-time.
 -->
 ```
+辞書や集合の型、または一般に`hash(key)`メソッドの出力に依存するものはすべて、トリッキーなケースです。
+キーが数字、文字列、記号、範囲、`Expr`、またこれらの型の複合（配列、タプル、セット、ペアなど）である一般的なケースでは、プリコンパイルするのが安全です。
+ただし、いくつかの他のキーの型、例えば`Function`や`DataType`や`hash`メソッドを定義していない汎化的なユーザー定義型などのの場合、副次的な`hash`メソッドはオブジェクトのメモリアドレスに依存します（`object_id`を介して）ので、実行ごとに変更される可能性があります。
+これらのキーの型のいずれかの場合や、わからない場合は、安全のために`__init__`関数内からこの辞書を初期化することができます。
+また、`ObjectIdDict`という辞書型をかわりに利用することもできます。
+これは、コンパイル時に安全に初期化できるように、プリコンパイルで特別に処理される辞書型です。
+
 
 
 ```@raw html
@@ -552,17 +600,25 @@ compilation phase and the execution phase. In this mode, it will often be much m
 that Julia is a compiler which allows execution of arbitrary Julia code, not a standalone interpreter
 that also generates compiled code.
 
-Other known potential failure scenarios include:
 -->
 ```
 
+プリコンパイルを使用する場合は、コンパイル・フェーズと実行フェーズの区別を明確にすることが重要です。
+このモードでは、Juliaがコンパイルされたコードを生成するスタンドアロンインタプリタではなく、任意のJuliaコードを実行できるコンパイラであることがはっきりしています。
 
 ```@raw html
 <!--
+
+Other known potential failure scenarios include:
+
 1. Global counters (for example, for attempting to uniquely identify objects) Consider the following
    code snippet:
 -->
 ```
+その他の既知の潜在的な障害シナリオには、
+
+    1.グローバルカウンタ（たとえば、オブジェクトを一意に識別しようとする場合）次のコードスニペットを考えてみましょう。
+
 
    ```julia
    mutable struct UniquedById
@@ -587,6 +643,12 @@ Other known potential failure scenarios include:
    it may be better to redesign the code to not depend on this global state.
 -->
 ```
+このコードの目的はすべてのインスタンスに一意のIDを与えることでしたが、カウンタ値はコンパイルの最後に記録されます。この逐次的にコンパイルした後にモジュールを使うとすべて、同じカウンタ値から開始されます。
+
+`object_id`（メモリポインタをハッシュすることによって動作する）にも同様の問題があるのでちゅういしてください（下記の`Dict`の用法を参照)。
+
+代替方法の1つに [`current_module()`](@ref)と現在の`counter`値の両方を保存することがありますが、このグローバル状態に依存しないようにコードを再設計するほうがよい場合があります。
+
 
 
 ```@raw html
@@ -600,6 +662,14 @@ Other known potential failure scenarios include:
    of via its lookup path. For example, (in global scope):
 -->
 ```
+2.連想コレクション(`Dict`や`Set`など）は`__init__`内で再ハッシュ化する必要があります。（将来的に、初期化関数を登録するためのメカニズムが提供されるかもしれません。）
+
+3.コンパイル時の副作用の依存はロード時まで持続します。
+例をあげると、他のJuliaモジュールの配列や他の変数を変更する、 
+ファイルやデバイスを開くためのハンドルを保持する、
+他のシステムのリソース（メモリを含む）へのポインタを格納するなどです。
+
+4.ルックアップパス経由ではなく直接参照することにより、別のモジュールからグローバル状態の偶発的な「コピー」を作成する。たとえば、（グローバルスコープ内で）
 
    ```julia
    #mystdout = Base.STDOUT #= will not work correctly, since this will copy Base.STDOUT into this module =#
@@ -622,7 +692,13 @@ code to help the user avoid other wrong-behavior situations:
 3. Replacing a module (or calling [`workspace()`](@ref)) is a runtime error while doing an incremental precompile.
 -->
 ```
+コードをプリコンパイルしている間に実行できる操作は、ユーザーが他の誤った動作状況を回避するために、いくつかのさらなる制限があります。
 
+    1. [`eval`](@ref)を呼び出して他のモジュールに副作用を引き起こすこと。
+     インクリメンタル・プリコンパイル・フラグが設定されている場合に警告が出されます。
+    2.`__init__()`の開始後にローカルスコープから`global const`文を書くこと（これにエラーを追加する計画については、問題＃12010を参照してください）
+    3.モジュールを置き換える(または[`workspace()`](@ref) を呼び出す)こと。
+    逐次プリコンパイル中はランタイムエラーが起こります。
 
 ```@raw html
 <!--
@@ -645,6 +721,19 @@ A few other points to be aware of:
    of these and to create a single unique instance of others.
 -->
 ```
+注意すべき他のいくつかの点は次のとおりです。
+
+    1.ソースファイル自体が変更された後（[`Pkg.update`](@ref)によるものも含む）は、コードのリロードやキャッシュの無効化は実行されず、
+    [`Pkg.rm`](@ref)の後にはクリーンアップは行われません。
+    2.再構成された配列のメモリ共有動作は、プリコンパイルでは無視されます（各ビューは独自のコピーを取得します）
+    3.ファイルシステムがコンパイル時と実行時の間で変更されないことを前提としているもの注意する（例：[`@__FILE__`](@ref)/`source_path()`や`BinDeps @checked_lib`マクロ。)
+    これは避けられないこともありますが、可能であれば、コンパイル時にリソースをモジュールにコピーして実行時にリソースを見つける必要をなくすのはよい作法です。
+    4.`WeakRef` オブジェクトとファイナライザは現在、シリアライザによって正しく処理されていません（これは、今後のリリースで修正される予定です）。
+    5.次のような内部のメタデータ・オブジェクトのインスタンスへの参照を取得するのは避けるのが最善です。
+    例えば`Method`、`MethodInstance`、`MethodTable`、`TypeMapLevel`、`TypeMapEntry`やこれらのオブジェクトのフィールドです。
+    これはシリアライザが混同する可能性がありますし、あなたが望む出力にならない可能性があります。
+    これを行うことは必ずしも間違いではありませんが、システムがこれらのいくつかをコピーし、他の一意のインスタンスを作成するように準備すればいいだけです。
+
 
 
 ```@raw html
@@ -658,3 +747,8 @@ line flag is passed to [`Pkg.build()`](@ref) to disable automatic precompilation
 updating, and explicitly building packages.
 -->
 ```
+逐次プリコンパイルをオフにすることは、モジュール開発中に役立つことがあります。
+コマンドラインフラグの`--compilecache={yes|no}`を使用すると、モジュールのプリコンパイルのオンとオフを切り替えることができます。
+`--compilecache=no`でJuliaを起動すると、モジュールやモジュールの依存関係をロードするときに、コンパイル時のキャッシュで直列化されているモジュールが無視されます。
+`Base.compilecache()`依然として手動で呼び出すことができ、モジュールの`__precompile__()`ディレクティブを尊重します。
+このコマンドラインフラグの状態は[`Pkg.build()`](@ref)に渡され、パッケージをインストール、更新、および明示的にビルドするときに、自動プリコンパイルのトリガーが無効になります。
