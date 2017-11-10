@@ -272,10 +272,10 @@ instead (note: `Core` is still imported, as per above). In terms of `baremodule`
 `module` looks like this:
 -->
 ```
-モジュールは、`using Base`のほかに、そのモジュールのコンテキストに沿って式を評価する `eval` 関数の定義を自動的に取り込みます。
+モジュールには、`using Base`のほかに、そのモジュールのコンテキストに沿って式を評価する `eval` 関数の定義が自動的に取り込まれます。
 
-これらのデフォルトの定義が不要の場合は、キーワード `baremodule` を使用してモジュールを定義することができます （上記のように Core はインポートされます）。
- `baremodule`を使うと、標準的な`モジュール`の動作は次のように書けます。
+こういったデフォルトの定義が不要の場合は、キーワード `baremodule` を使用してモジュールを定義することができます （注記：前述の`Core` は依然としてインポートされます）。
+ `baremodule`を使って、標準的な`モジュール`の動作を次のように記述できます。
 
 ```
 baremodule Mod
