@@ -305,12 +305,12 @@ path, for example `using Base.Sort`. The second is to use a relative path, which
 to import submodules of the current module or any of its enclosing modules:
 -->
 ```
-`using Foo`文が書かれている場合、システムは `Main` 内の `Foo` を検索します。 モジュールが存在しない場合、システムは require("Foo") を試行し、通常はインストールされたパッケージからコードがロードされます。
+`using Foo`文が記述されている場合、システムは `Main` 内の `Foo` を探索します。 モジュールが存在しない場合、システムは `require("Foo")` を試行し、通常はインストールされたパッケージからコードがロードされます。
 
-しかし、モジュールの中にはサブモジュールが含まれているものがあり、`Main`から直接利用できないモジュールにアクセスする必要となります。
+しかし、モジュールの中にはサブモジュールが含むものがあり、`Main`から直接利用できないモジュールにアクセスする必要が時折生じます。
  これを行うには2つの方法があります。
  1つ目は `using Base.Sort` などの絶対パスを使用する方法です。
- 2つ目は相対パスを使用し、サブモジュールを含む現在のモジュールなどからのインポートを容易にする方法です。
+ 2つ目は相対パスを使用する方法で、現在のモジュールなどサブモジュールを含むモジュールからのインポートが簡単に行えます。
 ```
 module Parent
 
@@ -335,10 +335,10 @@ look for `Utils` in `Parent`'s enclosing module rather than in `Parent` itself.
 Note that relative-import qualifiers are only valid in `using` and `import` statements.
 -->
 ```
-ここではモジュール `Parent` にサブモジュール `Utils` が含まれるので、`Utils` の内容は `Parent` のコードから参照できる必要があります。
+ここで、モジュール `Parent` はサブモジュール `Utils` を含み、`Utils` の内容を `Parent` のコードから参照したいとします。
  これは、`using`の パスをピリオドから始めれば可能です。
-先頭のピリオドを追加すると、モジュール階層の追加レベルが上がります。
-例えば `using ..Utils` は、 `Parent` 自体ではなく `Parent` が囲むモジュール内で `Utils` を検索します。
+先頭にさらにピリオドを追加すると、モジュール階層のレベルが上がります。
+例えば `using ..Utils` は、 `Parent` 自体ではなく `Parent` を囲むモジュール内で `Utils` を検索します。
 
 相対インポート修飾子は、`using` および `import` 文でのみ有効であることに注意してください。
 
