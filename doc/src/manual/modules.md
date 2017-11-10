@@ -353,7 +353,7 @@ The global variable [`LOAD_PATH`](@ref) contains the directories Julia searches 
 `require`. It can be extended using [`push!`](@ref):
 -->
 ```
-グローバル変数[`LOAD_PATH`](@ref)には、Juliaが`require`を呼び出す時にモジュールを検索するディレクトリが含まれています 。 これは[`push!`](@ref)を使って拡張することができます。
+グローバル変数[`LOAD_PATH`](@ref)には、Juliaが`require`を呼び出した時にモジュールを検索するディレクトリが含まれています 。 これは[`push!`](@ref)を使って拡張することができます。
 
 ```julia
 push!(LOAD_PATH, "/Path/To/My/Module/")
@@ -366,8 +366,8 @@ Putting this statement in the file `~/.juliarc.jl` will extend [`LOAD_PATH`](@re
 Alternatively, the module load path can be extended by defining the environment variable `JULIA_LOAD_PATH`.
 -->
 ```
-この文を`~/.juliarc.jl`ファイルに書き込むと、Juliaの起動時ごとに[`LOAD_PATH`](@ref)が拡張されます。
-あるいは、環境変数の`JULIA_LOAD_PATH`を定義してモジュールのロードパスを拡張することもできます。
+この文を`~/.juliarc.jl`ファイルに書き込むと、Juliaが起動するたびに[`LOAD_PATH`](@ref)が拡張されます。
+また、環境変数`JULIA_LOAD_PATH`を定義して、モジュールのロードパスを拡張することもできます。
 
 [](### Namespace miscellanea)
 ### 名前空間に関する雑記
