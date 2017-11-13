@@ -40,6 +40,8 @@ of these systems, and perhaps somewhat counterintuitively, often significantly s
 
 Julia において型が省略されたとき、デフォルトでは値は任意の型をとれます。これにより、型をまったく使うことすらなく、たくさんの便利な Julia プログラムを書けます。もっと表現力が必要なときも、「型のない」コードに明示的な型表記を少しずつ、簡単に導入できます。こうすることで、たいてい、システムのパフォーマンスと堅牢性は共に向上し、また直感に反するかもしれませんが、しばしばシステムは大幅に単純になります。
 
+```@raw html
+<!--
 Describing Julia in the lingo of [type systems](https://en.wikipedia.org/wiki/Type_system), it
 is: dynamic, nominative and parametric. Generic types can be parameterized, and the hierarchical
 relationships between types are [explicitly declared](https://en.wikipedia.org/wiki/Nominal_type_system),
@@ -51,6 +53,10 @@ few drawbacks. It turns out that being able to inherit behavior is much more imp
 able to inherit structure, and inheriting both causes significant difficulties in traditional
 object-oriented languages. Other high-level aspects of Julia's type system that should be mentioned
 up front are:
+-->
+```
+
+[型システム](https://ja.wikipedia.org/wiki/%E5%9E%8B%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0)の用語で Julia を説明すると、動的、公称、パラメータ型です。ジェネリック型はパラメータ化でき、型の階層関係は、[互換性のある構造体によって暗示される](https://en.wikipedia.org/wiki/Structural_type_system)のではなく、[明示的に宣言されます](https://en.wikipedia.org/wiki/Nominal_type_system)。 Julia の型システムの特に際立つところは、具体型が互いに派生型となることはない点です。すべての具体型は最終的なものであり、基本型として抽象型のみをもちます。これは一見過度な制限に思えるかもしれませんが、実は多くの利点があり、欠点は驚くほど少ないのです。ふるまいを継承できることは構造を継承できることよりも実は非常に重要であり、両方を継承することは伝統的オブジェクト指向言語において大きな困難を伴うものです。 Julia の型システムで他にまっさきに言及すべき高レベルな事柄は、次のとおりです。
 
   * There is no division between object and non-object values: all values in Julia are true objects
     having a type that belongs to a single, fully connected type graph, all nodes of which are equally
@@ -64,6 +70,7 @@ up front are:
     like numbers and bools that are stored like C types or structs with no pointers to other objects),
     and also by tuples thereof. Type parameters may be omitted when they do not need to be referenced
     or restricted.
+
 
 Julia's type system is designed to be powerful and expressive, yet clear, intuitive and unobtrusive.
 Many Julia programmers may never feel the need to write code that explicitly uses types. Some
