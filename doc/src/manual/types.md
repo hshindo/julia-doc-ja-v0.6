@@ -28,11 +28,17 @@ detail in [Methods](@ref), but is rooted in the type system presented here.
 
 Julia の型システムは動的ですが、ある値が特定の型であると示せるようにすることで、静的型付けの利点の一部を得ています。これは効率的なコードを生成する上で大きな助けとなりえますが、もっと重要なのは、これによって関数の引数の型に対するメソッドディスパッチを言語と深く結び付けられることです。メソッドディスパッチは[メソッド](@ref)で詳しく扱いますが、ここで説明する型システムを基本としています。
 
+```@raw html
+<!--
 The default behavior in Julia when types are omitted is to allow values to be of any type. Thus,
 one can write many useful Julia programs without ever explicitly using types. When additional
 expressiveness is needed, however, it is easy to gradually introduce explicit type annotations
 into previously "untyped" code. Doing so will typically increase both the performance and robustness
 of these systems, and perhaps somewhat counterintuitively, often significantly simplify them.
+-->
+```
+
+Julia において型が省略されたとき、デフォルトでは値は任意の型をとれます。これにより、型をまったく使うことすらなく、たくさんの便利な Julia プログラムを書けます。もっと表現力が必要なときも、「型のない」コードに明示的な型表記を少しずつ、簡単に導入できます。こうすることで、たいてい、システムのパフォーマンスと堅牢性は共に向上し、また直感に反するかもしれませんが、しばしばシステムは大幅に単純になります。
 
 Describing Julia in the lingo of [type systems](https://en.wikipedia.org/wiki/Type_system), it
 is: dynamic, nominative and parametric. Generic types can be parameterized, and the hierarchical
