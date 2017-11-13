@@ -1,6 +1,8 @@
 [](# Types)
 # 型
 
+```@raw html
+<!--
 Type systems have traditionally fallen into two quite different camps: static type systems, where
 every program expression must have a type computable before the execution of the program, and
 dynamic type systems, where nothing is known about types until run time, when the actual values
@@ -9,6 +11,10 @@ typed languages by letting code be written without the precise types of values b
 compile time. The ability to write code that can operate on different types is called polymorphism.
 All code in classic dynamically typed languages is polymorphic: only by explicitly checking types,
 or when objects fail to support operations at run-time, are the types of any values ever restricted.
+-->
+```
+
+型システムは伝統的に2つのまったく異なる派閥に分かれています。プログラムのすべての式が実行前に計算可能な型をもたねばならない静的型付けと、プログラムに操作される実際の値が明らかになる実行時まで型については何もわからない動的型付けです。オブジェクト指向は、コンパイル時に値の正確な型がわからなくてもコードが書けるようにすることで、静的型付け言語にいくらかの柔軟性をもたらします。書いたコードが異なる型で動作することをポリモーフィズムといいます。古典的な動的型付け言語はすべてポリモーフィックです。型が明示的にチェックされる場合か、オブジェクトが実行時に操作をサポートできない場合のみ、値の型が制限されます。
 
 Julia's type system is dynamic, but gains some of the advantages of static type systems by making
 it possible to indicate that certain values are of specific types. This can be of great assistance
