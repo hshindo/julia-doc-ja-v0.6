@@ -14,13 +14,19 @@ or when objects fail to support operations at run-time, are the types of any val
 -->
 ```
 
-型システムは伝統的に2つのまったく異なる派閥に分かれています。プログラムのすべての式が実行前に計算可能な型をもたねばならない静的型付けと、プログラムに操作される実際の値が明らかになる実行時まで型については何もわからない動的型付けです。オブジェクト指向は、コンパイル時に値の正確な型がわからなくてもコードが書けるようにすることで、静的型付け言語にいくらかの柔軟性をもたらします。書いたコードが異なる型で動作することをポリモーフィズムといいます。古典的な動的型付け言語はすべてポリモーフィックです。型が明示的にチェックされる場合か、オブジェクトが実行時に操作をサポートできない場合のみ、値の型が制限されます。
+型システムは伝統的に2つのまったく異なる派閥に分かれています。プログラムのすべての式が実行前に計算可能な型をもたねばならない静的型付けと、プログラムに操作される実際の値が明らかになる実行時まで型については何もわからない動的型付けです。オブジェクト指向は、コンパイル時には値の正確な型がわからないようなコードを書けるようにすることで、静的型付け言語にいくらかの柔軟性をもたらします。書いたコードが異なる型で動作することをポリモーフィズムといいます。古典的な動的型付け言語はすべてポリモーフィックです。型が明示的にチェックされる場合か、オブジェクトが実行時に操作をサポートできない場合のみ、値の型が制限されます。
 
+```@raw html
+<!--
 Julia's type system is dynamic, but gains some of the advantages of static type systems by making
 it possible to indicate that certain values are of specific types. This can be of great assistance
 in generating efficient code, but even more significantly, it allows method dispatch on the types
 of function arguments to be deeply integrated with the language. Method dispatch is explored in
 detail in [Methods](@ref), but is rooted in the type system presented here.
+-->
+```
+
+Julia の型システムは動的ですが、ある値が特定の型であると示せるようにすることで、静的型付けの利点の一部を得ています。これは効率的なコードを生成する上で大きな助けとなりえますが、もっと重要なのは、これによって関数の引数の型に対するメソッドディスパッチを言語と深く結び付けられることです。メソッドディスパッチは[メソッド](@ref)で詳しく扱いますが、ここで説明する型システムを基本としています。
 
 The default behavior in Julia when types are omitted is to allow values to be of any type. Thus,
 one can write many useful Julia programs without ever explicitly using types. When additional
