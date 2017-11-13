@@ -58,6 +58,8 @@ up front are:
 
 [型システム](https://ja.wikipedia.org/wiki/%E5%9E%8B%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0)の用語で Julia を説明すると、動的、公称、パラメータ型です。ジェネリック型はパラメータ化でき、型の階層関係は、[互換性のある構造体によって暗示される](https://en.wikipedia.org/wiki/Structural_type_system)のではなく、[明示的に宣言されます](https://en.wikipedia.org/wiki/Nominal_type_system)。 Julia の型システムの特に際立つところは、具体型が互いに派生型となることはない点です。すべての具体型は最終的なものであり、基本型として抽象型のみをもちます。これは一見過度な制限に思えるかもしれませんが、実は多くの利点があり、欠点は驚くほど少ないのです。ふるまいを継承できることは構造を継承できることよりも実は非常に重要であり、両方を継承することは伝統的オブジェクト指向言語において大きな困難を伴うものです。 Julia の型システムで他にまっさきに言及すべき高レベルな事柄は、次のとおりです。
 
+```@raw html
+<!--
   * There is no division between object and non-object values: all values in Julia are true objects
     having a type that belongs to a single, fully connected type graph, all nodes of which are equally
     first-class as types.
@@ -70,7 +72,13 @@ up front are:
     like numbers and bools that are stored like C types or structs with no pointers to other objects),
     and also by tuples thereof. Type parameters may be omitted when they do not need to be referenced
     or restricted.
+-->
+```
 
+  * オブジェクトの値と非オブジェクトの値には違いはありません。 Julia において、すべての値は真にオブジェクトであり、単一の、すべてのノードが型として等しく第一級であるような、完全に接続された型グラフに属する型をもちます。
+  * 「コンパイル時型」に相当する意味のある概念はありません。ある値がもつただ一つの型は、プログラム実行時の値自身の実際の型です。これは、静的コンパイルとポリモーフィズムによってこれらの型の区別が大きな意味をもってくるオブジェクト指向言語では、「実行時型（ランタイム型）」と呼ばれます。
+  * 値のみが型をもち、変数は型をもちません。変数は値に結びつけられた名前に過ぎません。
+  * 抽象型と具体型のどちらも、もう一方の型によってパラメータ化できます。このパラメータ化は、シンボル、[`isbits()`](@ref) が true を返す型をもつ値（C言語における型や、他のオブジェクトへのポインタをもたない構造体のように保持される数値やブール値といったものがほとんど）、そしてこれらのタプルによっても可能です。型パラメータは参照や制限の必要がないときは省略できます。
 
 Julia's type system is designed to be powerful and expressive, yet clear, intuitive and unobtrusive.
 Many Julia programmers may never feel the need to write code that explicitly uses types. Some
