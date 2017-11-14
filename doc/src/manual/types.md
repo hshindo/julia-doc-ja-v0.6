@@ -1558,9 +1558,9 @@ to a parameterized immutable type where each parameter is the type of one field.
 a 2-element tuple type resembles the following immutable type:
 -->
 ```
-タプルは関数本体からその引数だけを抜き出したものです。
-関数の引数の顕著な側面は、その順序と型です。
-よって、タプル型は、パラメトリック複合型で各パラメータが1つのフィールドの型であるものと似ています。
+タプルとは関数本体からその引数だけを抜き出したものです。
+関数の引数の目立った特徴は、順序と型です。
+そのため、タプル型は、不変なパラメトリック複合型で各パラメータがフィールドの型に対応しているものと似ています。
 たとえば、2要素タプル型は、次の複合型に似ています。
 
 ```julia
@@ -1586,7 +1586,7 @@ However, there are three key differences:
 
 * タプル型は、任意の数のパラメータを持つことができます。
 * タプル型は、そのパラメータと**共変**です。`Tuple{Int}`は`Tuple{Any}`のサブタイプです。したがって `Tuple{Any}`は、抽象型と見なされます。タプル型は、そのパラメータが具象型の場合にのみ具象型です。
-* タプルにはフィールド名はありません。フィールドはインデックスによってのみアクセスされます。
+* タプルにはフィールド名はありません。フィールドにはインデックスによってのみアクセスできます。
 
 
 ```@raw html
@@ -1595,7 +1595,7 @@ Tuple values are written with parentheses and commas. When a tuple is constructe
 tuple type is generated on demand:
 -->
 ```
-タプル値は、括弧とカンマで書かれています。タプルが生成されると、必要に応じて適切なタプル型が生成されます。
+タプルの値は、括弧とカンマをつかって書きます。タプルが生成されると、必要に応じて適切なタプル型が生成されます。
 
 
 
@@ -1611,7 +1611,7 @@ Note the implications of covariance:
 -->
 ```
 
-暗黙的な共変に注意してください。
+暗黙的に共変となる点に注目してください。
 
 ```jldoctest
 julia> Tuple{Int,AbstractString} <: Tuple{Real,Any}
@@ -1678,7 +1678,7 @@ alias for `Tuple{Vararg{T,N}}`, i.e. a tuple type containing exactly `N` element
 
 型`Vararg{T,N}`は、ちょうど`N`個の型`T`に対応します。
 `NTuple{N,T}`は`Tuple{Vararg{T,N}}`の便利なエイリアスです。
-つまり、ちょうど`N`個の型`T`の要素を含むタプル型です。
+つまり、型`T`の要素をちょうど`N`個含むタプル型です。
 
 [](#### [Singleton Types](@id man-singleton-types))
 #### [シングルトン型](@id man-singleton-types)
