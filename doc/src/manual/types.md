@@ -1328,7 +1328,7 @@ of `T`. As with parametric composite types, each such instance is a subtype of `
 -->
 ```
 
-この宣言では`Pointy{T}`は、型または整数値を表す`T`それぞれに対して個別の抽象型です。
+この宣言では`Pointy{T}`は、型や整数値を表す`T`それぞれに対して別々の抽象型になります。
 パラメトリック複合型と同様に、各インスタンスは`Pointy`のサブタイプです。
 
 ```jldoctest pointytype
@@ -1363,7 +1363,7 @@ but technically these represent *sets* of types (see [UnionAll Types](@ref)).
 -->
 ```
 Juliaでは、`Pointy{<:Real}`という表記で**共変**型のようなもの、`Pointy{>:Int}`で**反変**型のようなものを表現できます。
-しかし、技術的には、これらは型の**集合**を表しています。([全合併型](@ref) 参照)
+しかし、専門的には、これらは型の**集合**を表しています。([全合併型](@ref) 参照)
 
 ```jldoctest pointytype
 julia> Pointy{Float64} <: Pointy{<:Real}
@@ -1438,7 +1438,7 @@ implementation that only requires a single coordinate because the point is on th
 ```
 
 `Pointy`のようなパラメトリック抽象型はなんの役に立つのでしょうか？
-対角線**x = y**上にあって、座標がどちらか一つ分かればいい点のようなものを実装する場合を考えましょう。
+対角線**x = y**上にあるため、座標が1つ分かればすむ点のようなものを実装する場合を考えましょう。
 
 ```jldoctest pointytype
 julia> struct DiagPoint{T} <: Pointy{T}
@@ -1459,7 +1459,7 @@ next section, [Methods](@ref).
 
 ここで`Point{Float64}`と`DiagPoint{Float64}`は共に、抽象型`Pointy{Float64}`の実装で、これは`T`に他の可能な型を代入しても同様です。
 これにより`Point`と`DiagPoint`のどちらを実装するにも、`Pointy`オブジェクトを共通のインタフェースにするようなプログラミングが可能になります。
-しかし、完全な解説は、メソッドとディスパッチを導入する次のセクション[メソッド](@ref) に持ち越します。
+しかし、完全な解説は、メソッドとディスパッチを導入する次の章[メソッド](@ref) に持ち越します。
 
 
 
@@ -1470,7 +1470,7 @@ possible types. In such situations, one can constrain the range of `T` like so:
 -->
 ```
 
-型のパラメータがとりうる型を自由に認めると、意味を成さない場合があります。
+型のパラメータがとりうる型を自由にしてしまうと、意味を成さない場合があります。
 そのような状況では、次のように、`T`の範囲を制限することができます。
 
 
@@ -1485,7 +1485,7 @@ With such a declaration, it is acceptable to use any type that is a subtype of
 [`Real`](@ref) in place of `T`, but not types that are not subtypes of `Real`:
 -->
 ```
-この宣言では、`T`は[`Real`](@ref)の任意のサブタイプが受け入れますが、 `Real`のサブタイプでなければ受け入れません。
+この宣言では、`T`は任意の[`Real`](@ref)のサブタイプが受け入れますが、 `Real`のサブタイプでなければ受け入れません。
 
 ```jldoctest realpointytype
 julia> Pointy{Float64}
@@ -1525,7 +1525,7 @@ constructor here for simplicity), representing an exact ratio of integers:
 -->
 ```
 現実の世界でパラメトリック型という仕組みがどれほど役立つかという例として、
-ここでは整数の比を表す[`Rational`](@ref) 不変型の、Juliaでの実際の定義を示します。
+ここでは整数の比を表す[`Rational`](@ref) という不変型の、Juliaでの実際の定義を示します。
 （単純化のため、ここではコンストラクタを省略します）
 ```julia
 struct Rational{T<:Integer} <: Real
@@ -1542,7 +1542,7 @@ to being a subtype of [`Integer`](@ref), and a ratio of integers represents a va
 real number line, so any [`Rational`](@ref) is an instance of the [`Real`](@ref) abstraction.
 -->
 ```
-整数値の比率を取る時だけ、意味をなすので、パラメータの型`T`は、[`Integer`](@ref)のサブタイプに限定されています。
+整数値の比率になる時だけ、意味をなすので、パラメータの型`T`は、[`Integer`](@ref)のサブタイプに限定されています。
 整数の比は数直線上の値を表現するので、任意の[`Rational`](@ref) は、抽象型 [`Real`](@ref) のインスタンスです。
 
 [](### Tuple Types)
