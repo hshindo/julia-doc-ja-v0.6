@@ -891,7 +891,7 @@ Because of these shared properties, these types are internally represented as in
 same concept, `DataType`, which is the type of any of these types:
 -->
 ```
-こういった共通の特徴から、これらの型は内部的に同じコンセプト`DataType`のインスタンスとして表現されます。
+特徴が共通しているため、これらの型は内部的に同じコンセプト`DataType`のインスタンスとして表現されます。
 `DataType`はこれらの型のいずれかのことです。
 
 ```jldoctest
@@ -912,8 +912,8 @@ no field names. A composite type is a `DataType` that has field names or is empt
 Every concrete value in the system is an instance of some `DataType`.
 -->
 ```
-`DataType`は抽象型でも具象型でもかまいません。具象型であれば、特定のサイズ、 格納領域の配置 、および（任意で）フィールド名を持ちます。
-よって、原始型は、サイズが0ではなく、フィールド名を持たない`DataType`です。
+`DataType`は抽象型でも具象型でもかまいません。具象型であれば、特定のサイズ、 格納領域の配置 があり、（場合によっては）フィールド名もあります。
+そして、原始型は、サイズが0ではなく、フィールド名を持たない`DataType`です。
 複合型は、フィールド名を持つか、空（サイズ0）の`DataType`です。
 
 システムのあらゆる具体的な値は、なんらかの`DataType`のインスタンスです。
@@ -928,7 +928,7 @@ A type union is a special abstract type which includes as objects all instances 
 argument types, constructed using the special `Union` function:
 -->
 ```
-合併型は特別な抽象型であって、任意の引数の型のインスタンスをオブジェクトとして含み、特殊な関数`Union`を使用して構築されています。
+合併型は特殊な抽象型で、引数のいずれかの型のインスタンスすべてをオブジェクトとして含み、特殊な関数`Union`を使って構築します。
 
 ```jldoctest
 julia> IntOrString = Union{Int,AbstractString}
@@ -951,7 +951,7 @@ The compilers for many languages have an internal union construct for reasoning 
 simply exposes it to the programmer.
 -->
 ```
-多くの言語のコンパイラには、型推論のための内部での合併構造があります。Juliaはそれを単にプログラマに公開しています。
+多くの言語のコンパイラには、型推論のための内部的な合併構造があります。Juliaは単にそれをプログラマに公開しているだけです。
 
 [](## Parametric Types)
 ## パラメトリック型
@@ -976,13 +976,13 @@ easily handled.
 -->
 ```
 
-Juliaの型システムの重要かつ強力な特徴は、パラメトリックであることです。
-型にパラメータをつけると、型宣言は実質的に、ありうるパラメータ組み合わせの分だけ、新しい型の一族を導入することになります。
-[汎化プログラミング](https://en.wikipedia.org/wiki/Generic_programming)では、必要な型を正確に指定しなくても、処理すべきデータ構造やアルゴリズムを特定することができて、多くの言語が、何らかの形で対応しています。
-たとえば、ML、Haskell、Ada、Eiffel、C ++、Java、C＃、F＃、およびScalaなど、少し挙げるだけでも、何らかの形で汎化プログラミングを取り入れている言語が存在します。
+Juliaの型システムには、パラメトリックという重要かつ強力な特徴があります。
+型にパラメータをつけると、型宣言は実質的に、とりうるパラメータ組み合わせの分だけ、新しい型の一族を導入します。
+[汎化プログラミング](https://en.wikipedia.org/wiki/Generic_programming)では、必要な型を正確に指定しなくても、処理すべきデータ構造やアルゴリズムを特定することができて、多くの言語で、何らかの形で対応しています。
+たとえば、ML、Haskell、Ada、Eiffel、C ++、Java、C＃、F＃、およびScalaなど、少し挙げるだけでも、これだけの言語が何らかの形で汎化プログラミングを取り入れています。
 これらの言語の中には真のパラメトリック多相（ML、Haskell、Scalaなど）に対応するものもあれば、テンプレートベースの汎化プログラミング（C ++、Javaなど）のスタイルに対応するものもあります。
-言語によって汎化プログラミングやパラメトリック型は多種多様であるため、Juliaのパラメトリック型を他の言語と比較することはせず、代わりにJulia自体のシステムについて説明することに専念します。
-しかし、Juliaは動的型付け言語であり、コンパイル時にすべての型を決定する必要はないため、多くの静的型付け言語で生じる従来の困難は、比較的簡単に扱えることを注記しておきます。
+言語によって汎化プログラミングやパラメトリック型は多種多様であるため、Juliaのパラメトリック型を他の言語と比較することはせず、Julia自体のシステムについて説明することに専念します。
+しかし、Juliaは動的型付け言語で、コンパイル時にすべての型を決定する必要はないため、静的パラメトリック型付け言語の多くで生じる従来の困難が、比較的簡単に扱えることを注記しておきます。
 
 
 
