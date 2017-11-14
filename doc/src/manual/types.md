@@ -1027,12 +1027,12 @@ is now a usable concrete type:
 -->
 ```
 
-この宣言では、型`T`の2つの "座標"を保持している新しいパラメトリック型`Point{T}`を定義しています。
+この宣言では、2つの型`T`の「座標」を保持している新しいパラメトリック型`Point{T}`を定義しています。
 `T`ってなんだ？と誰かが聞くかもしれません。これがまさしくパラメトリック型のポイントです。
-どんな型（本当は原始型の値でもいいですが、ここでは明らかに型が使われています）でもかまいません。
+どんな型（本当は原始型の値でもいいですが、ここでは型が使われているのが明らかです）でもかまいません。
  `Point{Float64}`は、`Point` の定義の中の`T`を [`Float64`](@ref)と置き換えて定義したのと同等な具象型です。
  よって、一つの宣言が実質的には、`Point{Float64}`、`Point{AbstractString}`、`Point{Int64}`などの無限の宣言に相当します。
- それぞれが、具象型として利用できます。
+ そして、それぞれが、具象型として利用可能です。
 
 
 ```jldoctest pointtype
@@ -1117,7 +1117,7 @@ of `Point{Float64}` may conceptually be like an instance of `Point{Real}` as wel
 have different representations in memory:
 -->
 ```
-言い換えれば、型理論の用語を使うと、Juliaの型パラメータは [共変（または反変）](https://en.wikipedia.org/wiki/Covariance_and_contravariance_%28computer_science%29)ではなく、不変です。
+換言すると、型理論の術語では、Juliaの型パラメータは [共変（または反変）](https://en.wikipedia.org/wiki/Covariance_and_contravariance_%28computer_science%29)ではなく、不変です。
 これは現実的な理由によるもので、概念的には、`Point{Float64}`のインスタンスは`Point{Real}` のインスタンスと似ていますが、２つ型のメモリ内の表現は異なります。
 
 
@@ -1134,7 +1134,7 @@ have different representations in memory:
 ```
 
 * `Point{Float64}`のインスタンスは、64ビット値の隣接するペアとして密集して効率的に表現できます。
-* `Point{Real}` のインスタンスは、どんな[`Real`](@ref)のペアでも保持できる必要があります。`Real`のインスタンスであるオブジェクトは任意のサイズと構造になる可能性があるので、現実的には、`Point{Real}`のインスタンスは、個別に割り当てられた`Real`オブジェクトへのポインタのペアとして表現されなくてはなりません。
+* `Point{Real}` のインスタンスは、どんな[`Real`](@ref)のペアでも保持できる必要があります。`Real`のインスタンスとなるオブジェクトは任意のサイズと構造になる可能性があるので、現実的には、`Point{Real}`のインスタンスは、個別に割り当てられた`Real`オブジェクトへのポインタのペアとして表現する必要があります。
 
 
 
@@ -1149,9 +1149,9 @@ to individually allocated [`Real`](@ref) objects -- which may well be
 declared to be implementations of the `Real` abstract type.
 -->
 ```
-`Point{Float64}`オブジェクトに、値を直接を格納できることで得られる効率は、配列の場合、非常に大きくなります。
-`Array{Float64}`は、64ビットの浮動小数点数の連続したメモリブロックとして格納されますが、`Array{Real}`は個別に割り当てられた[`Real`](@ref) オブジェクトへのポインタの配列でなければなりません。
- 64ビットの浮動小数点数が[ボックス化](https://en.wikipedia.org/wiki/Object_type_%28object-oriented_programming%29#Boxing)されているということもありそうですが、抽象型`Real`の実装として宣言された任意の大きさの複素数オブジェクトでもかまいません。
+`Point{Float64}`オブジェクトに、値を直接を格納できると、得られる効率は、配列の場合、非常に大きくなります。
+`Array{Float64}`は、64ビットの浮動小数点数の連続したメモリブロックとして格納されますが、`Array{Real}`は[`Real`](@ref) オブジェクトにそれぞれ割り当てられたポインタの配列でなければなりません。
+ 64ビットの浮動小数点数が[ボックス化](https://en.wikipedia.org/wiki/Object_type_%28object-oriented_programming%29#Boxing)されていても構いませんが、抽象型`Real`の実装として宣言された任意の大きさの複素数オブジェクトでもかまいません。
 
 ```@raw html
 <!--
@@ -1175,7 +1175,7 @@ A correct way to define a method that accepts all arguments of type `Point{T}` w
 a subtype of [`Real`](@ref) is:
 -->
 ```
-`T`が[`Real`](@ref)のサブタイプである場合の`Point{T}`という型のすべてを、引数として受け入れるメソッドを定義する正しい方法は次のとおりです。
+`T`が[`Real`](@ref)のサブタイプである`Point{T}`という型のすべてを、引数として受け入れるメソッドを定義する正しい方法は次のとおりです。
 
 
 ```julia
@@ -1193,7 +1193,7 @@ end
 More examples will be discussed later in [Methods](@ref).
 -->
 ```
-（同等な定義として、`function norm{T<:Real}(p::Point{T})`や、`function norm(p::Point{T} where T<:Real)`があります。（[全合併型](@ref) を参照。）
+（同等の定義として、`function norm{T<:Real}(p::Point{T})`や、`function norm(p::Point{T} where T<:Real)`があります。（[全合併型](@ref) を参照。）
 
 より多くの例については、後の [メソッド](@ref) で説明します。
 
@@ -1206,8 +1206,8 @@ which the type parameters are explicitly given and the other in which they are i
 arguments to the object constructor.
 -->
 ```
-どのようにしてPointオブジェクトを構成しますか？[Constructor]（@ ref man-constructor）で詳しく説明しますが、複合型の独自のコンストラクタを定義することは可能ですが、特別なコンストラクタ宣言がない場合、新しい複合型オブジェクトを作成するデフォルトの方法が2つあります。一つは型パラメータを明示的に与えるもの、もう一つはオブジェクトコンストラクタへの引数から暗黙裡に推定されるものです。
-
+`Point`オブジェクトはどのように構成するのでしょうか？
+[コンストラクタ]（@ ref man-constructor）で詳しく説明しますが、複合型に独自のコンストラクタを定義することは可能ですが、特別にコンストラクタの宣言をしなくても、デフォルトで新しい複合型オブジェクトを作成する方法が2通りあります。1つは型パラメータを明示的に与えるもの、もう1つはオブジェクトコンストラクタへの引数から暗黙裡に推定されるものです。
 ```@raw html
 <!--
 Since the type `Point{Float64}` is a concrete type equivalent to `Point` declared with [`Float64`](@ref)
@@ -1230,7 +1230,7 @@ Point{Float64}
 For the default constructor, exactly one argument must be supplied for each field:
 -->
 ```
-デフォルトのコンストラクタでは、各フィールドにちょうど1つの引数を指定する必要があります。
+デフォルトのコンストラクタには、各フィールドにちょうど1つの引数を指定する必要があります。
 
 
 
@@ -1261,8 +1261,8 @@ of the parameter type `T` is unambiguous:
 パラメトリック型に対しては、デフォルトのコンストラクタは1つしか生成されません。オーバーライドできないためです。このコンストラクタは任意の引数を受け取り、フィールドの型に変換します。
 
 多くの場合、生成したい`Point`オブジェクトの型を指定するのは冗長です。
-`Point`コンストラクタ呼び出しの際の引数に、すでに型情報が隠されているからです。
-そのため、`Point`のパラメータの型`T`に曖昧さがなく、型の値を推定可能な場合は、`Point`自身をコンストラクタとして適用することもできます。
+`Point`コンストラクタを呼び出す時の引数に、すでに型情報が隠されているからです。
+そのため、`Point`のパラメータの型`T`が推定可能で曖昧さがない場合は、`Point`自体をコンストラクタとして適用することも可能です。
 
 ```jldoctest pointtype
 julia> Point(1.0,2.0)
@@ -1286,7 +1286,7 @@ to `Point` have the same type. When this isn't the case, the constructor will fa
 -->
 ```
 
-`Point`の場合、2つの引数が同じ型を持つ場合にのみ、型`T`は明確に推定されます。これ以外の場合、コンストラクタは次のように失敗して、 [`MethodError`](@ref) が発生します。
+`Point`の場合、2つの引数が同じ型を持つ場合にのみ、型`T`は明確に推定されます。これ以外の場合、コンストラクタは失敗して、 [`MethodError`](@ref) が発生します。
 
 ```jldoctest pointtype
 julia> Point(1,2.5)
@@ -1302,7 +1302,7 @@ Constructor methods to appropriately handle such mixed cases can be defined, but
 be discussed until later on in [Constructors](@ref man-constructors).
 -->
 ```
-そのような混合したケースを適切に扱うコンストラクタメソッドは定義できますが、後の[コンストラクタ]（@ ref man-constructors）まで議論を保留します。
+このような型の混ざった場合を適切に扱うコンストラクタメソッドは定義できますが、後の[コンストラクタ]（@ ref man-constructors）まで議論を保留します。
 
 [](### Parametric Abstract Types)
 ### パラメトリック抽象型
