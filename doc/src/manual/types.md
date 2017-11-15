@@ -2195,10 +2195,10 @@ instances of this type display rather simply, with information about the type na
 the field values, as e.g. `Polar{Float64}(3.0,4.0)`.
 -->
 ```
-この例では、[`Real`](@ref)型の異なる引数をとると、それらを共通の型に昇格することができるような、独自のコンストラクタ関数を追加しました （ [Constructors](@ref man-constructors)と[Conversion and Promotion](@ref conversion-and-promotion)を参照)。
+この例では、[`Real`](@ref)型の異なる引数をとると、それらを共通の型に昇格することができるような、独自のコンストラクタ関数を追加しました （ [コンストラクタ](@ref man-constructors)と[変換と昇格](@ref conversion-and-promotion)を参照)。
 （もちろん、[`Number`](@ref)型と同じように動作させるためには、他にも多くのメソッドを定義する必要があるでしょう
 （例えば、`+`、 `*`、 `one`、 `zero`、昇格のルールなど）。
-デフォルトでは、この型のインスタンスの表示はかなり単純で、情報は型名とフィールド値だけの、`Polar{Float64}(3.0,4.0)`のようになります。
+デフォルトでは、この型のインスタンスの表示はかなり単純で、型名とフィールド値を知らせるだけの、`Polar{Float64}(3.0,4.0)`のようになります。
 
 ```@raw html
 <!--
@@ -2225,8 +2225,8 @@ format for displaying an object by overloading a three-argument form of `show` t
 -->
 ```
 `Polar`オブジェクトの表示をより細かく制御することが可能です。
-特に、冗長な複数行印刷形式は、REPLなどの対話環境で一つのオブジェクトを表示する時に、簡単な単一行形式は、オブジェクトを別の（配列などの）オブジェクトの一部として表示する時にと 、両方を行いたい場合があります。
-デフォルトでは、`show(io, z)`関数が両方の場合に呼び出されますが、ユーザーが定義した**別の**複数行の形式を表示できます。そのためには、3引数の`show`関数で、2番目の引数に、`text/plain`MIMEタイプ（[Multimedia I/O](@ref)参照）をとるものをオーバーロードします。例えば、
+特に、冗長な複数行印刷形式は、REPLなどの対話環境で単一のオブジェクトを表示する時に、簡単な単一行形式は、オブジェクトを別の（配列などの）オブジェクトの一部として表示する時にと 、両方を行いたい場合があります。
+デフォルトでは、`show(io, z)`関数が両方の場合に呼び出されますが、ユーザーが定義した**別の**複数行の形式を表示することもできます。そのためには、3引数の`show`関数で、2番目の引数に、`text/plain`MIMEタイプ（[Multimedia I/O](@ref)参照）をとるものをオーバーロードします。例えば、
 
 ```jldoctest polartype
 julia> Base.show{T}(io::IO, ::MIME"text/plain", z::Polar{T}) =
@@ -2274,7 +2274,7 @@ Moreover, you can also define `show` methods for other MIME types in order to en
 we can define formatted HTML display of `Polar` objects, with superscripts and italics, via:
 -->
 ```
-さらに、`show`メソッドを他のMIMEタイプ向けに定義して、対応している環境（例えばIJulia）では、オブジェクトをより豊かに表示（HTML、画像など）することもできます。
+さらに、`show`メソッドを他のMIMEタイプ向けに定義して、対応している環境（例えばIJulia）では、オブジェクトをよりリッチな表示（HTML、画像など）にすることもできます。
 たとえば、`Polar`書式付きのHTML表示を定義して、上付き文字と斜体を使うには、次のようにします。
 
 ```jldoctest polartype
