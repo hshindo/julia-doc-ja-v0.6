@@ -1989,8 +1989,8 @@ For example, `UInt` is aliased to either [`UInt32`](@ref) or [`UInt64`](@ref) as
 appropriate for the size of pointers on the system:
 -->
 ```
-新しい名前を、すでに表現できる型につけると便利な場合が時々あります。
-これは簡単な代入文で、できます。
+すでに表現可能な型に新しい名前をつけると便利な場合が時々あります。
+これは簡単な代入文で行うことができます。
 たとえば、`UInt`は、システム上のポインタのサイズに応じて、[`UInt32`](@ref) か [`UInt64`](@ref)　の別名となります。
 
 ```julia-repl
@@ -2009,7 +2009,7 @@ UInt64
 This is accomplished via the following code in `base/boot.jl`:
 -->
 ```
-これは次のコード`base/boot.jl`の中で実行されます：
+これは`base/boot.jl`の中にある以下のコードで実現できます。
 
 ```julia
 if Int === Int64
@@ -2026,7 +2026,7 @@ Of course, this depends on what `Int` is aliased to -- but that is predefined to
 type -- either [`Int32`](@ref) or [`Int64`](@ref).
 -->
 ```
-もちろん、これは `Int` が[`Int32`](@ref)と [`Int64`](@ref)のどちらの別名なのかに依存しています。
+もちろん、これは `Int` が[`Int32`](@ref)と [`Int64`](@ref)のどちらの別名なのかでかわります。
 この別名は正しい型になるように事前に定義されています。
 
 ```@raw html
@@ -2037,7 +2037,7 @@ are specified by the IEEE-754 standard. Whereas the size of `Int` reflects the s
 native pointer on that machine.)
 -->
 ```
-（`Int`や`Float`と違って、`Float`は、[`AbstractFloat`](@ref)のサイズを特定した別名の型として存在しません。
+（`Int`と違って、`Float`という、[`AbstractFloat`](@ref)の特定のサイズの型の別名は存在しない点に注意してください。
 整数レジスタとは異なり、浮動小数点レジスタのサイズは、IEEE-754規格で規定されています。
 一方`Int`のサイズは、そのマシン上のネイティブポインタのサイズを反映しています。）
 
