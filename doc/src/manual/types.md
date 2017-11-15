@@ -1718,8 +1718,8 @@ all type objects as its instances, including, of course, singleton types:
 -->
 ```
 
-換言すると、[`isa(A,Type{B})`](@ref) は、`A`と`B`が同じオブジェクトであり、そのオブジェクトが型であるのみ真です。
-パラメータをつけない`Type`は、単なる抽象型であり、すべての型オブジェクトをそのインスタンスとします（もちろん、シングルトン型も含みます）。
+換言すると、[`isa(A,Type{B})`](@ref) は、`A`と`B`が同じオブジェクトであり、そのオブジェクトとは型であるのみ真になります。
+パラメータをつけない`Type`は、単なる抽象型であり、すべての型オブジェクトは`Type`のインスタンスです（もちろん、シングルトン型も含みます）。
 
 
 ```jldoctest
@@ -1763,7 +1763,8 @@ by the type of one of its arguments.
 ```
 [パラメトリックメソッド](@ref)と[変換](@ref conversion-and-promotion)の議論がすむまで、
 シングルトン型がどう役に立つのかを説明するのは難しいですが、手短にいうと、関数の挙動を特定の型の**値**だけに特化することができるのです。
-これは挙動が型に依存する（特にパラメトリックな）メソッドで、その型が暗黙的に推論されるのではなく明示的な引数として与えられるものを書くのに役立ちます。
+これが役に立つのは、挙動が型に依存する（特にパラメトリックな）メソッドを書く時で、
+しかもその型が勝手に推測されるのではなく、わざわざ引数として与える場合です。
 
 ```@raw html
 <!--
@@ -1834,12 +1835,12 @@ The answer is that `Ptr` (or other parametric types like `Array`) is a different
 `UnionAll` type. Such a type expresses the *iterated union* of types for all values of some parameter.
 -->
 ```
-`Ptr`のようなパラメトリック型はすべてのインスタンス（`Ptr{Int64}`など）のスーパータイプのように振る舞うと前述しました。
-これはどのように作動するでしょうか？
-`Ptr`自体は通常のデータ型ではありえません。というのも、参照されるデータの型を知らなければ、
-明らかに、その型をメモリ操作に使用することができないからです。
-答えは、`Ptr`の型（または他の`Array`のようなパラメトリック型）は、`全合併型`と呼ばれる種類の異なるものです 。
-この型は、いくつかあるパラメータのすべての値に対して**繰返しの合併した**型を表現します。
+`Ptr`のようなパラメトリック型はすべてのインスタンス（`Ptr{Int64}`など）のスーパータイプのように振る舞うと前に述べましました。
+これはどのようにして実現しているのでしょうか？
+`Ptr`自体は通常のデータ型ではありえません。というのも、参照するデータの型が分からなければ、
+明らかに、その型を記憶操作に使用できないからです。
+答えは、`Ptr`の型（また他の`Array`のようなパラメトリック型）は、`全合併型`と呼ばれる種類の異なる型です 。
+この型は、あるパラメータをすべての値に対して**繰り返し合併した**型を表現します。
 
 ```@raw html
 <!--
@@ -1851,10 +1852,11 @@ Each `where` introduces a single type variable, so these expressions are nested 
 multiple parameters, for example `Array{T,N} where N where T`.
 -->
 ```
-全合併型は、通常、キーワード`where`を使用して記述されます。
-例えば、`Ptr`は、より正確に`Ptr{T} where T`と書くことができ、ある型の値`T`によって`Ptr{T}`と書ける型である値すべてを意味しています。
-この文脈では、パラメータ`T`は型にまたがる変数のようなものであるため、しばしば「型変数」と呼ばれます。
-それぞれ`where`は型変数を一つ導入しているため、これらの式は複数のパラメータを持つ型ではネストしています。例えば`Array{T,N} where N where T`のように。
+全合併型は、通常、キーワード`where`を使って記述されます。
+例えば、`Ptr`は、より正確には`Ptr{T} where T`と書くことができて、ある`T`という値によって`Ptr{T}`と書ける型をもつ値すべてを意味します。
+この文脈では、パラメータ`T`は型をまたぐ変数のようなものであるため、よく「型変数」と呼ばれます。
+それぞれの`where`は型変数を一つ導入するため、こういった式は複数のパラメータを持つ場合、
+例えば`Array{T,N} where N where T`のように、型に対してネストします。
 
 
 
@@ -1870,11 +1872,13 @@ Using explicit `where` syntax, any subset of parameters can be fixed. For exampl
 1-dimensional arrays can be written as `Array{T,1} where T`.
 -->
 ```
-型の適用構文`A{B,C}`は、`A`が全合併型であることが必須で、まず`B`を一番外側の型変数`A`の中で置換します。
-結果は別の`全合併`型になると予想され、その中で`C`に置換します。なので`A{B,C}`と`A{B}{C}`は同等です。
-これは`Array{Float64}`のように、型を部分的にインスタンス化することができる理由を説明しています。
-最初のパラメータ値は固定されていますが、2番目の値はすべての可能な値にまたがっているからです。
-明示的な`where`構文を使用すると、パラメータを任意の部分集合に固定できます。
+型の適用構文`A{B,C}`には、`A`が全合併型であることが必要です。
+まず`A`の一番外側の型変数を`B`で置換します。
+その結果は別の`全合併`型になることと想定されているので、`C`で置換します。
+よって`A{B,C}`と`A{B}{C}`は同等です。
+これは`Array{Float64}`のように、型を部分的にインスタンス化することができる理由の説明となっています。
+最初のパラメータの値は固定されていますが、2番目の値はすべてのとりうる値にまたがっているからです。
+明示的に`where`構文を使用すると、どんなパラメータの部分集合にでも固定できます。
 例えば、すべての1次元配列の型は、`Array{T,1} where T`と書くことができます。
 
 
@@ -1892,11 +1896,11 @@ The syntax `where T>:Int` also works to specify only the lower bound of a type v
 and `Array{>:Int}` is equivalent to `Array{T} where T>:Int`.
 -->
 ```
-型変数は、サブタイプの関係によって制限することができます。
- `Array{T} where T<:Integer`は、配列で要素の型がある種の[`Integer`](@ref)になるものすべてを指しています。
+型変数は、サブタイプの関係をつかって制限することができます。
+ `Array{T} where T<:Integer`は、配列で要素の型が[`Integer`](@ref)のいずれかになるものすべてを指しています。
  構文`Array{<:Integer}`は`Array{T} where T<:Integer`の便利な簡略表記です。
- 型変数は、下限と上限の両方を持つことができます。
-  `Array{T} where Int<:T<:Number`は `Int`を含みうる[`Number`](@ref)の配列すべてを指します（少なくとも、`T` は`Int`以上の大きさでなければなりません）。
+ 型変数は、下限と上限の両方を指定することができます。
+  `Array{T} where Int<:T<:Number`は [`Number`](@ref)の配列で`Int`を含みうるものすべてを指します（少なくとも、`T` は`Int`以上の大きさでなければなりません）。
   構文`where T>:Int`はまた、型変数の下限のみを指定していて、
   `Array{>:Int}`は、`Array{T} where T>:Int`同等です。
 
@@ -1908,9 +1912,9 @@ whose first element is some [`Real`](@ref), and whose second element is an `Arra
 kind of array whose element type contains the type of the first tuple element.
 -->
 ```
-`where`式はネストするので、型変数を制限する際は外部の型変数を参照できます。
-例えば、`Tuple{T,Array{S}} where S<:AbstractArray{T} where T<:Real`は、第1要素は[`Real`](@ref)の何かで、
-第2要素は、各要素が第1要素の型を含む型である配列の**配列**の、2要素-タプルを参照します。
+`where`式はネストするので、型変数を限定する式は外側の型変数を参照することができます。
+例えば、`Tuple{T,Array{S}} where S<:AbstractArray{T} where T<:Real`は、第1要素は[`Real`](@ref)のいずれかで、
+第2要素は、各要素が第1要素の型を含む型の配列である**配列**の、2要素-タプルを参照します。
 
 ```@raw html
 <!--
@@ -1918,7 +1922,7 @@ The `where` keyword itself can be nested inside a more complex declaration. For 
 consider the two types created by the following declarations:
 -->
 ```
-`where`キーワード自体は、より複雑な宣言の中にネストすることができます。
+`where`キーワード自体は、より複雑な宣言の中でネストすることができます。
 たとえば、次の宣言で作成される2つの型を考えてみましょう。
 
 ```jldoctest
@@ -1928,7 +1932,6 @@ Array{Array{T,1} where T,1}
 julia> const T2 = Array{Array{T,1}, 1} where T
 Array{Array{T,1},1} where T
 ```
-
 
 ```@raw html
 <!--
@@ -1950,7 +1953,7 @@ There is a convenient syntax for naming such types, similar to the short form of
 definition syntax:
 -->
 ```
-このような型を命名する便利な構文がありますが、これは関数定義の短い形の構文と似ています：
+このような型を命名する便利な構文があり、それは関数定義の短い形の構文と似ています：
 
 ```julia
 Vector{T} = Array{T,1}
@@ -1971,7 +1974,7 @@ element type.
 これは`const Vector = Array{T,1} where T`と同等です。
 `Vector{Float64}`と書くのは、`Array{Float64,1}`と書くのと同等です。
 包括型の `Vector`は、2番目のパラメータ（配列の次元数）が1である、すべての`Array`オブジェクトを、要素の種類に関係なく、インスタンスとして持ちます。
-パラメトリック型を常に完全に指定しなければならない言語では、これはそんなに有用ではないかもしれません。
+パラメトリック型を常に完全に指定しなければならない言語では、こういう構文はそんなに有用ではないかもしれません。
 しかしJuliaでは、`Vector`と書くだけで、任意の要素型のすべての1次元の密な配列を含む抽象型を表すことができます。
 
 [](## Type Aliases)
