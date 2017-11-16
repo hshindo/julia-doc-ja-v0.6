@@ -1,5 +1,9 @@
-# [Multi-dimensional Arrays](@id man-multi-dim-arrays)
+[](# [Multi-dimensional Arrays](@id man-multi-dim-arrays))
+# [多次元配列](@id man-multi-dim-arrays)
 
+
+```@raw html
+<!--
 Julia, like most technical computing languages, provides a first-class array implementation. Most
 technical computing languages pay a lot of attention to their array implementation at the expense
 of other containers. Julia does not treat arrays in any special way. The array library is implemented
@@ -11,7 +15,23 @@ on implementing a custom array type.
 An array is a collection of objects stored in a multi-dimensional grid. In the most general case,
 an array may contain objects of type `Any`. For most computational purposes, arrays should contain
 objects of a more specific type, such as [`Float64`](@ref) or [`Int32`](@ref).
+-->
+```
+Juliaは、ほとんどの技術計算用の言語と同様に、ファーストクラスの配列実装を提供します。
 
+Juliaは配列を特別扱いしません。
+配列ライブラリーは、Julia自体でほぼ完全に実装されており、Juliaで書かれた他のコードと同様に、コンパイラーからそのパフォーマンスを引き出します。
+このように、`AbstractArray`を継承して、独自の配列型を定義することも可能です。
+独自の配列型の実装の詳細については、マニュアルのセクションのAbstractArrayインタフェース（@ ref man-interface-array）を参照してください。
+
+配列は、多次元グリッドに格納されたオブジェクトのコレクションです。
+最も一般的な場合、配列には`Any`型のオブジェクトが含まれることがあります。
+大抵の計算目的のためには、配列は、[`Float64`](@ref) や[`Int32`](@ref)のようなより型の特定されたオブジェクトであるべきです。
+
+
+
+```@raw html
+<!--
 In general, unlike many other technical computing languages, Julia does not expect programs to
 be written in a vectorized style for performance. Julia's compiler uses type inference and generates
 optimized code for scalar array indexing, allowing programs to be written in a style that is convenient
@@ -22,13 +42,27 @@ pass arrays by value, and this is convenient in many cases. In Julia, modificati
 arrays within a function will be visible in the parent function. The entire Julia array library
 ensures that inputs are not modified by library functions. User code, if it needs to exhibit similar
 behavior, should take care to create a copy of inputs that it may modify.
+-->
+```
+一般に、他の多くの技術計算用の言語とは異なり、Juliaは、プログラムがパフォーマンスのためにベクトル化されたスタイルで書かれていることを想定していません。
+Juliaのコンパイラは型推論を使用し、スカラーによる配列のインデックス参照に最適化されたコードを生成するので、パフォーマンスを犠牲にすることなく、また少ないメモリ量で使用することができます。
 
-## Arrays
+Juliaでは、関数へのすべての引数は参照渡しに渡されます。技術計算用の言語のなかには配列を値渡しするものもあり、多くの場合に便利です。
+Juliaでは、関数内で入力用の配列に加えられた変更が、親関数から参照できます。
+ライブラリ関数によって入力が変更されないことが、Juliaの配列ライブラリ全体で保証されています。
+ユーザーのコードも同様の動作をさせる必要がある場合は、変更用に入力のコピーを作成するよう注意してください。
 
-### Basic Functions
+[](## Arrays)
+## 配列
 
+[](### Basic Functions)
+### 基本的な関数
+
+
+```@raw html
+<!--
 | Function               | Description                                                                      |
-|:---------------------- |:-------------------------------------------------------------------------------- |
+| :--------------------- | :------------------------------------------------------------------------------- |
 | [`eltype(A)`](@ref)    | the type of the elements contained in `A`                                        |
 | [`length(A)`](@ref)    | the number of elements in `A`                                                    |
 | [`ndims(A)`](@ref)     | the number of dimensions of `A`                                                  |
@@ -39,17 +73,43 @@ behavior, should take care to create a copy of inputs that it may modify.
 | [`eachindex(A)`](@ref) | an efficient iterator for visiting each position in `A`                          |
 | [`stride(A,k)`](@ref)  | the stride (linear index distance between adjacent elements) along dimension `k` |
 | [`strides(A)`](@ref)   | a tuple of the strides in each dimension                                         |
+-->
+```
+| 関数                   | 説明                                           |
+| :--------------------- | :--------------------------------------------- |
+| [`eltype(A)`](@ref)    | `A`に含まれる要素の型。                             |
+| [`length(A)`](@ref)    | `A`の要素の数                                    |
+| [`ndims(A)`](@ref)     | `A`の次元の数                                    |
+| [`size(A)`](@ref)      | `A`の次元を表すタプル                                |
+| [`size(A,n)`](@ref)    | 次元`n`における `A`のサイズ                            |
+| [`indices(A)`](@ref)   | `A`の妥当なインデックスを表すタプル                         |
+| [`indices(A,n)`](@ref) | 次元`n`の `A`の妥当なインデックスを表す範囲               |
+| [`eachindex(A)`](@ref) | `A`の各位置に訪れるイテレータ                           |
+| [`stride(A,k)`](@ref)  | 次元`k`におけるストライド(隣接する要素間の線形インデックスの距離) |
+| [`strides(A)`](@ref)   | 各次元のストライドのタプル                               |
 
-### Construction and Initialization
+[](### Construction and Initialization)
+### 生成と初期化
 
+
+```@raw html
+<!--
 Many functions for constructing and initializing arrays are provided. In the following list of
 such functions, calls with a `dims...` argument can either take a single tuple of dimension sizes
 or a series of dimension sizes passed as a variable number of arguments. Most of these functions
 also accept a first input `T`, which is the element type of the array. If the type `T` is
 omitted it will default to [`Float64`](@ref).
+-->
+```
+配列の生成と初期化用に多くの関数が用意されています。
+次のような関数のリストでは、`dims...`引数付きの呼び出しは、次元数の単一のタプル、または可変数の引数として渡される次元サイズの数列のいずれかを取ることができます。
+これらの関数のほとんどは、配列の要素型である`T`を最初の入力に受け入れます。
+型`T`が省略された場合、デフォルト の[`Float64`](@ref)になります。
 
+```@raw html
+<!--
 | Function                           | Description                                                                                                                                                                                                                                  |
-|:---------------------------------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`Array{T}(dims...)`](@ref)        | an uninitialized dense [`Array`](@ref)                                                                                                                                                                                                       |
 | [`zeros(T, dims...)`](@ref)        | an `Array` of all zeros                                                                                                                                                                                                                      |
 | [`zeros(A)`](@ref)                 | an array of all zeros with the same type, element type and shape as `A`                                                                                                                                                                      |
@@ -71,43 +131,110 @@ omitted it will default to [`Float64`](@ref).
 | [`linspace(start, stop, n)`](@ref) | range of `n` linearly spaced elements from `start` to `stop`                                                                                                                                                                                 |
 | [`fill!(A, x)`](@ref)              | fill the array `A` with the value `x`                                                                                                                                                                                                        |
 | [`fill(x, dims...)`](@ref)         | an `Array` filled with the value `x`                                                                                                                                                                                                         |
+-->
+```
 
+| 関数                          | 説明                                                                                                                                                                                                                                  |
+| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`Array{T}(dims...)`](@ref)        | 初期化されていない密な [`Array`](@ref)                                                                                                                                                                                                       |
+| [`zeros(T, dims...)`](@ref)        | すべてが0の `配列`                                                                                                                                                                                                                       |
+| [`zeros(A)`](@ref)                 | an array of all zeros with the same type, element type and shape as `A`                                                                                                                                                                      |
+| [`ones(T, dims...)`](@ref)         | an `Array` of all ones                                                                                                                                                                                                                       |
+| [`ones(A)`](@ref)                  | an array of all ones with the same type, element type and shape as `A`                                                                                                                                                                       |
+| [`trues(dims...)`](@ref)           | a [`BitArray`](@ref) with all values `true`                                                                                                                                                                                                  |
+| [`trues(A)`](@ref)                 | a `BitArray` with all values `true` and the same shape as `A`                                                                                                                                                                                |
+| [`falses(dims...)`](@ref)          | a `BitArray` with all values `false`                                                                                                                                                                                                         |
+| [`falses(A)`](@ref)                | a `BitArray` with all values `false` and the same shape as `A`                                                                                                                                                                               |
+| [`reshape(A, dims...)`](@ref)      | an array containing the same data as `A`, but with different dimensions                                                                                                                                                                      |
+| [`copy(A)`](@ref)                  | copy `A`                                                                                                                                                                                                                                     |
+| [`deepcopy(A)`](@ref)              | copy `A`, recursively copying its elements                                                                                                                                                                                                   |
+| [`similar(A, T, dims...)`](@ref)   | an uninitialized array of the same type as `A` (dense, sparse, etc.), but with the specified element type and dimensions. The second and third arguments are both optional, defaulting to the element type and dimensions of `A` if omitted. |
+| [`reinterpret(T, A)`](@ref)        | an array with the same binary data as `A`, but with element type `T`                                                                                                                                                                         |
+| [`rand(T, dims...)`](@ref)         | an `Array` with random, iid [^1] and uniformly distributed values in the half-open interval ``[0, 1)``                                                                                                                                       |
+| [`randn(T, dims...)`](@ref)        | an `Array` with random, iid and standard normally distributed values                                                                                                                                                                         |
+| [`eye(T, n)`](@ref)                | `n`-by-`n` identity matrix                                                                                                                                                                                                                   |
+| [`eye(T, m, n)`](@ref)             | `m`-by-`n` identity matrix                                                                                                                                                                                                                   |
+| [`linspace(start, stop, n)`](@ref) | range of `n` linearly spaced elements from `start` to `stop`                                                                                                                                                                                 |
+| [`fill!(A, x)`](@ref)              | fill the array `A` with the value `x`                                                                                                                                                                                                        |
+| [`fill(x, dims...)`](@ref)         | an `Array` filled with the value `x`                                                      
+
+```@raw html
+<!--
 [^1]: *iid*, independently and identically distributed.
+-->
+```
 
+
+```@raw html
+<!--
 The syntax `[A, B, C, ...]` constructs a 1-d array (vector) of its arguments. If all
 arguments have a common [promotion type](@ref conversion-and-promotion) then they get
 converted to that type using `convert()`.
+-->
+```
 
-### Concatenation
+[](### Concatenation)
+### 連結
 
+
+```@raw html
+<!--
 Arrays can be constructed and also concatenated using the following functions:
+-->
+```
 
+
+```@raw html
+<!--
 | Function               | Description                                          |
-|:---------------------- |:---------------------------------------------------- |
+| :--------------------- | :--------------------------------------------------- |
 | [`cat(k, A...)`](@ref) | concatenate input n-d arrays along the dimension `k` |
 | [`vcat(A...)`](@ref)   | shorthand for `cat(1, A...)`                         |
 | [`hcat(A...)`](@ref)   | shorthand for `cat(2, A...)`                         |
+-->
+```
 
+
+```@raw html
+<!--
 Scalar values passed to these functions are treated as 1-element arrays.
 
 The concatenation functions are used so often that they have special syntax:
+-->
+```
 
+
+```@raw html
+<!--
 | Expression        | Calls             |
-|:----------------- |:----------------- |
+| :---------------- | :---------------- |
 | `[A; B; C; ...]`  | [`vcat()`](@ref)  |
 | `[A B C ...]`     | [`hcat()`](@ref)  |
 | `[A B; C D; ...]` | [`hvcat()`](@ref) |
+-->
+```
 
+
+```@raw html
+<!--
 [`hvcat()`](@ref) concatenates in both dimension 1 (with semicolons) and dimension 2 (with spaces).
+-->
+```
 
-### Typed array initializers
+[](### Typed array initializers)
+### 型指定での配列の初期化
 
+
+```@raw html
+<!--
 An array with a specific element type can be constructed using the syntax `T[A, B, C, ...]`. This
 will construct a 1-d array with element type `T`, initialized to contain elements `A`, `B`, `C`,
 etc. For example `Any[x, y, z]` constructs a heterogeneous array that can contain any values.
 
 Concatenation syntax can similarly be prefixed with a type to specify the element type of the
 result.
+-->
+```
 
 ```jldoctest
 julia> [[1 2] [3 4]]
@@ -119,16 +246,24 @@ julia> Int8[[1 2] [3 4]]
  1  2  3  4
 ```
 
-### Comprehensions
+[](### Comprehensions)
 ### 内包表記
 
+
+```@raw html
+<!--
 Comprehensions provide a general and powerful way to construct arrays. Comprehension syntax is
 similar to set construction notation in mathematics:
+-->
+```
 
 ```
 A = [ F(x,y,...) for x=rx, y=ry, ... ]
 ```
 
+
+```@raw html
+<!--
 The meaning of this form is that `F(x,y,...)` is evaluated with the variables `x`, `y`, etc. taking
 on each value in their given list of values. Values can be specified as any iterable object, but
 will commonly be ranges like `1:n` or `2:(n-1)`, or explicit arrays of values like `[1.2, 3.4, 5.7]`.
@@ -137,6 +272,8 @@ of the variable ranges `rx`, `ry`, etc. and each `F(x,y,...)` evaluation returns
 
 The following example computes a weighted average of the current element and its left and right
 neighbor along a 1-d grid. :
+-->
+```
 
 ```julia-repl
 julia> x = rand(8)
@@ -160,36 +297,57 @@ julia> [ 0.25*x[i-1] + 0.5*x[i] + 0.25*x[i+1] for i=2:length(x)-1 ]
  0.656511
 ```
 
+
+```@raw html
+<!--
 The resulting array type depends on the types of the computed elements. In order to control the
 type explicitly, a type can be prepended to the comprehension. For example, we could have requested
 the result in single precision by writing:
+-->
+```
 
 ```julia
 Float32[ 0.25*x[i-1] + 0.5*x[i] + 0.25*x[i+1] for i=2:length(x)-1 ]
 ```
 
-### Generator Expressions
+[](### Generator Expressions)
+### ジェネレータ式
 
+
+```@raw html
+<!--
 Comprehensions can also be written without the enclosing square brackets, producing an object
 known as a generator. This object can be iterated to produce values on demand, instead of allocating
 an array and storing them in advance (see [Iteration](@ref)). For example, the following expression
 sums a series without allocating memory:
+-->
+```
 
 ```jldoctest
 julia> sum(1/n^2 for n=1:1000)
 1.6439345666815615
 ```
 
+
+```@raw html
+<!--
 When writing a generator expression with multiple dimensions inside an argument list, parentheses
 are needed to separate the generator from subsequent arguments:
+-->
+```
 
 ```julia-repl
 julia> map(tuple, 1/(i+j) for i=1:2, j=1:2, [1:4;])
 ERROR: syntax: invalid iteration specification
 ```
 
+
+```@raw html
+<!--
 All comma-separated expressions after `for` are interpreted as ranges. Adding parentheses lets
 us add a third argument to `map`:
+-->
+```
 
 ```jldoctest
 julia> map(tuple, (1/(i+j) for i=1:2, j=1:2), [1 3; 2 4])
@@ -198,8 +356,13 @@ julia> map(tuple, (1/(i+j) for i=1:2, j=1:2), [1 3; 2 4])
  (0.333333, 2)  (0.25, 4)
 ```
 
+
+```@raw html
+<!--
 Ranges in generators and comprehensions can depend on previous ranges by writing multiple `for`
 keywords:
+-->
+```
 
 ```jldoctest
 julia> [(i,j) for i=1:3 for j=1:i]
@@ -212,9 +375,14 @@ julia> [(i,j) for i=1:3 for j=1:i]
  (3, 3)
 ```
 
+
+```@raw html
+<!--
 In such cases, the result is always 1-d.
 
 Generated values can be filtered using the `if` keyword:
+-->
+```
 
 ```jldoctest
 julia> [(i,j) for i=1:3 for j=1:i if i+j == 4]
@@ -223,14 +391,23 @@ julia> [(i,j) for i=1:3 for j=1:i if i+j == 4]
  (3, 1)
 ```
 
-### [Indexing](@id man-array-indexing)
+[](### [Indexing](@id man-array-indexing))
+### [インデックスによる参照](@id man-array-indexing)
 
+
+```@raw html
+<!--
 The general syntax for indexing into an n-dimensional array A is:
+-->
+```
 
 ```
 X = A[I_1, I_2, ..., I_n]
 ```
 
+
+```@raw html
+<!--
 where each `I_k` may be a scalar integer, an array of integers, or any other
 [supported index](@ref man-supported-index-types). This includes
 [`Colon`](@ref) (`:`) to select all indices within the entire dimension,
@@ -240,7 +417,12 @@ subsections, and arrays of booleans to select elements at their `true` indices.
 If all the indices are scalars, then the result `X` is a single element from the array `A`. Otherwise,
 `X` is an array with the same number of dimensions as the sum of the dimensionalities of all the
 indices.
+-->
+```
 
+
+```@raw html
+<!--
 If all indices are vectors, for example, then the shape of `X` would be `(length(I_1), length(I_2), ..., length(I_n))`,
 with location `(i_1, i_2, ..., i_n)` of `X` containing the value `A[I_1[i_1], I_2[i_2], ..., I_n[i_n]]`.
 If `I_1` is changed to a two-dimensional matrix, then `X` becomes an `n+1`-dimensional array of
@@ -252,12 +434,19 @@ array with size `size(I)`. Its `i`th element is populated by `A[2, I[i], 3]`.
 As a special part of this syntax, the `end` keyword may be used to represent the last index of
 each dimension within the indexing brackets, as determined by the size of the innermost array
 being indexed. Indexing syntax without the `end` keyword is equivalent to a call to `getindex`:
+-->
+```
 
 ```
 X = getindex(A, I_1, I_2, ..., I_n)
 ```
 
+
+```@raw html
+<!--
 Example:
+-->
+```
 
 ```jldoctest
 julia> x = reshape(1:16, 4, 4)
@@ -278,9 +467,14 @@ julia> x[1, [2 3; 4 1]]
  13  1
 ```
 
+
+```@raw html
+<!--
 Empty ranges of the form `n:n-1` are sometimes used to indicate the inter-index location between
 `n-1` and `n`. For example, the [`searchsorted()`](@ref) function uses this convention to indicate
 the insertion point of a value not found in a sorted array:
+-->
+```
 
 ```jldoctest
 julia> a = [1,2,5,6,7];
@@ -289,13 +483,23 @@ julia> searchsorted(a, 3)
 3:2
 ```
 
-### Assignment
+[](### Assignment)
+### 代入
 
+
+```@raw html
+<!--
 The general syntax for assigning values in an n-dimensional array A is:
+-->
+```
 
 ```
 A[I_1, I_2, ..., I_n] = X
 ```
+
+
+```@raw html
+<!--
 
 where each `I_k` may be a scalar integer, an array of integers, or any other
 [supported index](@ref man-supported-index-types). This includes
@@ -314,11 +518,19 @@ determined by the size of the array being assigned into. Indexed assignment
 syntax without the `end` keyword is equivalent to a call to
 [`setindex!()`](@ref):
 
+-->
+```
+
 ```
 setindex!(A, X, I_1, I_2, ..., I_n)
 ```
 
+
+```@raw html
+<!--
 Example:
+-->
+```
 
 ```jldoctest
 julia> x = collect(reshape(1:9, 3, 3))
@@ -337,12 +549,21 @@ julia> x
  3   6   9
 ```
 
-### [Supported index types](@id man-supported-index-types)
+[](### [Supported index types](@id man-supported-index-types))
+### [利用可能なインデックス型](@id man-supported-index-types)
 
+
+```@raw html
+<!--
 In the expression `A[I_1, I_2, ..., I_n]`, each `I_k` may be a scalar index, an
 array of scalar indices, or an object that represents an array of scalar
 indices and can be converted to such by [`to_indices`](@ref):
+-->
+```
 
+
+```@raw html
+<!--
 1. A scalar index. By default this includes:
     * Non-boolean integers
     * `CartesianIndex{N}`s, which behave like an `N`-tuple of integers spanning multiple dimensions (see below for more details)
@@ -355,11 +576,19 @@ indices and can be converted to such by [`to_indices`](@ref):
 3. An object that represents an array of scalar indices and can be converted to such by [`to_indices`](@ref). By default this includes:
     * [`Colon()`](@ref) (`:`), which represents all indices within an entire dimension or across the entire array
     * Arrays of booleans, which select elements at their `true` indices (see below for more details)
+-->
+```
 
-#### Cartesian indices
+[](#### Cartesian indices)
+#### 直積インデックス
 
+
+```@raw html
+<!--
 The special `CartesianIndex{N}` object represents a scalar index that behaves
 like an `N`-tuple of integers spanning multiple dimensions.  For example:
+-->
+```
 
 ```jldoctest cartesianindex
 julia> A = reshape(1:32, 4, 4, 2);
@@ -371,6 +600,9 @@ julia> A[CartesianIndex(3, 2, 1)] == A[3, 2, 1] == 7
 true
 ```
 
+
+```@raw html
+<!--
 Considered alone, this may seem relatively trivial; `CartesianIndex` simply
 gathers multiple integers together into one object that represents a single
 multidimensional index. When combined with other indexing forms and iterators
@@ -383,6 +615,8 @@ Arrays of `CartesianIndex{N}` are also supported. They represent a collection
 of scalar indices that each span `N` dimensions, enabling a form of indexing
 that is sometimes referred to as pointwise indexing. For example, it enables
 accessing the diagonal elements from the first "page" of `A` from above:
+-->
+```
 
 ```jldoctest cartesianindex
 julia> page = A[:,:,1]
@@ -403,10 +637,15 @@ julia> page[[CartesianIndex(1,1),
  16
 ```
 
+
+```@raw html
+<!--
 This can be expressed much more simply with [dot broadcasting](@ref man-vectorized)
 and by combining it with a normal integer index (instead of extracting the
 first `page` from `A` as a separate step). It can even be combined with a `:`
 to extract both diagonals from the two pages at the same time:
+-->
+```
 
 ```jldoctest cartesianindex
 julia> A[CartesianIndex.(indices(A, 1), indices(A, 2)), 1]
@@ -424,14 +663,23 @@ julia> A[CartesianIndex.(indices(A, 1), indices(A, 2)), :]
  16  32
 ```
 
+
+```@raw html
+<!--
 !!! warning
 
     `CartesianIndex` and arrays of `CartesianIndex` are not compatible with the
     `end` keyword to represent the last index of a dimension. Do not use `end`
     in indexing expressions that may contain either `CartesianIndex` or arrays thereof.
+-->
+```
 
-#### Logical indexing
+[](#### Logical indexing)
+#### 論理インデックスによる参照
 
+
+```@raw html
+<!--
 Often referred to as logical indexing or indexing with a logical mask, indexing
 by a boolean array selects elements at the indices where its values are `true`.
 Indexing by a boolean vector `B` is effectively the same as indexing by the
@@ -442,6 +690,8 @@ must be a vector of the same length as the dimension it indexes into, or it
 must be the only index provided and match the size and dimensionality of the
 array it indexes into. It is generally more efficient to use boolean arrays as
 indices directly instead of first calling [`find()`](@ref).
+-->
+```
 
 ```jldoctest
 julia> x = reshape(1:16, 4, 4)
@@ -472,9 +722,15 @@ julia> x[mask]
  16
 ```
 
-### Iteration
+[](### Iteration)
+### 繰返し
 
+
+```@raw html
+<!--
 The recommended ways to iterate over a whole array are
+-->
+```
 
 ```julia
 for a in A
@@ -486,9 +742,14 @@ for i in eachindex(A)
 end
 ```
 
+
+```@raw html
+<!--
 The first construct is used when you need the value, but not index, of each element. In the second
 construct, `i` will be an `Int` if `A` is an array type with fast linear indexing; otherwise,
 it will be a `CartesianIndex`:
+-->
+```
 
 ```jldoctest
 julia> A = rand(4,3);
@@ -506,28 +767,58 @@ i = CartesianIndex{2}((2, 2))
 i = CartesianIndex{2}((3, 2))
 ```
 
+
+```@raw html
+<!--
 In contrast with `for i = 1:length(A)`, iterating with `eachindex` provides an efficient way to
 iterate over any array type.
+-->
+```
 
-### Array traits
+[](### Array traits)
+### 配列のトレイト
 
+
+```@raw html
+<!--
 If you write a custom [`AbstractArray`](@ref) type, you can specify that it has fast linear indexing using
+-->
+```
 
 ```julia
 Base.IndexStyle(::Type{<:MyArray}) = IndexLinear()
 ```
 
+
+```@raw html
+<!--
 This setting will cause `eachindex` iteration over a `MyArray` to use integers. If you don't
 specify this trait, the default value `IndexCartesian()` is used.
+-->
+```
 
-### Array and Vectorized Operators and Functions
+[](### Array and Vectorized Operators and Functions)
+### 配列とベクトル化演算子・関数
 
+
+```@raw html
+<!--
 The following operators are supported for arrays:
+-->
+```
 
+
+```@raw html
+<!--
 1. Unary arithmetic -- `-`, `+`
 2. Binary arithmetic -- `-`, `+`, `*`, `/`, `\`, `^`
 3. Comparison -- `==`, `!=`, `≈` ([`isapprox`](@ref)), `≉`
+-->
+```
 
+
+```@raw html
+<!--
 Most of the binary arithmetic operators listed above also operate elementwise
 when one argument is scalar: `-`, `+`, and `*` when either argument is scalar,
 and `/` and `\` when the denominator is scalar. For example, `[1, 2] + 3 == [4, 5]`
@@ -538,7 +829,12 @@ Julia [provides the dot syntax](@ref man-vectorized) `f.(args...)`, e.g. `sin.(x
 or `min.(x,y)`, for elementwise operations over arrays or mixtures of arrays and
 scalars (a [Broadcasting](@ref) operation); these have the additional advantage of
 "fusing" into a single loop when combined with other dot calls, e.g. `sin.(cos.(x))`.
+-->
+```
 
+
+```@raw html
+<!--
 Also, *every* binary operator supports a [dot version](@ref man-dot-operators)
 that can be applied to arrays (and combinations of arrays and scalars) in such
 [fused broadcasting operations](@ref man-vectorized), e.g. `z .== sin.(x .* y)`.
@@ -550,13 +846,20 @@ operations like `<`, *only* the elementwise `.<` version is applicable to arrays
 Also notice the difference between `max.(a,b)`, which `broadcast`s [`max()`](@ref)
 elementwise over `a` and `b`, and `maximum(a)`, which finds the largest value within
 `a`. The same relationship holds for `min.(a,b)` and `minimum(a)`.
+-->
+```
 
 ### Broadcasting
 ### ブロードキャスト
 
+
+```@raw html
+<!--
 It is sometimes useful to perform element-by-element binary operations on arrays of different
 sizes, such as adding a vector to each column of a matrix. An inefficient way to do this would
 be to replicate the vector to the size of the matrix:
+-->
+```
 
 ```julia-repl
 julia> a = rand(2,1); A = rand(2,3);
@@ -567,9 +870,14 @@ julia> repmat(a,1,3)+A
  1.56851  1.86401  1.67846
 ```
 
+
+```@raw html
+<!--
 This is wasteful when dimensions get large, so Julia offers [`broadcast()`](@ref), which expands
 singleton dimensions in array arguments to match the corresponding dimension in the other array
 without using extra memory, and applies the given function elementwise:
+-->
+```
 
 ```julia-repl
 julia> broadcast(+, a, A)
@@ -587,6 +895,9 @@ julia> broadcast(+, a, b)
  1.73659  0.873631
 ```
 
+
+```@raw html
+<!--
 [Dotted operators](@ref man-dot-operators) such as `.+` and `.*` are equivalent
 to `broadcast` calls (except that they fuse, as described below). There is also a
 [`broadcast!()`](@ref) function to specify an explicit destination (which can also
@@ -598,6 +909,8 @@ is equivalent to `broadcast(f, args...)`, providing a convenient syntax to broad
 
 Additionally, [`broadcast()`](@ref) is not limited to arrays (see the function documentation),
 it also handles tuples and treats any argument that is not an array, tuple or `Ref` (except for `Ptr`) as a "scalar".
+-->
+```
 
 ```jldoctest
 julia> convert.(Float32, [1, 2])
@@ -617,8 +930,12 @@ julia> string.(1:3, ". ", ["First", "Second", "Third"])
  "3. Third"
 ```
 
-### Implementation
+[](### Implementation)
+### 実装
 
+
+```@raw html
+<!--
 The base array type in Julia is the abstract type `AbstractArray{T,N}`. It is parametrized by
 the number of dimensions `N` and the element type `T`. `AbstractVector` and `AbstractMatrix` are
 aliases for the 1-d and 2-d cases. Operations on `AbstractArray` objects are defined using higher
@@ -636,7 +953,12 @@ method, which is used to allocate a similar array for [`copy()`](@ref) and other
 operations. No matter how an `AbstractArray{T,N}` is represented internally, `T` is the type of
 object returned by *integer* indexing (`A[1, ..., 1]`, when `A` is not empty) and `N` should be
 the length of the tuple returned by [`size()`](@ref).
+-->
+```
 
+
+```@raw html
+<!--
 `DenseArray` is an abstract subtype of `AbstractArray` intended to include all arrays that are
 laid out at regular offsets in memory, and which can therefore be passed to external C and Fortran
 functions expecting this memory layout. Subtypes should provide a method [`stride(A,k)`](@ref)
@@ -650,7 +972,12 @@ order (see additional notes in [Performance Tips](@ref man-performance-tips)). `
 the 1-d and 2-d cases. Specific operations such as scalar indexing, assignment, and a few other
 basic storage-specific operations are all that have to be implemented for [`Array`](@ref), so
 that the rest of the array library can be implemented in a generic manner.
+-->
+```
 
+
+```@raw html
+<!--
 `SubArray` is a specialization of `AbstractArray` that performs indexing by reference rather than
 by copying. A `SubArray` is created with the [`view()`](@ref) function, which is called the same
 way as [`getindex()`](@ref) (with an array and a series of index arguments). The result of [`view()`](@ref)
@@ -667,6 +994,8 @@ to call a wider range of BLAS and LAPACK functions by passing them either [`Arra
 The following example computes the QR decomposition of a small section of a larger array, without
 creating any temporaries, and by calling the appropriate LAPACK function with the right leading
 dimension size and stride parameters.
+-->
+```
 
 ```julia-repl
 julia> a = rand(10,10)
@@ -704,18 +1033,30 @@ julia> r
   0.0       0.866567
 ```
 
-## Sparse Matrices
+[](## Sparse Matrices)
+## 疎な行列
 
+
+```@raw html
+<!--
 [Sparse matrices](https://en.wikipedia.org/wiki/Sparse_matrix) are matrices that contain enough
 zeros that storing them in a special data structure leads to savings in space and execution time.
 Sparse matrices may be used when operations on the sparse representation of a matrix lead to considerable
 gains in either time or space when compared to performing the same operations on a dense matrix.
+-->
+```
 
+[](### Compressed Sparse Column (CSC) Storage)
 ### Compressed Sparse Column (CSC) Storage
 
+
+```@raw html
+<!--
 In Julia, sparse matrices are stored in the [Compressed Sparse Column (CSC) format](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_.28CSC_or_CCS.29).
 Julia sparse matrices have the type `SparseMatrixCSC{Tv,Ti}`, where `Tv` is the type of the stored
 values, and `Ti` is the integer type for storing column pointers and row indices.:
+-->
+```
 
 ```julia
 struct SparseMatrixCSC{Tv,Ti<:Integer} <: AbstractSparseMatrix{Tv,Ti}
@@ -727,6 +1068,9 @@ struct SparseMatrixCSC{Tv,Ti<:Integer} <: AbstractSparseMatrix{Tv,Ti}
 end
 ```
 
+
+```@raw html
+<!--
 The compressed sparse column storage makes it easy and quick to access the elements in the column
 of a sparse matrix, whereas accessing the sparse matrix by rows is considerably slower. Operations
 such as insertion of previously unstored entries one at a time in the CSC structure tend to be slow. This is
@@ -735,7 +1079,12 @@ one place over.
 
 All operations on sparse matrices are carefully implemented to exploit the CSC data structure
 for performance, and to avoid expensive operations.
+-->
+```
 
+
+```@raw html
+<!--
 If you have data in CSC format from a different application or library, and wish to import it
 in Julia, make sure that you use 1-based indexing. The row indices in every column need to be
 sorted. If your `SparseMatrixCSC` object contains unsorted row indices, one quick way to sort
@@ -748,12 +1097,20 @@ routines. The [`nnz()`](@ref) function returns the number of elements explicitly
 sparse data structure, including structural nonzeros. In order to count the exact number of actual
 values that are nonzero, use [`countnz()`](@ref), which inspects every stored element of a sparse
 matrix.
+-->
+```
 
-### Sparse matrix constructors
+[](### Sparse matrix constructors)
+### 疎な行列のコンストラクタ
 
+
+```@raw html
+<!--
 The simplest way to create sparse matrices is to use functions equivalent to the [`zeros()`](@ref)
 and [`eye()`](@ref) functions that Julia provides for working with dense matrices. To produce
 sparse matrices instead, you can use the same names with an `sp` prefix:
+-->
+```
 
 ```jldoctest
 julia> spzeros(3,5)
@@ -766,9 +1123,14 @@ julia> speye(3,5)
   [3, 3]  =  1.0
 ```
 
+
+```@raw html
+<!--
 The [`sparse()`](@ref) function is often a handy way to construct sparse matrices. It takes as
 its input a vector `I` of row indices, a vector `J` of column indices, and a vector `V` of stored
 values. `sparse(I,J,V)` constructs a sparse matrix such that `S[I[k], J[k]] = V[k]`.
+-->
+```
 
 ```jldoctest sparse_function
 julia> I = [1, 4, 3, 5]; J = [4, 7, 18, 9]; V = [1, 2, -5, 3];
@@ -781,8 +1143,13 @@ julia> S = sparse(I,J,V)
   [3 , 18]  =  -5
 ```
 
+
+```@raw html
+<!--
 The inverse of the [`sparse()`](@ref) function is [`findn()`](@ref), which retrieves the inputs
 used to create the sparse matrix.
+-->
+```
 
 ```jldoctest sparse_function
 julia> findn(S)
@@ -792,8 +1159,13 @@ julia> findnz(S)
 ([1, 4, 5, 3], [4, 7, 9, 18], [1, 2, 3, -5])
 ```
 
+
+```@raw html
+<!--
 Another way to create sparse matrices is to convert a dense matrix into a sparse matrix using
 the [`sparse()`](@ref) function:
+-->
+```
 
 ```jldoctest
 julia> sparse(eye(5))
@@ -805,25 +1177,41 @@ julia> sparse(eye(5))
   [5, 5]  =  1.0
 ```
 
+
+```@raw html
+<!--
 You can go in the other direction using the [`full()`](@ref) function. The [`issparse()`](@ref)
 function can be used to query if a matrix is sparse.
+-->
+```
 
 ```jldoctest
 julia> issparse(speye(5))
 true
 ```
 
-### Sparse matrix operations
+[](### Sparse matrix operations)
+### 疎な行列の演算
 
+
+
+```@raw html
+<!--
 Arithmetic operations on sparse matrices also work as they do on dense matrices. Indexing of,
 assignment into, and concatenation of sparse matrices work in the same way as dense matrices.
 Indexing operations, especially assignment, are expensive, when carried out one element at a time.
 In many cases it may be better to convert the sparse matrix into `(I,J,V)` format using [`findnz()`](@ref),
 manipulate the values or the structure in the dense vectors `(I,J,V)`, and then reconstruct
 the sparse matrix.
+-->
+```
 
+[](### Correspondence of dense and sparse methods)
 ### Correspondence of dense and sparse methods
 
+
+```@raw html
+<!--
 The following table gives a correspondence between built-in methods on sparse matrices and their
 corresponding methods on dense matrix types. In general, methods that generate sparse matrices
 differ from their dense counterparts in that the resulting matrix follows the same sparsity pattern
@@ -832,9 +1220,14 @@ element has a probability `d` of being non-zero.
 
 Details can be found in the [Sparse Vectors and Matrices](@ref) section of the standard library
 reference.
+-->
+```
 
+
+```@raw html
+<!--
 | Sparse                     | Dense                  | Description                                                                                                                                                           |
-|:-------------------------- |:---------------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :------------------------- | :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`spzeros(m,n)`](@ref)     | [`zeros(m,n)`](@ref)   | Creates a *m*-by-*n* matrix of zeros. ([`spzeros(m,n)`](@ref) is empty.)                                                                                              |
 | [`spones(S)`](@ref)        | [`ones(m,n)`](@ref)    | Creates a matrix filled with ones. Unlike the dense version, [`spones()`](@ref) has the same sparsity pattern as *S*.                                                 |
 | [`speye(n)`](@ref)         | [`eye(n)`](@ref)       | Creates a *n*-by-*n* identity matrix.                                                                                                                                 |
@@ -842,3 +1235,5 @@ reference.
 | [`sprand(m,n,d)`](@ref)    | [`rand(m,n)`](@ref)    | Creates a *m*-by-*n* random matrix (of density *d*) with iid non-zero elements distributed uniformly on the half-open interval ``[0, 1)``.                            |
 | [`sprandn(m,n,d)`](@ref)   | [`randn(m,n)`](@ref)   | Creates a *m*-by-*n* random matrix (of density *d*) with iid non-zero elements distributed according to the standard normal (Gaussian) distribution.                  |
 | [`sprandn(m,n,d,X)`](@ref) | [`randn(m,n,X)`](@ref) | Creates a *m*-by-*n* random matrix (of density *d*) with iid non-zero elements distributed according to the *X* distribution. (Requires the `Distributions` package.) |
+-->
+```
