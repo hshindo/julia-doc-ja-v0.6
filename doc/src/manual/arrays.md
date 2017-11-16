@@ -17,6 +17,17 @@ an array may contain objects of type `Any`. For most computational purposes, arr
 objects of a more specific type, such as [`Float64`](@ref) or [`Int32`](@ref).
 -->
 ```
+Juliaは、ほとんどの技術計算用の言語と同様に、ファーストクラスの配列実装を提供します。
+
+Juliaは配列を特別扱いしません。
+配列ライブラリーは、Julia自体でほぼ完全に実装されており、Juliaで書かれた他のコードと同様に、コンパイラーからそのパフォーマンスを引き出します。
+このように、`AbstractArray`を継承して、独自の配列型を定義することも可能です。
+独自の配列型の実装の詳細については、マニュアルのセクションのAbstractArrayインタフェース（@ ref man-interface-array）を参照してください。
+
+配列は、多次元グリッドに格納されたオブジェクトのコレクションです。
+最も一般的な場合、配列には`Any`型のオブジェクトが含まれることがあります。
+大抵の計算目的のためには、配列は、[`Float64`](@ref) や[`Int32`](@ref)のようなより型の特定されたオブジェクトであるべきです。
+
 
 
 ```@raw html
@@ -33,6 +44,13 @@ ensures that inputs are not modified by library functions. User code, if it need
 behavior, should take care to create a copy of inputs that it may modify.
 -->
 ```
+一般に、他の多くの技術計算用の言語とは異なり、Juliaは、プログラムがパフォーマンスのためにベクトル化されたスタイルで書かれていることを想定していません。
+Juliaのコンパイラは型推論を使用し、スカラーによる配列のインデックス参照に最適化されたコードを生成するので、パフォーマンスを犠牲にすることなく、また少ないメモリ量で使用することができます。
+
+Juliaでは、関数へのすべての引数は参照渡しに渡されます。技術計算用の言語のなかには配列を値渡しするものもあり、多くの場合に便利です。
+Juliaでは、関数内で入力用の配列に加えられた変更が、親関数から参照できます。
+ライブラリ関数によって入力が変更されないことが、Juliaの配列ライブラリ全体で保証されています。
+ユーザーのコードも同様の動作をさせる必要がある場合は、変更用に入力のコピーを作成するよう注意してください。
 
 [](## Arrays)
 ## 配列
@@ -44,7 +62,7 @@ behavior, should take care to create a copy of inputs that it may modify.
 ```@raw html
 <!--
 | Function               | Description                                                                      |
-|:---------------------- |:-------------------------------------------------------------------------------- |
+| :--------------------- | :------------------------------------------------------------------------------- |
 | [`eltype(A)`](@ref)    | the type of the elements contained in `A`                                        |
 | [`length(A)`](@ref)    | the number of elements in `A`                                                    |
 | [`ndims(A)`](@ref)     | the number of dimensions of `A`                                                  |
@@ -57,6 +75,18 @@ behavior, should take care to create a copy of inputs that it may modify.
 | [`strides(A)`](@ref)   | a tuple of the strides in each dimension                                         |
 -->
 ```
+| 関数                   | 説明                                           |
+| :--------------------- | :--------------------------------------------- |
+| [`eltype(A)`](@ref)    | `A`に含まれる要素の型。                             |
+| [`length(A)`](@ref)    | `A`の要素の数                                    |
+| [`ndims(A)`](@ref)     | `A`の次元の数                                    |
+| [`size(A)`](@ref)      | `A`の次元を表すタプル                                |
+| [`size(A,n)`](@ref)    | 次元`n`における `A`のサイズ                            |
+| [`indices(A)`](@ref)   | `A`の妥当なインデックスを表すタプル                         |
+| [`indices(A,n)`](@ref) | 次元`n`の `A`の妥当なインデックスを表す範囲               |
+| [`eachindex(A)`](@ref) | `A`の各位置に訪れるイテレータ                           |
+| [`stride(A,k)`](@ref)  | 次元`k`におけるストライド(隣接する要素間の線形インデックスの距離) |
+| [`strides(A)`](@ref)   | 各次元のストライドのタプル                               |
 
 [](### Construction and Initialization)
 ### 生成と初期化
@@ -71,12 +101,15 @@ also accept a first input `T`, which is the element type of the array. If the ty
 omitted it will default to [`Float64`](@ref).
 -->
 ```
-
+配列の生成と初期化用に多くの関数が用意されています。
+次のような関数のリストでは、`dims...`引数付きの呼び出しは、次元数の単一のタプル、または可変数の引数として渡される次元サイズの数列のいずれかを取ることができます。
+これらの関数のほとんどは、配列の要素型である`T`を最初の入力に受け入れます。
+型`T`が省略された場合、デフォルト の[`Float64`](@ref)になります。
 
 ```@raw html
 <!--
 | Function                           | Description                                                                                                                                                                                                                                  |
-|:---------------------------------- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`Array{T}(dims...)`](@ref)        | an uninitialized dense [`Array`](@ref)                                                                                                                                                                                                       |
 | [`zeros(T, dims...)`](@ref)        | an `Array` of all zeros                                                                                                                                                                                                                      |
 | [`zeros(A)`](@ref)                 | an array of all zeros with the same type, element type and shape as `A`                                                                                                                                                                      |
@@ -101,6 +134,29 @@ omitted it will default to [`Float64`](@ref).
 -->
 ```
 
+| 関数                          | 説明                                                                                                                                                                                                                                  |
+| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`Array{T}(dims...)`](@ref)        | 初期化されていない密な [`Array`](@ref)                                                                                                                                                                                                       |
+| [`zeros(T, dims...)`](@ref)        | すべてが0の `配列`                                                                                                                                                                                                                       |
+| [`zeros(A)`](@ref)                 | an array of all zeros with the same type, element type and shape as `A`                                                                                                                                                                      |
+| [`ones(T, dims...)`](@ref)         | an `Array` of all ones                                                                                                                                                                                                                       |
+| [`ones(A)`](@ref)                  | an array of all ones with the same type, element type and shape as `A`                                                                                                                                                                       |
+| [`trues(dims...)`](@ref)           | a [`BitArray`](@ref) with all values `true`                                                                                                                                                                                                  |
+| [`trues(A)`](@ref)                 | a `BitArray` with all values `true` and the same shape as `A`                                                                                                                                                                                |
+| [`falses(dims...)`](@ref)          | a `BitArray` with all values `false`                                                                                                                                                                                                         |
+| [`falses(A)`](@ref)                | a `BitArray` with all values `false` and the same shape as `A`                                                                                                                                                                               |
+| [`reshape(A, dims...)`](@ref)      | an array containing the same data as `A`, but with different dimensions                                                                                                                                                                      |
+| [`copy(A)`](@ref)                  | copy `A`                                                                                                                                                                                                                                     |
+| [`deepcopy(A)`](@ref)              | copy `A`, recursively copying its elements                                                                                                                                                                                                   |
+| [`similar(A, T, dims...)`](@ref)   | an uninitialized array of the same type as `A` (dense, sparse, etc.), but with the specified element type and dimensions. The second and third arguments are both optional, defaulting to the element type and dimensions of `A` if omitted. |
+| [`reinterpret(T, A)`](@ref)        | an array with the same binary data as `A`, but with element type `T`                                                                                                                                                                         |
+| [`rand(T, dims...)`](@ref)         | an `Array` with random, iid [^1] and uniformly distributed values in the half-open interval ``[0, 1)``                                                                                                                                       |
+| [`randn(T, dims...)`](@ref)        | an `Array` with random, iid and standard normally distributed values                                                                                                                                                                         |
+| [`eye(T, n)`](@ref)                | `n`-by-`n` identity matrix                                                                                                                                                                                                                   |
+| [`eye(T, m, n)`](@ref)             | `m`-by-`n` identity matrix                                                                                                                                                                                                                   |
+| [`linspace(start, stop, n)`](@ref) | range of `n` linearly spaced elements from `start` to `stop`                                                                                                                                                                                 |
+| [`fill!(A, x)`](@ref)              | fill the array `A` with the value `x`                                                                                                                                                                                                        |
+| [`fill(x, dims...)`](@ref)         | an `Array` filled with the value `x`                                                      
 
 ```@raw html
 <!--
@@ -131,7 +187,7 @@ Arrays can be constructed and also concatenated using the following functions:
 ```@raw html
 <!--
 | Function               | Description                                          |
-|:---------------------- |:---------------------------------------------------- |
+| :--------------------- | :--------------------------------------------------- |
 | [`cat(k, A...)`](@ref) | concatenate input n-d arrays along the dimension `k` |
 | [`vcat(A...)`](@ref)   | shorthand for `cat(1, A...)`                         |
 | [`hcat(A...)`](@ref)   | shorthand for `cat(2, A...)`                         |
@@ -151,7 +207,7 @@ The concatenation functions are used so often that they have special syntax:
 ```@raw html
 <!--
 | Expression        | Calls             |
-|:----------------- |:----------------- |
+| :---------------- | :---------------- |
 | `[A; B; C; ...]`  | [`vcat()`](@ref)  |
 | `[A B C ...]`     | [`hcat()`](@ref)  |
 | `[A B; C D; ...]` | [`hvcat()`](@ref) |
@@ -1171,7 +1227,7 @@ reference.
 ```@raw html
 <!--
 | Sparse                     | Dense                  | Description                                                                                                                                                           |
-|:-------------------------- |:---------------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :------------------------- | :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`spzeros(m,n)`](@ref)     | [`zeros(m,n)`](@ref)   | Creates a *m*-by-*n* matrix of zeros. ([`spzeros(m,n)`](@ref) is empty.)                                                                                              |
 | [`spones(S)`](@ref)        | [`ones(m,n)`](@ref)    | Creates a matrix filled with ones. Unlike the dense version, [`spones()`](@ref) has the same sparsity pattern as *S*.                                                 |
 | [`speye(n)`](@ref)         | [`eye(n)`](@ref)       | Creates a *n*-by-*n* identity matrix.                                                                                                                                 |
