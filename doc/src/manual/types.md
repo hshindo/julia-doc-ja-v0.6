@@ -2374,7 +2374,7 @@ For consistency across Julia, the call site should always pass a `Val`*type* rat
 an *instance*, i.e., use `foo(Val{:bar})` rather than `foo(Val{:bar}())`.
 -->
 ```
-Juliaでは一貫性のために、呼び出し側は、常に`Val`の**インスタンス**を作るのではなく、`Val`の**型**を渡す必要があります。
+Juliaでは一貫性を保つために、呼び出し側は、常に`Val`の**インスタンス**を作るのではなく、`Val`の**型**を渡す必要があります。
 つまり、`foo(Val{:bar}())`ではなく`foo(Val{:bar})`です。
 
 
@@ -2388,7 +2388,7 @@ about the proper (and improper) uses of `Val`, please read the more extensive di
 -->
 ```
 `Val`を含めて、パラメトリックな「値」型は非常に誤用しやすい点に注意してください。
-好ましくない場合として、コードのパフォーマンスを大幅に**悪化**させる可能性があります。
+好ましくない場合には、コードのパフォーマンスを簡単に大幅に**悪化**させることもありえます。
 特に、上で説明したようなコードを実用のコードとして書きたいとは決して思わないでしょう。
 適切な（そして不適切な）`Val`の使い方の詳細については、[the performance tips](@ref man-performance-tips)の広範に渡る議論を読んでください。
 
@@ -2407,10 +2407,10 @@ a minimal interface designed to ensure that interactions with missing values are
 the interface consists of several possible interactions:
 -->
 ```
-多くの状況では、型が`T`の存否のわからない値を取り扱う必要があります。
-これらの状況を処理するために、Juliaは、 [`Nullable{T}`](@ref)と呼ばれる、0個または1個の値を含む特殊なコンテナ型と考えることができる、パラメトリック型を用意しています。
-`Nullable{T}`は、欠損値のやりとりが安全であることを保証するように設計された最小限のインターフェースを提供します。
-このインタフェースはいくつかの相互作用から成り立っています。
+多くの状況で、あるのかどうか分からない、型が`T`の値を取り扱う必要があります。
+これらの状況を処理するために、Juliaでは、 [`Nullable{T}`](@ref)と呼ばれる、0個か1個の値を含む特殊なコンテナ型と考えることができる、パラメトリック型が用意されています。
+`Nullable{T}`には、欠損値のやりとりが安全にできることを保証するように設計された最小限のインターフェースがあります。
+このインタフェースはいくつかの関数から成り立っています。
 
 ```@raw html
 <!--
@@ -2430,10 +2430,10 @@ the interface consists of several possible interactions:
 ```
 
 * `Nullable`オブジェクトを構築します。
-* `Nullable`オブジェクトに欠損値があるかどうかを確認します。
+* `Nullable`オブジェクトに欠損値があるかどうかを検査します。
 * `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値が欠落している時は、[`NullException`](@ref)が投げられることを保証します。
-* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値がｃ時は、型`T`のデフォルト値が返されることを保証します。
-* `Nullable`オブジェクトの値（存在する場合）に操作を実行し、`Nullable`の結果を取得します。元が欠損値の場合、結果もが欠損値になります。
+* `Nullable`オブジェクトにアクセスする場合に、オブジェクトの値が欠落している時は、型`T`のデフォルト値が返されることを保証します。
+* `Nullable`オブジェクトの値（存在する場合）に操作を実行し、`Nullable`の結果を取得します。元が欠損値の場合、結果も欠損値になります。
 * `Nullable`オブジェクトの値（存在する場合）に検査を実行し、`Nullable`オブジェクト自体が存在しないか、検査が失敗したかの結果を取得します。
 * 単一の`Nullable`オブジェクトに対して一般的な操作を実行し、欠落しているデータを伝播します。
 
@@ -2466,7 +2466,7 @@ To construct an object representing a non-missing value of type `T`, use the `Nu
 function:
 -->
 ```
-`T`型の欠損していない値を表すオブジェクトを作成するには、次のNullable(x::T) 関数を使用します。
+`T`型の欠損していない値を表すオブジェクトを作成するには、次の`Nullable(x::T)` 関数を使用します。
 
 ```jldoctest
 julia> x1 = Nullable(1)
@@ -2487,8 +2487,8 @@ in one style, you provide a type, `T`, as a function parameter; in the other sty
 a single value of type `T` as an argument.
 -->
 ```
-`Nullable`オブジェクトを構築するこれらの2つの方法の核となる違いに注意してください。
-一方は、関数パラメータに型`T`を与えます。他方はT、型`T`の単一の値を引数として与えます。
+`Nullable`オブジェクトを構築するこれらの2つの方法の違いの核心に注目してください。
+一方は、型`T`を関数パラメータとして与えます。他方は型`T`の単一の値を引数として与えます。
 
 [](### Checking if a `Nullable` object has a value)
 ### `Null許容`オブジェクトが値を持つかどうかを 検査する
@@ -2499,7 +2499,7 @@ a single value of type `T` as an argument.
 You can check if a `Nullable` object has any value using [`isnull()`](@ref):
 -->
 ```
-`Nullable`オブジェクトに [`isnull()`](@ref) を使用して値を持つかどうかを調べることができます。
+`Nullable`オブジェクトに [`isnull()`](@ref) を使って値を持つかどうかを検査することができます。
 
 ```jldoctest
 julia> isnull(Nullable{Float64}())
@@ -2523,7 +2523,7 @@ false
 You can safely access the value of a `Nullable` object using [`get()`](@ref):
 -->
 ```
-`Nullable`オブジェクトに [`get()`](@ref) を使用して、オブジェクトの値に安全にアクセスできます。
+`Nullable`オブジェクトに [`get()`](@ref) を使って、オブジェクトの値に安全にアクセスできます。
 
 ```jldoctest
 julia> get(Nullable{Float64}())
@@ -2543,8 +2543,9 @@ error will be thrown. The error-throwing nature of the `get()` function ensures 
 attempt to access a missing value immediately fails.
 -->
 ```
-`Nullable{Float64}`のように値が存在しない場合は、[`NullException`](@ref) エラーが投げられます。
-エラーを投げるという本質から、`get()`関数は欠損値にアクセスしようとする試みがすぐに失敗することを保証します。
+`Nullable{Float64}`に値が存在しない場合は、[`NullException`](@ref) エラーが投げられます。
+エラーを投げるという意義から、`get()`関数を使って欠損値にアクセスしようとしても
+すぐに失敗することが保証されています。
 
 ```@raw html
 <!--
@@ -2554,7 +2555,7 @@ to `get()`:
 -->
 ```
 
-適切なデフォルト値が存在して、`Nullable` オブジェクトの値が欠落していることが判明した場合に、このデフォルト値を`get()`の2番目の引数として指定できます。
+適切なデフォルト値がある場合、`Nullable` オブジェクト値の欠落が判明した時は、このデフォルト値を`get()`の2番目の引数に指定して利用できます。
 
 ```jldoctest
 julia> get(Nullable{Float64}(), 0.0)
@@ -2575,8 +2576,7 @@ julia> get(Nullable(1.0), 0.0)
 ```
 
 !!! ヒント 
-`get()`に渡されるデフォルト値の型と、`Nullable`オブジェクトの型の一致を確認して、型が不安定なためにパフォーマンスが低下しないようにして下さい。
-必要に応じて手動で[`convert()`](@ref)を使用してください。
+`get()`に渡すデフォルト値の型と、`Nullable`オブジェクトの型が一致しているのを確認して、型が不安定になるのを避けてください。パフォーマンスの低下につながるので、必要に応じて手動で[`convert()`](@ref)を使用してください。
 
 [](### Performing operations on `Nullable` objects)
 ### `Null許容`オブジェクトの操作を実行する
@@ -2591,10 +2591,9 @@ action. However, there are some common use cases where the code could be more
 concise or clear by using a higher-order function.
 -->
 ```
-`Nullable`オブジェクトは欠落しているかもしれない値を表しています。
-これらのオブジェクトを使用するコードは、すべて書く時に、まず値が欠落していないかどうかを[`isnull()`](@ref) で検査してから、
-適切な処置を行うことは可能です。
-しかし、高階関数を使うことで、コードがより簡潔になったり明確になったりする可能性のある一般的な使用例がいくつかあります。
+`Nullable`オブジェクトは欠落の可能性のある値を表しています。
+これらのオブジェクトを使用するコードを書く時すべてにおいて、まず値が欠落していないかどうかを[`isnull()`](@ref) で検査してから、適切な処置を行うことは可能です。
+しかし、高階関数を使うことで共通して、コードがより簡潔になったり明確になったりする事例がいくつかあります。
 
 
 
@@ -2609,10 +2608,10 @@ The [`map`](@ref) function takes as arguments a function `f` and a `Nullable` va
 -->
 ```
  [`map`](@ref)関数は、引数として関数`f`と`Nullable`の値`x`を取ります。
- この関数は`Nullable`を生成します。
+ そして、`Nullable`を生成します。
 
  -   もし`x`が欠損値があれば、欠損値を生成する。
- -   もし`x`が値を持っている時は、それは`f(get(x))`を値として含む`Nullable`を生成する 。
+ -   もし`x`が値を持っていれば、`f(get(x))`を値として含む`Nullable`を生成する 。
 
 
 
@@ -2622,7 +2621,7 @@ This is useful for performing simple operations on values that might be missing
 if the desired behaviour is to simply propagate the missing values forward.
 -->
 ```
-[`map`](@ref)関数が役に立つのは、欠損の可能性のある値に対して、単純な操作を実行し、欠損値に対しては単に伝播すればいいだけの場合です。
+[`map`](@ref)関数が役に立つのは、欠損の可能性のある値に対して、単純な操作を実行し、欠損している場合には単に伝播するだけでよい場合です。
 
 ```@raw html
 <!--
@@ -2640,7 +2639,7 @@ It produces a `Nullable` value:
 ```
 
 [`filter`](@ref)関数は、述語関数`p`（つまり、ブール値を返す関数）と`Nullable`の値`x`を引数としてとります。
-この関数は値を生成する：
+`Nullable`である値を生成します。
 
    - もし`x`が欠損値があれば、欠損値を生成する。
    - もし`p(get(x))`がtrueの場合、元の値`x`が生成されます。
@@ -2653,7 +2652,7 @@ In this way, `filter` can be thought of as selecting only allowable
 values, and converting non-allowable values to missing values.
 -->
 ```
-このように、`filter`は許容できる値のみを選択し、許容できない値を欠損値に変換していると考えられます。
+このように、`filter`は許容できる値のみを選択し、許容できない値は欠損値に変換していると考えられます。
 
 
 ```@raw html
@@ -2666,10 +2665,10 @@ greater of two real roots of a quadratic equation, using the quadratic formula:
 -->
 ```
 
-`map`と`filter`は特定の場合に有用ですが、断然、最も有用な高階関数は[`broadcast`](@ref)です。
-`broadcast`は多様な場面で利用できて、`Nullable`を使って、存在するデータには操作を行い、欠損は伝播させる場合も含みます。
-`broadcast()`の必要性がわかる例を示しましょう。
-二次方程式の2つの実数根のうち大きい方を2次式の公式を使って計算する関数があるとします。
+特定の場合に`map`と`filter`は有用ですが、断然、最も有用な高階関数は[`broadcast`](@ref)です。
+`broadcast`は多様な場面で利用可能で、例えば、存在するデータには操作を行って、`Nullable`を伝播することができます。
+`broadcast()`の必要性がわかる例を挙げましょう。
+二次方程式の2つの実数根のうち大きい方を2次の公式を使って計算する関数があるとします。
 
 ```jldoctest nullableroot
 julia> root(a::Real, b::Real, c::Real) = (-b + √(b^2 - 4a*c)) / 2a
@@ -2701,10 +2700,10 @@ output.
 2次方程式の最大の実数根を見つけたいのだけれども、方程式の係数が欠損している可能性がある場合を考えてみましょう。
 データセットに欠損値があることは、実際にデータを扱う際によく起こるため、対処できるようにするのは重要です。
 しかし、すべての係数がわからなければ、方程式の根を見つけることはできません。
-これに対する最良の解決方法は、個々の事例で変わるでしょうが、
-おそらくエラーを投げるべきでしょう。
-ただし、この例では、欠落値を次に伝播することが最善策であると想定します。
-つまり、入力が欠落している場合は、単に出力を欠落したままにします。
+個々の事例で変わるでしょうが、これに対する最良の解決方法は、
+おそらくエラーを投げることでしょう。
+しかし、この例では、欠落値を次に伝播することが最善策であると想定します。
+つまり、入力が欠落している場合は、単に出力も欠落したままにします。
 
 ```@raw html
 <!--
@@ -2712,7 +2711,7 @@ The `broadcast()` function makes this task easy; we can simply pass the
 `root` function we wrote to `broadcast`
 -->
 ```
-`broadcast()`関数によって簡単に、この処理を行えます。先程記述した関数`root`を単に`broadcast`渡せばいいのです 。
+`broadcast()`関数によって簡単に、この処理を行えます。さきほど書いた関数`root`を単に`broadcast`渡せばいいのです 。
 
 
 ```jldoctest nullableroot
@@ -2754,11 +2753,12 @@ conveniently using `.`-prefixed operators:
 -->
 ```
 
-通常の算術演算子に対しては、特に便利に`broadcast()`を使うことができて、演算子の前に`.`をつければいいだけです。
+特に、通常の算術演算子に対して、便利に`broadcast()`を使うことのできる、前置記法の`.`演算子があります。
 
 ```jldoctest
 julia> Nullable(2) ./ Nullable(3) .+ Nullable(1.0)
 Nullable{Float64}(1.66667)
 ``
+
 [訳注1]:"polymorphism"という言葉は、オブジェクト指向プログラミングでは「多態性」、関数型プログラミングでは「多相性」と訳されることが多いですが、この文書では統括して記述しているように思えたので、文脈で訳し分けることはせず、すべて「多相性」としました。
 [訳注2]:Juliaはver0.5とver0.6の間で型に関する用語を大きく変えており、この訳では`bits type`にver0.6の`primitive type`の訳である原始型を当てています。
