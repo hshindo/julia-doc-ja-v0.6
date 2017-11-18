@@ -25,9 +25,8 @@ Juliaは配列を特別扱いしません。
 独自の配列型の実装の詳細については、[マニュアルのAbstractArrayインタフェースに関する部分]（@ ref man-interface-array）を参照してください。
 
 配列は、多次元グリッドに格納されたオブジェクトのコレクションです。
-最も一般的な場合、配列には`Any`型のオブジェクトが含まれることがあります。
-大抵の計算用途には、配列は、[`Float64`](@ref) や[`Int32`](@ref)のようなもっと特定の型のオブジェクトにすべきです。
-
+大抵の一般的な場合には、配列には`Any`型のオブジェクトが含まれていてもかまいません。
+しかし殆どの計算用途には、配列は、[`Float64`](@ref) や[`Int32`](@ref)のように型により特定すべきです。
 
 
 ```@raw html
@@ -44,10 +43,10 @@ ensures that inputs are not modified by library functions. User code, if it need
 behavior, should take care to create a copy of inputs that it may modify.
 -->
 ```
-一般に、他の多くの技術計算用の言語とは異なり、Juliaは、プログラムがパフォーマンスのためにベクトル化されたスタイルで書かれていることを想定していません。
+一般に、他の多くの技術計算用の言語とは異なり、Juliaでは、パフォーマンスをあげたいからといって、プログラムをベクトル化したスタイルで書く必要はありません。
 Juliaのコンパイラは型推論を使用し、スカラーによる配列のインデックス参照に最適化されたコードを生成するので、パフォーマンスを犠牲にすることなく、また少ないメモリ量で使用することができます。
 
-Juliaでは、関数へのすべての引数は参照渡しに渡されます。技術計算用の言語のなかには配列を値渡しするものもあり、多くの場合に便利です。
+Juliaでは、すべての関数の引数は参照渡しです。技術計算用の言語のなかには配列を値渡しするものもあり、多くの場合に便利です。
 Juliaでは、関数内で入力用の配列に加えられた変更が、親関数から参照できます。
 ライブラリ関数によって入力が変更されないことが、Juliaの配列ライブラリ全体で保証されています。
 ユーザーのコードも同様の動作をさせる必要がある場合は、変更用に入力のコピーを作成するよう注意してください。
@@ -102,8 +101,8 @@ omitted it will default to [`Float64`](@ref).
 -->
 ```
 配列の生成と初期化用に多くの関数が用意されています。
-次のような関数のリストでは、`dims...`引数付きの呼び出しは、次元数の単一のタプル、または可変数の引数として渡される次元サイズの数列のいずれかを取ることができます。
-これらの関数のほとんどは、配列の要素型である`T`を最初の入力に受け入れます。
+下記の関数のリストにある、引数に`dims...`を使う関数呼び出しは、次元のサイズを表す1個のタプル、または可変引数で渡される次元サイズの数列のいずれかを取ることができます。
+これらの関数のほとんどは、配列の要素型である`T`を入力のはじめに受けとります。
 型`T`が省略された場合、デフォルト の[`Float64`](@ref)になります。
 
 ```@raw html
@@ -138,31 +137,32 @@ omitted it will default to [`Float64`](@ref).
 | :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`Array{T}(dims...)`](@ref)        | 初期化されていない密な [`Array`](@ref)                                                                                                                                                                                                       |
 | [`zeros(T, dims...)`](@ref)        | すべてが0の `配列`                                                                                                                                                                                                                       |
-| [`zeros(A)`](@ref)                 | an array of all zeros with the same type, element type and shape as `A`                                                                                                                                                                      |
-| [`ones(T, dims...)`](@ref)         | an `Array` of all ones                                                                                                                                                                                                                       |
-| [`ones(A)`](@ref)                  | an array of all ones with the same type, element type and shape as `A`                                                                                                                                                                       |
-| [`trues(dims...)`](@ref)           | a [`BitArray`](@ref) with all values `true`                                                                                                                                                                                                  |
-| [`trues(A)`](@ref)                 | a `BitArray` with all values `true` and the same shape as `A`                                                                                                                                                                                |
-| [`falses(dims...)`](@ref)          | a `BitArray` with all values `false`                                                                                                                                                                                                         |
-| [`falses(A)`](@ref)                | a `BitArray` with all values `false` and the same shape as `A`                                                                                                                                                                               |
-| [`reshape(A, dims...)`](@ref)      | an array containing the same data as `A`, but with different dimensions                                                                                                                                                                      |
-| [`copy(A)`](@ref)                  | copy `A`                                                                                                                                                                                                                                     |
-| [`deepcopy(A)`](@ref)              | copy `A`, recursively copying its elements                                                                                                                                                                                                   |
-| [`similar(A, T, dims...)`](@ref)   | an uninitialized array of the same type as `A` (dense, sparse, etc.), but with the specified element type and dimensions. The second and third arguments are both optional, defaulting to the element type and dimensions of `A` if omitted. |
-| [`reinterpret(T, A)`](@ref)        | an array with the same binary data as `A`, but with element type `T`                                                                                                                                                                         |
-| [`rand(T, dims...)`](@ref)         | an `Array` with random, iid [^1] and uniformly distributed values in the half-open interval ``[0, 1)``                                                                                                                                       |
-| [`randn(T, dims...)`](@ref)        | an `Array` with random, iid and standard normally distributed values                                                                                                                                                                         |
-| [`eye(T, n)`](@ref)                | `n`-by-`n` identity matrix                                                                                                                                                                                                                   |
-| [`eye(T, m, n)`](@ref)             | `m`-by-`n` identity matrix                                                                                                                                                                                                                   |
-| [`linspace(start, stop, n)`](@ref) | range of `n` linearly spaced elements from `start` to `stop`                                                                                                                                                                                 |
-| [`fill!(A, x)`](@ref)              | fill the array `A` with the value `x`                                                                                                                                                                                                        |
-| [`fill(x, dims...)`](@ref)         | an `Array` filled with the value `x`                                                      
+| [`zeros(A)`](@ref)                 | 要素の型やシェイプが`A`である、すべてが同じ型の0である配列                                                                                                                                                                      |
+| [`ones(T, dims...)`](@ref)         | すべてが1の `配列`                                                                                                                                                                                                                       |
+| [`ones(A)`](@ref)                  |  要素の型やシェイプが`A`である、すべてが同じ型の1である配列                                                                                                                                                                       |
+| [`trues(dims...)`](@ref)           | すべての値が`true`である[`BitArray`](@ref)                                                                                                                                                                                                  |
+| [`trues(A)`](@ref)                 | すべての値が`true`でシェイプが`A`と同じ`BitArray`                                                                                                                                       |
+| [`falses(dims...)`](@ref)          | すべての値が`false`である`BitArray`                                                                                                                                                                                                         |
+| [`falses(A)`](@ref)                | すべての値が`false`でシェイプが`A`と同じ`BitArray``                                                                                                                                                                               |
+| [`reshape(A, dims...)`](@ref)      | `A`と同じデータだが次元の違う配列                                                                                                                                                                      |
+| [`copy(A)`](@ref)                  | `A`をコピーする                                                                                                                                                                                                                                     |
+| [`deepcopy(A)`](@ref)              | `A`をコピーする（再帰的にその要素もコピーする）                                                                                                                                               |
+| [`similar(A, T, dims...)`](@ref)   | `A`(密・疎など)と型が同じだが初期化されていない配列、要素の型や次元が指定されたもの。2番目と3番目の引数は共に省略可能で、省略した時のデフォルト値は`A`の要素の型と次元になる。 |
+| [`reinterpret(T, A)`](@ref)        | `A`とバイナリデータが同じだが、要素の型が`T`である配列                                                                                                                                                          |
+| [`rand(T, dims...)`](@ref)         | 半開区間``[0, 1)``で独立同分布、一様分布の乱数の`配列`                                                                                                                                       |
+| [`randn(T, dims...)`](@ref)        | 独立同分布、標準正規分布の乱数の`配列`                                                                                                                                        |
+| [`eye(T, n)`](@ref)                | `n`×`n` の単位行列                                                                                                                                                                                                                   |
+| [`eye(T, m, n)`](@ref)             | `m`×`n` の単位行列                                                                                                                                                                                                                       |
+| [`linspace(start, stop, n)`](@ref) | `start`から`stop`まで`n`個の要素が等間隔にある範囲                                                                                                                                                                                 |
+| [`fill!(A, x)`](@ref)              | 配列`A`を値`x`で埋める                                                                                                                                                                                                        |
+| [`fill(x, dims...)`](@ref)         | 値が`x`で埋まった`配列`                                                     
 
 ```@raw html
 <!--
 [^1]: *iid*, independently and identically distributed.
 -->
 ```
+[^1]: *iid*, 独立同分布
 
 
 ```@raw html
@@ -172,6 +172,8 @@ arguments have a common [promotion type](@ref conversion-and-promotion) then the
 converted to that type using `convert()`.
 -->
 ```
+構文`[A, B, C, ...]`は、その引数からなる1次元配列（ベクトル）を生成します。
+すべての引数が共通の[昇格した型](@ref conversion-and-promotion)を持つ場合、これらの引数は`convert()`を使用してその型に変換されます。
 
 [](### Concatenation)
 ### 連結
