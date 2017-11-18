@@ -279,6 +279,10 @@ Comprehensions provide a general and powerful way to construct arrays. Comprehen
 similar to set construction notation in mathematics:
 -->
 ```
+内包表記は、配列を生成する一般的かつ強力な方法です。
+内包表記構文は、数学でつかう集合を生成する表記法と似ています。
+
+
 
 ```
 A = [ F(x,y,...) for x=rx, y=ry, ... ]
@@ -297,6 +301,11 @@ The following example computes a weighted average of the current element and its
 neighbor along a 1-d grid. :
 -->
 ```
+この形式は、`F(x,y,...)`が変数`x`、`y`などが、与えられたリストから値をそれぞれ取るものとして、評価されることを意味します。
+値は、任意のイテラブルオブジェクトによって指定することができますが、通常は`1:n`や`2:(n-1)`のような範囲か、`[1.2, 3.4, 5.7]`のように明示的に値をいれた配列をつかいます。
+その演算結果は、N次元の密な配列で、 `rx`、`ry`などの可変範囲の次元を連結した次元となり、各`F(x,y,...)` の評価はスカラーとします。
+
+次の例では、1次元グリッドに沿った現在の要素とその両隣との加重平均を計算します。
 
 ```julia-repl
 julia> x = rand(8)
@@ -328,6 +337,11 @@ type explicitly, a type can be prepended to the comprehension. For example, we c
 the result in single precision by writing:
 -->
 ```
+結果の配列の型は、計算した要素の型次第です。
+型を明示的に制御するために、内包表記の前に型を付けることができます。
+たとえば、次のように書いて結果を単精度とすることができます。
+
+
 
 ```julia
 Float32[ 0.25*x[i-1] + 0.5*x[i] + 0.25*x[i+1] for i=2:length(x)-1 ]
