@@ -448,6 +448,7 @@ julia> [(i,j) for i=1:3 for j=1:i if i+j == 4]
 The general syntax for indexing into an n-dimensional array A is:
 -->
 ```
+n次元配列Aに対するインデックスによる参照の一般的な構文は次のとおりです。
 
 ```
 X = A[I_1, I_2, ..., I_n]
@@ -467,6 +468,14 @@ If all the indices are scalars, then the result `X` is a single element from the
 indices.
 -->
 ```
+各`I_k`はスカラー整数、整数の配列、又は他の[利用可能なインデックス](@ref man-supported-index-types)で構いません。
+この例として、次元全体のすべてのインデックスを選択する[`Colon`](@ref) (`:`)、
+ `a:c` や`a:b:c`といった形の連続した範囲や飛び飛びの部分列になった範囲、
+および`true`インデックスに当たる要素を選択するブール値の配列などがあります。
+
+すべてのインデックスがスカラーの場合、結果`X`は配列`A`の単一の要素になります。
+それ以外の場合 `X`は、すべてのインデックスの次元の合計と同じ次元の数の配列になります。
+``
 
 
 ```@raw html
@@ -485,6 +494,19 @@ being indexed. Indexing syntax without the `end` keyword is equivalent to a call
 -->
 ```
 
+すべてのインデックスが、ベクトルである場合、例えば、`X`のシェイプが`(length(I_1), length(I_2), ..., length(I_n))`で、`X`の`(i_1, i_2, ..., i_n)`に当たる値が、`A[I_1[i_1], I_2[i_2], ..., I_n[i_n]]`の場合を考えます。
+`I_1`を2次元の行列に変更すると、`X`はn+1次元の配列で、シェイプが`(size(I_1, 1), size(I_1, 2), length(I_2), ..., length(I_n))`になります。
+行列の次元が増えます。
+`(i_1, i_2, i_3, ..., i_{n+1})`の場所に当たる値が、`A[I_1[i_1, i_2], I_2[i_3], ..., I_n[i_{n+1}]]`になります。
+スカラでインデックス付けされたすべての次元は削除されます。
+たとえば、`A[2, I, 3]`の結果はサイズ`size(I)`の配列です。
+`i`番目の要素は、値が`A[2, I[i], 3]`になります。
+
+この構文の特別な部分として、`end`キーワードを、各次元の最後のインデックスを表すために、角括弧の中で利用できます。
+これは、一番内側のインデックス付けされた配列のサイズから決めることができるからです。
+`end`キーワードを使わないインデックスによる参照は、`getindex`による呼び出しと同等です。
+
+
 ```
 X = getindex(A, I_1, I_2, ..., I_n)
 ```
@@ -495,6 +517,7 @@ X = getindex(A, I_1, I_2, ..., I_n)
 Example:
 -->
 ```
+例：
 
 ```jldoctest
 julia> x = reshape(1:16, 4, 4)
@@ -524,6 +547,11 @@ the insertion point of a value not found in a sorted array:
 -->
 ```
 
+ `n:n-1`といった形の空の範囲は、`n-1`と`n`の間のインデックス間の位置を示すために使用されることが時折あります。
+ たとえば、[`searchsorted()`](@ref)関数はこの規則を使用して、整列した配列で値が見つからない時に挿入する場所を示します。
+
+
+
 ```jldoctest
 julia> a = [1,2,5,6,7];
 
@@ -540,7 +568,7 @@ julia> searchsorted(a, 3)
 The general syntax for assigning values in an n-dimensional array A is:
 -->
 ```
-
+n次元配列`A`の値を代入する一般的な構文は次のとおりです。
 ```
 A[I_1, I_2, ..., I_n] = X
 ```
@@ -568,6 +596,19 @@ syntax without the `end` keyword is equivalent to a call to
 
 -->
 ```
+各`I_k`はスカラー整数、整数の配列、又は他の[利用可能なインデックス](@ref man-supported-index-types)で構いません。
+この例として、次元全体のすべてのインデックスを選択する[`Colon`](@ref) (`:`)、
+ `a:c` や`a:b:c`といった形の連続した範囲や飛び飛びの部分列になった範囲、
+および`true`インデックスに当たる要素を選択するブール値の配列などがあります。
+
+`X`が配列の場合、インデックスの長さの積と同じ数の要素数でなければなりません。つまり`prod(length(I_1), length(I_2), ..., length(I_n))`です。
+`A`の`I_1[i_1], I_2[i_2], ..., I_n[i_n]`の位置の値は、`X[i_1, i_2, ..., i_n]`の値で上書きされます。
+`X`が配列ではない場合、`A`のすべての参照されている位置に値が書き込まれます。
+
+ [インデックスによる参照](@ref man-array-indexing)と同様に、`end`キーワードを、各次元の最後のインデックスを表すために、角括弧の中で利用できます。
+これは、代入される配列のサイズから決まるからです。
+`end`キーワードを使わないインデックスによる参照は、[`setindex!()`](@ref)による呼び出しと同等です。
+
 
 ```
 setindex!(A, X, I_1, I_2, ..., I_n)
@@ -579,6 +620,7 @@ setindex!(A, X, I_1, I_2, ..., I_n)
 Example:
 -->
 ```
+例
 
 ```jldoctest
 julia> x = collect(reshape(1:9, 3, 3))
