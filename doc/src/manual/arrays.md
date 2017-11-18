@@ -184,7 +184,7 @@ converted to that type using `convert()`.
 Arrays can be constructed and also concatenated using the following functions:
 -->
 ```
-
+配列は、以下の関数を使用して生成・連結することもできます。
 
 ```@raw html
 <!--
@@ -195,6 +195,11 @@ Arrays can be constructed and also concatenated using the following functions:
 | [`hcat(A...)`](@ref)   | shorthand for `cat(2, A...)`                         |
 -->
 ```
+| 関数                   | 説明                                          |
+| :--------------------- | :------------------------------------------- |
+| [`cat(k, A...)`](@ref) | 入力した n次元の配列を次元kに沿って連結する      |
+| [`vcat(A...)`](@ref)   | `cat(1, A...)`の簡略表記                      |
+| [`hcat(A...)`](@ref)   | `cat(2, A...)`の簡略表記                      |
 
 
 ```@raw html
@@ -204,7 +209,9 @@ Scalar values passed to these functions are treated as 1-element arrays.
 The concatenation functions are used so often that they have special syntax:
 -->
 ```
+これらの関数に渡されるスカラー値は、1要素の配列として扱われます。
 
+連結関数はよく使用されて、特殊な構文もあります。
 
 ```@raw html
 <!--
@@ -216,12 +223,19 @@ The concatenation functions are used so often that they have special syntax:
 -->
 ```
 
+| 式                | 関数呼び出し        |
+| :---------------- | :---------------- |
+| `[A; B; C; ...]`  | [`vcat()`](@ref)  |
+| `[A B C ...]`     | [`hcat()`](@ref)  |
+| `[A B; C D; ...]` | [`hvcat()`](@ref) |
+
 
 ```@raw html
 <!--
 [`hvcat()`](@ref) concatenates in both dimension 1 (with semicolons) and dimension 2 (with spaces).
 -->
 ```
+[`hvcat()`](@ref) は1次元方向（セミコロンを使って）と2次元方向（空白を使って）の両方向に連結します。
 
 [](### Typed array initializers)
 ### 型指定での配列の初期化
@@ -237,6 +251,13 @@ Concatenation syntax can similarly be prefixed with a type to specify the elemen
 result.
 -->
 ```
+
+`T[A, B, C, ...]`という構文を使って、要素の型を指定して配列を生成できます。
+これは、要素の型が`T`の1次元配列を生成して、要素が`A`, `B`, `C`などとなるように初期化します。
+例えば`Any[x, y, z]`とすると、任意の値を含むことができる型の不均質な配列を生成します。
+
+連結構文にも同様に型の接頭辞を付けて、演算結果の要素の型を指定することができます。
+
 
 ```jldoctest
 julia> [[1 2] [3 4]]
