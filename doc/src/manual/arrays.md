@@ -359,6 +359,9 @@ an array and storing them in advance (see [Iteration](@ref)). For example, the f
 sums a series without allocating memory:
 -->
 ```
+また、内包表記は角括弧を使わずに書くと、ジェネレータと呼ばれるオブジェクトを作成することもできます。
+このオブジェクトは、必要に応じて値を反復して生成することができ、事前に配列をメモリを割り当てて格納したりしません（[Iteration](@ref)参照）。
+たとえば、次の式は、メモリの割り当てをせずに数列の和を算出します。
 
 ```jldoctest
 julia> sum(1/n^2 for n=1:1000)
@@ -373,6 +376,8 @@ are needed to separate the generator from subsequent arguments:
 -->
 ```
 
+多次元のジェネレータ式を引数リスト内に書く場合、ジェネレータと後に続く引数を区切るには括弧が必要です。
+
 ```julia-repl
 julia> map(tuple, 1/(i+j) for i=1:2, j=1:2, [1:4;])
 ERROR: syntax: invalid iteration specification
@@ -385,6 +390,8 @@ All comma-separated expressions after `for` are interpreted as ranges. Adding pa
 us add a third argument to `map`:
 -->
 ```
+カンマで区切られた`for`式の後はすべて範囲として解釈されます。
+括弧を追加して、`map`の3番目の引数を追加できます。
 
 ```jldoctest
 julia> map(tuple, (1/(i+j) for i=1:2, j=1:2), [1 3; 2 4])
@@ -400,6 +407,7 @@ Ranges in generators and comprehensions can depend on previous ranges by writing
 keywords:
 -->
 ```
+ジェネレータと内包表記の範囲は、複数の`for` キーワードを記述した時、前の範囲に依存する場合があります。
 
 ```jldoctest
 julia> [(i,j) for i=1:3 for j=1:i]
@@ -420,6 +428,9 @@ In such cases, the result is always 1-d.
 Generated values can be filtered using the `if` keyword:
 -->
 ```
+そうした場合、結果は常に1次元です。
+
+生成された値は、`if`キーワードを使ってフィルタリングできます。
 
 ```jldoctest
 julia> [(i,j) for i=1:3 for j=1:i if i+j == 4]
