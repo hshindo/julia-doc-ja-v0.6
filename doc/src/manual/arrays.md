@@ -950,6 +950,7 @@ specify this trait, the default value `IndexCartesian()` is used.
 The following operators are supported for arrays:
 -->
 ```
+配列では以下の演算子が利用可能です。
 
 
 ```@raw html
@@ -960,6 +961,9 @@ The following operators are supported for arrays:
 -->
 ```
 
+1. 単項演算 -- `-`, `+`
+2. 二項演算 -- `-`, `+`, `*`, `/`, `\`, `^`
+3. 比較演算 -- `==`, `!=`, `≈` ([`isapprox`](@ref)), `≉`
 
 ```@raw html
 <!--
@@ -975,6 +979,14 @@ scalars (a [Broadcasting](@ref) operation); these have the additional advantage 
 "fusing" into a single loop when combined with other dot calls, e.g. `sin.(cos.(x))`.
 -->
 ```
+
+上記の二項算術演算子の殆どは、引数の一方がスカラーの時に要素ごとの演算を行います。
+`-`, `+`,`*`は引数の一方がスカラーの時、 `/`, `\`は分母がスカラーの時に要素ごとの演算を行います。
+例をあげると`[1, 2] + 3 == [4, 5]`や `[6, 4] / 2 == [3, 2]`が成り立ちます。
+
+また、算術その他の演算子に対してベクトル化を便利に使えるように、Juliaでは `f.(args...)`のような[ドット構文が利用可能](@ref man-vectorized) で、 `sin.(x)`や `min.(x,y)`のように使います。
+これらには、`sin.(cos.(x))`のように、他のドット呼び出しと組み合わせて、単一のループに融合」するというさらなる利点があります。
+
 
 
 ```@raw html
@@ -992,6 +1004,14 @@ elementwise over `a` and `b`, and `maximum(a)`, which finds the largest value wi
 `a`. The same relationship holds for `min.(a,b)` and `minimum(a)`.
 -->
 ```
+また、**すべての**二項演算子は、[融合ブロードキャスト演算]（@ ref man-vectorized）を配列（配列とスカラーの組み合わせ）に適用できる[ドットバージョン]（@ ref man-dot-operators）が利用可能で、`z .== sin.(x .* y)`のようにできます。
+
+`==`のような比較演算は配列全体を演算の対象とし、答えが単一のブール値となることに注意してください。
+要素ごとの比較は`.==`のようなドット演算子を使用します。（`<`のような比較演算子は要素ごとの`.<`バージョンだけが配列に適用可能です。）
+
+また、`max.(a,b)`は、[`max()`](@ref)のブロードキャストで`a`と`b`を要素ごとに比較しているのに対して、
+`maximum(a)`は`a`の中の最大値を求めているという違いに注意してください。
+ `min.(a,b)`と`minimum(a)`にもどうようのことが成り立ちます。
 
 [](### Broadcasting)
 ### ブロードキャスト
