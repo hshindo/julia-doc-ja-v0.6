@@ -568,7 +568,7 @@ julia> searchsorted(a, 3)
 The general syntax for assigning values in an n-dimensional array A is:
 -->
 ```
-n次元配列`A`の値を代入する一般的な構文は次のとおりです。
+n次元配列`A`に値を代入する一般的な構文は次のとおりです。
 ```
 A[I_1, I_2, ..., I_n] = X
 ```
@@ -651,6 +651,9 @@ indices and can be converted to such by [`to_indices`](@ref):
 -->
 ```
 
+`A[I_1, I_2, ..., I_n]`という式で、各`I_k`は、スカラーインデックスであったり、スカラーインデックスの配列であったり、またはスカラーインデックスの配列を表すオブジェクトで[`to_indices`](@ref)を使ってそれに変換できるものであったりします。
+
+
 
 ```@raw html
 <!--
@@ -668,6 +671,21 @@ indices and can be converted to such by [`to_indices`](@ref):
     * Arrays of booleans, which select elements at their `true` indices (see below for more details)
 -->
 ```
+
+1. スカラーインデックス。デフォルトでは以下のようなものがあります。
+    *非ブール整数
+    *`CartesianIndex{N}`:多次元にまたがるN個の整数の組のように振る舞います（詳細は下記参照）
+2. スカラーインデックスの配列。以下のようなものがあります。
+    *ベクトルや整数の多次元配列
+    *`[]`のような空の配列:要素がない
+    *`a:c`や`a:b:c`のような形をした`範囲`:`a`から`c`(両端を含む)までの連続した、または飛び飛びの要素
+    *スカラーインデックスの独自の配列:AbstractArrayのサブタイプ
+    *`CartesianIndex{N}`の配列:（詳細は下記参照）
+3. スカラーインデックスの配列を表すオブジェクトで[`to_indices`](@ref)を使ってそれに変換できるものにはデフォルトでは以下のものあります。
+    *[`Colon()`](@ref) (`:`):次元全体または配列全体にわたるすべてのインデックスを表します
+    *ブール値の配列:インデックスが`true`の要素を選択する（詳細は下記を参照）
+
+
 
 [](#### Cartesian indices)
 #### 直積インデックス
