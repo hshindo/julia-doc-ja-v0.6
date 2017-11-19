@@ -1123,7 +1123,17 @@ the number of dimensions `N` and the element type `T`. `AbstractVector` and `Abs
 aliases for the 1-d and 2-d cases. Operations on `AbstractArray` objects are defined using higher
 level operators and functions, in a way that is independent of the underlying storage. These operations
 generally work correctly as a fallback for any specific array implementation.
+-->
+```
 
+Juliaの基本となる配列の型は抽象型`AbstractArray{T,N}`です。
+次元の数`N`と要素の型`T`によってパラメータ化されています。
+`AbstctVector`と`AbstractMatrix`は、1次元と2次元の場合の別名です。
+`AbstractArray`オブジェクトに対する操作は、基礎となるストレージとは独立した方法で、高水準の演算子と関数を使用して定義されます。
+これらの操作は、通常、配列にそれぞれ特定の実装に対して補助的に正常に機能します。
+
+```@raw html
+<!--
 The `AbstractArray` type includes anything vaguely array-like, and implementations of it might
 be quite different from conventional arrays. For example, elements might be computed on request
 rather than stored. However, any concrete `AbstractArray{T,N}` type should generally implement
@@ -1137,7 +1147,14 @@ object returned by *integer* indexing (`A[1, ..., 1]`, when `A` is not empty) an
 the length of the tuple returned by [`size()`](@ref).
 -->
 ```
-
+`AbstractArray`型には漠然とした配列のようなものも含まれ、それの実装は、従来の配列に対するものとは全く異なるかもしれません。
+例えば、要素は格納せずに要求に応じて計算するかもしれません。
+しかし、`AbstractArray{T,N}`の具象型は、少なくとも [`size(A)`](@ref) (`Int`のタプルを返す), [`getindex(A,i)`](@ref) ,[`getindex(A,i1,...,iN)`]（@ ref getindex）を実装する必要があります。
+可変な配列は [`setindex!()`](@ref)も実装する必要があります。
+これらの操作は、時間的な複雑さがほぼ一定で、技術的に言うとÕ(1)の複雑性であることが推奨されます。
+そうでなければ、一部の配列関数が想定より遅くなる可能性があります。
+また、具象型は、通常、[`similar(A,T=eltype(A),dims=size(A))`](@ref) という同様の配列をメモリに割り当てるするメソッドを利用可能にする必要があり、これは[`copy()`](@ref)など多くのメモリを必要とする作業に使われます。
+`AbstractArray{T,N}`の内部的な表現がどうであれ、`T`は整数インデックスによる参照によって返されるオブジェクト（`A`が空でない場合は`A[1, ..., 1]`）の型で、`N`は[`size()`](@ref) によって返されるタプルの長さである必要があります。
 
 ```@raw html
 <!--
@@ -1156,6 +1173,16 @@ basic storage-specific operations are all that have to be implemented for [`Arra
 that the rest of the array library can be implemented in a generic manner.
 -->
 ```
+`DenseArray`は、`AbstractArray`の抽象サブタイプで、メモリ内でオフセットによって通常に配置されるすべての配列を含むように意図されています。
+そのため、このメモリレイアウトを想定している、外部のCやFortran関数に渡すことができます。
+サブタイプは、`k`次元の「ストライド」を返す[`stride(A,k)`](@ref)をメソッドが利用可能でなければなりません。
+k次元のインデックスを1増やすと、[`getindex(A,i)`](@ref) によるインデックス`i`が [`stride(A,k)`](@ref)増えます。
+ポインタを変換する[`Base.unsafe_convert(Ptr{T}, A)`](@ref)が利用可能な場合、メモリレイアウトはこれらのストライドと同様の対応をする必要があります。
+
+この[`Array`](@ref) 型は、要素が列による順序で格納されている`DenseArray`の特定のインスタンスです（[パフォーマンスヒント]（@ ref man-performance-tips）の付随的な注記を参照してください）。
+`Vector`と`Matrix`は1次元と2次元の場合の別名です。
+スカラインデックスによる参照、代入、その他いくつかの基本的なストレージ固有の操作などは、すべて[`Array`](@ref)に対して実装する必要があります。そのおかげで、残りの配列ライブラリは汎化的な方法で実装することができます。
+
 
 
 ```@raw html
@@ -1168,6 +1195,17 @@ stores the input index vectors in a `SubArray` object, which can later be used t
 array indirectly.  By putting the [`@views`](@ref) macro in front of an expression or
 block of code, any `array[...]` slice in that expression will be converted to
 create a `SubArray` view instead.
+-->
+```
+`SubArray`は`AbstractArray`の特化したもので、参照をコピーではなくインデックスによって実行します。
+`SubArray`は [`view()`](@ref) 関数と一緒に作成され、[`getindex()`](@ref)（配列と一連のインデックス引数を使用）と同じように呼び出されます。
+[`view()`](@ref) の結果は、 [`view()`](@ref)　の結果とほぼ同じですが、データがそのまま残っている点が違います。
+[`view()`](@ref)は`SubArray`オブジェクトの入力インデックスベクトルを格納し、元の配列を間接的にインデックス参照するために利用できます。
+式やブロックのコードの前に[`@views`](@ref)マクロを置くと、その式の`array[...]`スライスが変換されて、`SubArray`ビューが代わりに作成されます。
+
+
+```@raw html
+<!--
 
 `StridedVector` and `StridedMatrix` are convenient aliases defined to make it possible for Julia
 to call a wider range of BLAS and LAPACK functions by passing them either [`Array`](@ref) or
@@ -1178,6 +1216,12 @@ creating any temporaries, and by calling the appropriate LAPACK function with th
 dimension size and stride parameters.
 -->
 ```
+
+`StridedVector`と`StridedMatrix`は便利なエイリアスで、BLASとLAPACKの広範囲な関数をJuliaで呼び出すように定義されています。
+この関数には[`Array`](@ref)か`SubArray`オブジェクトを渡して、メモリ割り当てやコピーのような非効率性を省きます。
+
+次の例では、大きな配列の小さな一部分のQR分解を計算します。
+一時的なものを全く作成せずに、適切な主次元のサイズとストライドのパラメータでLAPACK関数を呼び出しています。
 
 ```julia-repl
 julia> a = rand(10,10)
@@ -1216,7 +1260,7 @@ julia> r
 ```
 
 [](## Sparse Matrices)
-## 疎な行列
+## 疎行列
 
 
 ```@raw html
@@ -1229,7 +1273,7 @@ gains in either time or space when compared to performing the same operations on
 ```
 
 [](### Compressed Sparse Column (CSC) Storage)
-### Compressed Sparse Column (CSC) Storage
+### 圧縮疎列 (CSC) 格納
 
 
 ```@raw html
@@ -1283,7 +1327,7 @@ matrix.
 ```
 
 [](### Sparse matrix constructors)
-### 疎な行列のコンストラクタ
+### 疎行列のコンストラクタ
 
 
 ```@raw html
@@ -1373,7 +1417,7 @@ true
 ```
 
 [](### Sparse matrix operations)
-### 疎な行列の演算
+### 疎行列の演算
 
 
 
@@ -1389,7 +1433,7 @@ the sparse matrix.
 ```
 
 [](### Correspondence of dense and sparse methods)
-### Correspondence of dense and sparse methods
+### 密と疎のメソッドの対応
 
 
 ```@raw html
