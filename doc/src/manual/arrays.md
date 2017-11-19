@@ -865,6 +865,7 @@ julia> x[mask]
 The recommended ways to iterate over a whole array are
 -->
 ```
+配列全体に対して繰返し処理を行う推奨方法は次のとおりです。
 
 ```julia
 for a in A
@@ -884,6 +885,10 @@ construct, `i` will be an `Int` if `A` is an array type with fast linear indexin
 it will be a `CartesianIndex`:
 -->
 ```
+1番目の例は、各要素の値ではなくインデックスを必要とするときに使用されます。
+2番目の例で、`A`が高速リニアインデックスを持つ配列型の時、`i`は、`Int`型 です。
+それ以外の場合は、`CartesianIndex`になります。
+
 
 ```jldoctest
 julia> A = rand(4,3);
@@ -909,6 +914,8 @@ iterate over any array type.
 -->
 ```
 
+`for i = 1:length(A)`と比較すると、`eachindex`を使った繰返しは、任意の配列型に対して効率的な繰返し処理が可能です。
+
 [](### Array traits)
 ### 配列のトレイト
 
@@ -918,6 +925,7 @@ iterate over any array type.
 If you write a custom [`AbstractArray`](@ref) type, you can specify that it has fast linear indexing using
 -->
 ```
+独自の[`AbstractArray`](@ref)型を記述する場合は、以下のように高速リニアインデックスを使って指定できます。
 
 ```julia
 Base.IndexStyle(::Type{<:MyArray}) = IndexLinear()
@@ -930,6 +938,8 @@ This setting will cause `eachindex` iteration over a `MyArray` to use integers. 
 specify this trait, the default value `IndexCartesian()` is used.
 -->
 ```
+この設定では`eachindex`が`MyArray`にたいして行う繰返し処理には整数が使われます。
+このトレイトを指定しない場合、デフォルトでは`IndexCartesian()`が使われます。
 
 [](### Array and Vectorized Operators and Functions)
 ### 配列とベクトル化演算子・関数
