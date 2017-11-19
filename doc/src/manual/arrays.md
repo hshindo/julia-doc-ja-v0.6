@@ -1221,7 +1221,7 @@ dimension size and stride parameters.
 この関数には[`Array`](@ref)か`SubArray`オブジェクトを渡して、メモリ割り当てやコピーのような非効率性を省きます。
 
 次の例では、大きな配列の小さな一部分のQR分解を計算します。
-一時的なものを全く作成せずに、適切な主次元のサイズとストライドのパラメータでLAPACK関数を呼び出しています。
+一時的なものを全く作成せずに、適切なリーディングディメンジョンのサイズとストライドのパラメータによってLAPACK関数を呼び出しています。
 
 ```julia-repl
 julia> a = rand(10,10)
@@ -1271,6 +1271,10 @@ Sparse matrices may be used when operations on the sparse representation of a ma
 gains in either time or space when compared to performing the same operations on a dense matrix.
 -->
 ```
+[疎行列](https://en.wikipedia.org/wiki/Sparse_matrix)は、特殊なデータ構造で格納したほうが領域と実行時間の節約につながる程、0の多い行列です。
+疎行列に演算を行うほうが、密行列よりも、時間的または空間的にかなり有利になる場合にも、疎行列が使われるでしょう。
+
+
 
 [](### Compressed Sparse Column (CSC) Storage)
 ### 圧縮疎列 (CSC) 格納
@@ -1283,6 +1287,7 @@ Julia sparse matrices have the type `SparseMatrixCSC{Tv,Ti}`, where `Tv` is the 
 values, and `Ti` is the integer type for storing column pointers and row indices.:
 -->
 ```
+
 
 ```julia
 struct SparseMatrixCSC{Tv,Ti<:Integer} <: AbstractSparseMatrix{Tv,Ti}
