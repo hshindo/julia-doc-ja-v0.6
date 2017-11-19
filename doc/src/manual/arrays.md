@@ -697,6 +697,7 @@ The special `CartesianIndex{N}` object represents a scalar index that behaves
 like an `N`-tuple of integers spanning multiple dimensions.  For example:
 -->
 ```
+特殊なオブジェクトである`CartesianIndex{N}`は、多次元にまたがる`N`個の整数の組のように動作するスカラーインデックスを表します。例えば、
 
 ```jldoctest cartesianindex
 julia> A = reshape(1:32, 4, 4, 2);
@@ -725,6 +726,16 @@ that is sometimes referred to as pointwise indexing. For example, it enables
 accessing the diagonal elements from the first "page" of `A` from above:
 -->
 ```
+単体だけを考える時は、これは比較的簡単に思えるかもしれません。
+`CartesianIndex`は1つの多次元インデックスを表す1つのオブジェクトに複数の整数をまとめているだけです。
+しかし、`CartesianIndex`を他のインデックスフォームやイテレータと組み合わせると直ちに、非常にエレガントで効率的なコードとなる可能性があります。以下の[繰返し](@ref)を参照してください。
+より高度な例については、[多次元アルゴリズムと繰返しに関するこのブログ記事](https://julialang.org/blog/2016/02/iteration)を参照してください。
+
+`CartesianIndex{N}`の配列も利用可能です。
+これらは、それぞれがN次元にまたがるスカラーインデックスの集合を表し、ポイントワイズインデックスとも呼ばれるインデックスの形式が可能になります。
+たとえば、前述の`A`の最初の「ページ」から対角線要素にアクセスすることができます。
+
+
 
 ```jldoctest cartesianindex
 julia> page = A[:,:,1]
@@ -747,13 +758,16 @@ julia> page[[CartesianIndex(1,1),
 
 
 ```@raw html
-<!--
 This can be expressed much more simply with [dot broadcasting](@ref man-vectorized)
 and by combining it with a normal integer index (instead of extracting the
 first `page` from `A` as a separate step). It can even be combined with a `:`
 to extract both diagonals from the two pages at the same time:
 -->
 ```
+これは、[ドットブロードキャスト](@ref man-vectorized)を通常の整数インデックスと組み合わせて使うと、（`A`から最初の`ページ`を別の処理として抽出するよりも）もっと単純に表現できます。
+さらに、`:`と組み合わせて 、同時に2つのページから両方の対角線を抽出することさえもできます。
+
+
 
 ```jldoctest cartesianindex
 julia> A[CartesianIndex.(indices(A, 1), indices(A, 2)), 1]
@@ -781,6 +795,11 @@ julia> A[CartesianIndex.(indices(A, 1), indices(A, 2)), :]
     in indexing expressions that may contain either `CartesianIndex` or arrays thereof.
 -->
 ```
+!!!警告
+    `CartesianIndex`と`CartesianIndex`の配列は、次元の最後のインデックスを表すキーワード`end`と一緒に使うことができません。
+    `end`を`CartesianIndex`やその配列を含む可能性のある式のインデックス表現として使用しないでください。
+
+
 
 [](#### Logical indexing)
 #### 論理インデックスによる参照
@@ -957,7 +976,7 @@ elementwise over `a` and `b`, and `maximum(a)`, which finds the largest value wi
 -->
 ```
 
-### Broadcasting
+[](### Broadcasting)
 ### ブロードキャスト
 
 
