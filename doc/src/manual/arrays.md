@@ -1494,7 +1494,11 @@ Details can be found in the [Sparse Vectors and Matrices](@ref) section of the s
 reference.
 -->
 ```
+次の表は、疎行列の標準装備のメソッドと、対応する密行列のメソッドを示しています。
+一般に、疎行列を生成する方法は、何が密なものとして対応するかによって異なります。
+つまり、結果の行列が与えられた疎行列`S`と同じ疎行列パターンに従うか、または結果として生じる疎行列が密度'd'すなわち各行列要素が`d`という非ゼロである確率を有するかによって異なります 。
 
+詳細は、標準ライブラリリファレンスの[Sparse Vectors and Matrices](@ref)の章を参照してください。
 
 ```@raw html
 <!--
@@ -1509,3 +1513,14 @@ reference.
 | [`sprandn(m,n,d,X)`](@ref) | [`randn(m,n,X)`](@ref) | Creates a *m*-by-*n* random matrix (of density *d*) with iid non-zero elements distributed according to the *X* distribution. (Requires the `Distributions` package.) |
 -->
 ```
+
+| 疎                     | 密                 | 説明                                        |
+| :--------------------- | :----------------- |:------------------------------------------ |
+| [`spzeros(m,n)`](@ref)     | [`zeros(m,n)`](@ref)   | *m*×*n*の零行列を生成する。([`spzeros(m,n)`](@ref) は空。)                                                                                              |
+| [`spones(S)`](@ref)        | [`ones(m,n)`](@ref)    | 1で満たされた行列を生成する。密なバージョンとは異なり、 [`spones()`](@ref) は*S*と同じ疎なパターンを持つ。                                                 |
+| [`speye(n)`](@ref)         | [`eye(n)`](@ref)       | *n*×*n*の単位行列を生成する。                |
+| [`full(S)`](@ref)          | [`sparse(A)`](@ref)    | 密と疎のフォーマットを互いに変換する。        |
+| [`sprand(m,n,d)`](@ref)    | [`rand(m,n)`](@ref)    | 半開区間``[0, 1)``上一様分布で独立同分布で要素が非０の*m*×*n*のランダム行列を生成する(密度*d*)                              |
+| [`sprandn(m,n,d)`](@ref)   | [`randn(m,n)`](@ref)   | 標準正規(ガウス)分布で独立同分布で要素が非０の*m*×*n*のランダム行列を生成する(密度*d*) |
+| [`sprandn(m,n,d,X)`](@ref) | [`randn(m,n,X)`](@ref) | *X*分布で独立同分布で要素が非０の*m*×*n*のランダム行列を生成する(密度*d*) (`Distributions`パッケージが必要) |
+
