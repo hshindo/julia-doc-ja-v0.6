@@ -1287,7 +1287,8 @@ Julia sparse matrices have the type `SparseMatrixCSC{Tv,Ti}`, where `Tv` is the 
 values, and `Ti` is the integer type for storing column pointers and row indices.:
 -->
 ```
-
+Juliaでは、疎行列は[圧縮疎列（CSC）形式](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_.28CSC_or_CCS.29)で格納されます。
+Juliaの疎行列は`SparseMatrixCSC{Tv,Ti}`という型を持ちます}。ここで`Tv`は格納された値の型であり、`Ti`は列ポインタと行インデックスを格納する整数型です。
 
 ```julia
 struct SparseMatrixCSC{Tv,Ti<:Integer} <: AbstractSparseMatrix{Tv,Ti}
@@ -1313,6 +1314,14 @@ for performance, and to avoid expensive operations.
 -->
 ```
 
+圧縮疎列格納は、疎行列の列にある要素に簡単かつ迅速にアクセスできますが、行単位で疎
+行列にアクセスするのはかなり遅くなります。
+CSC構造内で以前に格納されていないエントリを一度に1つ挿入するような操作は、遅くなる傾向がある。
+これは、挿入点を超えた疎行列のすべての要素を１つずつ移動する必要があるためです。
+
+疎行列に対するすべての操作は、注意深く実装されていて、パフォーマンスのためにCSCデータ構造を利用しながら、
+コストの高くつく操作を避けています。
+
 
 ```@raw html
 <!--
@@ -1320,7 +1329,15 @@ If you have data in CSC format from a different application or library, and wish
 in Julia, make sure that you use 1-based indexing. The row indices in every column need to be
 sorted. If your `SparseMatrixCSC` object contains unsorted row indices, one quick way to sort
 them is by doing a double transpose.
+-->
+```
+別のアプリケーションかライブラリにCSC形式のデータがあって、Juliaにインポートしたい場合は、インデックスが１から始まっているかどうかを確認してください。
+各列の行インデックスが整列されている必要があります。
+`SparseMatrixCSC`オブジェクトに整列していない行インデックスがある場合に、素早く整列するる簡単な方法の1つは、2回転置を行う方法です。
 
+
+```@raw html
+<!--
 In some applications, it is convenient to store explicit zero values in a `SparseMatrixCSC`. These
 *are* accepted by functions in `Base` (but there is no guarantee that they will be preserved in
 mutating operations). Such explicitly stored zeros are treated as structural nonzeros by many
@@ -1330,6 +1347,13 @@ values that are nonzero, use [`countnz()`](@ref), which inspects every stored el
 matrix.
 -->
 ```
+
+アプリケーションの中には、`SparseMatrixCSC`にわざわざ0の値を格納すると便利なものもあります。
+これら は`Base`にある関数で受けとることができます（しかし、それらが可変な操作で保持されるという保証はありません）。
+このようにわざわざ格納された0は、多くのルーチンによって構造的には0ではないものとして扱われます。
+この[`nnz()`](@ref)関数は、疎なデータ構造体に明示的に格納された要素の数を返しますが、その数に構造的に0でないものも含まれています。
+実際の値が０ではないものの正確な数を数えるには、 [`countnz()`](@ref)を使って、疎行列の保存された要素をすべて調べます。
+
 
 [](### Sparse matrix constructors)
 ### 疎行列のコンストラクタ
