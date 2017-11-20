@@ -1366,6 +1366,10 @@ and [`eye()`](@ref) functions that Julia provides for working with dense matrice
 sparse matrices instead, you can use the same names with an `sp` prefix:
 -->
 ```
+疎行列を作成する最も簡単な方法は、Juliaで密行列に対して利用可能な[`zeros()`](@ref)関数や[`eye()`](@ref)関数と同等の関数を使用することです。
+疎行列を代わりに生成するには、同じ名前に`sp`接頭辞を付ければ、可能です。
+
+
 
 ```jldoctest
 julia> spzeros(3,5)
@@ -1387,6 +1391,11 @@ values. `sparse(I,J,V)` constructs a sparse matrix such that `S[I[k], J[k]] = V[
 -->
 ```
 
+[`sparse()`](@ref) 関数は、疎行列を生成するのによく使われる便利な方法です。
+ベクトル`I`を行インデックス、ベクトル`J`を列インデックス、ベクトル`V`を格納された値として入力を受け取ります。
+`sparse(I,J,V)`から生成される疎行列は、`S[I[k], J[k]] = V[k]`を満たします。
+
+
 ```jldoctest sparse_function
 julia> I = [1, 4, 3, 5]; J = [4, 7, 18, 9]; V = [1, 2, -5, 3];
 
@@ -1405,6 +1414,8 @@ The inverse of the [`sparse()`](@ref) function is [`findn()`](@ref), which retri
 used to create the sparse matrix.
 -->
 ```
+[`sparse()`] (@ref)関数の逆は、[`findn()`](@ref)で、疎行列の生成に使われる入力を取得できます。
+
 
 ```jldoctest sparse_function
 julia> findn(S)
@@ -1414,13 +1425,14 @@ julia> findnz(S)
 ([1, 4, 5, 3], [4, 7, 9, 18], [1, 2, 3, -5])
 ```
 
-
 ```@raw html
 <!--
 Another way to create sparse matrices is to convert a dense matrix into a sparse matrix using
 the [`sparse()`](@ref) function:
 -->
 ```
+疎行列を生成する別の方法は、[`sparse()`](@ref)関数を使用して、密行列を疎行列に変換することです。
+
 
 ```jldoctest
 julia> sparse(eye(5))
@@ -1439,6 +1451,7 @@ You can go in the other direction using the [`full()`](@ref) function. The [`iss
 function can be used to query if a matrix is sparse.
 -->
 ```
+逆に[`full()`] (@ref)関数を使って疎行列を密行列に変換するができます。[`issparse()`](@ref)関数は、行列が疎であるかどうかを調べるために使用できます。
 
 ```jldoctest
 julia> issparse(speye(5))
