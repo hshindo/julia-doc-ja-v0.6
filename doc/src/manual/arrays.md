@@ -337,7 +337,7 @@ type explicitly, a type can be prepended to the comprehension. For example, we c
 the result in single precision by writing:
 -->
 ```
-結果の配列の型は、計算した要素の型次第です。
+結果となる配列の型は、計算する要素の型次第です。
 型を明示的に制御するために、内包表記の前に型を付けることができます。
 たとえば、次のように書いて結果を単精度とすることができます。
 
@@ -359,8 +359,8 @@ an array and storing them in advance (see [Iteration](@ref)). For example, the f
 sums a series without allocating memory:
 -->
 ```
-また、内包表記は角括弧を使わずに書くと、ジェネレータと呼ばれるオブジェクトを作成することもできます。
-このオブジェクトは、必要に応じて値を反復して生成することができ、事前に配列をメモリを割り当てて格納したりしません（[Iteration](@ref)参照）。
+また、内包表記は角括弧を使わずに書くと、ジェネレータと呼ばれるオブジェクトを作成することになります。
+このオブジェクトは、必要に応じて値を反復して生成することができ、事前に配列をメモリを割り当てて格納したりしません（[繰返し](@ref)参照）。
 たとえば、次の式は、メモリの割り当てをせずに数列の和を算出します。
 
 ```jldoctest
@@ -376,7 +376,7 @@ are needed to separate the generator from subsequent arguments:
 -->
 ```
 
-多次元のジェネレータ式を引数リスト内に書く場合、ジェネレータと後に続く引数を区切るには括弧が必要です。
+引数リストの中で多次元のジェネレータ式を書く場合、ジェネレータと後続の引数を区切るには括弧が必要です。
 
 ```julia-repl
 julia> map(tuple, 1/(i+j) for i=1:2, j=1:2, [1:4;])
