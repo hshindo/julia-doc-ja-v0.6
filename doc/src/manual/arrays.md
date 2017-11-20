@@ -172,8 +172,8 @@ arguments have a common [promotion type](@ref conversion-and-promotion) then the
 converted to that type using `convert()`.
 -->
 ```
-構文`[A, B, C, ...]`は、その引数からなる1次元配列（ベクトル）を生成します。
-すべての引数が共通の[昇格した型](@ref conversion-and-promotion)を持つ場合、これらの引数は`convert()`を使用してその型に変換されます。
+構文`[A, B, C, ...]`では、引数からなる1次元配列（ベクトル）を生成します。
+すべての引数が共通の[昇格した型](@ref conversion-and-promotion)を持つ場合、引数は`convert()`を使用してその型に変換されます。
 
 [](### Concatenation)
 ### 連結
@@ -211,7 +211,7 @@ The concatenation functions are used so often that they have special syntax:
 ```
 これらの関数に渡されるスカラー値は、1要素の配列として扱われます。
 
-連結関数はよく使用されて、特殊な構文もあります。
+連結関数はよく使用されるので、特殊構文も存在します。
 
 ```@raw html
 <!--
@@ -235,10 +235,10 @@ The concatenation functions are used so often that they have special syntax:
 [`hvcat()`](@ref) concatenates in both dimension 1 (with semicolons) and dimension 2 (with spaces).
 -->
 ```
-[`hvcat()`](@ref) は1次元方向（セミコロンを使って）と2次元方向（空白を使って）の両方向に連結します。
+[`hvcat()`](@ref) は次元１（セミコロンを使う）と次元２（空白を使う）の両方向に連結します。
 
 [](### Typed array initializers)
-### 型指定での配列の初期化
+### 型を指定した配列の初期化
 
 
 ```@raw html
@@ -252,9 +252,9 @@ result.
 -->
 ```
 
-`T[A, B, C, ...]`という構文を使って、要素の型を指定して配列を生成できます。
-これは、要素の型が`T`の1次元配列を生成して、要素が`A`, `B`, `C`などとなるように初期化します。
-例えば`Any[x, y, z]`とすると、任意の値を含むことができる型の不均質な配列を生成します。
+`T[A, B, C, ...]`という構文を使うと、要素の型を指定して配列を生成できます。
+この時、要素の型が`T`の1次元配列が生成され、要素が`A`, `B`, `C`などと初期化されます。
+例えば`Any[x, y, z]`とすると、任意の値を含むことができる型の不均質な配列が生成されます。
 
 連結構文にも同様に型の接頭辞を付けて、演算結果の要素の型を指定することができます。
 
