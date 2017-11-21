@@ -1,13 +1,27 @@
-# [Modules](@id modules)
+[](# [Modules](@id modules))
 
+# [モジュール](@id modules)
+
+```@raw html
+<!--
 Modules in Julia are separate variable workspaces, i.e. they introduce a new global scope. They
 are delimited syntactically, inside `module Name ... end`. Modules allow you to create top-level
 definitions (aka global variables) without worrying about name conflicts when your code is used
 together with somebody else's. Within a module, you can control which names from other modules
 are visible (via importing), and specify which of your names are intended to be public (via exporting).
+-->
+```
 
+Juliaにおけるモジュールは別々の変数ワークスペースです。つまり、新しいグローバルスコープを導入します。それらは構文的に`module Name ... end`の内側として区切られています。モジュールは、コードが他の誰かと一緒に使用されるときに、名前の競合を心配することなく、トップレベルの定義（別名グローバル変数）を作成することを可能にします。モジュール内では、他のモジュールのどの名前を（インポートによって）表示するかを制御したり、名前を公開することを（エクスポートを介して）指定することができます。
+
+```@raw html
+<!--
 The following example demonstrates the major features of modules. It is not meant to be run, but
 is shown for illustrative purposes:
+-->
+```
+
+次の例はモジュールの主な機能を説明しています。実行できるわけではありませんが、理解しやすくするために載せています。
 
 ```julia
 module MyModule
@@ -32,38 +46,94 @@ show(io::IO, a::MyType) = print(io, "MyType $(a.x)")
 end
 ```
 
+```@raw html
+<!--
 Note that the style is not to indent the body of the module, since that would typically lead to
 whole files being indented.
+-->
+```
 
+モジュールの中身はインデントしていないことに注意してください。これは、通常ファイル全体がインデントされるためです。
+
+```@raw html
+<!--
 This module defines a type `MyType`, and two functions. Function `foo` and type `MyType` are exported,
 and so will be available for importing into other modules.  Function `bar` is private to `MyModule`.
+-->
+```
 
+このモジュールは型`MyType`と２つの関数を定義しています。関数`foo`と型`MyType`はエクスポートされているため、他のモジュールの中にインポートすることができます。関数`bar`は`MyModule`専用です。
+
+```@raw html
+<!--
 The statement `using Lib` means that a module called `Lib` will be available for resolving names
 as needed. When a global variable is encountered that has no definition in the current module,
 the system will search for it among variables exported by `Lib` and import it if it is found there.
 This means that all uses of that global within the current module will resolve to the definition
 of that variable in `Lib`.
+-->
+```
 
+文`using Lib`が意味するのは、必要に応じて名前を解決するために`Lib`と呼ばれるモジュールを利用できるということです。現在のモジュールに定義されていないグローバル変数が見つかった場合、システムは`Lib`によってエクスポートされた変数の中から変数を検索し、そこに見つかった場合はインポートします。 つまり、現在のモジュール内のそのグローバルのすべての使用は、`Lib`内のその変数の定義に解決されます。
+
+```@raw html
+<!--
 The statement `using BigLib: thing1, thing2` is a syntactic shortcut for `using BigLib.thing1, BigLib.thing2`.
+-->
+```
 
+文`using BigLib: thing1, thing2`は`using BigLib.thing1, BigLib.thing2`の構文上の省略形です。
+
+```@raw html
+<!--
 The `import` keyword supports all the same syntax as `using`, but only operates on a single name
 at a time. It does not add modules to be searched the way `using` does. `import` also differs
 from `using` in that functions must be imported using `import` to be extended with new methods.
+-->
+```
 
+`import`キーワードは、`using`と同じ構文をサポートしますが、一度に１つの名前でしか動作しません。`using`とは違って、`import`は検索されるモジュールには追加しません。関数を新しいメソッドで拡張するために`import`を使ってインポートする必要がある点でも、 `import`は`using`とは異なります。
+
+```@raw html
+<!--
 In `MyModule` above we wanted to add a method to the standard `show` function, so we had to write
 `import Base.show`. Functions whose names are only visible via `using` cannot be extended.
+-->
+```
 
+上記の`MyModule`では、標準の`show`関数にメソッドを追加したいので、`import Base.show`と書く必要がありました。`using`を使わないと名前を参照できない関数は、拡張できませんでした。
+
+```@raw html
+<!--
 The keyword `importall` explicitly imports all names exported by the specified module, as if
 `import` were individually used on all of them.
+->
+```
 
+キーワード`importall`は指定したモジュールでエクスポートされた全ての名前を、それぞれ`import`が使われているかのように明示的にインポートします。
+
+```@raw html
+<!--
 Once a variable is made visible via `using` or `import`, a module may not create its own variable
 with the same name. Imported variables are read-only; assigning to a global variable always affects
 a variable owned by the current module, or else raises an error.
+-->
+```
 
-## Summary of module usage
+変数を`using`または`import`を通して表示すると、モジュールはその中に同じ名前の変数を作成しないことがあります。 インポートされた変数は読み取り専用です。 グローバル変数に割り当てることは、常に現在のモジュールが所有する変数に影響します。そうでない場合は、エラーが発生します。
 
+[](## Summary of module usage)
+
+## モジュールの使い方の概要
+
+```@raw html
+<!--
 To load a module, two main keywords can be used: `using` and `import`. To understand their differences,
 consider the following example:
+-->
+```
+
+モジュールを読み込むには、主に２つのキーワードが使われます。`using`と`import`です。２つの違いを理解するために、次の例を考えましょう。
 
 ```julia
 module MyModule
@@ -77,10 +147,18 @@ p() = "p"
 end
 ```
 
+```@raw html
+<!--
 In this module we export the `x` and `y` functions (with the keyword `export`), and also have
 the non-exported function `p`. There are several different ways to load the Module and its inner
 functions into the current workspace:
+-->
+```
 
+このモジュールでは、関数`x`と関数`y`は（キーワード`export`を使って）エクスポートされていて、関数`p`はエクスポートされていません。モジュールとその内部の関数を現在の作業領域に読み込むにはいくつかの方法があります。
+
+```@raw html
+<!--
 | Import Command                  | What is brought into scope                                                      | Available for method extension              |
 |:------------------------------- |:------------------------------------------------------------------------------- |:------------------------------------------- |
 | `using MyModule`                | All `export`ed names (`x` and `y`), `MyModule.x`, `MyModule.y` and `MyModule.p` | `MyModule.x`, `MyModule.y` and `MyModule.p` |
@@ -90,6 +168,18 @@ functions into the current workspace:
 | `import MyModule.x, MyModule.p` | `x` and `p`                                                                     | `x` and `p`                                 |
 | `import MyModule: x, p`         | `x` and `p`                                                                     | `x` and `p`                                 |
 | `importall MyModule`            | All `export`ed names (`x` and `y`)                                              | `x` and `y`                                 |
+-->
+```
+
+| 読み込みコマンド                        | スコープにもってこられるもの                           | メソッド拡張で利用可能なもの                           |
+| ------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `using MyModule`                | `export`された全ての名前（`x`と`y`）と`MyModule.x`, `MyModule.p` | `MyModule.x`, `MyModule.y`, `MyModule.p` |
+| `using MyModule.x, MyModule.p`  | `x`と`p`                                  |                                          |
+| `using MyModule: x, p`          | `x`と`p`                                  |                                          |
+| `import MyModule`               | `MyModule.x`, `MyModule.y`, `MyModule.p` | `MyModule.x`, `MyModule.y`, `MyModule.p` |
+| `import MyModule.x, MyModule.y` | `x`と`p`                                  | `x`と`p`                                  |
+| `import MyModule: x, p`         | `x`と`p`                                  | `x`と`p`                                  |
+| `importall MyModule`            | `export`された全ての名前（`x`と`y`）                | `x`と`y`                                  |
 
 ### Modules and files
 
