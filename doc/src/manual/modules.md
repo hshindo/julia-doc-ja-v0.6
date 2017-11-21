@@ -264,14 +264,28 @@ since this is needed in the vast majority of cases.
 
 Baseは標準ライブラリ（base/の内容）です。全てのモジュールで大抵Baseを必要とするため、全てのモジュールは暗黙的に`using Base`を含むようになっています。
 
-### Default top-level definitions and bare modules
+[](### Default top-level definitions and bare modules)
 
+### デフォルトトップレベル定義と裸モジュール
+
+```@raw html
+<!--
 In addition to `using Base`, modules also automatically contain a definition of the `eval` function,
 which evaluates expressions within the context of that module.
+-->
+```
 
+`using Base`に加えて、モジュールは自動的に`eval`関数の定義を含むようにもなっています。`eval`関数はそのモジュールの中身の表現を評価します。
+
+```@raw html
+<!--
 If these default definitions are not wanted, modules can be defined using the keyword `baremodule`
 instead (note: `Core` is still imported, as per above). In terms of `baremodule`, a standard
 `module` looks like this:
+-->
+```
+
+もし、これらのデフォルト定義が必要ない場合は、代わりにキーワード`baremodule`を使うことによってモジュールを定義することができます（注意：上記のように、この場合でも`Core`は読み込まれます）。`baremodule`では標準の`module`はこのように見えます。
 
 ```
 baremodule Mod
