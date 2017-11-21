@@ -1169,15 +1169,16 @@ basic storage-specific operations are all that have to be implemented for [`Arra
 that the rest of the array library can be implemented in a generic manner.
 -->
 ```
-`DenseArray`は、`AbstractArray`の抽象サブタイプで、メモリ内でオフセットによって正常に配置されるすべての配列を含むように意図されています。
+
+`DenseArray`は、`AbstractArray`の抽象サブタイプで、オフセットによってメモリ内に正常に配置されるすべての配列を含むように意図されています。
 そのため、このメモリレイアウトを想定している、外部のCやFortran関数に渡すことができます。
 サブタイプは、`k`次元の「ストライド」を返す[`stride(A,k)`](@ref)をメソッドが利用可能でなければなりません。
 k次元のインデックスを1増やすと、[`getindex(A,i)`](@ref) によるインデックス`i`が [`stride(A,k)`](@ref)増えます。
-ポインタを変換する[`Base.unsafe_convert(Ptr{T}, A)`](@ref)が利用可能な場合、メモリレイアウトはこれらのストライドと同様の対応をする必要があります。
+ポインタを変換するメソッドの[`Base.unsafe_convert(Ptr{T}, A)`](@ref)が利用可能な場合、メモリレイアウトはこれらのストライドと同様の対応をする必要があります。
 
-この[`Array`](@ref) 型は、要素が列による順序で格納されている`DenseArray`の特定のインスタンスです（[パフォーマンスヒント]（@ ref man-performance-tips）の付随的な注記を参照してください）。
-`Vector`と`Matrix`は1次元と2次元の場合の別名です。
-スカラインデックスによる参照、代入、その他いくつかの基本的なストレージ固有の操作などは、すべて[`Array`](@ref)に対して実装する必要があります。そのおかげで、残りの配列ライブラリは汎化的な方法で実装することができます。
+[`Array`](@ref) 型は、要素が列による順序で格納されている`DenseArray`の特定のインスタンスです（[パフォーマンスヒント]（@ ref man-performance-tips）の付随的な注記を参照してください）。
+`Vector`と`Matrix`は次元が1の場合と2の場合の別名です。
+スカラインデックスによる参照、代入、その他いくつかの基本的なストレージ固有の操作などは、すべて[`Array`](@ref)に対して実装する必要があります。そうすると、残りの配列ライブラリは汎化的な方法で実装することができます。
 
 
 
@@ -1193,11 +1194,11 @@ block of code, any `array[...]` slice in that expression will be converted to
 create a `SubArray` view instead.
 -->
 ```
-`SubArray`は`AbstractArray`の特化したもので、参照をコピーではなくインデックスによって実行します。
-`SubArray`は [`view()`](@ref) 関数と一緒に作成され、[`getindex()`](@ref)（配列と一連のインデックス引数を使用）と同じように呼び出されます。
-[`view()`](@ref) の結果は、 [`view()`](@ref)　の結果とほぼ同じですが、データがそのまま残っている点が違います。
-[`view()`](@ref)は`SubArray`オブジェクトの入力インデックスベクトルを格納し、元の配列を間接的にインデックス参照するために利用できます。
-式やブロックのコードの前に[`@views`](@ref)マクロを置くと、その式の`array[...]`スライスが変換されて、`SubArray`ビューが代わりに作成されます。
+`SubArray`は`AbstractArray`の特化したもので、参照はコピーではなくインデックスによって実行します。
+`SubArray`は [`view()`](@ref) 関数と一緒に生成され、[`getindex()`](@ref)（配列とインデックス引数の列を使用）と同じように呼び出されます。
+[`view()`](@ref) の結果は、 [`getindex()`](@ref)　の結果同じようにみえますが、データがそのまま残されている点が違います。
+[`view()`](@ref)は`SubArray`オブジェクトの入力用のインデックスベクトルを格納していて、もとの配列を間接的にインデックス参照することができます。
+[`@views`](@ref)マクロを、式やブロックのコードの前に置くと、その式の任意の`array[...]`スライスが変換されて、`SubArray`ビューが代わりに作成されます。
 
 
 ```@raw html
