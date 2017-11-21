@@ -861,7 +861,7 @@ julia> x[mask]
 The recommended ways to iterate over a whole array are
 -->
 ```
-配列全体に対して繰返し処理を行う推奨方法は次のとおりです。
+配列全体に対して繰返し処理を行う場合の推奨方法は次のとおりです。
 
 ```julia
 for a in A
@@ -881,8 +881,8 @@ construct, `i` will be an `Int` if `A` is an array type with fast linear indexin
 it will be a `CartesianIndex`:
 -->
 ```
-1番目の例は、各要素の値ではなくインデックスを必要とするときに使用されます。
-2番目の例で、`A`が高速リニアインデックスを持つ配列型の時、`i`は、`Int`型 です。
+1番目の例は、各要素の値が必要で、インデックスは必要ないときに使われます。
+2番目の例で、`A`が高速線形インデックスを持つ配列型の時、`i`は、`Int`型 になります。
 それ以外の場合は、`CartesianIndex`になります。
 
 
