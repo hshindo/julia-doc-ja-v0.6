@@ -148,7 +148,7 @@ a = Float64[] # typeof(a) = Array{Float64,1}
 
 which will create a contiguous block of 64-bit floating-point values that can be manipulated efficiently.
 
-See also the discussion under [Parametric Types](@ref).
+See also the discussion under [パラメトリック型](@ref).
 
 ## Type declarations
 
@@ -678,7 +678,7 @@ slow.
 Now, one very good way to solve such problems is by using the [function-barrier technique](@ref kernal-functions).
 However, in some cases you might want to eliminate the type-instability altogether.  In such cases,
 one approach is to pass the dimensionality as a parameter, for example through `Val{T}` (see
-["Value types"](@ref)):
+["値型"](@ref)):
 
 ```jldoctest
 julia> function array3(fillval, ::Type{Val{N}}) where N

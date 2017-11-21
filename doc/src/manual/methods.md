@@ -52,7 +52,7 @@ have many methods defining their behavior over various possible combinations of 
 and count.
 
 When defining a function, one can optionally constrain the types of parameters it is applicable
-to, using the `::` type-assertion operator, introduced in the section on [Composite Types](@ref):
+to, using the `::` type-assertion operator, introduced in the section on [複合型](@ref):
 
 ```jldoctest fofxy
 julia> f(x::Float64, y::Float64) = 2x + y
@@ -310,7 +310,7 @@ false
 ```
 
 Such definitions correspond to methods whose type signatures are `UnionAll` types
-(see [UnionAll Types](@ref)).
+(see [全合併型](@ref)).
 
 This kind of definition of function behavior by dispatch is quite common -- idiomatic, even --
 in Julia. Method type parameters are not restricted to being used as the types of arguments:
@@ -362,7 +362,7 @@ julia> mytypeof(1.0)
 Float64
 ```
 
-Just as you can put subtype constraints on type parameters in type declarations (see [Parametric Types](@ref)),
+Just as you can put subtype constraints on type parameters in type declarations (see [パラメトリック型](@ref)),
 you can also constrain type parameters of methods:
 
 ```jldoctest
@@ -398,7 +398,7 @@ The `same_type_numeric` function behaves much like the `same_type` function defi
 is only defined for pairs of numbers.
 
 Parametric methods allow the same syntax as `where` expressions used to write types
-(see [UnionAll Types](@ref)).
+(see [全合併型](@ref)).
 If there is only a single parameter, the enclosing curly braces (in `where {T}`) can be omitted,
 but are often preferred for clarity.
 Multiple parameters can be separated with commas, e.g. `where {T, S<:Real}`, or written using

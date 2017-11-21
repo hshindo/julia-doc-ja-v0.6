@@ -12,7 +12,7 @@
   * [関数](@ref man-functions)
   * [制御構造](@ref)
   * [変数のスコープ](@ref scope-of-variables)
-  * [Types](@ref man-types)
+  * [型](@ref man-types)
   * [メソッド](@ref)
   * [Constructors](@ref man-constructors)
   * [Conversion and Promotion](@ref conversion-and-promotion)
