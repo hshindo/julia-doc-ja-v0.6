@@ -1021,8 +1021,8 @@ be to replicate the vector to the size of the matrix:
 -->
 ```
 
-行列の各列に対してベクトルとの足し算を行うなど、サイズの異なる配列に対して要素ごとに二項演算を実行すると便利なことがあります。
-これを行う非効率的な方法として、ベクトルを行列のサイズに複製するというのがあります。
+サイズの異なる配列に対して要素ごとに二項演算を実行すると便利なことがあります。ベクトルを行列の各列に対して足すときなどです。
+ベクトルを複製して行列のサイズにするというのが、非効率的な方法のひとつでしょう。
 
 
 
@@ -1043,8 +1043,8 @@ singleton dimensions in array arguments to match the corresponding dimension in 
 without using extra memory, and applies the given function elementwise:
 -->
 ```
-これは、次元が大きくなると浪費が激しくなるので、Juliaには[`broadcast()`](@ref)が用意されています。
-これは、配列引数のシングルトンの次元を、他の配列の対応する次元に合わせて、余分なメモリを使用せずに展開し、指定された関数を要素ごとに適用します。
+この方法は、次元が大きくなると浪費が激しくなるので、Juliaには[`broadcast()`](@ref)が用意されています。
+これは、配列引数の一枚札の次元を、他の配列の対応する次元に合わせて、余分なメモリを使用せずに展開し、指定された関数を要素ごとに適用します。
 
 
 
@@ -1082,8 +1082,8 @@ it also handles tuples and treats any argument that is not an array, tuple or `R
 ```
  `.+`や`.*`のような[ドット化した演算子]（@ ref man-dot-operators）は`broadcast` の呼び出しと同等です（以下で説明するように、融合する場合は除きます）。
  また [`broadcast!()`](@ref) は、（`.=`による融合した代入によるアクセスも含む）明示的に対象を指定する関数で、
- [`broadcast_getindex()`](@ref) と[`broadcast_setindex!()`](@ref)はブロードキャストしたインデックスを参照・代入する関数です。
- さらに、 `f.(args...)`は `broadcast(f, args...)`と同等で、任意の関数をブロードキャストする([ドット構文](@ref man-vectorized))が使えます。
+ [`broadcast_getindex()`](@ref) と[`broadcast_setindex!()`](@ref)は参照や代入の前にインデックスをブロードキャストする関数です。
+ さらに、 `f.(args...)`は `broadcast(f, args...)`と同等で、任意の関数をブロードキャストする便利な([ドット構文](@ref man-vectorized))が使えます。
  ネストした「ドット呼び出し」`f.(...)`（ `.+`などの呼び出しも含む）は単一の`broadcast`呼び出しに[自動的に融合されます](@ref man-dot-operators)。
 
 さらに、[`broadcast()`](@ref)は配列に限定されたものではなく（関数のドキュメントを参照）、タプルに対して処理を行い、配列ではない、タプルや`Ref`（`Ptr`を除く）をスカラーとして引数にとることができます。
