@@ -383,24 +383,58 @@ Alternatively, the module load path can be extended by defining the environment 
 
 この文を`~/.juliarc.jl`ファイルに入れると、Juliaの起動時に毎回[`LOAD_PATH`](@ref)が拡張されます。 この他に、環境変数`JULIA_LOAD_PATH`を定義してモジュールの読み込みパスを拡張することもできます。
 
-### Namespace miscellanea
+[](### Namespace miscellanea)
 
+### 名前空間雑録
+
+```@raw html
+<!--
 If a name is qualified (e.g. `Base.sin`), then it can be accessed even if it is not exported.
 This is often useful when debugging. It can also have methods added to it by using the qualified
 name as the function name. However, due to syntactic ambiguities that arise, if you wish to add
 methods to a function in a different module whose name contains only symbols, such as an operator,
 `Base.+` for example, you must use `Base.:+` to refer to it. If the operator is more than one
 character in length you must surround it in brackets, such as: `Base.:(==)`.
+-->
+```
 
+名前が修飾されている場合（例えば`Base.sin`など）、エクスポートされていなくてもアクセスできます。
+これは、デバッグ時に便利です。 また、修飾名を関数名として使用してメソッドを追加することもできます。
+しかし、構文上の曖昧さが原因で、名前にシンボルのみが含まれている
+別のモジュール（たとえば、`Base.+`など）の関数にメソッドを追加する場合は、
+`Base.:+`を使用して参照する必要があります。
+演算子が２文字以上からなる場合、`Base.:(==)`のように括弧で囲む必要があります。
+
+```@raw html
+<!--
 Macro names are written with `@` in import and export statements, e.g. `import Mod.@mac`. Macros
 in other modules can be invoked as `Mod.@mac` or `@Mod.mac`.
+-->
+```
 
+マクロ名は、インポート文およびエクスポート文中では`import Mod.@mac`のように`@`を付けて書かれます。
+他のモジュールのマクロは、`Mod.@mac`または`@Mod.mac`として呼び出すことができます。
+
+```@raw html
+<!--
 The syntax `M.x = y` does not work to assign a global in another module; global assignment is
 always module-local.
+-->
+```
 
+構文`M.x = y`は、別のモジュールでグローバルを割り当てるのには機能しません。
+グローバル割り当ては常にモジュールローカルです。
+
+```@raw html
+<!--
 A variable can be "reserved" for the current module without assigning to it by declaring it as
 `global x` at the top level. This can be used to prevent name conflicts for globals initialized
 after load time.
+-->
+```
+
+変数名はトップレベルで`global x`と宣言して割り当てずに、現在のモジュールで「予約」することができます。
+これにより、読み込み時間に初期化されたグローバル変数の名前の競合を防止することができます。
 
 ### Module initialization and precompilation
 
