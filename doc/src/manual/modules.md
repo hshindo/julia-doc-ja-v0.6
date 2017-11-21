@@ -357,17 +357,31 @@ Note that relative-import qualifiers are only valid in `using` and `import` stat
 
 相対インポート修飾子は、`using`文と`import`文でのみ有効であることに注意してください。
 
-### Module file paths
+[](### Module file paths)
 
+### モジュールファイルパス
+
+```@raw html
+<!--
 The global variable [`LOAD_PATH`](@ref) contains the directories Julia searches for modules when calling
 `require`. It can be extended using [`push!`](@ref):
+-->
+```
+
+グローバル変数[`LOAD_PATH`](@ref)には、`require`を呼び出したときにJuliaがモジュールを検索するディレクトリが含まれています。この変数は[`push!`](@ref)を使って拡張できます。
 
 ```julia
 push!(LOAD_PATH, "/Path/To/My/Module/")
 ```
 
+```@raw html
+<!--
 Putting this statement in the file `~/.juliarc.jl` will extend [`LOAD_PATH`](@ref) on every Julia startup.
 Alternatively, the module load path can be extended by defining the environment variable `JULIA_LOAD_PATH`.
+-->
+```
+
+この文を`~/.juliarc.jl`ファイルに入れると、Juliaの起動時に毎回[`LOAD_PATH`](@ref)が拡張されます。 この他に、環境変数`JULIA_LOAD_PATH`を定義してモジュールの読み込みパスを拡張することもできます。
 
 ### Namespace miscellanea
 
