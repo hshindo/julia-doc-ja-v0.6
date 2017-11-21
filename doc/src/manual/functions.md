@@ -720,7 +720,7 @@ call will fail, just as it would if too many arguments were given explicitly.
 
 
 [](## Optional Arguments)
-## 省略可能引数
+## オプション引数
 
 ```@raw html
 <!-
@@ -776,8 +776,8 @@ with different numbers of arguments (see [Note on Optional and keyword Arguments
 -->
 ```
 
-省略可能な引数は、実際には、引数の個数の違う複数のメソッドの定義を書くための便利な構文なのです。
-( [省略可能引数とキーワード引数の注意点](@ref) を参照).
+オプション引数は、実際には、引数の個数の違う複数のメソッドの定義を書くための便利な構文なのです。
+( [オプション引数とキーワード引数の注意点](@ref) を参照).
 
 
 [](## Keyword Arguments)
@@ -933,8 +933,8 @@ contrast, *all* the arguments are in scope when keyword arguments default expres
 For example, given this definition:
 -->
 ```
-省略可能引数とキーワード引数は式のデフォルト値が評価される方法が少し違います。
-省略可能引数のデフォルトの式が評価される際、スコープに存在するのは、既に評価された引数だけです。
+オプション引数とキーワード引数は式のデフォルト値が評価される方法が少し違います。
+オプション引数のデフォルトの式が評価される際、スコープに存在するのは、既に評価された引数だけです。
 一方、キーワード引数が評価される際には、すべての引数のデフォルトの式がスコープ内に存在します。
 次式のような定義を例に挙げます。
 
