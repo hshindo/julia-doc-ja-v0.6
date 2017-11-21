@@ -13,7 +13,7 @@ differences, these operations all fall under the general concept of "addition". 
 Julia, these behaviors all belong to a single object: the `+` function.
 -->
 ```
-[関数]（@ ref man-functions）の章を思い出してください。関数とは、引数のタプルを受け取り、戻り値を返す、または適切な値が返せない場合は例外を投げる、オブジェクトです。
+[関数](@ref man-functions)の章を思い出してください。関数とは、引数のタプルを受け取り、戻り値を返す、または適切な値が返せない場合は例外を投げる、オブジェクトです。
 概念的には等しい関数や演算が、引数の型によって実装がまったく異なる、ということはよくあります。
 2つの整数を足すことと、2つの浮動小数点数を足すことは、全く異なるし、整数に浮動小数点数を足すこととも異なります。
 実装が違っていても、これらの操作はすべて、一般的な概念の「足し算」に当てはまります。
