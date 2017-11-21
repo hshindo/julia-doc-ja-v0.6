@@ -921,7 +921,7 @@ iterate over any array type.
 If you write a custom [`AbstractArray`](@ref) type, you can specify that it has fast linear indexing using
 -->
 ```
-独自の[`AbstractArray`](@ref)型を記述する場合は、以下のように高速リニアインデックスを使って指定できます。
+独自の[`AbstractArray`](@ref)型を記述する場合に、以下のように高速線形インデックスを使うように指定できます。
 
 ```julia
 Base.IndexStyle(::Type{<:MyArray}) = IndexLinear()
