@@ -1,4 +1,6 @@
-# Packages
+[](# Packages)
+
+# パッケージ
 
 Julia has a built-in package manager for installing add-on functionality written in Julia. It
 can also install external libraries using your operating system's standard system for doing so,
