@@ -300,16 +300,30 @@ eval(m,x) = Core.eval(m, x)
 end
 ```
 
-### Relative and absolute module paths
+[](### Relative and absolute module paths)
 
+### 相対モジュールパスと絶対モジュールパス
+
+```@raw html
+<!--
 Given the statement `using Foo`, the system looks for `Foo` within `Main`. If the module does
 not exist, the system attempts to `require("Foo")`, which typically results in loading code from
 an installed package.
+-->
+```
 
+`using Foo`という文が与えられると、システムはトップレベルモジュールの内部テーブルを参照して`Foo`という名前のテーブルを探します。 モジュールが存在しない場合、システムは`require(:Foo)`を試みます。これは通常、インストールされたパッケージからコードをロードします。
+
+```@raw html
+<!--
 However, some modules contain submodules, which means you sometimes need to access a module that
 is not directly available in `Main`. There are two ways to do this. The first is to use an absolute
 path, for example `using Base.Sort`. The second is to use a relative path, which makes it easier
 to import submodules of the current module or any of its enclosing modules:
+-->
+```
+
+ただし、一部のモジュールにはサブモジュールが含まれているため、トップレベルではないモジュールにアクセスする必要があることがあります。 これを行うには２つの方法があります。 １つ目は、絶対パスを使用することです（例えば`using Base.Sort`など）。２つ目は相対パスを使用することです。相対パスを使用することにより、現在のモジュールのサブモジュールやサブモジュールを含んでいる任意のモジュールを簡単にインポートできます。
 
 ```
 module Parent
@@ -324,12 +338,24 @@ using .Utils
 end
 ```
 
+```@raw html
+<!--
 Here module `Parent` contains a submodule `Utils`, and code in `Parent` wants the contents of
 `Utils` to be visible. This is done by starting the `using` path with a period. Adding more leading
 periods moves up additional levels in the module hierarchy. For example `using ..Utils` would
 look for `Utils` in `Parent`'s enclosing module rather than in `Parent` itself.
+-->
+```
 
+ここで、モジュール`Parent`はサブモジュール`Utils`を含み、`Parent`中のコードは`Utils`の中身を参照したいとします。これは`using`のパスをピリオド付きで始めることで成されます。もう１つピリオドを加えると、モジュール階層のもう１段階上のレベルに移動します。例えば、`using ..Utils`とすると、`Parent`自体ではなく、`Parent`を囲むモジュールで`Utils`を探します。
+
+```@raw html
+<!--
 Note that relative-import qualifiers are only valid in `using` and `import` statements.
+-->
+```
+
+相対インポート修飾子は、`using`文と`import`文でのみ有効であることに注意してください。
 
 ### Module file paths
 
