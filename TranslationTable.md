@@ -49,7 +49,7 @@
 | type promotion and conversion mechanism         | 型プロモーションと変換機構                       
 | significand                                     | 仮数                                     
 | Numeric Literal Coefficients                    | 数値リテラル係数                             
-| promotion system                                | プロモーションシステム                              
+| promotion system                                | プロモーションシステム,昇格システム                     
 | operand                                         | 被演算子                                 
 | binary operator                                 | 二項演算子                               
 | primitive numeric type / numeric primitive type | 数値プリミティブ型                             
@@ -66,7 +66,7 @@
 | assignment form                                 | 代入形式、代入方式                       
 | anonymous function                              | 無名関数                                 
 | tuple                                           | タプル                                      
-| tuple “destructuring”       　                  | タプル「構造解除」、タプルの「分割」                
+| tuple “destructuring”                         | タプル「構造解除」、タプルの「分割」                
 | varargs,variable argument                       | 可変引数                                 
 | Parametrically-constrained Varargs methods      | パラメトリック制約付き可変引数メソッド               
 | Performance Tip                                 | パフォーマンスに関するヒント                          
@@ -80,7 +80,7 @@
 | scope rule                                      | スコープ規則                                 
 | region of code                                  | スコープの範囲                                
 | lexical scope                                   | レキシカルスコープ                                
-| comprehension                                   | コンプリヘンション 、内包表記                              
+| comprehension                                   | コンプリヘンション 、内包表記                     
 | static type system                              | 静的型付け                                
 | dynamic type system                             | 動的型付け                                
 | polymorphism                                    | ポリモーフィズム                                 
@@ -90,15 +90,15 @@
 | singleton                                       | 単体                                     
 | parametric type                                 | パラメータ型                                  
 | composite                                       | コンポジット                                   
-| generic programming                             | 汎用プログラミング                              
+| generic programming                             | 汎用プログラミング、汎化プログラミング                 
 | parametric polymorphism                         | パラメトリック多様型                            
 | Singleton Types                                 | シングルトン型                                 
 | signature                                       | 特徴                                     
-| catch-all                                       | 包括的な                                  
+| catch-all                                       | 包括的な、全捕捉                          
 | core operations                                 | コアオペレーション                                
 | functor                                         | functor                                  
-| outer constructor methods                       | アウターコンストラクタメソッド                          
-| inner constructor methods                       | インナーコンストラクタメソッド                          
+| outer constructor methods                       | アウターコンストラクタメソッド、外部コンストラクタメソッド         
+| inner constructor methods                       | インナーコンストラクタメソッド 、内部コンストラクタメソッド        
 | conversion and promotion                        | 変換とプロモーション                             
 | lossless conversion                             | 可逆変換                                 
 | interface                                       | インタフェース                                  
@@ -107,7 +107,7 @@
 | fenced code block                               | 分離コードブロック                              
 | Markdown                                        | マークダウン                                   
 | interned string                                 | intern文字列                             
-| prefix notation                                 | プレフィックス表記法                            
+| prefix notation                                 | プレフィックス表記法、前置記法                  
 | build step                                      | ビルド工程                                  
 | preprocessor                                    | プレプロセッサ                                  
 | quoted expression                               | 引用式                                   
@@ -119,12 +119,12 @@
 | pass-by-sharing                                 | 共有渡し                                  
 | compound expression                             | 複合式                                   
 | control flow                                    | 制御構造                                 
-| generic function                                | 総称関数                                 
+| generic function                                | 総称関数、汎化関数                       
 | type annotation                                 | 型注釈                                   
 | argument                                        | 引数                                     
 | return value                                    | 戻り値                                    
 | evaluation semantics                            | 評価戦略                                 
-| Optional Arguments                              | 省略可能引数                             
+| Optional Arguments                              | オプション引数                                
 | Conditional Evaluation                          | 条件評価                                 
 | Task                                            | タスク                                      
 | Channel                                         | チャネル                                     
@@ -138,15 +138,15 @@
 | pick up right where you left off                | 中断したところから再開する                        
 | lifetime                                        | 存続期間、寿命                           
 | blocking operations                             | 他を中断させる操作                           
-| `(;)` chain syntax                              | セミコロン(;)連鎖構文                         
-| `begin` blocks                                  | beginブロック                                
+| (;)?chain syntax                                | セミコロン(;)連鎖構文                         
+| begin?blocks                                    | beginブロック                                
 | unintuitive                                     | 直観に反する                                
 | precedence                                      | 優先順位                                 
 | associativity                                   | 結合性                                   
 | contrived                                       | 不自然な                                  
 | cartesian product                               | 直積                                     
 | symmetric coroutines                            | 対称コルーチン                                
-| lightweight　threads                            | 軽量スレッド                                 
+| lightweight　threads                             | 軽量スレッド                                 
 | cooperative multitasking                        | 協調的マルチタスク                             
 | one-shot continuations                          | ワンショット継続                               
 | first-in first-out                              | 先入先出                                 
@@ -166,3 +166,53 @@
 | namespace                                       | 名前空間                                 
 | closures                                        | クロージャ                                    
 | iteration                                       | 繰返し                                    
+| Abstract Type                                   | 抽象型                                   
+| Primitive Types                                 | 原始型                                   
+| Composite Types                                 | 複合型                                   
+| Type Unions                                     | 合併型                                   
+| Type Aliases                                    | 型の別名                                  
+| Value types                                     | 値型                                     
+| Nullable Types                                  | null許容型                               
+| concrete type                                   | 具象型                                   
+| Declared Types                                  | 宣言型                                   
+| umbrella type                                   | 包括型                                   
+| Missing Values                                  | 欠損値                                   
+| type assertion                                  | 型表明                                   
+| assertion                                       | 表明                                     
+| nominative                                      | 公称的                                   
+| gotchas                                         | 落とし穴                                   
+| attached                                        | （宣言・表明を）差し込む                     
+| type graph                                      | 型のグラフ                                   
+| plain old                                       | 普通の                                    
+| bags of                                         | たくさんの                                    
+| go hand in hand                                 | 伴う,                                     
+| sidestep                                        | 避ける                                     
+| immediate values                                | 即値、リテラル                               
+| worth noting                                    | 注目に値する                                
+| recap                                           | まとめ                                      
+| unambiguous                                     | 曖昧さがない、明確な                          
+| exploit                                         | 利用する                                   
+| unobtrusive                                     | 目立たない                                  
+| final                                           | ファイナル                                    
+| fall under                                      | 当てはまる                                   
+| cascade                                         | 多段的に                                  
+| fallback                                        | フォールバック、補助的な、二次的な                
+| exported                                        | 公開した                                   
+| specific                                        | 特化した                                   
+| innocuous                                       | 無害の、問題ない                            
+| lowest term                                     | 既約分数                                 
+| lossless                                        | 可逆                                     
+| take a crack at                                 | 試みる                                     
+| to name a few                                   | 少し例を挙げると                              
+| interoperate                                    | 共用する、いっしょに使える、相互運用性がある         
+| tolerance                                       | 許容誤差                                 
+| not　strictly necessary                          | 必須ではない、必ずしも必要ない                    
+| building block                                  | 構成要素                                 
+| dedicated                                       | 専用の                                    
+| informal interface                              | 仮に実装されたインターフェース                       
+| indexing                                        | インデックスによる参照                            
+| indexed assignment                              | インデックスによる代入                            
+| accommodate                                     | 対応する                                   
+| incremental precompile                          | 逐次プリコンパイル                              
+| top-level definitions                           | 最上位の定義                              
+| name conflict                                   | 名前の競合                                
