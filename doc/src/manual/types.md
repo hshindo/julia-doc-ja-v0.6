@@ -1761,7 +1761,7 @@ ones) whose behavior depends on a type that is given as an explicit argument rat
 by the type of one of its arguments.
 -->
 ```
-[Parametric Methods](@ref)と[変換](@ref conversion-and-promotion)の議論がすむまで、
+[パラメトリックメソッド](@ref)と[変換](@ref conversion-and-promotion)の議論がすむまで、
 シングルトン型がどう役に立つのかを説明するのは難しいですが、手短にいうと、関数の挙動を特定の型の**値**だけに特化することができるのです。
 これが役に立つのは、挙動が型に依存する（特にパラメトリックな）メソッドを書く時で、
 しかもその型が勝手に推測されるのではなく、わざわざ引数として与える場合です。
