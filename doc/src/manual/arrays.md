@@ -1084,9 +1084,9 @@ it also handles tuples and treats any argument that is not an array, tuple or `R
  また [`broadcast!()`](@ref) は、（`.=`による融合した代入によるアクセスも含む）明示的に対象を指定する関数で、
  [`broadcast_getindex()`](@ref) と[`broadcast_setindex!()`](@ref)は参照や代入の前にインデックスをブロードキャストする関数です。
  さらに、 `f.(args...)`は `broadcast(f, args...)`と同等で、任意の関数をブロードキャストする便利な([ドット構文](@ref man-vectorized))が使えます。
- ネストした「ドット呼び出し」`f.(...)`（ `.+`などの呼び出しも含む）は単一の`broadcast`呼び出しに[自動的に融合されます](@ref man-dot-operators)。
+ 「ドット呼び出し」`f.(...)`（ `.+`などの呼び出しも含む）をネストすると、単一の`broadcast`呼び出しに[自動的に融合されます](@ref man-dot-operators)。
 
-さらに、[`broadcast()`](@ref)は配列に限定されたものではなく（関数のドキュメントを参照）、タプルに対して処理を行い、配列ではない、タプルや`Ref`（`Ptr`を除く）をスカラーとして引数にとることができます。
+さらに、[`broadcast()`](@ref)は配列に限定されたものではなく（関数のドキュメントを参照）、タプルも対象で、配列ではない、タプルや`Ref`（`Ptr`を除く）をスカラーとして引数にとることができます。
 
 
 
@@ -1122,11 +1122,11 @@ generally work correctly as a fallback for any specific array implementation.
 -->
 ```
 
-Juliaの基本となる配列の型は抽象型`AbstractArray{T,N}`です。
-次元の数`N`と要素の型`T`によってパラメータ化されています。
-`AbstctVector`と`AbstractMatrix`は、1次元と2次元の場合の別名です。
-`AbstractArray`オブジェクトに対する操作は、基礎となるストレージとは独立した方法で、高水準の演算子と関数を使用して定義されます。
-これらの操作は、通常、配列にそれぞれ特定の実装に対して補助的に正常に機能します。
+Juliaの基本となる配列の型は抽象型の`AbstractArray{T,N}`です。
+次元の数`N`と要素の型`T`をパラメータにとります。
+`AbstctVector`と`AbstractMatrix`は、次元が1の場合と2の場合の別名です。
+`AbstractArray`オブジェクトに対する操作は、格納先とは無関係に、高水準の演算子と関数を使用して定義されます。
+これらの操作は、通常、どのような配列の実装に対しても、補助を行い、正常に機能します。
 
 ```@raw html
 <!--
@@ -1143,14 +1143,14 @@ object returned by *integer* indexing (`A[1, ..., 1]`, when `A` is not empty) an
 the length of the tuple returned by [`size()`](@ref).
 -->
 ```
-`AbstractArray`型には漠然とした配列のようなものも含まれ、それの実装は、従来の配列に対するものとは全く異なるかもしれません。
-例えば、要素は格納せずに要求に応じて計算するかもしれません。
-しかし、`AbstractArray{T,N}`の具象型は、少なくとも [`size(A)`](@ref) (`Int`のタプルを返す), [`getindex(A,i)`](@ref) ,[`getindex(A,i1,...,iN)`]（@ ref getindex）を実装する必要があります。
+`AbstractArray`型には漠然とした配列のようなものも含まれ、実装は、従来の配列とは全く異なるかもしれません。
+例えば、要素は格納せずに要求に応じて算出するかもしれません。
+しかし、`AbstractArray{T,N}`の具象型は通常、少なくとも [`size(A)`](@ref) (`Int`のタプルを返す), [`getindex(A,i)`](@ref) ,[`getindex(A,i1,...,iN)`]（@ ref getindex）を実装する必要があります。
 可変な配列は [`setindex!()`](@ref)も実装する必要があります。
 これらの操作は、時間的な複雑さがほぼ一定で、技術的に言うとÕ(1)の複雑性であることが推奨されます。
-そうでなければ、一部の配列関数が想定より遅くなる可能性があります。
-また、具象型は、通常、[`similar(A,T=eltype(A),dims=size(A))`](@ref) という同様の配列をメモリに割り当てるするメソッドを利用可能にする必要があり、これは[`copy()`](@ref)など多くのメモリを必要とする作業に使われます。
-`AbstractArray{T,N}`の内部的な表現がどうであれ、`T`は整数インデックスによる参照によって返されるオブジェクト（`A`が空でない場合は`A[1, ..., 1]`）の型で、`N`は[`size()`](@ref) によって返されるタプルの長さである必要があります。
+そうでなければ、一部の配列関数が想定以上に遅くなる可能性があります。
+また、具象型は、通常、[`similar(A,T=eltype(A),dims=size(A))`](@ref) という似た配列をメモリに割り当てるメソッドが使える必要があり、これは[`copy()`](@ref)など多くのメモリを必要とする作業に利用します。
+`AbstractArray{T,N}`の内部的な表現がどうであれ、`T`は**整数**インデックスによる参照によって返されるオブジェクト（`A`が空でない場合は`A[1, ..., 1]`）の型で、`N`は[`size()`](@ref) によって返されるタプルの長さである必要があります。
 
 ```@raw html
 <!--
@@ -1169,7 +1169,7 @@ basic storage-specific operations are all that have to be implemented for [`Arra
 that the rest of the array library can be implemented in a generic manner.
 -->
 ```
-`DenseArray`は、`AbstractArray`の抽象サブタイプで、メモリ内でオフセットによって通常に配置されるすべての配列を含むように意図されています。
+`DenseArray`は、`AbstractArray`の抽象サブタイプで、メモリ内でオフセットによって正常に配置されるすべての配列を含むように意図されています。
 そのため、このメモリレイアウトを想定している、外部のCやFortran関数に渡すことができます。
 サブタイプは、`k`次元の「ストライド」を返す[`stride(A,k)`](@ref)をメソッドが利用可能でなければなりません。
 k次元のインデックスを1増やすと、[`getindex(A,i)`](@ref) によるインデックス`i`が [`stride(A,k)`](@ref)増えます。
