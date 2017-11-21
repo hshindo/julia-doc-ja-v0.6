@@ -181,10 +181,18 @@ functions into the current workspace:
 | `import MyModule: x, p`         | `x`と`p`                                  | `x`と`p`                                  |
 | `importall MyModule`            | `export`された全ての名前（`x`と`y`）                | `x`と`y`                                  |
 
-### Modules and files
+[](### Modules and files)
 
+### モジュールとファイル
+
+```@raw html
+<!--
 Files and file names are mostly unrelated to modules; modules are associated only with module
 expressions. One can have multiple files per module, and multiple modules per file:
+-->
+```
+
+ファイルとファイル名はモジュールとはほとんど関係がありません。モジュールはモジュールの表現とだけ関連付けられます。１つのモジュールが複数のファイルに分かれていても良いし、１つのファイルに複数のモジュールが含まれていてもよいです。
 
 ```julia
 module Foo
@@ -195,9 +203,15 @@ include("file2.jl")
 end
 ```
 
+```@raw html
+<!--
 Including the same code in different modules provides mixin-like behavior. One could use this
 to run the same code with different base definitions, for example testing code by running it with
 "safe" versions of some operators:
+-->
+```
+
+同じコードを別のモジュールに含めると、mixinのような動作をさせることができます。これを使って異なるベース定義を持つ同じコードを走らせることができます。例えば、ある演算子の「安全な」バージョンでコードをテストすることができます。
 
 ```julia
 module Normal
