@@ -921,7 +921,7 @@ iterate over any array type.
 If you write a custom [`AbstractArray`](@ref) type, you can specify that it has fast linear indexing using
 -->
 ```
-独自の[`AbstractArray`](@ref)型を記述する場合に、以下のように高速線形インデックスを使うように指定できます。
+独自の[`AbstractArray`](@ref)型を記述する場合は、以下のように高速線形インデックスを使うように指定できます。
 
 ```julia
 Base.IndexStyle(::Type{<:MyArray}) = IndexLinear()
@@ -935,7 +935,7 @@ specify this trait, the default value `IndexCartesian()` is used.
 -->
 ```
 この設定では`eachindex`が`MyArray`にたいして行う繰返し処理には整数が使われます。
-このトレイトを指定しない場合、デフォルトでは`IndexCartesian()`が使われます。
+このトレイトを指定しない場合は、デフォルトでは`IndexCartesian()`が使われます。
 
 [](### Array and Vectorized Operators and Functions)
 ### 配列とベクトル化演算子・関数
@@ -946,7 +946,7 @@ specify this trait, the default value `IndexCartesian()` is used.
 The following operators are supported for arrays:
 -->
 ```
-配列では以下の演算子が利用可能です。
+配列には以下の演算子が利用可能です。
 
 
 ```@raw html
@@ -978,10 +978,10 @@ scalars (a [Broadcasting](@ref) operation); these have the additional advantage 
 
 上記の二項算術演算子の殆どは、引数の一方がスカラーの時に要素ごとの演算を行います。
 `-`, `+`,`*`は引数の一方がスカラーの時、 `/`, `\`は分母がスカラーの時に要素ごとの演算を行います。
-例をあげると`[1, 2] + 3 == [4, 5]`や `[6, 4] / 2 == [3, 2]`が成り立ちます。
+例をあげると以下のようになります。`[1, 2] + 3 == [4, 5]`、 `[6, 4] / 2 == [3, 2]`。
 
-また、算術その他の演算子に対してベクトル化を便利に使えるように、Juliaでは `f.(args...)`のような[ドット構文が利用可能](@ref man-vectorized) で、 `sin.(x)`や `min.(x,y)`のように使います。
-これらには、`sin.(cos.(x))`のように、他のドット呼び出しと組み合わせて、単一のループに融合」するというさらなる利点があります。
+また、算術演算子やその他の演算子に対して、ベクトル化を便利に使えるように、Juliaでは `f.(args...)`のような[ドット構文が利用可能](@ref man-vectorized) で、 `sin.(x)`や `min.(x,y)`のように、配列どうしや、配列とスカラーの混合([ブロードキャスト](@ref) 演算)に対して要素ごとに演算できます。
+こういう方法には、`sin.(cos.(x))`のように、他のドット呼び出しと組み合わせて、単一のループに「融合」するというさらなる利点があります。
 
 
 
@@ -1000,14 +1000,14 @@ elementwise over `a` and `b`, and `maximum(a)`, which finds the largest value wi
 `a`. The same relationship holds for `min.(a,b)` and `minimum(a)`.
 -->
 ```
-また、**すべての**二項演算子は、[融合ブロードキャスト演算]（@ ref man-vectorized）を配列（配列とスカラーの組み合わせ）に適用できる[ドットバージョン]（@ ref man-dot-operators）が利用可能で、`z .== sin.(x .* y)`のようにできます。
+また、**すべての**二項演算子は[ドット版]（@ ref man-dot-operators）として利用可能で、配列（や配列とスカラーの組み合わせ）に適用すると、[融合ブロードキャスト演算]（@ ref man-vectorized）を行うこともできます。`z .== sin.(x .* y)`のように。
 
 `==`のような比較演算は配列全体を演算の対象とし、答えが単一のブール値となることに注意してください。
-要素ごとの比較は`.==`のようなドット演算子を使用します。（`<`のような比較演算子は要素ごとの`.<`バージョンだけが配列に適用可能です。）
+要素ごとの比較には`.==`のようなドット演算子を使用します。（`<`のような比較演算子は要素ごとの`.<`版だけが配列に適用できます。）
 
 また、`max.(a,b)`は、[`max()`](@ref)のブロードキャストで`a`と`b`を要素ごとに比較しているのに対して、
 `maximum(a)`は`a`の中の最大値を求めているという違いに注意してください。
- `min.(a,b)`と`minimum(a)`にもどうようのことが成り立ちます。
+ `min.(a,b)`と`minimum(a)`にも同様のことが成り立ちます。
 
 [](### Broadcasting)
 ### ブロードキャスト
