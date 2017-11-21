@@ -224,19 +224,45 @@ include("mycode.jl")
 end
 ```
 
-### Standard modules
+[](### Standard modules)
 
+### 標準モジュール
+
+```@raw html
+<!--
 There are three important standard modules: Main, Core, and Base.
+-->
+```
 
+３つの重要な標準モジュールがあります。MainとCoreとBaseです。
+
+```@raw html
+<!--
 Main is the top-level module, and Julia starts with Main set as the current module.  Variables
 defined at the prompt go in Main, and `whos()` lists variables in Main.
+-->
+```
 
+Mainはトップレベルのモジュールで、JuliaはMainを現在のモジュールとしてセットした状態で起動します。プロンプトで定義された変数はMainに登録され、`whos()`はMainの中にある変数をリストアップします。
+
+```@raw html
+<!--
 Core contains all identifiers considered "built in" to the language, i.e. part of the core language
 and not libraries. Every module implicitly specifies `using Core`, since you can't do anything
 without those definitions.
+-->
+```
 
+Coreは言語に「組み込まれている」とみなされる全ての識別子を持っています。つまり、コア言語の一部でありライブラリではありません。全てのモジュールは暗黙的に`using Core`が指定されています。そうでなければCoreの定義がないため、何もできなくなってしまうからです。
+
+```@raw html
+<!--
 Base is the standard library (the contents of base/). All modules implicitly contain `using Base`,
 since this is needed in the vast majority of cases.
+-->
+```
+
+Baseは標準ライブラリ（base/の内容）です。全てのモジュールで大抵Baseを必要とするため、全てのモジュールは暗黙的に`using Base`を含むようになっています。
 
 ### Default top-level definitions and bare modules
 
