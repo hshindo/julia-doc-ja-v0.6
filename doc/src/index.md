@@ -14,7 +14,7 @@
   * [変数のスコープ](@ref scope-of-variables)
   * [型](@ref man-types)
   * [メソッド](@ref)
-  * [Constructors](@ref man-constructors)
+  * [コンストラクタ](@ref man-constructors)
   * [Conversion and Promotion](@ref conversion-and-promotion)
   * [Interfaces](@ref)
   * [Modules](@ref modules)
