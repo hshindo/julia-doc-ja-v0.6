@@ -2,16 +2,35 @@
 
 # パッケージ
 
+```@raw html
+<!--
 Julia has a built-in package manager for installing add-on functionality written in Julia. It
 can also install external libraries using your operating system's standard system for doing so,
 or by compiling from source. The list of registered Julia packages can be found at [http://pkg.julialang.org](http://pkg.julialang.org).
 All package manager commands are found in the `Pkg` module, included in Julia's `Base`
 install.
+-->
+```
 
+Juliaで書かれたアドオン機能をインストールするためのパッケージマネージャがJuliaには組み込まれています。
+また、オペレーティングシステムの標準システムを使用して外部ライブラリをインストールすることも、
+ソースからコンパイルすることもできます。
+登録されたJuliaパッケージのリストは、[http://pkg.julialang.org](http://pkg.julialang.org)にあります。
+すべてのパッケージマネージャコマンドは、Juliaの`Base`インストールに含まれる`Pkg`モジュールにあります。
+
+```@raw html
+<!--
 First we'll go over the mechanics of the `Pkg` family of commands and then we'll provide some
 guidance on how to get your package registered. Be sure to read the section below on package naming
 conventions, tagging versions and the importance of a `REQUIRE` file for when you're ready to
 add your code to the curated METADATA repository.
+-->
+```
+
+最初に、`Pkg`ファミリーのコマンドの仕組みについて説明します。
+その後、パッケージを登録する方法についてのガイダンスを提供します。
+curated METADATAリポジトリにコードを追加する準備ができたら、
+パッケージ命名規則、バージョンのタグ付け、`REQUIRE`ファイルの重要性に関するセクションを必ず読んでください。
 
 ## Package Status
 
