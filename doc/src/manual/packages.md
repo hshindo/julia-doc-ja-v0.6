@@ -32,10 +32,19 @@ add your code to the curated METADATA repository.
 洗練されたMETADATAリポジトリにコードを追加する準備ができたら、
 パッケージの命名規則やバージョンのタグ付け、`REQUIRE`ファイルの重要性についての下記のセクションを必ず読んでください。
 
-## Package Status
+[](## Package Status)
 
+## パッケージのステータス
+
+```@raw html
+<!--
 The [`Pkg.status()`](@ref) function prints out a summary of the state of packages you have installed.
 Initially, you'll have no packages installed:
+-->
+```
+
+[`Pkg.status()`](@ref)関数はインストールしたパッケージのステータスの概要を表示します。
+初めはパッケージは１つもインストールされていないはずです。
 
 ```julia-repl
 julia> Pkg.status()
@@ -44,9 +53,16 @@ INFO: Cloning METADATA from git://github.com/JuliaLang/METADATA.jl
 No packages installed.
 ```
 
+```@raw html
+<!--
 Your package directory is automatically initialized the first time you run a `Pkg` command
 that expects it to exist – which includes [`Pkg.status()`](@ref). Here's an example non-trivial
 set of required and additional packages:
+-->
+```
+
+パッケージディレクトリは`Pkg`コマンド（[`Pkg.status()`](@ref)を含む）が初めて実行されたときに自動的に初期化されます。
+次に必要パッケージと追加パッケージの重要な例があります。
 
 ```julia-repl
 julia> Pkg.status()
@@ -58,11 +74,21 @@ Additional packages:
  - Stats                         0.2.6
 ```
 
+```@raw html
+<!--
 These packages are all on registered versions, managed by `Pkg`. Packages can be in more
 complicated states, indicated by annotations to the right of the installed package version; we
 will explain these states and annotations as we encounter them. For programmatic usage, [`Pkg.installed()`](@ref)
 returns a dictionary, mapping installed package names to the version of that package which is
 installed:
+-->
+```
+
+これらのパッケージは全て登録済みのバージョンで、`Pkg`で管理されています。
+インストールされたパッケージのバージョンの右側に注釈がついて、パッケージはもっと複雑な状態になることがあります。
+これらのステータスやアノテーションが発生したときの説明をします。
+パッケージの概要をプログラム中で取得したい場合、
+[`Pkg.installed()`](@ref)でインストールされているパッケージ名からそのパッケージのバージョンへマッピングするディクショナリを返します。
 
 ```julia-repl
 julia> Pkg.installed()
