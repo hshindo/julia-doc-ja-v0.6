@@ -1,7 +1,7 @@
 # More about types
 
 If you've used Julia for a while, you understand the fundamental role that types play.  Here we
-try to get under the hood, focusing particularly on [Parametric Types](@ref).
+try to get under the hood, focusing particularly on [パラメトリック型](@ref).
 
 ## Types and sets (and `Any` and `Union{}`/`Bottom`)
 

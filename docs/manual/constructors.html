@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Constructors · The Julia Language</title><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>コンストラクタ · The Julia Language</title><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-28835595-6', 'auto');
 ga('send', 'pageview');
-</script><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Ubuntu+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="The Julia Language logo"/></a><h1>The Julia Language</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li><span class="toctext">Manual</span><ul><li><a class="toctext" href="introduction.html">はじめに</a></li><li><a class="toctext" href="getting-started.html">Juliaをはじめる</a></li><li><a class="toctext" href="variables.html">変数</a></li><li><a class="toctext" href="integers-and-floating-point-numbers.html">整数と浮動小数点数</a></li><li><a class="toctext" href="mathematical-operations.html">算術処理と基本的な関数</a></li><li><a class="toctext" href="complex-and-rational-numbers.html">複素数と有理数</a></li><li><a class="toctext" href="strings.html">文字列</a></li><li><a class="toctext" href="functions.html">関数</a></li><li><a class="toctext" href="control-flow.html">制御構造</a></li><li><a class="toctext" href="variables-and-scoping.html">変数のスコープ</a></li><li><a class="toctext" href="types.html">Types</a></li><li><a class="toctext" href="methods.html">Methods</a></li><li class="current"><a class="toctext" href="constructors.html">Constructors</a><ul class="internal"><li><a class="toctext" href="#Outer-Constructor-Methods-1">Outer Constructor Methods</a></li><li><a class="toctext" href="#Inner-Constructor-Methods-1">Inner Constructor Methods</a></li><li><a class="toctext" href="#Incomplete-Initialization-1">Incomplete Initialization</a></li><li><a class="toctext" href="#Parametric-Constructors-1">Parametric Constructors</a></li><li><a class="toctext" href="#Case-Study:-Rational-1">Case Study: Rational</a></li><li><a class="toctext" href="#constructors-and-conversion-1">Constructors and Conversion</a></li><li><a class="toctext" href="#Outer-only-constructors-1">Outer-only constructors</a></li></ul></li><li><a class="toctext" href="conversion-and-promotion.html">Conversion and Promotion</a></li><li><a class="toctext" href="interfaces.html">Interfaces</a></li><li><a class="toctext" href="modules.html">Modules</a></li><li><a class="toctext" href="documentation.html">Documentation</a></li><li><a class="toctext" href="metaprogramming.html">Metaprogramming</a></li><li><a class="toctext" href="arrays.html">Multi-dimensional Arrays</a></li><li><a class="toctext" href="linear-algebra.html">Linear algebra</a></li><li><a class="toctext" href="networking-and-streams.html">Networking and Streams</a></li><li><a class="toctext" href="parallel-computing.html">Parallel Computing</a></li><li><a class="toctext" href="dates.html">Date and DateTime</a></li><li><a class="toctext" href="interacting-with-julia.html">Interacting With Julia</a></li><li><a class="toctext" href="running-external-programs.html">Running External Programs</a></li><li><a class="toctext" href="calling-c-and-fortran-code.html">Calling C and Fortran Code</a></li><li><a class="toctext" href="handling-operating-system-variation.html">Handling Operating System Variation</a></li><li><a class="toctext" href="environment-variables.html">Environment Variables</a></li><li><a class="toctext" href="interacting-with-julia.html">Interacting With Julia</a></li><li><a class="toctext" href="embedding.html">Embedding Julia</a></li><li><a class="toctext" href="packages.html">Packages</a></li><li><a class="toctext" href="profile.html">Profiling</a></li><li><a class="toctext" href="stacktraces.html">Stack Traces</a></li><li><a class="toctext" href="performance-tips.html">Performance Tips</a></li><li><a class="toctext" href="workflow-tips.html">Workflow Tips</a></li><li><a class="toctext" href="style-guide.html">Style Guide</a></li><li><a class="toctext" href="faq.html">Frequently Asked Questions</a></li><li><a class="toctext" href="noteworthy-differences.html">Noteworthy Differences from other Languages</a></li><li><a class="toctext" href="unicode-input.html">Unicode Input</a></li></ul></li><li><span class="toctext">Standard Library</span><ul><li><a class="toctext" href="../stdlib/base.html">Essentials</a></li><li><a class="toctext" href="../stdlib/collections.html">Collections and Data Structures</a></li><li><a class="toctext" href="../stdlib/math.html">Mathematics</a></li><li><a class="toctext" href="../stdlib/numbers.html">Numbers</a></li><li><a class="toctext" href="../stdlib/strings.html">Strings</a></li><li><a class="toctext" href="../stdlib/arrays.html">Arrays</a></li><li><a class="toctext" href="../stdlib/parallel.html">Tasks and Parallel Computing</a></li><li><a class="toctext" href="../stdlib/linalg.html">Linear Algebra</a></li><li><a class="toctext" href="../stdlib/constants.html">Constants</a></li><li><a class="toctext" href="../stdlib/file.html">Filesystem</a></li><li><a class="toctext" href="../stdlib/io-network.html">I/O and Network</a></li><li><a class="toctext" href="../stdlib/punctuation.html">Punctuation</a></li><li><a class="toctext" href="../stdlib/sort.html">Sorting and Related Functions</a></li><li><a class="toctext" href="../stdlib/pkg.html">Package Manager Functions</a></li><li><a class="toctext" href="../stdlib/dates.html">Dates and Time</a></li><li><a class="toctext" href="../stdlib/iterators.html">Iteration utilities</a></li><li><a class="toctext" href="../stdlib/test.html">Unit Testing</a></li><li><a class="toctext" href="../stdlib/c.html">C Interface</a></li><li><a class="toctext" href="../stdlib/libc.html">C Standard Library</a></li><li><a class="toctext" href="../stdlib/libdl.html">Dynamic Linker</a></li><li><a class="toctext" href="../stdlib/profile.html">Profiling</a></li><li><a class="toctext" href="../stdlib/stacktraces.html">StackTraces</a></li><li><a class="toctext" href="../stdlib/simd-types.html">SIMD Support</a></li></ul></li><li><span class="toctext">Developer Documentation</span><ul><li><a class="toctext" href="../devdocs/reflection.html">Reflection and introspection</a></li><li><span class="toctext">Documentation of Julia&#39;s Internals</span><ul><li><a class="toctext" href="../devdocs/init.html">Initialization of the Julia runtime</a></li><li><a class="toctext" href="../devdocs/ast.html">Julia ASTs</a></li><li><a class="toctext" href="../devdocs/types.html">More about types</a></li><li><a class="toctext" href="../devdocs/object.html">Memory layout of Julia Objects</a></li><li><a class="toctext" href="../devdocs/eval.html">Eval of Julia code</a></li><li><a class="toctext" href="../devdocs/callconv.html">Calling Conventions</a></li><li><a class="toctext" href="../devdocs/compiler.html">High-level Overview of the Native-Code Generation Process</a></li><li><a class="toctext" href="../devdocs/functions.html">Julia Functions</a></li><li><a class="toctext" href="../devdocs/cartesian.html">Base.Cartesian</a></li><li><a class="toctext" href="../devdocs/meta.html">Talking to the compiler (the <code>:meta</code> mechanism)</a></li><li><a class="toctext" href="../devdocs/subarrays.html">SubArrays</a></li><li><a class="toctext" href="../devdocs/sysimg.html">System Image Building</a></li><li><a class="toctext" href="../devdocs/llvm.html">Working with LLVM</a></li><li><a class="toctext" href="../devdocs/stdio.html">printf() and stdio in the Julia runtime</a></li><li><a class="toctext" href="../devdocs/boundscheck.html">Bounds checking</a></li><li><a class="toctext" href="../devdocs/locks.html">Proper maintenance and care of multi-threading locks</a></li><li><a class="toctext" href="../devdocs/offset-arrays.html">Arrays with custom indices</a></li><li><a class="toctext" href="../devdocs/libgit2.html">Base.LibGit2</a></li><li><a class="toctext" href="../devdocs/require.html">Module loading</a></li></ul></li><li><span class="toctext">Developing/debugging Julia&#39;s C code</span><ul><li><a class="toctext" href="../devdocs/backtraces.html">Reporting and analyzing crashes (segfaults)</a></li><li><a class="toctext" href="../devdocs/debuggingtips.html">gdb debugging tips</a></li><li><a class="toctext" href="../devdocs/valgrind.html">Using Valgrind with Julia</a></li><li><a class="toctext" href="../devdocs/sanitizers.html">Sanitizer support</a></li></ul></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li>Manual</li><li><a href="constructors.html">Constructors</a></li></ul><a class="edit-page" href="https://github.com/JuliaLang/julia/tree/903644385b91ed8d95e5e3a5716c089dd1f1b08a/doc/src/manual/constructors.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/></header><h1><a class="nav-anchor" id="man-constructors-1" href="#man-constructors-1">Constructors</a></h1><p>Constructors <a href="#footnote-1">[1]</a> are functions that create new objects – specifically, instances of <a href="types.html#Composite-Types-1">Composite Types</a>. In Julia, type objects also serve as constructor functions: they create new instances of themselves when applied to an argument tuple as a function. This much was already mentioned briefly when composite types were introduced. For example:</p><pre><code class="language-jldoctest">julia&gt; struct Foo
+</script><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Ubuntu+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="The Julia Language logo"/></a><h1>The Julia Language</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li><span class="toctext">Manual</span><ul><li><a class="toctext" href="introduction.html">はじめに</a></li><li><a class="toctext" href="getting-started.html">Juliaをはじめる</a></li><li><a class="toctext" href="variables.html">変数</a></li><li><a class="toctext" href="integers-and-floating-point-numbers.html">整数と浮動小数点数</a></li><li><a class="toctext" href="mathematical-operations.html">算術処理と基本的な関数</a></li><li><a class="toctext" href="complex-and-rational-numbers.html">複素数と有理数</a></li><li><a class="toctext" href="strings.html">文字列</a></li><li><a class="toctext" href="functions.html">関数</a></li><li><a class="toctext" href="control-flow.html">制御構造</a></li><li><a class="toctext" href="variables-and-scoping.html">変数のスコープ</a></li><li><a class="toctext" href="types.html">型</a></li><li><a class="toctext" href="methods.html">メソッド</a></li><li class="current"><a class="toctext" href="constructors.html">コンストラクタ</a><ul class="internal"><li><a class="toctext" href="#外部コンストラクタメソッド-1">外部コンストラクタメソッド</a></li><li><a class="toctext" href="#内部コンストラクタメソッド-1">内部コンストラクタメソッド</a></li><li><a class="toctext" href="#不完全な初期化-1">不完全な初期化</a></li><li><a class="toctext" href="#パラメトリックコンストラクタ-1">パラメトリックコンストラクタ</a></li><li><a class="toctext" href="#事例研究:-有理数-1">事例研究: 有理数</a></li><li><a class="toctext" href="#constructors-and-conversion-1">コンストラクタと変換</a></li><li><a class="toctext" href="#外部限定コンストラクタ-1">外部限定コンストラクタ</a></li></ul></li><li><a class="toctext" href="conversion-and-promotion.html">Conversion and Promotion</a></li><li><a class="toctext" href="interfaces.html">Interfaces</a></li><li><a class="toctext" href="modules.html">Modules</a></li><li><a class="toctext" href="documentation.html">Documentation</a></li><li><a class="toctext" href="metaprogramming.html">Metaprogramming</a></li><li><a class="toctext" href="arrays.html">Multi-dimensional Arrays</a></li><li><a class="toctext" href="linear-algebra.html">Linear algebra</a></li><li><a class="toctext" href="networking-and-streams.html">Networking and Streams</a></li><li><a class="toctext" href="parallel-computing.html">Parallel Computing</a></li><li><a class="toctext" href="dates.html">Date and DateTime</a></li><li><a class="toctext" href="interacting-with-julia.html">Interacting With Julia</a></li><li><a class="toctext" href="running-external-programs.html">Running External Programs</a></li><li><a class="toctext" href="calling-c-and-fortran-code.html">Calling C and Fortran Code</a></li><li><a class="toctext" href="handling-operating-system-variation.html">Handling Operating System Variation</a></li><li><a class="toctext" href="environment-variables.html">Environment Variables</a></li><li><a class="toctext" href="interacting-with-julia.html">Interacting With Julia</a></li><li><a class="toctext" href="embedding.html">Embedding Julia</a></li><li><a class="toctext" href="packages.html">Packages</a></li><li><a class="toctext" href="profile.html">Profiling</a></li><li><a class="toctext" href="stacktraces.html">Stack Traces</a></li><li><a class="toctext" href="performance-tips.html">Performance Tips</a></li><li><a class="toctext" href="workflow-tips.html">Workflow Tips</a></li><li><a class="toctext" href="style-guide.html">Style Guide</a></li><li><a class="toctext" href="faq.html">Frequently Asked Questions</a></li><li><a class="toctext" href="noteworthy-differences.html">Noteworthy Differences from other Languages</a></li><li><a class="toctext" href="unicode-input.html">Unicode Input</a></li></ul></li><li><span class="toctext">Standard Library</span><ul><li><a class="toctext" href="../stdlib/base.html">Essentials</a></li><li><a class="toctext" href="../stdlib/collections.html">Collections and Data Structures</a></li><li><a class="toctext" href="../stdlib/math.html">Mathematics</a></li><li><a class="toctext" href="../stdlib/numbers.html">Numbers</a></li><li><a class="toctext" href="../stdlib/strings.html">Strings</a></li><li><a class="toctext" href="../stdlib/arrays.html">Arrays</a></li><li><a class="toctext" href="../stdlib/parallel.html">Tasks and Parallel Computing</a></li><li><a class="toctext" href="../stdlib/linalg.html">Linear Algebra</a></li><li><a class="toctext" href="../stdlib/constants.html">Constants</a></li><li><a class="toctext" href="../stdlib/file.html">Filesystem</a></li><li><a class="toctext" href="../stdlib/io-network.html">I/O and Network</a></li><li><a class="toctext" href="../stdlib/punctuation.html">Punctuation</a></li><li><a class="toctext" href="../stdlib/sort.html">Sorting and Related Functions</a></li><li><a class="toctext" href="../stdlib/pkg.html">Package Manager Functions</a></li><li><a class="toctext" href="../stdlib/dates.html">Dates and Time</a></li><li><a class="toctext" href="../stdlib/iterators.html">Iteration utilities</a></li><li><a class="toctext" href="../stdlib/test.html">Unit Testing</a></li><li><a class="toctext" href="../stdlib/c.html">C Interface</a></li><li><a class="toctext" href="../stdlib/libc.html">C Standard Library</a></li><li><a class="toctext" href="../stdlib/libdl.html">Dynamic Linker</a></li><li><a class="toctext" href="../stdlib/profile.html">Profiling</a></li><li><a class="toctext" href="../stdlib/stacktraces.html">StackTraces</a></li><li><a class="toctext" href="../stdlib/simd-types.html">SIMD Support</a></li></ul></li><li><span class="toctext">Developer Documentation</span><ul><li><a class="toctext" href="../devdocs/reflection.html">Reflection and introspection</a></li><li><span class="toctext">Documentation of Julia&#39;s Internals</span><ul><li><a class="toctext" href="../devdocs/init.html">Initialization of the Julia runtime</a></li><li><a class="toctext" href="../devdocs/ast.html">Julia ASTs</a></li><li><a class="toctext" href="../devdocs/types.html">More about types</a></li><li><a class="toctext" href="../devdocs/object.html">Memory layout of Julia Objects</a></li><li><a class="toctext" href="../devdocs/eval.html">Eval of Julia code</a></li><li><a class="toctext" href="../devdocs/callconv.html">Calling Conventions</a></li><li><a class="toctext" href="../devdocs/compiler.html">High-level Overview of the Native-Code Generation Process</a></li><li><a class="toctext" href="../devdocs/functions.html">Julia Functions</a></li><li><a class="toctext" href="../devdocs/cartesian.html">Base.Cartesian</a></li><li><a class="toctext" href="../devdocs/meta.html">Talking to the compiler (the <code>:meta</code> mechanism)</a></li><li><a class="toctext" href="../devdocs/subarrays.html">SubArrays</a></li><li><a class="toctext" href="../devdocs/sysimg.html">System Image Building</a></li><li><a class="toctext" href="../devdocs/llvm.html">Working with LLVM</a></li><li><a class="toctext" href="../devdocs/stdio.html">printf() and stdio in the Julia runtime</a></li><li><a class="toctext" href="../devdocs/boundscheck.html">Bounds checking</a></li><li><a class="toctext" href="../devdocs/locks.html">Proper maintenance and care of multi-threading locks</a></li><li><a class="toctext" href="../devdocs/offset-arrays.html">Arrays with custom indices</a></li><li><a class="toctext" href="../devdocs/libgit2.html">Base.LibGit2</a></li><li><a class="toctext" href="../devdocs/require.html">Module loading</a></li></ul></li><li><span class="toctext">Developing/debugging Julia&#39;s C code</span><ul><li><a class="toctext" href="../devdocs/backtraces.html">Reporting and analyzing crashes (segfaults)</a></li><li><a class="toctext" href="../devdocs/debuggingtips.html">gdb debugging tips</a></li><li><a class="toctext" href="../devdocs/valgrind.html">Using Valgrind with Julia</a></li><li><a class="toctext" href="../devdocs/sanitizers.html">Sanitizer support</a></li></ul></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li>Manual</li><li><a href="constructors.html">コンストラクタ</a></li></ul><a class="edit-page" href="https://github.com/JuliaLang/julia/tree/903644385b91ed8d95e5e3a5716c089dd1f1b08a/doc/src/manual/constructors.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/></header><p><a href="# [Constructors](@id man-constructors)"></a></p><h1><a class="nav-anchor" id="man-constructors-1" href="#man-constructors-1">コンストラクタ</a></h1><!--
+Constructors [^1] are functions that create new objects -- specifically, instances of [Composite Types](@ref).
+In Julia, type objects also serve as constructor functions: they create new instances of themselves
+when applied to an argument tuple as a function. This much was already mentioned briefly when
+composite types were introduced. For example:
+--><p>コンストラクタ[^ 1]は新しいオブジェクトを作成する関数で、特に<a href="types.html#複合型-1">複合型</a>のインスタンスの場合に使用されます。 Juliaでは、型オブジェクトはコンストラクタ関数としても機能して、引数となるタプルに適用すると、新しいインスタンスが作成されます。 これは、複合型を紹介したときにすでに簡単に触れました。例えば、</p><pre><code class="language-jldoctest">julia&gt; struct Foo
            bar
            baz
        end
@@ -18,31 +23,98 @@ julia&gt; foo.bar
 1
 
 julia&gt; foo.baz
-2</code></pre><p>For many types, forming new objects by binding their field values together is all that is ever needed to create instances. There are, however, cases where more functionality is required when creating composite objects. Sometimes invariants must be enforced, either by checking arguments or by transforming them. <a href="https://en.wikipedia.org/wiki/Recursion_%28computer_science%29#Recursive_data_structures_.28structural_recursion.29">Recursive data structures</a>, especially those that may be self-referential, often cannot be constructed cleanly without first being created in an incomplete state and then altered programmatically to be made whole, as a separate step from object creation. Sometimes, it&#39;s just convenient to be able to construct objects with fewer or different types of parameters than they have fields. Julia&#39;s system for object construction addresses all of these cases and more.</p><div class="footnote" id="footnote-1"><a href="#footnote-1"><strong>[1]</strong></a><p>Nomenclature: while the term &quot;constructor&quot; generally refers to the entire function which constructs objects of a type, it is common to abuse terminology slightly and refer to specific constructor methods as &quot;constructors&quot;. In such situations, it is generally clear from context that the term is used to mean &quot;constructor method&quot; rather than &quot;constructor function&quot;, especially as it is often used in the sense of singling out a particular method of the constructor from all of the others.</p></div><h2><a class="nav-anchor" id="Outer-Constructor-Methods-1" href="#Outer-Constructor-Methods-1">Outer Constructor Methods</a></h2><p>A constructor is just like any other function in Julia in that its overall behavior is defined by the combined behavior of its methods. Accordingly, you can add functionality to a constructor by simply defining new methods. For example, let&#39;s say you want to add a constructor method for <code>Foo</code> objects that takes only one argument and uses the given value for both the <code>bar</code> and <code>baz</code> fields. This is simple:</p><pre><code class="language-jldoctest">julia&gt; Foo(x) = Foo(x,x)
+2</code></pre><!--
+For many types, forming new objects by binding their field values together is all that is ever
+needed to create instances. There are, however, cases where more functionality is required when
+creating composite objects. Sometimes invariants must be enforced, either by checking arguments
+or by transforming them. [Recursive data structures](https://en.wikipedia.org/wiki/Recursion_%28computer_science%29#Recursive_data_structures_.28structural_recursion.29),
+especially those that may be self-referential, often cannot be constructed cleanly without first
+being created in an incomplete state and then altered programmatically to be made whole, as a
+separate step from object creation. Sometimes, it's just convenient to be able to construct objects
+with fewer or different types of parameters than they have fields. Julia's system for object construction
+addresses all of these cases and more.
+--><p>多くの型では、インスタンスを作成する際には、各フィールド値を束縛して新しいオブジェクトを作成します。 しかし、複合型のオブジェクトを作成するときにはより多くの機能が必要になる場合があります。 時には、引数を検査したり変換したりして、強制的に不変にする必要があります。 <a href="https://en.wikipedia.org/wiki/Recursion_%28computer_science%29#Recursive_data_structures_.28structural_recursion.29">再帰的なデータ構造</a>、 特に自己参照可能な構造は、オブジェクト作成とは別の過程として、はじめは不完全な状態で作成してからプログラムによって変更して全体を作らないと、きれいに構築できないことがよくあります。 また時には、実際のフィールドと比べて、パラメータの数が少なかったり、型が異なっていたりするオブジェクトを構築できるのが便利な場合もあります。 Juliaのオブジェクトコンストラクタは、これらのすべてのケースに対応しています。</p><!--
+[^1]:
+    Nomenclature: while the term "constructor" generally refers to the entire function which constructs
+    objects of a type, it is common to abuse terminology slightly and refer to specific constructor
+    methods as "constructors". In such situations, it is generally clear from context that the term
+    is used to mean "constructor method" rather than "constructor function", especially as it is often
+    used in the sense of singling out a particular method of the constructor from all of the others.
+--><p>^ 1]：命名法：「コンストラクタ」という用語は、通常、ある型に対して、その型のオブジェクトを構成する関数全体を指しますが、用語を少し拡大解釈し、特定のコンストラクタメソッドも「コンストラクタ」と呼びます。このようにしても、コンストラクタ関数ではなく、コンストラクタメソッド、特にほかのすべてのメソッドの中から特定のコンストラクタメソッドを単独で指して使っている場合は、通常は文脈から分かります</p><p><a href="## Outer Constructor Methods"></a></p><h2><a class="nav-anchor" id="外部コンストラクタメソッド-1" href="#外部コンストラクタメソッド-1">外部コンストラクタメソッド</a></h2><!--
+A constructor is just like any other function in Julia in that its overall behavior is defined
+by the combined behavior of its methods. Accordingly, you can add functionality to a constructor
+by simply defining new methods. For example, let's say you want to add a constructor method for
+`Foo` objects that takes only one argument and uses the given value for both the `bar` and `baz`
+fields. This is simple:
+--><p>コンストラクタは、Juliaの他の関数と同じように、全体の挙動はメソッドの挙動の組み合わせで定義されています。 したがって、新しいメソッドを定義するだけで、コンストラクタに機能を追加できます。 たとえば、<code>Foo</code>オブジェクトのコンストラクタメソッドを追加するとします。 このオブジェクトは、1個だけの引数の値を、<code>bar</code>フィールドと<code>baz</code>フィールドの両方に使用する単純なものです。</p><pre><code class="language-jldoctest">julia&gt; Foo(x) = Foo(x,x)
 Foo
 
 julia&gt; Foo(1)
-Foo(1, 1)</code></pre><p>You could also add a zero-argument <code>Foo</code> constructor method that supplies default values for both of the <code>bar</code> and <code>baz</code> fields:</p><pre><code class="language-jldoctest">julia&gt; Foo() = Foo(0)
+Foo(1, 1)</code></pre><!--
+You could also add a zero-argument `Foo` constructor method that supplies default values for both
+of the `bar` and `baz` fields:
+--><p>また、引数のない<code>Foo</code>コンストラクタメソッドを追加して、<code>bar</code>フィールドと<code>baz</code>フィールドの両方にデフォルト値を設定することもできます。</p><pre><code class="language-jldoctest">julia&gt; Foo() = Foo(0)
 Foo
 
 julia&gt; Foo()
-Foo(0, 0)</code></pre><p>Here the zero-argument constructor method calls the single-argument constructor method, which in turn calls the automatically provided two-argument constructor method. For reasons that will become clear very shortly, additional constructor methods declared as normal methods like this are called <em>outer</em> constructor methods. Outer constructor methods can only ever create a new instance by calling another constructor method, such as the automatically provided default ones.</p><h2><a class="nav-anchor" id="Inner-Constructor-Methods-1" href="#Inner-Constructor-Methods-1">Inner Constructor Methods</a></h2><p>While outer constructor methods succeed in addressing the problem of providing additional convenience methods for constructing objects, they fail to address the other two use cases mentioned in the introduction of this chapter: enforcing invariants, and allowing construction of self-referential objects. For these problems, one needs <em>inner</em> constructor methods. An inner constructor method is much like an outer constructor method, with two differences:</p><ol><li><p>It is declared inside the block of a type declaration, rather than outside of it like normal methods.</p></li><li><p>It has access to a special locally existent function called <code>new</code> that creates objects of the block&#39;s type.</p></li></ol><p>For example, suppose one wants to declare a type that holds a pair of real numbers, subject to the constraint that the first number is not greater than the second one. One could declare it like this:</p><pre><code class="language-jldoctest">julia&gt; struct OrderedPair
+Foo(0, 0)</code></pre><!--
+Here the zero-argument constructor method calls the single-argument constructor method, which
+in turn calls the automatically provided two-argument constructor method. For reasons that will
+become clear very shortly, additional constructor methods declared as normal methods like this
+are called *outer* constructor methods. Outer constructor methods can only ever create a new instance
+by calling another constructor method, such as the automatically provided default ones.
+--><p>ここでは、引数のないコンストラクタメソッドが、1引数のコンストラクタメソッドを呼び出し、続いて、自動的に生成される2引数のコンストラクタメソッドが呼び出されます。 まもなく明らかにする理由から、このような通常のメソッドのように宣言して追加されたコンストラクタメソッドは、<strong>外部</strong>コンストラクタメソッドと呼ばれます。 外部コンストラクタメソッドは、デフォルト値を自動的に提供するメソッドなど、別の既存のコンストラクタメソッドを呼び出す場合に限って、新しいインスタンスを作成することができます。</p><p><a href="## Inner Constructor Methods"></a></p><h2><a class="nav-anchor" id="内部コンストラクタメソッド-1" href="#内部コンストラクタメソッド-1">内部コンストラクタメソッド</a></h2><!--
+While outer constructor methods succeed in addressing the problem of providing additional convenience
+methods for constructing objects, they fail to address the other two use cases mentioned in the
+introduction of this chapter: enforcing invariants, and allowing construction of self-referential
+objects. For these problems, one needs *inner* constructor methods. An inner constructor method
+is much like an outer constructor method, with two differences:
+
+1. It is declared inside the block of a type declaration, rather than outside of it like normal methods.
+2. It has access to a special locally existent function called `new` that creates objects of the
+   block's type.
+--><p>外部コンストラクタメソッドを使うと、オブジェクトを構築する補助的で便利なメソッドを提供するという課題に対処できますが、 この章のはじめのほうで取り上げた他の2つの事例には対処できません： 不変性の強制と自己参照オブジェクトの構築です。こういった課題には、内部コンストラクタメソッドが必要です。 内部コンストラクタメソッドは、外部コンストラクタメソッドによく似ていますが、2つの違いがあります。</p><ol><li><p>これは型宣言のブロックの内部で宣言されていて、通常のメソッドのようにブロックの外部で宣言されていません。</p></li><li><p>ブロックの宣言する型となるオブジェクトを作成する、ローカルで既存の特殊な関数<code>new</code>へのアクセスできます。</p></li></ol><!--
+For example, suppose one wants to declare a type that holds a pair of real numbers, subject to
+the constraint that the first number is not greater than the second one. One could declare it
+like this:
+--><p>たとえば、一番目の数が二番目の数よりも大きくないという制約つきの、実数のペアを保持する型を宣言したいとします。 この場合、次のように宣言することができます：</p><pre><code class="language-jldoctest">julia&gt; struct OrderedPair
            x::Real
            y::Real
            OrderedPair(x,y) = x &gt; y ? error(&quot;out of order&quot;) : new(x,y)
        end
-</code></pre><p>Now <code>OrderedPair</code> objects can only be constructed such that <code>x &lt;= y</code>:</p><pre><code class="language-jldoctest">julia&gt; OrderedPair(1, 2)
+</code></pre><!--
+Now `OrderedPair` objects can only be constructed such that `x <= y`:
+--><p>ここで、<code>OrderedPair</code>オブジェクトは、<code>x &lt;= y</code>を満たす場合だけ構成することができます。</p><pre><code class="language-jldoctest">julia&gt; OrderedPair(1, 2)
 OrderedPair(1, 2)
 
 julia&gt; OrderedPair(2,1)
 ERROR: out of order
 Stacktrace:
- [1] OrderedPair(::Int64, ::Int64) at ./none:4</code></pre><p>If the type were declared <code>mutable</code>, you could reach in and directly change the field values to violate this invariant, but messing around with an object&#39;s internals uninvited is considered poor form. You (or someone else) can also provide additional outer constructor methods at any later point, but once a type is declared, there is no way to add more inner constructor methods. Since outer constructor methods can only create objects by calling other constructor methods, ultimately, some inner constructor must be called to create an object. This guarantees that all objects of the declared type must come into existence by a call to one of the inner constructor methods provided with the type, thereby giving some degree of enforcement of a type&#39;s invariants.</p><p>If any inner constructor method is defined, no default constructor method is provided: it is presumed that you have supplied yourself with all the inner constructors you need. The default constructor is equivalent to writing your own inner constructor method that takes all of the object&#39;s fields as parameters (constrained to be of the correct type, if the corresponding field has a type), and passes them to <code>new</code>, returning the resulting object:</p><pre><code class="language-julia">julia&gt; struct Foo
+ [1] OrderedPair(::Int64, ::Int64) at ./none:4</code></pre><!--
+If the type were declared `mutable`, you could reach in and directly change the field values to
+violate this invariant, but messing around with an object's internals uninvited is considered poor form.
+You (or someone else) can also provide additional outer constructor methods at any later point, but
+once a type is declared, there is no way to add more inner constructor methods. Since outer constructor
+methods can only create objects by calling other constructor methods, ultimately, some inner constructor
+must be called to create an object. This guarantees that all objects of the declared type must come into
+existence by a call to one of the inner constructor methods provided with the type, thereby giving
+some degree of enforcement of a type's invariants.
+--><p>型を<code>可変</code>に宣言すれば、フィールド値に直接アクセスして、不変性を破る変更ができますが、オブジェクトの内部で想定外のいじり方をするのはよくない手法です。 あなた（または他の誰か）は後から外部コンストラクタメソッドを追加することはできますが、型を宣言した後で内部コンストラクタメソッドを追加することはできません。 外部コンストラクタメソッドがオブジェクトを作成するには、他のコンストラクタメソッドを呼び出すしかないため、最終的には、内部コンストラクタのいづれかが必ず呼び出されてオブジェクトが作成されます。 このため、型の宣言されたオブジェクトはすべて、その型に備わった内部コンストラクタメソッドの1つから生成されることが保証され、型の不変性がある程度強制されます。</p><!--
+If any inner constructor method is defined, no default constructor method is provided: it is presumed
+that you have supplied yourself with all the inner constructors you need. The default constructor
+is equivalent to writing your own inner constructor method that takes all of the object's fields
+as parameters (constrained to be of the correct type, if the corresponding field has a type),
+and passes them to `new`, returning the resulting object:
+--><p>内部コンストラクタメソッドが定義されている場合は、デフォルトのコンストラクタメソッドは生成されません。 必要とするすべての内部コンストラクタはすべて自作することを前提としています。 デフォルトのコンストラクタがすることは、次のような独自の内部コンストラクタメソッドを自作するのと同等です。 その内部コンストラクタメソッドというのは、オブジェクトのすべてのフィールドを引数とし、（対応するフィールドに型を指定している場合は正しい型を設定し）、その引数を<code>new</code>に渡して、戻ってくるオブジェクト自身の戻り値とするような内部コンストラクタメソッドです。</p><pre><code class="language-julia">julia&gt; struct Foo
            bar
            baz
            Foo(bar,baz) = new(bar,baz)
        end
-</code></pre><p>This declaration has the same effect as the earlier definition of the <code>Foo</code> type without an explicit inner constructor method. The following two types are equivalent – one with a default constructor, the other with an explicit constructor:</p><pre><code class="language-julia">julia&gt; struct T1
+</code></pre><!--
+This declaration has the same effect as the earlier definition of the `Foo` type without an explicit
+inner constructor method. The following two types are equivalent -- one with a default constructor,
+the other with an explicit constructor:
+--><p>この宣言は、<code>Foo</code>型の以前の定義で、明示的に内部コンストラクタメソッドを宣言していないものと同じ効果を持ちます。 次の2つの型は同等です。一つはデフォルトのコンストラクタを使うもので、もう一つは明示的なコンストラクタをつかうものです。</p><pre><code class="language-julia">julia&gt; struct T1
            x::Int64
        end
 
@@ -61,14 +133,41 @@ julia&gt; T1(1.0)
 T1(1)
 
 julia&gt; T2(1.0)
-T2(1)</code></pre><p>It is considered good form to provide as few inner constructor methods as possible: only those taking all arguments explicitly and enforcing essential error checking and transformation. Additional convenience constructor methods, supplying default values or auxiliary transformations, should be provided as outer constructors that call the inner constructors to do the heavy lifting. This separation is typically quite natural.</p><h2><a class="nav-anchor" id="Incomplete-Initialization-1" href="#Incomplete-Initialization-1">Incomplete Initialization</a></h2><p>The final problem which has still not been addressed is construction of self-referential objects, or more generally, recursive data structures. Since the fundamental difficulty may not be immediately obvious, let us briefly explain it. Consider the following recursive type declaration:</p><pre><code class="language-jldoctest">julia&gt; mutable struct SelfReferential
+T2(1)</code></pre><!--
+It is considered good form to provide as few inner constructor methods as possible: only those
+taking all arguments explicitly and enforcing essential error checking and transformation. Additional
+convenience constructor methods, supplying default values or auxiliary transformations, should
+be provided as outer constructors that call the inner constructors to do the heavy lifting. This
+separation is typically quite natural.
+--><p>できるだけ内部コンストラクタメソッドを少なくするのは良い方法だと考えられています。 そのメソッドは、すべての引数を明示的に取り、必須であるエラーチェックと変換を強制するものだけにします。 デフォルト値や補助的な変換を提供する便利なコンストラクタメソッドを追加する時は、内部コンストラクタを呼び出す外部コンストラクタとして作成し、重い作業を行うようにすべきです。 このように分離するのは、通常まったく自然なことです。</p><p><a href="## Incomplete Initialization"></a></p><h2><a class="nav-anchor" id="不完全な初期化-1" href="#不完全な初期化-1">不完全な初期化</a></h2><!--
+The final problem which has still not been addressed is construction of self-referential objects,
+or more generally, recursive data structures. Since the fundamental difficulty may not be immediately
+obvious, let us briefly explain it. Consider the following recursive type declaration:
+--><p>まだ説明していない最後の問題は、自己参照オブジェクト、さらに一般的には再帰的なデータ構造の生成です。 根源的な難しさはすぐには分からないでしょうから、簡単に説明しましょう。次の再帰型宣言を考えてみましょう。</p><pre><code class="language-jldoctest">julia&gt; mutable struct SelfReferential
            obj::SelfReferential
        end
-</code></pre><p>This type may appear innocuous enough, until one considers how to construct an instance of it. If <code>a</code> is an instance of <code>SelfReferential</code>, then a second instance can be created by the call:</p><pre><code class="language-julia-repl">julia&gt; b = SelfReferential(a)</code></pre><p>But how does one construct the first instance when no instance exists to provide as a valid value for its <code>obj</code> field? The only solution is to allow creating an incompletely initialized instance of <code>SelfReferential</code> with an unassigned <code>obj</code> field, and using that incomplete instance as a valid value for the <code>obj</code> field of another instance, such as, for example, itself.</p><p>To allow for the creation of incompletely initialized objects, Julia allows the <code>new</code> function to be called with fewer than the number of fields that the type has, returning an object with the unspecified fields uninitialized. The inner constructor method can then use the incomplete object, finishing its initialization before returning it. Here, for example, we take another crack at defining the <code>SelfReferential</code> type, with a zero-argument inner constructor returning instances having <code>obj</code> fields pointing to themselves:</p><pre><code class="language-jldoctest">julia&gt; mutable struct SelfReferential
+</code></pre><!--
+This type may appear innocuous enough, until one considers how to construct an instance of it.
+If `a` is an instance of `SelfReferential`, then a second instance can be created by the call:
+--><p>この型は、どうやってインスタンス化するかを考えなければ、問題ないように見えるかもしれません。 <code>a</code>という<code>SelfReferential</code>のインスタンスがあれば、呼び出しによって2つ目のインスタンスを作成できます。</p><pre><code class="language-julia-repl">julia&gt; b = SelfReferential(a)</code></pre><!--
+But how does one construct the first instance when no instance exists to provide as a valid value
+for its `obj` field? The only solution is to allow creating an incompletely initialized instance
+of `SelfReferential` with an unassigned `obj` field, and using that incomplete instance as a valid
+value for the `obj` field of another instance, such as, for example, itself.
+--><p>しかし、<code>obj</code>フィールドに使う有効な値のインスタンスがなければ、最初のインスタンスはどうやって作成するのでしょうか？ 唯一の解決法は、<code>obj</code>フィールドに、なにも代入されていない初期化の不完全な<code>SelfReferential</code>のインスタンスを作成し、その不完全なインスタンスを<code>obj</code>フィールドの有効な値として別のインスタンス(例えば自分自身)に使うという方法です。</p><!--
+To allow for the creation of incompletely initialized objects, Julia allows the `new` function
+to be called with fewer than the number of fields that the type has, returning an object with
+the unspecified fields uninitialized. The inner constructor method can then use the incomplete
+object, finishing its initialization before returning it. Here, for example, we take another crack
+at defining the `SelfReferential` type, with a zero-argument inner constructor returning instances
+having `obj` fields pointing to themselves:
+--><p>初期化が不完全でもオブジェクトを作成できるように、Juliaでは、引数が型のフィールド数より少なくても<code>new</code>関数を呼び出すことができます。 この<code>new</code>関数は、未指定のフィールドは初期化しないままで、オブジェクトを返します。 そのため、内部コンストラクタメソッドは不完全なオブジェクトを利用でき、オブジェクトを返す前に初期化を完了します。 ここで、<code>SelfReferential</code>型の別の例を挙げてみましょう。 この例では、引数のない内部コンストラクタが、<code>obj</code>フィールドが自身を指すインスタンスを返します。</p><pre><code class="language-jldoctest">julia&gt; mutable struct SelfReferential
            obj::SelfReferential
            SelfReferential() = (x = new(); x.obj = x)
        end
-</code></pre><p>We can verify that this constructor works and constructs objects that are, in fact, self-referential:</p><pre><code class="language-jldoctest">julia&gt; x = SelfReferential();
+</code></pre><!--
+We can verify that this constructor works and constructs objects that are, in fact, self-referential:
+--><p>このコンストラクタが実際に動作して、自己参照型のオブジェクトを作成することを、検証できます。</p><pre><code class="language-jldoctest">julia&gt; x = SelfReferential();
 
 julia&gt; x === x
 true
@@ -77,22 +176,47 @@ julia&gt; x === x.obj
 true
 
 julia&gt; x === x.obj.obj
-true</code></pre><p>Although it is generally a good idea to return a fully initialized object from an inner constructor, incompletely initialized objects can be returned:</p><pre><code class="language-jldoctest">julia&gt; mutable struct Incomplete
+true</code></pre><!--
+Although it is generally a good idea to return a fully initialized object from an inner constructor,
+incompletely initialized objects can be returned:
+--><p>内部コンストラクタが完全に初期化されたオブジェクトを返す方が通常は良い手法ですが、初期化の不完全なオブジェクトを返すこともできます。</p><pre><code class="language-jldoctest">julia&gt; mutable struct Incomplete
            xx
            Incomplete() = new()
        end
 
-julia&gt; z = Incomplete();</code></pre><p>While you are allowed to create objects with uninitialized fields, any access to an uninitialized reference is an immediate error:</p><pre><code class="language-jldoctest">julia&gt; z.xx
-ERROR: UndefRefError: access to undefined reference</code></pre><p>This avoids the need to continually check for <code>null</code> values. However, not all object fields are references. Julia considers some types to be &quot;plain data&quot;, meaning all of their data is self-contained and does not reference other objects. The plain data types consist of primitive types (e.g. <code>Int</code>) and immutable structs of other plain data types. The initial contents of a plain data type is undefined:</p><pre><code class="language-julia-repl">julia&gt; struct HasPlain
+julia&gt; z = Incomplete();</code></pre><!--
+While you are allowed to create objects with uninitialized fields, any access to an uninitialized
+reference is an immediate error:
+--><p>初期化されていないフィールドを持つオブジェクトを作成することはできますが、初期化されていない参照にアクセスすると、即座にエラーが生じます。</p><pre><code class="language-jldoctest">julia&gt; z.xx
+ERROR: UndefRefError: access to undefined reference</code></pre><!--
+This avoids the need to continually check for `null` values. However, not all object fields are
+references. Julia considers some types to be "plain data", meaning all of their data is self-contained
+and does not reference other objects. The plain data types consist of primitive types (e.g. `Int`)
+and immutable structs of other plain data types. The initial contents of a plain data type is
+undefined:
+--><p>このため、<code>null</code>値を継続的にチェックする必要がなくなります。 ただし、すべてのオブジェクトフィールドが参照であるとは限りません。 Juliaは、いくつかの型を「プレーンデータ」とみなします。 「プレーンデータ」とは、すべてのデータが自身に含まれ、他のオブジェクトを参照していないことを意味します。 プレーンデータ型には、原始型（<code>Int</code>など）や、他のプレーンデータ型から成る不変な複合型があります。 プレーンなデータ型は、初期状態ではの内容が定義されていません。</p><pre><code class="language-julia-repl">julia&gt; struct HasPlain
            n::Int
            HasPlain() = new()
        end
 
 julia&gt; HasPlain()
-HasPlain(438103441441)</code></pre><p>Arrays of plain data types exhibit the same behavior.</p><p>You can pass incomplete objects to other functions from inner constructors to delegate their completion:</p><pre><code class="language-julia">julia&gt; mutable struct Lazy
+HasPlain(438103441441)</code></pre><!--
+Arrays of plain data types exhibit the same behavior.
+
+You can pass incomplete objects to other functions from inner constructors to delegate their completion:
+--><p>プレーンデータ型の配列は同様な動作をします。</p><p>不完全なオブジェクトを内部コンストラクタから他の関数​​に渡して、完成を委譲することができます。</p><pre><code class="language-julia">julia&gt; mutable struct Lazy
            xx
            Lazy(v) = complete_me(new(), v)
-       end</code></pre><p>As with incomplete objects returned from constructors, if <code>complete_me</code> or any of its callees try to access the <code>xx</code> field of the <code>Lazy</code> object before it has been initialized, an error will be thrown immediately.</p><h2><a class="nav-anchor" id="Parametric-Constructors-1" href="#Parametric-Constructors-1">Parametric Constructors</a></h2><p>Parametric types add a few wrinkles to the constructor story. Recall from <a href="types.html#Parametric-Types-1">Parametric Types</a> that, by default, instances of parametric composite types can be constructed either with explicitly given type parameters or with type parameters implied by the types of the arguments given to the constructor. Here are some examples:</p><pre><code class="language-jldoctest">julia&gt; struct Point{T&lt;:Real}
+       end</code></pre><!--
+As with incomplete objects returned from constructors, if `complete_me` or any of its callees
+try to access the `xx` field of the `Lazy` object before it has been initialized, an error will
+be thrown immediately.
+--><p>コンストラクタから返される不完全なオブジェクトと同じように、<code>complete_me</code>など呼び出し先が初期化する前に<code>Lazy</code>オブジェクトの<code>xx</code>フィールドにアクセスしようとすると、即座にエラーが投げられます。</p><p><a href="## Parametric Constructors"></a></p><h2><a class="nav-anchor" id="パラメトリックコンストラクタ-1" href="#パラメトリックコンストラクタ-1">パラメトリックコンストラクタ</a></h2><!--
+Parametric types add a few wrinkles to the constructor story. Recall from [Parametric Types](@ref)
+that, by default, instances of parametric composite types can be constructed either with explicitly
+given type parameters or with type parameters implied by the types of the arguments given to the
+constructor. Here are some examples:
+--><p>パラメトリック型の場合は、今までのコンストラクタの話に新たな面が加わります。 <a href="types.html#パラメトリック型-1">パラメトリック型</a> のことを復習しましょう。 デフォルトでは、パラメトリック複合型をインスタンス化する際の型の指定は、明示的に型パラメータを使う方法と、引数から暗黙的に推論させる方法があります。 いくつか例を示します。</p><pre><code class="language-jldoctest">julia&gt; struct Point{T&lt;:Real}
            x::T
            y::T
        end
@@ -121,27 +245,80 @@ julia&gt; Point{Float64}(1.0, 2.5) ## explicit T ##
 Point{Float64}(1.0, 2.5)
 
 julia&gt; Point{Float64}(1,2) ## explicit T ##
-Point{Float64}(1.0, 2.0)</code></pre><p>As you can see, for constructor calls with explicit type parameters, the arguments are converted to the implied field types: <code>Point{Int64}(1,2)</code> works, but <code>Point{Int64}(1.0,2.5)</code> raises an <a href="../stdlib/base.html#Core.InexactError"><code>InexactError</code></a> when converting <code>2.5</code> to <a href="../stdlib/numbers.html#Core.Int64"><code>Int64</code></a>. When the type is implied by the arguments to the constructor call, as in <code>Point(1,2)</code>, then the types of the arguments must agree – otherwise the <code>T</code> cannot be determined – but any pair of real arguments with matching type may be given to the generic <code>Point</code> constructor.</p><p>What&#39;s really going on here is that <code>Point</code>, <code>Point{Float64}</code> and <code>Point{Int64}</code> are all different constructor functions. In fact, <code>Point{T}</code> is a distinct constructor function for each type <code>T</code>. Without any explicitly provided inner constructors, the declaration of the composite type <code>Point{T&lt;:Real}</code> automatically provides an inner constructor, <code>Point{T}</code>, for each possible type <code>T&lt;:Real</code>, that behaves just like non-parametric default inner constructors do. It also provides a single general outer <code>Point</code> constructor that takes pairs of real arguments, which must be of the same type. This automatic provision of constructors is equivalent to the following explicit declaration:</p><pre><code class="language-jldoctest">julia&gt; struct Point{T&lt;:Real}
+Point{Float64}(1.0, 2.0)</code></pre><!--
+As you can see, for constructor calls with explicit type parameters, the arguments are converted
+to the implied field types: `Point{Int64}(1,2)` works, but `Point{Int64}(1.0,2.5)` raises an
+[`InexactError`](@ref) when converting `2.5` to [`Int64`](@ref). When the type is implied
+by the arguments to the constructor call, as in `Point(1,2)`, then the types of the
+arguments must agree -- otherwise the `T` cannot be determined -- but any pair of real
+arguments with matching type may be given to the generic `Point` constructor.
+--><p>御覧のように、明示的に型パラメータを指定してコンストラクタを呼び出すと、引数は暗黙的にフィールドの型に変換されます。 <code>Point{Int64}(1,2)</code>とすると動作しますが、<code>Point{Int64}(1.0,2.5)</code>とすると、 <code>2.5</code> を <a href="../stdlib/numbers.html#Core.Int64"><code>Int64</code></a> に変換する際に、 <a href="../stdlib/base.html#Core.InexactError"><code>InexactError</code></a> が発生します。 <code>Point(1,2)</code>のように、コンストラクタ呼び出しの引数によって、型が暗黙的に指定されている場合、引数の型どうしは一致させる必要があります。でなければ、<code>T</code>を決定できません。任意の実引数のペアは、型が一致していれば、汎化<code>Point</code>コンストラクタに渡すことができます。</p><p>`</p><!--
+What's really going on here is that `Point`, `Point{Float64}` and `Point{Int64}` are all different
+constructor functions. In fact, `Point{T}` is a distinct constructor function for each type `T`.
+Without any explicitly provided inner constructors, the declaration of the composite type `Point{T<:Real}`
+automatically provides an inner constructor, `Point{T}`, for each possible type `T<:Real`, that
+behaves just like non-parametric default inner constructors do. It also provides a single general
+outer `Point` constructor that takes pairs of real arguments, which must be of the same type.
+This automatic provision of constructors is equivalent to the following explicit declaration:
+--><p>ここで見てきたことは、<code>Point</code>、<code>Point{Float64}</code>、<code>Point{Int64}</code>すべてが異なるコンストラクタ関数だということです。 実際、<code>Point{T}</code>は、型<code>T</code>ごとにそれぞれ異なるコンストラクタ関数があります。 明示的に内部コンストラクタを定義しない場合は、複合型の宣言<code>Point{T&lt;:Real}</code>は 、<code>T&lt;:Real</code>を満たすそれぞれの型に対して、自動的に内部コンストラクタ<code>Point{T}</code>を生成し、パラメータを使わないデフォルトの内部コンストラクタのように振る舞います。 こうしたコンストラクタの自動生成は、以下の明示的な宣言と同等です。</p><pre><code class="language-jldoctest">julia&gt; struct Point{T&lt;:Real}
            x::T
            y::T
            Point{T}(x,y) where {T&lt;:Real} = new(x,y)
        end
 
-julia&gt; Point(x::T, y::T) where {T&lt;:Real} = Point{T}(x,y);</code></pre><p>Notice that each definition looks like the form of constructor call that it handles. The call <code>Point{Int64}(1,2)</code> will invoke the definition <code>Point{T}(x,y)</code> inside the <code>type</code> block. The outer constructor declaration, on the other hand, defines a method for the general <code>Point</code> constructor which only applies to pairs of values of the same real type. This declaration makes constructor calls without explicit type parameters, like <code>Point(1,2)</code> and <code>Point(1.0,2.5)</code>, work. Since the method declaration restricts the arguments to being of the same type, calls like <code>Point(1,2.5)</code>, with arguments of different types, result in &quot;no method&quot; errors.</p><p>Suppose we wanted to make the constructor call <code>Point(1,2.5)</code> work by &quot;promoting&quot; the integer value <code>1</code> to the floating-point value <code>1.0</code>. The simplest way to achieve this is to define the following additional outer constructor method:</p><pre><code class="language-jldoctest">julia&gt; Point(x::Int64, y::Float64) = Point(convert(Float64,x),y);</code></pre><p>This method uses the <a href="../stdlib/base.html#Base.convert"><code>convert()</code></a> function to explicitly convert <code>x</code> to <a href="../stdlib/numbers.html#Core.Float64"><code>Float64</code></a> and then delegates construction to the general constructor for the case where both arguments are <a href="../stdlib/numbers.html#Core.Float64"><code>Float64</code></a>. With this method definition what was previously a <a href="../stdlib/base.html#Base.MethodError"><code>MethodError</code></a> now successfully creates a point of type <code>Point{Float64}</code>:</p><pre><code class="language-jldoctest">julia&gt; Point(1,2.5)
+julia&gt; Point(x::T, y::T) where {T&lt;:Real} = Point{T}(x,y);</code></pre><!--
+Notice that each definition looks like the form of constructor call that it handles.
+The call `Point{Int64}(1,2)` will invoke the definition `Point{T}(x,y)` inside the
+`type` block.
+The outer constructor declaration, on the other hand, defines a
+method for the general `Point` constructor which only applies to pairs of values of the same real
+type. This declaration makes constructor calls without explicit type parameters, like `Point(1,2)`
+and `Point(1.0,2.5)`, work. Since the method declaration restricts the arguments to being of the
+same type, calls like `Point(1,2.5)`, with arguments of different types, result in "no method"
+errors.
+--><p>各コンストラクタの定義と呼び出しは、同じような形式であることに注意してください。 <code>Point{Int64}(1,2)</code>のように呼び出すと、<code>型</code>ブロック内の定義<code>Point{T}(x,y)</code>が呼び出されます。 一方、外部コンストラクタの宣言では、実数の同じ型の組にのみ適用される汎化コンストラクタ<code>Point</code>のメソッドが定義されています。 この宣言によって、<code>Point(1,2)</code> や<code>Point(1.0,2.5)</code>のように明示的に型パラメータをつけないコンストラクタの呼び出しが可能になります。 このメソッドの宣言では、引数が同じ型のものに制限されるため、<code>Point(1,2.5)</code>のような異なる型の引数を持つ呼び出しは、 &quot;no method&quot;のエラーがおこします。</p><!--
+Suppose we wanted to make the constructor call `Point(1,2.5)` work by "promoting" the integer
+value `1` to the floating-point value `1.0`. The simplest way to achieve this is to define the
+following additional outer constructor method:
+--><p><code>Point(1,2.5)</code>のようにコンストラクタを呼び出す時、整数値<code>1</code>を浮動小数点値<code>1.0</code>に「昇格」させたいとします。 これを実現する最も簡単な方法は、以下のように外部コンストラクタメソッドの定義を追加することです。</p><pre><code class="language-jldoctest">julia&gt; Point(x::Int64, y::Float64) = Point(convert(Float64,x),y);</code></pre><!--
+This method uses the [`convert()`](@ref) function to explicitly convert `x` to [`Float64`](@ref)
+and then delegates construction to the general constructor for the case where both arguments are
+[`Float64`](@ref). With this method definition what was previously a [`MethodError`](@ref) now
+successfully creates a point of type `Point{Float64}`:
+--><p>このメソッドは、<a href="../stdlib/base.html#Base.convert"><code>convert()</code></a>関数を使用して、<code>x</code> を <a href="../stdlib/numbers.html#Core.Float64"><code>Float64</code></a> に変換し、両方の引数が<a href="../stdlib/numbers.html#Core.Float64"><code>Float64</code></a>の時に使用できる汎化コンストラクタに委譲します。 こうして、以前は<a href="../stdlib/base.html#Base.MethodError"><code>MethodError</code></a>の生じたメソッド定義から、<code>Point{Float64}</code>型の値を正常に作成できるようになりました。</p><pre><code class="language-jldoctest">julia&gt; Point(1,2.5)
 Point{Float64}(1.0, 2.5)
 
 julia&gt; typeof(ans)
-Point{Float64}</code></pre><p>However, other similar calls still don&#39;t work:</p><pre><code class="language-jldoctest">julia&gt; Point(1.5,2)
+Point{Float64}</code></pre><!--
+However, other similar calls still don't work:
+--><p>しかし、他の似たような呼び出しはまだ動作しません。</p><pre><code class="language-jldoctest">julia&gt; Point(1.5,2)
 ERROR: MethodError: no method matching Point(::Float64, ::Int64)
 Closest candidates are:
-  Point(::T&lt;:Real, !Matched::T&lt;:Real) where T&lt;:Real at none:1</code></pre><p>For a more general way to make all such calls work sensibly, see <a href="conversion-and-promotion.html#conversion-and-promotion-1">Conversion and Promotion</a>. At the risk of spoiling the suspense, we can reveal here that all it takes is the following outer method definition to make all calls to the general <code>Point</code> constructor work as one would expect:</p><pre><code class="language-jldoctest">julia&gt; Point(x::Real, y::Real) = Point(promote(x,y)...);</code></pre><p>The <code>promote</code> function converts all its arguments to a common type – in this case <a href="../stdlib/numbers.html#Core.Float64"><code>Float64</code></a>. With this method definition, the <code>Point</code> constructor promotes its arguments the same way that numeric operators like <a href="../stdlib/math.html#Base.:+"><code>+</code></a> do, and works for all kinds of real numbers:</p><pre><code class="language-jldoctest">julia&gt; Point(1.5,2)
+  Point(::T&lt;:Real, !Matched::T&lt;:Real) where T&lt;:Real at none:1</code></pre><!--
+For a more general way to make all such calls work sensibly, see [Conversion and Promotion](@ref conversion-and-promotion).
+At the risk of spoiling the suspense, we can reveal here that all it takes is the following outer
+method definition to make all calls to the general `Point` constructor work as one would expect:
+--><p>このような呼び出しをうまく動作させる一般的な方法については、[変換と昇格]（@ ref conversion-and-promotion）を参照してください。 今までの話が無駄になるかもしれませんが、白状してしまうと、汎化コンストラクタ<code>Point</code>を様々な引数に対して期待どおりに動作させるには、外部メソッドの定義を以下のようにすればいいのです。</p><pre><code class="language-jldoctest">julia&gt; Point(x::Real, y::Real) = Point(promote(x,y)...);</code></pre><!--
+The `promote` function converts all its arguments to a common type -- in this case [`Float64`](@ref).
+With this method definition, the `Point` constructor promotes its arguments the same way that
+numeric operators like [`+`](@ref) do, and works for all kinds of real numbers:
+--><p>この<code>promote</code>関数はすべての引数を共通の型、この場合は <a href="../stdlib/numbers.html#Core.Float64"><code>Float64</code></a>に変換します。 このようにメソッドを定義すると、<code>Point</code>コンストラクタは、算術演算子の <a href="../stdlib/math.html#Base.:+"><code>+</code></a>と同じように引数を昇格するので、あらゆる種類の実数に対して動作します。</p><pre><code class="language-jldoctest">julia&gt; Point(1.5,2)
 Point{Float64}(1.5, 2.0)
 
 julia&gt; Point(1,1//2)
 Point{Rational{Int64}}(1//1, 1//2)
 
 julia&gt; Point(1.0,1//2)
-Point{Float64}(1.0, 0.5)</code></pre><p>Thus, while the implicit type parameter constructors provided by default in Julia are fairly strict, it is possible to make them behave in a more relaxed but sensible manner quite easily. Moreover, since constructors can leverage all of the power of the type system, methods, and multiple dispatch, defining sophisticated behavior is typically quite simple.</p><h2><a class="nav-anchor" id="Case-Study:-Rational-1" href="#Case-Study:-Rational-1">Case Study: Rational</a></h2><p>Perhaps the best way to tie all these pieces together is to present a real world example of a parametric composite type and its constructor methods. To that end, here is the (slightly modified) beginning of <a href="https://github.com/JuliaLang/julia/blob/master/base/rational.jl"><code>rational.jl</code></a>, which implements Julia&#39;s <a href="complex-and-rational-numbers.html#有理数-1">有理数</a>:</p><pre><code class="language-jldoctest">julia&gt; struct OurRational{T&lt;:Integer} &lt;: Real
+Point{Float64}(1.0, 0.5)</code></pre><!--
+Thus, while the implicit type parameter constructors provided by default in Julia are fairly strict,
+it is possible to make them behave in a more relaxed but sensible manner quite easily. Moreover,
+since constructors can leverage all of the power of the type system, methods, and multiple dispatch,
+defining sophisticated behavior is typically quite simple.
+--><p>したがって、デフォルトではJuliaの型パラメータコンストラクタの暗黙的な型の扱いはかなり厳格ですが、それらをより気軽で、しかし理にかなった方法で動作させることが可能です。 さらに、コンストラクタは型システム、メソッド、および多重ディスパッチのすべての機能を活用できるため、洗練された動作を定義するのは通常は非常に簡単です。</p><p><a href="## Case Study: Rational"></a></p><h2><a class="nav-anchor" id="事例研究:-有理数-1" href="#事例研究:-有理数-1">事例研究: 有理数</a></h2><!--
+Perhaps the best way to tie all these pieces together is to present a real world example of a
+parametric composite type and its constructor methods. To that end, here is the (slightly modified) beginning of [`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl),
+which implements Julia's [有理数](@ref):
+--><p>おそらく、これらの要素すべてを結びつける最良の方法は、パラメトリック複合型とそのコンストラクタメソッドの実例を見てみることです。 そこで、 <a href="https://github.com/JuliaLang/julia/blob/master/base/rational.jl"><code>rational.jl</code></a>　の始めの方でJuliaの<a href="complex-and-rational-numbers.html#有理数-1">有理数</a>を実装している部分を（少し修正していますが）見てみましょう。</p><pre><code class="language-jldoctest">julia&gt; struct OurRational{T&lt;:Integer} &lt;: Real
            num::T
            den::T
            function OurRational{T}(num::T, den::T) where T&lt;:Integer
@@ -184,19 +361,95 @@ julia&gt; function //(x::Complex, y::Complex)
            yy = real(y*y&#39;)
            complex(real(xy)//yy, imag(xy)//yy)
        end
-// (generic function with 6 methods)</code></pre><p>The first line – <code>struct OurRational{T&lt;:Integer} &lt;: Real</code> – declares that <code>OurRational</code> takes one type parameter of an integer type, and is itself a real type. The field declarations <code>num::T</code> and <code>den::T</code> indicate that the data held in a <code>OurRational{T}</code> object are a pair of integers of type <code>T</code>, one representing the rational value&#39;s numerator and the other representing its denominator.</p><p>Now things get interesting. <code>OurRational</code> has a single inner constructor method which checks that both of <code>num</code> and <code>den</code> aren&#39;t zero and ensures that every rational is constructed in &quot;lowest terms&quot; with a non-negative denominator. This is accomplished by dividing the given numerator and denominator values by their greatest common divisor, computed using the <code>gcd</code> function. Since <code>gcd</code> returns the greatest common divisor of its arguments with sign matching the first argument (<code>den</code> here), after this division the new value of <code>den</code> is guaranteed to be non-negative. Because this is the only inner constructor for <code>OurRational</code>, we can be certain that <code>OurRational</code> objects are always constructed in this normalized form.</p><p><code>OurRational</code> also provides several outer constructor methods for convenience. The first is the &quot;standard&quot; general constructor that infers the type parameter <code>T</code> from the type of the numerator and denominator when they have the same type. The second applies when the given numerator and denominator values have different types: it promotes them to a common type and then delegates construction to the outer constructor for arguments of matching type. The third outer constructor turns integer values into rationals by supplying a value of <code>1</code> as the denominator.</p><p>Following the outer constructor definitions, we have a number of methods for the <a href="../stdlib/math.html#Base.://"><code>//</code></a> operator, which provides a syntax for writing rationals. Before these definitions, <a href="../stdlib/math.html#Base.://"><code>//</code></a> is a completely undefined operator with only syntax and no meaning. Afterwards, it behaves just as described in <a href="complex-and-rational-numbers.html#有理数-1">有理数</a> – its entire behavior is defined in these few lines. The first and most basic definition just makes <code>a//b</code> construct a <code>OurRational</code> by applying the <code>OurRational</code> constructor to <code>a</code> and <code>b</code> when they are integers. When one of the operands of <a href="../stdlib/math.html#Base.://"><code>//</code></a> is already a rational number, we construct a new rational for the resulting ratio slightly differently; this behavior is actually identical to division of a rational with an integer. Finally, applying <a href="../stdlib/math.html#Base.://"><code>//</code></a> to complex integral values creates an instance of <code>Complex{OurRational}</code> – a complex number whose real and imaginary parts are rationals:</p><pre><code class="language-jldoctest">julia&gt; ans = (1 + 2im)//(1 - 2im);
+// (generic function with 6 methods)</code></pre><!--
+The first line -- `struct OurRational{T<:Integer} <: Real` -- declares that `OurRational` takes one
+type parameter of an integer type, and is itself a real type. The field declarations `num::T`
+and `den::T` indicate that the data held in a `OurRational{T}` object are a pair of integers of type
+`T`, one representing the rational value's numerator and the other representing its denominator.
+--><p>最初の行 の<code>struct OurRational{T&lt;:Integer} &lt;: Real</code> では、<code>OurRational</code>という型は、整数型の型パラメータ1個をとり、自身は実数型であることを宣言しています。 フィールドの宣言である<code>num::T</code> と<code>den::T</code>は、<code>OurRational{T}</code>オブジェクトには整数型<code>T</code>のペアが保持されていて、これが有理数の分子と分母のペアを表していることを示しています。</p><!--
+Now things get interesting. `OurRational` has a single inner constructor method which checks that
+both of `num` and `den` aren't zero and ensures that every rational is constructed in "lowest
+terms" with a non-negative denominator. This is accomplished by dividing the given numerator and
+denominator values by their greatest common divisor, computed using the `gcd` function. Since
+`gcd` returns the greatest common divisor of its arguments with sign matching the first argument
+(`den` here), after this division the new value of `den` is guaranteed to be non-negative. Because
+this is the only inner constructor for `OurRational`, we can be certain that `OurRational` objects are
+always constructed in this normalized form.
+--><p>面白くなってきました。 <code>OurRational</code>には内部コンストラクタメソッドが1つあって、<code>num</code>と<code>den</code>の両方が0ではないことを検査し、すべての有理数が、分母が非負の「既約分数」で構成されることを保証します。 これは、与えられた分子と分母の値を、最大公約数で割ることで得られ、最大公約数は<code>gcd</code>関数を使って計算されます。 <code>gcd</code>関数は、引数の最大公約数を最初の引数（ここでは<code>den</code>）に一致する符号で返すため、 割り算の後に得られる新しい<code>den</code>の値は非負であることが保証されます。 これは<code>OurRational</code>の唯一の内部コンストラクタであるため、<code>OurRational</code>オブジェクトは常にこうした正規化された形式で構築されていると断言できます。</p><!--
+`OurRational` also provides several outer constructor methods for convenience. The first is the "standard"
+general constructor that infers the type parameter `T` from the type of the numerator and denominator
+when they have the same type. The second applies when the given numerator and denominator values
+have different types: it promotes them to a common type and then delegates construction to the
+outer constructor for arguments of matching type. The third outer constructor turns integer values
+into rationals by supplying a value of `1` as the denominator.
+--><p><code>OurRational</code>には便宜のため、いくつかの外部コンストラクタメソッドも備わっています。 一つ目は、分子と分母の型が同じ場合、その型から型パラメータ<code>T</code>を推論する「標準」汎化コンストラクタです。 二つ目は、与えられた分子と分母の値の型が異なる場合に適用されます。 それらを共通の型に昇格させ、その後、型の一致する引数に対して動作する外部コンストラクタに生成を委譲します。 三つ目の外部コンストラクタは、分母に値<code>1</code>を与えて整数値を有理数に変換します。</p><!--
+Following the outer constructor definitions, we have a number of methods for the [`//`](@ref)
+operator, which provides a syntax for writing rationals. Before these definitions, [`//`](@ref)
+is a completely undefined operator with only syntax and no meaning. Afterwards, it behaves just
+as described in [有理数](@ref) -- its entire behavior is defined in these few lines.
+The first and most basic definition just makes `a//b` construct a `OurRational` by applying the
+`OurRational` constructor to `a` and `b` when they are integers. When one of the operands of [`//`](@ref)
+is already a rational number, we construct a new rational for the resulting ratio slightly differently;
+this behavior is actually identical to division of a rational with an integer.
+Finally, applying
+[`//`](@ref) to complex integral values creates an instance of `Complex{OurRational}` -- a complex
+number whose real and imaginary parts are rationals:
+--><p>外部コンストラクタの定義に続いては、<a href="../stdlib/math.html#Base.://"><code>//</code></a> 演算子のための多数のメソッドがあります。これは、有理数を書くための構文です。 こういった定義がなければ、<a href="../stdlib/math.html#Base.://"><code>//</code></a> は、構文だけで完全に意味のない未定義の演算子です。 定義をすると、 <a href="complex-and-rational-numbers.html#有理数-1">有理数</a>で説明したような動作をします。その動作は全て、このファイルの数行で定義されています。 第一の、そして最も基本的な定義では、<code>a</code>と<code>b</code>が整数の時に、<code>OurRational</code>コンストラクタを適用して<code>a//b</code>を生成します。  <a href="../stdlib/math.html#Base.://"><code>//</code></a>の被演算子の1つが既に有理数である場合、新しい有理数は比の結果として少し違う方法で生成されます。 この動作は実際には有理数と整数の除算と同一です。 最後に、 <a href="../stdlib/math.html#Base.://"><code>//</code></a>を複素有理数に適用して、<code>Complex{OurRational}</code>のインスタンスを作成します。 これは実部と虚部が有理数である複素数をあらわします。</p><pre><code class="language-jldoctest">julia&gt; ans = (1 + 2im)//(1 - 2im);
 
 julia&gt; typeof(ans)
 Complex{OurRational{Int64}}
 
 julia&gt; ans &lt;: Complex{OurRational}
-false</code></pre><p>Thus, although the <a href="../stdlib/math.html#Base.://"><code>//</code></a> operator usually returns an instance of <code>OurRational</code>, if either of its arguments are complex integers, it will return an instance of <code>Complex{OurRational}</code> instead. The interested reader should consider perusing the rest of <a href="https://github.com/JuliaLang/julia/blob/master/base/rational.jl"><code>rational.jl</code></a>: it is short, self-contained, and implements an entire basic Julia type.</p><h2><a class="nav-anchor" id="constructors-and-conversion-1" href="#constructors-and-conversion-1">Constructors and Conversion</a></h2><p>Constructors <code>T(args...)</code> in Julia are implemented like other callable objects: methods are added to their types. The type of a type is <code>Type</code>, so all constructor methods are stored in the method table for the <code>Type</code> type. This means that you can declare more flexible constructors, e.g. constructors for abstract types, by explicitly defining methods for the appropriate types.</p><p>However, in some cases you could consider adding methods to <code>Base.convert</code> <em>instead</em> of defining a constructor, because Julia falls back to calling <a href="../stdlib/base.html#Base.convert"><code>convert()</code></a> if no matching constructor is found. For example, if no constructor <code>T(args...) = ...</code> exists <code>Base.convert(::Type{T}, args...) = ...</code> is called.</p><p><code>convert</code> is used extensively throughout Julia whenever one type needs to be converted to another (e.g. in assignment, <a href="../stdlib/c.html#ccall"><code>ccall</code></a>, etcetera), and should generally only be defined (or successful) if the conversion is lossless.  For example, <code>convert(Int, 3.0)</code> produces <code>3</code>, but <code>convert(Int, 3.2)</code> throws an <code>InexactError</code>.  If you want to define a constructor for a lossless conversion from one type to another, you should probably define a <code>convert</code> method instead.</p><p>On the other hand, if your constructor does not represent a lossless conversion, or doesn&#39;t represent &quot;conversion&quot; at all, it is better to leave it as a constructor rather than a <code>convert</code> method. For example, the <code>Array{Int}()</code> constructor creates a zero-dimensional <code>Array</code> of the type <code>Int</code>, but is not really a &quot;conversion&quot; from <code>Int</code> to an <code>Array</code>.</p><h2><a class="nav-anchor" id="Outer-only-constructors-1" href="#Outer-only-constructors-1">Outer-only constructors</a></h2><p>As we have seen, a typical parametric type has inner constructors that are called when type parameters are known; e.g. they apply to <code>Point{Int}</code> but not to <code>Point</code>. Optionally, outer constructors that determine type parameters automatically can be added, for example constructing a <code>Point{Int}</code> from the call <code>Point(1,2)</code>. Outer constructors call inner constructors to do the core work of making an instance. However, in some cases one would rather not provide inner constructors, so that specific type parameters cannot be requested manually.</p><p>For example, say we define a type that stores a vector along with an accurate representation of its sum:</p><pre><code class="language-julia">julia&gt; struct SummedArray{T&lt;:Number,S&lt;:Number}
+false</code></pre><!--
+Thus, although the [`//`](@ref) operator usually returns an instance of `OurRational`, if either
+of its arguments are complex integers, it will return an instance of `Complex{OurRational}` instead.
+The interested reader should consider perusing the rest of [`rational.jl`](https://github.com/JuliaLang/julia/blob/master/base/rational.jl):
+it is short, self-contained, and implements an entire basic Julia type.
+--><p>したがって、<a href="../stdlib/math.html#Base.://"><code>//</code></a>演算子は通常<code>OurRational</code>のインスタンスを返しますが、引数のいずれかが複素数の場合、替わりに<code>Complex{OurRational}</code>のインスタンスを返します。 興味のある読者は、<a href="https://github.com/JuliaLang/julia/blob/master/base/rational.jl"><code>rational.jl</code></a>の残りの部分を熟読するといいでしょう。 短くてファイル内で完結していますが、Juliaの基本的な型である有理数型全体が実装されています。</p><p><a href="## [Constructors and Conversion](@id constructors-and-conversion)"></a></p><h2><a class="nav-anchor" id="constructors-and-conversion-1" href="#constructors-and-conversion-1">コンストラクタと変換</a></h2><!--
+Constructors `T(args...)` in Julia are implemented like other callable objects: methods are added
+to their types. The type of a type is `Type`, so all constructor methods are stored in the method
+table for the `Type` type. This mans that you can declare more flexible constructors, e.g. constructors
+for abstract types, by explicitly defining methods for the appropriate types.
+--><p>Juliaでは、<code>T(args...)</code>というコンストラクタは、他の呼び出し可能なオブジェクトと同じように実装されています。つまり型に対してメソッドが付加されています。 型の型は<code>Type</code>であり、すべてのコンストラクタのメソッドは<code>Type</code>型のメソッド・テーブルに格納されます。 そのため、適切な型に対してメソッドを明示的に定義すると、抽象型のコンストラクタなど、より柔軟にコンストラクタを宣言することができます。</p><!--
+However, in some cases you could consider adding methods to `Base.convert` *instead* of defining
+a constructor, because Julia falls back to calling [`convert()`](@ref) if no matching constructor
+is found. For example, if no constructor `T(args...) = ...` exists `Base.convert(::Type{T}, args...) = ...`
+is called.
+--><p>ただし、コンストラクタを定義する** 替わりに**、<code>Base.convert</code>メソッドを追加したほうがいい場合もあります。 Juliaでは、適切なコンストラクタが見つからない場合には、<a href="../stdlib/base.html#Base.convert"><code>convert()</code></a> が呼ばれるからです。 たとえば、<code>T(args...) = ...</code>というコンストラクタが存在しない場合は、<code>Base.convert(::Type{T}, args...) = ...</code> が呼び出されます。</p><!--
+`convert` is used extensively throughout Julia whenever one type needs to be converted to another
+(e.g. in assignment, [`ccall`](@ref), etcetera), and should generally only be defined (or successful)
+if the conversion is lossless.  For example, `convert(Int, 3.0)` produces `3`, but `convert(Int, 3.2)`
+throws an `InexactError`.  If you want to define a constructor for a lossless conversion from
+one type to another, you should probably define a `convert` method instead.
+--><p><code>convert</code>はあるタイプを別のタイプに変換する必要があるとき（たとえば、代入や<a href="../stdlib/c.html#ccall"><code>ccall</code></a>など）、Julia全体で広範囲に使用されます。 通常は、<code>convert</code>は変換が可逆の時にのみ定義すべきで、うまくいくのもそうした時のみでしょう。 たとえば、<code>convert(Int, 3.0)</code>は<code>3</code>を生成しますが、<code>convert(Int, 3.2)</code>は <code>InexactError</code>を投げます。 あるタイプから別のタイプへの可逆変換をするコンストラクタを定義したい場合は、おそらく<code>convert</code>メソッドを定義すべきでしょう。</p><!--
+On the other hand, if your constructor does not represent a lossless conversion, or doesn't represent
+"conversion" at all, it is better to leave it as a constructor rather than a `convert` method.
+For example, the `Array{Int}()` constructor creates a zero-dimensional `Array` of the type `Int`,
+but is not really a "conversion" from `Int` to an `Array`.
+--><p>一方、コンストラクタが可逆変換ではない場合、または「変換」を表していない場合は、<code>convert</code>メソッドではなくコンストラクタのままにしたほうががよいでしょう。 例えば、<code>Array{Int}()</code>コンストラクタは、ゼロ次元の<code>Int</code>型の<code>Array</code>を生成します。しかしこれはまったく、<code>Int</code>から<code>Array</code>への「変換」ではありません。</p><p><a href="## Outer-only constructors"></a></p><h2><a class="nav-anchor" id="外部限定コンストラクタ-1" href="#外部限定コンストラクタ-1">外部限定コンストラクタ</a></h2><!--
+As we have seen, a typical parametric type has inner constructors that are called when type parameters
+are known; e.g. they apply to `Point{Int}` but not to `Point`. Optionally, outer constructors
+that determine type parameters automatically can be added, for example constructing a `Point{Int}`
+from the call `Point(1,2)`. Outer constructors call inner constructors to do the core work of
+making an instance. However, in some cases one would rather not provide inner constructors, so
+that specific type parameters cannot be requested manually.
+--><p>これまで見てきたように、一般的なパラメトリック型には、型パラメータが既知のときに呼び出される内部コンストラクタがあります。 例えば、<code>Point</code>ではなく<code>Point{Int}</code>が適用されます。 必要に応じて、型パラメータを自動的に決定する外部コンストラクタを追加することができます。例えば、<code>Point(1,2)</code>から<code>Point{Int}</code>を呼び出すことができます。 外部のコンストラクタは内部のコンストラクタを呼び出して、インスタンスを作成する中核的な作業を行います。 しかし、特定の型パラメータを手動で呼び出せないように、内部コンストラクタを提供したくない場合もあります。</p><!--
+For example, say we define a type that stores a vector along with an accurate representation of
+its sum:
+--><p>たとえば、ベクトルを格納し、さらにその合計を正確に表現する型を定義するとします。</p><pre><code class="language-julia">julia&gt; struct SummedArray{T&lt;:Number,S&lt;:Number}
            data::Vector{T}
            sum::S
        end
 
 julia&gt; SummedArray(Int32[1; 2; 3], Int32(6))
-SummedArray{Int32,Int32}(Int32[1, 2, 3], 6)</code></pre><p>The problem is that we want <code>S</code> to be a larger type than <code>T</code>, so that we can sum many elements with less information loss. For example, when <code>T</code> is <a href="../stdlib/numbers.html#Core.Int32"><code>Int32</code></a>, we would like <code>S</code> to be <a href="../stdlib/numbers.html#Core.Int64"><code>Int64</code></a>. Therefore we want to avoid an interface that allows the user to construct instances of the type <code>SummedArray{Int32,Int32}</code>. One way to do this is to provide a constructor only for <code>SummedArray</code>, but inside the <code>type</code> definition block to suppress generation of default constructors:</p><pre><code class="language-julia">julia&gt; struct SummedArray{T&lt;:Number,S&lt;:Number}
+SummedArray{Int32,Int32}(Int32[1, 2, 3], 6)</code></pre><!--
+The problem is that we want `S` to be a larger type than `T`, so that we can sum many elements
+with less information loss. For example, when `T` is [`Int32`](@ref), we would like `S` to
+be [`Int64`](@ref). Therefore we want to avoid an interface that allows the user to construct
+instances of the type `SummedArray{Int32,Int32}`. One way to do this is to provide a
+constructor only for `SummedArray`, but inside the `type` definition block to suppress
+generation of default constructors:
+--><p>ここで問題は、<code>S</code>を<code>T</code>より大きな型にして、多くの要素の合計を求める際に情報損失を少なくしたいということです。 たとえば、<code>T</code> を<a href="../stdlib/numbers.html#Core.Int32"><code>Int32</code></a>、<code>S</code>を <a href="../stdlib/numbers.html#Core.Int64"><code>Int64</code></a>とします。 そして、ユーザーが<code>SummedArray{Int32,Int32}</code>といった型のインスタンスを構築できるようなインターフェイスは避けたいと考えています。 これを行う方法の1つは、<code>SummedArray</code>コンストラクタの提供のみを行い、<code>型</code>定義ブロックの中でデフォルトのコンストラクタの生成を抑止することです。</p><pre><code class="language-julia">julia&gt; struct SummedArray{T&lt;:Number,S&lt;:Number}
            data::Vector{T}
            sum::S
            function SummedArray(a::Vector{T}) where T
@@ -208,4 +461,9 @@ SummedArray{Int32,Int32}(Int32[1, 2, 3], 6)</code></pre><p>The problem is that w
 julia&gt; SummedArray(Int32[1; 2; 3], Int32(6))
 ERROR: MethodError: no method matching SummedArray(::Array{Int32,1}, ::Int32)
 Closest candidates are:
-  SummedArray(::Array{T,1}) where T at none:5</code></pre><p>This constructor will be invoked by the syntax <code>SummedArray(a)</code>. The syntax <code>new{T,S}</code> allows specifying parameters for the type to be constructed, i.e. this call will return a <code>SummedArray{T,S}</code>. <code>new{T,S}</code> can be used in any constructor definition, but for convenience the parameters to <code>new{}</code> are automatically derived from the type being constructed when possible.</p><footer><hr/><a class="previous" href="methods.html"><span class="direction">Previous</span><span class="title">Methods</span></a><a class="next" href="conversion-and-promotion.html"><span class="direction">Next</span><span class="title">Conversion and Promotion</span></a></footer></article></body></html>
+  SummedArray(::Array{T,1}) where T at none:5</code></pre><!--
+This constructor will be invoked by the syntax `SummedArray(a)`. The syntax `new{T,S}` allows
+specifying parameters for the type to be constructed, i.e. this call will return a `SummedArray{T,S}`.
+`new{T,S}` can be used in any constructor definition, but for convenience the parameters
+to `new{}` are automatically derived from the type being constructed when possible.
+--><p>このコンストラクタは<code>SummedArray(a)</code>という構文によって呼び出されます。 <code>new{T,S}</code>という構文で、構築する型のパラメータを指定できます。 つまり、この呼び出しは<code>SummedArray{T,S}</code>を返します。  <code>new{T,S}</code>を任意のコンストラクタ定義で使用することができますが、便宜のため、<code>new{}</code>に対するパラメータは、可能な場合は、生成される型から自動的に推定されます。</p><footer><hr/><a class="previous" href="methods.html"><span class="direction">Previous</span><span class="title">メソッド</span></a><a class="next" href="conversion-and-promotion.html"><span class="direction">Next</span><span class="title">Conversion and Promotion</span></a></footer></article></body></html>
