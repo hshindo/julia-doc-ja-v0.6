@@ -473,11 +473,21 @@ the requirements of both registered and unregistered packages.
     プライベートパッケージまたはフォークを利用可能にすることもできます。
     詳細については、[カスタムMETADATAリポジトリ](@ref)を参照してください。
 
-## Updating Packages
+[](## Updating Packages)
 
+## パッケージの更新
+
+```@raw html
+<!--
 When package developers publish new registered versions of packages that you're using, you will,
 of course, want the new shiny versions. To get the latest and greatest versions of all your packages,
 just do [`Pkg.update()`](@ref):
+-->
+```
+
+自分の使っている登録されたパッケージの新しいバージョンをパッケージ開発者が公開したとき、
+もちろん、ピカピカの新しいやつが欲しくなります。
+`Pkg.update()`を実行するだけで、自分のすべてのパッケージの数字が最大の最新版を入手できます。
 
 ```julia-repl
 julia> Pkg.update()
@@ -487,6 +497,8 @@ INFO: Upgrading Distributions: v0.2.8 => v0.2.10
 INFO: Upgrading Stats: v0.2.7 => v0.2.8
 ```
 
+```@raw html
+<!--
 The first step of updating packages is to pull new changes to `~/.julia/v0.6/METADATA` and see
 if any new registered package versions have been published. After this, [`Pkg.update()`](@ref)
 attempts to update packages that are checked out on a branch and not dirty (i.e. no changes have
@@ -495,23 +507,68 @@ Upstream changes will only be applied if no merging or rebasing is necessary –
 can be ["fast-forwarded"](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging).
 If the branch cannot be fast-forwarded, it is assumed that you're working on it and will update
 the repository yourself.
+-->
+```
 
+パッケージを更新する最初のステップは、`~/.julia/v0.6/METADATA`に新しい変更をプルして、
+登録パッケージの新しいバージョンが公開されているか確認することです。
+このあとに、[`Pkg.update()`](@ref)はパッケージの上流のレポジトリから変更をプルすることによって、
+ブランチでチェックアウトされ汚れていないパッケージ（gitで追跡されるファイルは変更されません）を更新しようとします。
+上流の変更は、マージやリベースが必要ない場合、
+つまりブランチが
+[「早送り」](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)
+できる場合だけ適用されます。
+ブランチが早送りできない場合は、作業中であるとみなされ、自分でリポジトリを更新します。
+
+```@raw html
+<!--
 Finally, the update process recomputes an optimal set of package versions to have installed to
 satisfy your top-level requirements and the requirements of "fixed" packages. A package is considered
 fixed if it is one of the following:
+-->
+```
 
+最後に、更新プロセスは、
+トップレベルの要件と「修正」されたパッケージの要件を満たすためにインストールすべき最適なバージョンのパッケージを再計算します。
+パッケージが次のどれかである場合、パッケージは修正されたと見なされます。
+
+```@raw html
+<!--
 1. **Unregistered:** the package is not in `METADATA` – you installed it with [`Pkg.clone()`](@ref).
 2. **Checked out:** the package repo is on a development branch.
 3. **Dirty:** changes have been made to files in the repo.
+-->
+```
 
+1. **未登録:** パッケージが`METADATA`にないとき - [`Pkg.clone()`](@ref)でパッケージをインストールした
+2. **チェックアウト:** パッケージリポジトリが開発ブランチにあったとき
+3. **Dirty:** リポジトリのファイルに変更があったとき
+
+```@raw html
+<!--
 If any of these are the case, the package manager cannot freely change the installed version of
 the package, so its requirements must be satisfied by whatever other package versions it picks.
 The combination of top-level requirements in `~/.julia/v0.6/REQUIRE` and the requirement of fixed
 packages are used to determine what should be installed.
+-->
+```
 
+これらのいずれかが該当する場合、
+パッケージマネージャはインストールされているバージョンのパッケージを自由に変更できないため、
+その要件を何か別のパッケージバージョンで満たす必要があります。
+`~/.julia/v0.6/REQUIRE`のトップレベルの要件と修正されたパッケージの要件の組み合わせを使って、
+何をインストールすべきか判断します。
+
+```@raw html
+<!--
 You can also update only a subset of the installed packages, by providing arguments to the [`Pkg.update`](@ref)
 function. In that case, only the packages provided as arguments and their dependencies will be
 updated:
+-->
+```
+
+また、[`Pkg.update`](@ref)関数に引数を渡して、インストールしたパッケージ群の一部のみを更新することもできます。
+この場合、引数として渡したパッケージとその依存関係のみが更新されます：
 
 ```julia-repl
 julia> Pkg.update("Example")
@@ -520,9 +577,16 @@ INFO: Computing changes...
 INFO: Upgrading Example: v0.4.0 => 0.4.1
 ```
 
+```@raw html
+<!--
 This partial update process still computes the new set of package versions according to top-level
 requirements and "fixed" packages, but it additionally considers all other packages except those
 explicitly provided, and their dependencies, as fixed.
+-->
+```
+
+この部分的な更新プロセスでは、新しいバージョンのパッケージをトップレベルの要件と「修正された」パッケージに従って計算しますが、
+さらに、明示的に提供されるもの以外のすべてのパッケージとその依存関係を修正済みとして考慮します。
 
 ## Checkout, Pin and Free
 
