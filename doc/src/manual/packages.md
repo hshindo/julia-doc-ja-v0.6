@@ -277,7 +277,7 @@ have to run [`Pkg.edit()`](@ref) again to fix the files contents yourself.
 -->
 ```
 
-もう一度、`REQUIRE`ファイルを編集して各パッケージ名の行を削除し、
+もう一度おさらいですが、これは`REQUIRE`ファイルを編集してパッケージ名を削除し、
 [`Pkg.resolve()`](@ref)を実行して、インストールされたパッケージのセットを更新して一致させることと同じです。
 [`Pkg.add()`](@ref)と[`Pkg.rm()`](@ref)は、単一のパッケージに対する要件の追加と削除に便利ですが、
 複数のパッケージを追加または削除する場合は、[`Pkg.edit()`](@ref)を呼び出して`REQUIRE`の内容を手動で変更し、
