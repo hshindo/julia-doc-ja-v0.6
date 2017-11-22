@@ -1363,8 +1363,8 @@ and [`eye()`](@ref) functions that Julia provides for working with dense matrice
 sparse matrices instead, you can use the same names with an `sp` prefix:
 -->
 ```
-疎行列を作成する最も簡単な方法は、Juliaで密行列に対して利用可能な[`zeros()`](@ref)関数や[`eye()`](@ref)関数と同等の関数を使用することです。
-疎行列を代わりに生成するには、同じ名前に`sp`接頭辞を付ければ、可能です。
+疎行列を生成する最も簡単な方法は、Juliaで密行列に対して利用する[`zeros()`]　(@ref）関数や[`eye()`](@ref）関数と同等の関数を使用することです。
+代わりに疎行列を生成するには、同じ名前のあたまに`sp`を付ければいいです。
 
 
 
@@ -1388,8 +1388,8 @@ values. `sparse(I,J,V)` constructs a sparse matrix such that `S[I[k], J[k]] = V[
 -->
 ```
 
-[`sparse()`](@ref) 関数は、疎行列を生成するのによく使われる便利な方法です。
-ベクトル`I`を行インデックス、ベクトル`J`を列インデックス、ベクトル`V`を格納された値として入力を受け取ります。
+[`sparse()`](@ref) 関数は、疎行列を生成するのによく使われる便利な手段となります。
+これは入力として、ベクトル`I`を行インデックス、ベクトル`J`を列インデックス、ベクトル`V`を格納された値を受け取ります。
 `sparse(I,J,V)`から生成される疎行列は、`S[I[k], J[k]] = V[k]`を満たします。
 
 
@@ -1428,7 +1428,7 @@ Another way to create sparse matrices is to convert a dense matrix into a sparse
 the [`sparse()`](@ref) function:
 -->
 ```
-疎行列を生成する別の方法は、[`sparse()`](@ref)関数を使用して、密行列を疎行列に変換することです。
+別の疎行列を生成する方法は、[`sparse()`](@ref)関数を使用して、密行列を疎行列に変換することです。
 
 
 ```jldoctest
@@ -1448,7 +1448,7 @@ You can go in the other direction using the [`full()`](@ref) function. The [`iss
 function can be used to query if a matrix is sparse.
 -->
 ```
-逆に[`full()`] (@ref)関数を使って疎行列を密行列に変換するができます。[`issparse()`](@ref)関数は、行列が疎であるかどうかを調べるために使用できます。
+逆に[`full()`] (@ref)関数を使って疎行列を密行列に変換することができます。[`issparse()`](@ref)関数は、行列が疎かどうかを調べるために使用できます。
 
 ```jldoctest
 julia> issparse(speye(5))
@@ -1472,8 +1472,8 @@ the sparse matrix.
 ```
 疎行列の算術演算も、密行列の場合と同じように動作します。
 疎行列のインデックスによる参照と代入、および連結は、密行列と同じ方法で行われます。
-インデックス操作、特に代入は、1度に1つの要素ずつ行われるとコストがかかります。
-疎行列を [`findnz()`] (@ref)を使って`(I,J,V)`形式に変換し、密ベクトル`(I,J,V)`に対して値や構造を操作してから疎行列を再構築する方がよい場合も多くあります。
+インデックス操作、特に代入は、1度に1つの要素ずつ行うとコストがかかります。
+[`findnz()`] (@ref)を使って疎行列を `(I,J,V)`形式に変換し、密ベクトル`(I,J,V)`に対して値や構造を操作してから疎行列を再構築する方がよい場合も多くあります。
 
 [](### Correspondence of dense and sparse methods)
 ### 密と疎のメソッドの対応
