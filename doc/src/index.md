@@ -17,7 +17,7 @@
   * [コンストラクタ](@ref man-constructors)
   * [変換と昇格](@ref conversion-and-promotion)
   * [インターフェース](@ref)
-  * [Modules](@ref modules)
+  * [モジュール](@ref modules)
   * [Documentation](@ref)
   * [Metaprogramming](@ref)
   * [Multi-dimensional Arrays](@ref man-multi-dim-arrays)
