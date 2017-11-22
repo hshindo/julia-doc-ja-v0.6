@@ -216,3 +216,11 @@
 | incremental precompile                          | 逐次プリコンパイル                              
 | top-level definitions                           | 最上位の定義                              
 | name conflict                                   | 名前の競合                                
+| effectively                                     | 事実上                                   
+| identity matrix                                 | 単位行列                                 
+| iid(independently and identically distributed)  | 独立同分布                               
+| linearly spaced                                 | 等間隔の                                  
+| standard normally distributed                   | 標準正規分布の                            
+| uniformly distributed                           | 一様分布の                                
+| Sparse Matrices                                 | 疎行列                                   
+| Compressed Sparse Column (CSC) Storage          | 圧縮疎列 (CSC) 格納                      
