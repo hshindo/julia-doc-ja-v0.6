@@ -1,13 +1,27 @@
-# [Modules](@id modules)
+[](# [Modules](@id modules))
 
+# [モジュール](@id modules)
+
+```@raw html
+<!--
 Modules in Julia are separate variable workspaces, i.e. they introduce a new global scope. They
 are delimited syntactically, inside `module Name ... end`. Modules allow you to create top-level
 definitions (aka global variables) without worrying about name conflicts when your code is used
 together with somebody else's. Within a module, you can control which names from other modules
 are visible (via importing), and specify which of your names are intended to be public (via exporting).
+-->
+```
 
+Juliaにおけるモジュールは別々の変数ワークスペースです。つまり、新しいグローバルスコープを導入します。モジュールは構文的には`module Name ... end`の内側として区切られます。モジュールは、自分のコードが誰かのコードと一緒に使われるときに、名前の競合を心配することなく、トップレベルの定義（別名グローバル変数）を作成することを可能にします。モジュール内では、他のモジュールのどの名前を（インポートによって）参照できるか制御したり、名前を公開することを（エクスポートを介して）指定することができます。
+
+```@raw html
+<!--
 The following example demonstrates the major features of modules. It is not meant to be run, but
 is shown for illustrative purposes:
+-->
+```
+
+次の例はモジュールの主な機能を説明しています。実行できるわけではありませんが、理解しやすくするために載せています。
 
 ```julia
 module MyModule
@@ -32,38 +46,94 @@ show(io::IO, a::MyType) = print(io, "MyType $(a.x)")
 end
 ```
 
+```@raw html
+<!--
 Note that the style is not to indent the body of the module, since that would typically lead to
 whole files being indented.
+-->
+```
 
+モジュールの中身はインデントしていないことに注意してください。これは、通常ファイル全体がインデントされるためです。
+
+```@raw html
+<!--
 This module defines a type `MyType`, and two functions. Function `foo` and type `MyType` are exported,
 and so will be available for importing into other modules.  Function `bar` is private to `MyModule`.
+-->
+```
 
+このモジュールは型`MyType`と２つの関数を定義しています。関数`foo`と型`MyType`はエクスポートされているため、他のモジュールの中にインポートすることができます。関数`bar`は`MyModule`専用です。
+
+```@raw html
+<!--
 The statement `using Lib` means that a module called `Lib` will be available for resolving names
 as needed. When a global variable is encountered that has no definition in the current module,
 the system will search for it among variables exported by `Lib` and import it if it is found there.
 This means that all uses of that global within the current module will resolve to the definition
 of that variable in `Lib`.
+-->
+```
 
+文`using Lib`が意味するのは、必要に応じて名前を解決するために`Lib`と呼ばれるモジュールを利用できるということです。現在のモジュールに定義されていないグローバル変数が見つかった場合、システムは`Lib`によってエクスポートされた変数の中から変数を検索し、そこに見つかった場合はインポートします。 つまり、現在のモジュール内のそのグローバルのすべての使用は、`Lib`内のその変数の定義に解決されます。
+
+```@raw html
+<!--
 The statement `using BigLib: thing1, thing2` is a syntactic shortcut for `using BigLib.thing1, BigLib.thing2`.
+-->
+```
 
+文`using BigLib: thing1, thing2`は`using BigLib.thing1, BigLib.thing2`の構文上の省略形です。
+
+```@raw html
+<!--
 The `import` keyword supports all the same syntax as `using`, but only operates on a single name
 at a time. It does not add modules to be searched the way `using` does. `import` also differs
 from `using` in that functions must be imported using `import` to be extended with new methods.
+-->
+```
 
+`import`キーワードは、`using`と同じ構文をサポートしますが、一度に１つの名前でしか動作しません。`using`とは違って、`import`は検索されるモジュールには追加しません。関数を新しいメソッドで拡張するために`import`を使ってインポートする必要がある点でも、 `import`は`using`とは異なります。
+
+```@raw html
+<!--
 In `MyModule` above we wanted to add a method to the standard `show` function, so we had to write
 `import Base.show`. Functions whose names are only visible via `using` cannot be extended.
+-->
+```
 
+上記の`MyModule`では、標準の`show`関数にメソッドを追加したいので、`import Base.show`と書く必要がありました。`using`を使わないと名前を参照できない関数は、拡張できませんでした。
+
+```@raw html
+<!--
 The keyword `importall` explicitly imports all names exported by the specified module, as if
 `import` were individually used on all of them.
+->
+```
 
+キーワード`importall`は指定したモジュールでエクスポートされた全ての名前を、それぞれ`import`が使われているかのように明示的にインポートします。
+
+```@raw html
+<!--
 Once a variable is made visible via `using` or `import`, a module may not create its own variable
 with the same name. Imported variables are read-only; assigning to a global variable always affects
 a variable owned by the current module, or else raises an error.
+-->
+```
 
-## Summary of module usage
+変数を`using`または`import`を通して表示すると、モジュールはその中に同じ名前の変数を作成しないことがあります。 インポートされた変数は読み取り専用です。 グローバル変数に割り当てることは、常に現在のモジュールが所有する変数に影響します。そうでない場合は、エラーが発生します。
 
+[](## Summary of module usage)
+
+## モジュールの使い方の概要
+
+```@raw html
+<!--
 To load a module, two main keywords can be used: `using` and `import`. To understand their differences,
 consider the following example:
+-->
+```
+
+モジュールを読み込むには、主に２つのキーワードが使われます。`using`と`import`です。２つの違いを理解するために、次の例を考えましょう。
 
 ```julia
 module MyModule
@@ -77,10 +147,18 @@ p() = "p"
 end
 ```
 
+```@raw html
+<!--
 In this module we export the `x` and `y` functions (with the keyword `export`), and also have
 the non-exported function `p`. There are several different ways to load the Module and its inner
 functions into the current workspace:
+-->
+```
 
+このモジュールでは、関数`x`と関数`y`は（キーワード`export`を使って）エクスポートされていて、関数`p`はエクスポートされていません。モジュールとその内部の関数を現在の作業領域に読み込むにはいくつかの方法があります。
+
+```@raw html
+<!--
 | Import Command                  | What is brought into scope                                                      | Available for method extension              |
 |:------------------------------- |:------------------------------------------------------------------------------- |:------------------------------------------- |
 | `using MyModule`                | All `export`ed names (`x` and `y`), `MyModule.x`, `MyModule.y` and `MyModule.p` | `MyModule.x`, `MyModule.y` and `MyModule.p` |
@@ -90,11 +168,31 @@ functions into the current workspace:
 | `import MyModule.x, MyModule.p` | `x` and `p`                                                                     | `x` and `p`                                 |
 | `import MyModule: x, p`         | `x` and `p`                                                                     | `x` and `p`                                 |
 | `importall MyModule`            | All `export`ed names (`x` and `y`)                                              | `x` and `y`                                 |
+-->
+```
 
-### Modules and files
+| 読み込みコマンド                        | スコープにもってこられるもの                           | メソッド拡張で利用可能なもの                           |
+| ------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `using MyModule`                | `export`された全ての名前（`x`と`y`）と`MyModule.x`, `MyModule.p` | `MyModule.x`, `MyModule.y`, `MyModule.p` |
+| `using MyModule.x, MyModule.p`  | `x`と`p`                                  |                                          |
+| `using MyModule: x, p`          | `x`と`p`                                  |                                          |
+| `import MyModule`               | `MyModule.x`, `MyModule.y`, `MyModule.p` | `MyModule.x`, `MyModule.y`, `MyModule.p` |
+| `import MyModule.x, MyModule.y` | `x`と`p`                                  | `x`と`p`                                  |
+| `import MyModule: x, p`         | `x`と`p`                                  | `x`と`p`                                  |
+| `importall MyModule`            | `export`された全ての名前（`x`と`y`）                | `x`と`y`                                  |
 
+[](### Modules and files)
+
+### モジュールとファイル
+
+```@raw html
+<!--
 Files and file names are mostly unrelated to modules; modules are associated only with module
 expressions. One can have multiple files per module, and multiple modules per file:
+-->
+```
+
+ファイルとファイル名はモジュールとはほとんど関係がありません。モジュールはモジュールの表現とだけ関連付けられます。１つのモジュールが複数のファイルに分かれていても良いし、１つのファイルに複数のモジュールが含まれていてもよいです。
 
 ```julia
 module Foo
@@ -105,9 +203,15 @@ include("file2.jl")
 end
 ```
 
+```@raw html
+<!--
 Including the same code in different modules provides mixin-like behavior. One could use this
 to run the same code with different base definitions, for example testing code by running it with
 "safe" versions of some operators:
+-->
+```
+
+同じコードを別のモジュールに含めると、mixinのような動作をさせることができます。これを使って異なるベース定義を持つ同じコードを走らせることができます。例えば、ある演算子の「安全な」バージョンでコードをテストすることができます。
 
 ```julia
 module Normal
@@ -120,28 +224,68 @@ include("mycode.jl")
 end
 ```
 
-### Standard modules
+[](### Standard modules)
 
+### 標準モジュール
+
+```@raw html
+<!--
 There are three important standard modules: Main, Core, and Base.
+-->
+```
 
+３つの重要な標準モジュールがあります。MainとCoreとBaseです。
+
+```@raw html
+<!--
 Main is the top-level module, and Julia starts with Main set as the current module.  Variables
 defined at the prompt go in Main, and `whos()` lists variables in Main.
+-->
+```
 
+Mainはトップレベルのモジュールで、JuliaはMainを現在のモジュールとしてセットした状態で起動します。プロンプトで定義された変数はMainに登録され、`whos()`はMainの中にある変数をリストアップします。
+
+```@raw html
+<!--
 Core contains all identifiers considered "built in" to the language, i.e. part of the core language
 and not libraries. Every module implicitly specifies `using Core`, since you can't do anything
 without those definitions.
+-->
+```
 
+Coreは言語に「組み込まれている」とみなされる全ての識別子を持っています。つまり、コア言語の一部でありライブラリではありません。全てのモジュールは暗黙的に`using Core`が指定されています。そうでなければCoreの定義がないため、何もできなくなってしまうからです。
+
+```@raw html
+<!--
 Base is the standard library (the contents of base/). All modules implicitly contain `using Base`,
 since this is needed in the vast majority of cases.
+-->
+```
 
-### Default top-level definitions and bare modules
+Baseは標準ライブラリ（base/の内容）です。全てのモジュールで大抵Baseを必要とするため、全てのモジュールは暗黙的に`using Base`を含むようになっています。
 
+[](### Default top-level definitions and bare modules)
+
+### デフォルトトップレベル定義と裸モジュール
+
+```@raw html
+<!--
 In addition to `using Base`, modules also automatically contain a definition of the `eval` function,
 which evaluates expressions within the context of that module.
+-->
+```
 
+`using Base`に加えて、モジュールは自動的に`eval`関数の定義を含むようにもなっています。`eval`関数はそのモジュールの中身の表現を評価します。
+
+```@raw html
+<!--
 If these default definitions are not wanted, modules can be defined using the keyword `baremodule`
 instead (note: `Core` is still imported, as per above). In terms of `baremodule`, a standard
 `module` looks like this:
+-->
+```
+
+もし、これらのデフォルト定義が必要ない場合は、代わりにキーワード`baremodule`を使うことによってモジュールを定義することができます（注意：上記のように、この場合でも`Core`は読み込まれます）。`baremodule`では標準の`module`はこのように見えます。
 
 ```
 baremodule Mod
@@ -156,16 +300,30 @@ eval(m,x) = Core.eval(m, x)
 end
 ```
 
-### Relative and absolute module paths
+[](### Relative and absolute module paths)
 
+### 相対モジュールパスと絶対モジュールパス
+
+```@raw html
+<!--
 Given the statement `using Foo`, the system looks for `Foo` within `Main`. If the module does
 not exist, the system attempts to `require("Foo")`, which typically results in loading code from
 an installed package.
+-->
+```
 
+`using Foo`という文が与えられると、システムはトップレベルモジュールの内部テーブルを参照して`Foo`という名前のテーブルを探します。 モジュールが存在しない場合、システムは`require(:Foo)`を試みます。これは通常、インストールされたパッケージからコードをロードします。
+
+```@raw html
+<!--
 However, some modules contain submodules, which means you sometimes need to access a module that
 is not directly available in `Main`. There are two ways to do this. The first is to use an absolute
 path, for example `using Base.Sort`. The second is to use a relative path, which makes it easier
 to import submodules of the current module or any of its enclosing modules:
+-->
+```
+
+ただし、一部のモジュールにはサブモジュールが含まれているため、トップレベルではないモジュールにアクセスする必要があることがあります。 これを行うには２つの方法があります。 １つ目は、絶対パスを使用することです（例えば`using Base.Sort`など）。２つ目は相対パスを使用することです。相対パスを使用することにより、現在のモジュールのサブモジュールやサブモジュールを含んでいる任意のモジュールを簡単にインポートできます。
 
 ```
 module Parent
@@ -180,43 +338,103 @@ using .Utils
 end
 ```
 
+```@raw html
+<!--
 Here module `Parent` contains a submodule `Utils`, and code in `Parent` wants the contents of
 `Utils` to be visible. This is done by starting the `using` path with a period. Adding more leading
 periods moves up additional levels in the module hierarchy. For example `using ..Utils` would
 look for `Utils` in `Parent`'s enclosing module rather than in `Parent` itself.
+-->
+```
 
+ここで、モジュール`Parent`はサブモジュール`Utils`を含み、`Parent`中のコードは`Utils`の中身を参照したいとします。これは`using`のパスをピリオド付きで始めることで成されます。もう１つピリオドを加えると、モジュール階層のもう１段階上のレベルに移動します。例えば、`using ..Utils`とすると、`Parent`自体ではなく、`Parent`を囲むモジュールで`Utils`を探します。
+
+```@raw html
+<!--
 Note that relative-import qualifiers are only valid in `using` and `import` statements.
+-->
+```
 
-### Module file paths
+相対インポート修飾子は、`using`文と`import`文でのみ有効であることに注意してください。
 
+[](### Module file paths)
+
+### モジュールファイルパス
+
+```@raw html
+<!--
 The global variable [`LOAD_PATH`](@ref) contains the directories Julia searches for modules when calling
 `require`. It can be extended using [`push!`](@ref):
+-->
+```
+
+グローバル変数[`LOAD_PATH`](@ref)には、`require`を呼び出したときにJuliaがモジュールを検索するディレクトリが含まれています。この変数は[`push!`](@ref)を使って拡張できます。
 
 ```julia
 push!(LOAD_PATH, "/Path/To/My/Module/")
 ```
 
+```@raw html
+<!--
 Putting this statement in the file `~/.juliarc.jl` will extend [`LOAD_PATH`](@ref) on every Julia startup.
 Alternatively, the module load path can be extended by defining the environment variable `JULIA_LOAD_PATH`.
+-->
+```
 
-### Namespace miscellanea
+この文を`~/.juliarc.jl`ファイルに入れると、Juliaの起動時に毎回[`LOAD_PATH`](@ref)が拡張されます。 この他に、環境変数`JULIA_LOAD_PATH`を定義してモジュールの読み込みパスを拡張することもできます。
 
+[](### Namespace miscellanea)
+
+### 名前空間雑録
+
+```@raw html
+<!--
 If a name is qualified (e.g. `Base.sin`), then it can be accessed even if it is not exported.
 This is often useful when debugging. It can also have methods added to it by using the qualified
 name as the function name. However, due to syntactic ambiguities that arise, if you wish to add
 methods to a function in a different module whose name contains only symbols, such as an operator,
 `Base.+` for example, you must use `Base.:+` to refer to it. If the operator is more than one
 character in length you must surround it in brackets, such as: `Base.:(==)`.
+-->
+```
 
+名前が修飾されている場合（例えば`Base.sin`など）、エクスポートされていなくてもアクセスできます。
+これは、デバッグ時に便利です。 また、修飾名を関数名として使用してメソッドを追加することもできます。
+しかし、構文上の曖昧さが原因で、名前にシンボルのみが含まれている
+別のモジュール（たとえば、`Base.+`など）の関数にメソッドを追加する場合は、
+`Base.:+`を使用して参照する必要があります。
+演算子が２文字以上からなる場合、`Base.:(==)`のように括弧で囲む必要があります。
+
+```@raw html
+<!--
 Macro names are written with `@` in import and export statements, e.g. `import Mod.@mac`. Macros
 in other modules can be invoked as `Mod.@mac` or `@Mod.mac`.
+-->
+```
 
+マクロ名は、インポート文およびエクスポート文中では`import Mod.@mac`のように`@`を付けて書かれます。
+他のモジュールのマクロは、`Mod.@mac`または`@Mod.mac`として呼び出すことができます。
+
+```@raw html
+<!--
 The syntax `M.x = y` does not work to assign a global in another module; global assignment is
 always module-local.
+-->
+```
 
+構文`M.x = y`は、別のモジュールでグローバルを割り当てるのには機能しません。
+グローバル割り当ては常にモジュールローカルです。
+
+```@raw html
+<!--
 A variable can be "reserved" for the current module without assigning to it by declaring it as
 `global x` at the top level. This can be used to prevent name conflicts for globals initialized
 after load time.
+-->
+```
+
+変数名はトップレベルで`global x`と宣言して割り当てずに、現在のモジュールで「予約」することができます。
+これにより、読み込み時間に初期化されたグローバル変数の名前の競合を防止することができます。
 
 ### Module initialization and precompilation
 
