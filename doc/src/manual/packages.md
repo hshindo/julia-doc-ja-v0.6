@@ -332,22 +332,57 @@ However, this change will be system-wide and thus the use of [`Pkg.setprotocol!(
     Pkg.rm("Distributions.jl")
     ```
 
-## Offline Installation of Packages
+[](## Offline Installation of Packages)
 
+## パッケージのオフラインでのインストール
+
+```@raw html
+<!--
 For machines with no Internet connection, packages may be installed by copying the package root
 directory (given by [`Pkg.dir()`](@ref)) from a machine with the same operating system and environment.
+-->
+```
 
+インターネットに接続されていないマシンでは、
+同じオペレーティングシステムと環境を持つマシンからパッケージルートディレクトリ（[`Pkg.dir()`](@ref)で取得できる）を
+コピーしてパッケージをインストールすることができます。
+
+```@raw html
+<!--
 [`Pkg.add()`](@ref) does the following within the package root directory:
+-->
+```
 
+[`Pkg.add()`](@ref)はパッケージのルートディレクトリ内で次の処理を行います。
+
+```@raw html
+<!--
 1. Adds the name of the package to `REQUIRE`.
 2. Downloads the package to `.cache`, then copies the package to the package root directory.
 3. Recursively performs step 2 against all the packages listed in the package's `REQUIRE` file.
 4. Runs [`Pkg.build()`](@ref)
+-->
+```
 
+1. `REQUIRE`にパッケージ名を追加する。
+2. パッケージを`.cache`にダウンロードし、パッケージをパッケージルートディレクトリにコピーする。
+3. パッケージの`REQUIRE`ファイルにリストされているすべてのパッケージに対して、ステップ2を繰り返し実行する。
+4. [`Pkg.build()`](@ref)を実行する。
+
+```@raw html
+<!--
 !!! warning
     Copying installed packages from a different machine is brittle for packages requiring binary external
     dependencies. Such packages may break due to differences in operating system versions, build environments,
     and/or absolute path dependencies.
+-->
+```
+    
+!!! warning
+    インストールされたパッケージを別のマシンからコピーすることは、
+    バイナリの外部依存関係を必要とするパッケージに対しては脆弱です。
+    このようなパッケージは、オペレーティングシステムのバージョン、
+    ビルド環境、および/または絶対パスの依存関係の違いにより、破損することがあります。
 
 ## Installing Unregistered Packages
 
