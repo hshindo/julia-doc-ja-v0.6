@@ -15,7 +15,7 @@
   * [型](@ref man-types)
   * [メソッド](@ref)
   * [コンストラクタ](@ref man-constructors)
-  * [Conversion and Promotion](@ref conversion-and-promotion)
+  * [変換と昇格](@ref conversion-and-promotion)
   * [Interfaces](@ref)
   * [Modules](@ref modules)
   * [Documentation](@ref)
