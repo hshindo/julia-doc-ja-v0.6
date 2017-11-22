@@ -326,11 +326,11 @@ However, this change will be system-wide and thus the use of [`Pkg.setprotocol!(
 !!! note
     パッケージマネージャ関数は`.jl`が接尾についているパッケージ名も使うことができますが、内部的には取り除かれます。
     例としては次の様な感じです。
-    
-    ```julia
+
+    ​```julia
     Pkg.add("Distributions.jl")
     Pkg.rm("Distributions.jl")
-    ```
+    ​```
 
 [](## Offline Installation of Packages)
 
@@ -377,15 +377,19 @@ directory (given by [`Pkg.dir()`](@ref)) from a machine with the same operating 
     and/or absolute path dependencies.
 -->
 ```
-    
+
 !!! warning
     インストールされたパッケージを別のマシンからコピーすることは、
     バイナリの外部依存関係を必要とするパッケージに対しては脆弱です。
     このようなパッケージは、オペレーティングシステムのバージョン、
     ビルド環境、および/または絶対パスの依存関係の違いにより、破損することがあります。
 
-## Installing Unregistered Packages
+[](## Installing Unregistered Packages)
 
+## 未登録パッケージのインストール
+
+```@raw html
+<!--
 Julia packages are simply git repositories, clonable via any of the [protocols](https://www.kernel.org/pub/software/scm/git/docs/git-clone.html#URLS)
 that git supports, and containing Julia code that follows certain layout conventions. Official
 Julia packages are registered in the [METADATA.jl](https://github.com/JuliaLang/METADATA.jl) repository,
@@ -393,6 +397,19 @@ available at a well-known location [^1]. The [`Pkg.add()`](@ref) and [`Pkg.rm()`
 in the previous section interact with registered packages, but the package manager can install
 and work with unregistered packages too. To install an unregistered package, use [`Pkg.clone(url)`](@ref),
 where `url` is a git URL from which the package can be cloned:
+-->
+```
+
+Juliaパッケージは単なるgitリポジトリなので
+gitがサポートする任意の
+[プロトコル](https://www.kernel.org/pub/software/scm/git/docs/git-clone.html#URLS)
+を通してクローン可能であり、特定のレイアウト規則に従うJuliaコードを含んでいます。
+公式のJuliaパッケージは、[METADATA.jl](https://github.com/JuliaLang/METADATA.jl)リポジトリに登録されており、
+よく知られている場所[^1]から入手できます。
+前節の[`Pkg.add()`](@ref)コマンドと[`Pkg.rm()`](@ref)コマンドは登録されたパッケージとやりとりしますが、
+パッケージマネージャーは未登録のパッケージにも使え、インストールすることができます。
+未登録のパッケージをインストールするには、[`Pkg.clone(url)`](@ref)を使います。
+ここで、`url`はパッケージをクローンできるgitのURLです。
 
 ```julia-repl
 julia> Pkg.clone("git://example.com/path/to/Package.jl.git")
@@ -405,23 +422,56 @@ Receiving objects: 100% (22/22), 2.64 KiB, done.
 Resolving deltas: 100% (8/8), done.
 ```
 
+```@raw html
+<!--
 By convention, Julia repository names end with `.jl` (the additional `.git` indicates a "bare"
 git repository), which keeps them from colliding with repositories for other languages, and also
 makes Julia packages easy to find in search engines. When packages are installed in your `.julia/v0.6`
 directory, however, the extension is redundant so we leave it off.
+-->
+```
 
+慣習的に、Juliaリポジトリ名は`.jl`で終わります（追加の`.git`は「裸」のgitリポジトリを示します）。
+これにより、他の言語のリポジトリと衝突することがなくなり、検索エンジンでJuliaパッケージを簡単に見つけられるようになります。
+ただし、パッケージが`.julia/v0.6`ディレクトリにインストールされている場合、拡張子は冗長なので、そのまま残しておきます。
+
+```@raw html
+<!--
 If unregistered packages contain a `REQUIRE` file at the top of their source tree, that file will
 be used to determine which registered packages the unregistered package depends on, and they will
 automatically be installed. Unregistered packages participate in the same version resolution logic
 as registered packages, so installed package versions will be adjusted as necessary to satisfy
 the requirements of both registered and unregistered packages.
+-->
+```
 
+未登録のパッケージのソースツリーの一番上に`REQUIRE`ファイルが含まれている場合、
+そのファイルは登録されていないパッケージが依存する登録パッケージを決定するために使用され、
+自動的にインストールされます。
+登録されていないパッケージは、登録されたパッケージと同じバージョン解決ロジックに参加するため、
+インストールされたパッケージのバージョンは、
+登録済みパッケージと未登録パッケージの両方の要件を満たすために必要に応じて調整されます。
+
+```@raw html
+<!--
 [^1]:
     The official set of packages is at [https://github.com/JuliaLang/METADATA.jl](https://github.com/JuliaLang/METADATA.jl),
     but individuals and organizations can easily use a different metadata repository. This allows
     control which packages are available for automatic installation. One can allow only audited and
     approved package versions, and make private packages or forks available. See [Custom METADATA Repository](@ref)
     for details.
+-->
+```
+
+[^1]:
+    公式パッケージ集は
+    [https://github.com/JuliaLang/METADATA.jl](https://github.com/JuliaLang/METADATA.jl)
+    にありますが、
+    個人や組織は簡単に別のメタデータリポジトリを使用できます。
+    これにより、どのパッケージを自動インストールできるかを制御することができます。
+    監査され承認されたパッケージバージョンのみを許可し、
+    プライベートパッケージまたはフォークを利用可能にすることもできます。
+    詳細については、[カスタムMETADATAリポジトリ](@ref)を参照してください。
 
 ## Updating Packages
 
@@ -1082,9 +1132,9 @@ INFO: To create a pull-request open:
 !!! tip
     If `PkgDev.publish()` fails with error:
 
-    ```
+    ​```
     ERROR: key not found: "token"
-    ```
+    ​```
 
     then you may have encountered an issue from using the GitHub API on multiple systems. The solution
     is to delete the "Julia Package Manager" personal access token [from your Github account](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsettings%2Ftokens)
@@ -1166,10 +1216,10 @@ your GitHub account. Once that copy exists, you can push your local changes to y
 like any other GitHub project).
 
 1. go to [https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2FJuliaLang%2FMETADATA.jl%2Ffork](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2FJuliaLang%2FMETADATA.jl%2Ffork)
-and create your own fork.
+  and create your own fork.
 
 2. add your fork as a remote repository for the METADATA repository on your local computer (in
-the terminal where USERNAME is your github username):
+  the terminal where USERNAME is your github username):
 
 ```
 cd ~/.julia/v0.6/METADATA
@@ -1182,8 +1232,8 @@ git remote add USERNAME https://github.com/USERNAME/METADATA.jl.git
    git push USERNAME metadata-v2
    ```
 
-4. If all of that works, then go back to the GitHub page for your fork, and click the "pull request"
-link.
+2. If all of that works, then go back to the GitHub page for your fork, and click the "pull request"
+  link.
 
 ## Fixing Package Requirements
 
