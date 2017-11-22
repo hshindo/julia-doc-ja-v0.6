@@ -14,7 +14,7 @@
   * [メソッド](@ref)
   * [コンストラクタ](@ref man-constructors)
   * [変換と昇格](@ref conversion-and-promotion)
-  * [Interfaces](@ref)
+  * [インターフェース](@ref)
   * [Modules](@ref)
   * [Documentation](@ref)
   * [Metaprogramming](@ref)
