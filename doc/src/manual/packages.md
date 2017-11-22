@@ -99,8 +99,12 @@ Dict{String,VersionNumber} with 4 entries:
 "NumericExtensions" => v"0.2.17"
 ```
 
-## Adding and Removing Packages
+[](## Adding and Removing Packages)
 
+## パッケージの追加と除去
+
+```@raw html
+<!--
 Julia's package manager is a little unusual in that it is declarative rather than imperative.
 This means that you tell it what you want and it figures out what versions to install (or remove)
 to satisfy those requirements optimally – and minimally. So rather than installing a package,
@@ -108,7 +112,20 @@ you just add it to the list of requirements and then "resolve" what needs to be 
 particular, this means that if some package had been installed because it was needed by a previous
 version of something you wanted, and a newer version doesn't have that requirement anymore, updating
 will actually remove that package.
+-->
+```
 
+Juliaのパッケージマネージャは命令的というよりは宣言的であるという点でちょっと珍しいです。
+使いたいパッケージを宣言すると、そのパッケージの要件を最適かつ最小限に満たすために
+どのバージョンをインストール（または除去）するかを把握します。
+従って、パッケージをインストールするのではなく、要件のリストにパッケージを追加し、
+インストールする必要があるものを「解決」するだけです。
+特に、インストールしていた前のバージョンのパッケージで必要とされていたパッケージが、
+新しいパージョンでは必要でなくなっている場合、
+更新するとそのパッケージは除去されます。
+
+```@raw html
+<!--
 Your package requirements are in the file `~/.julia/v0.6/REQUIRE`. You can edit this file by hand
 and then call [`Pkg.resolve()`](@ref) to install, upgrade or remove packages to optimally satisfy
 the requirements, or you can do [`Pkg.edit()`](@ref), which will open `REQUIRE` in your editor
@@ -116,9 +133,26 @@ the requirements, or you can do [`Pkg.edit()`](@ref), which will open `REQUIRE` 
 [`Pkg.resolve()`](@ref) afterwards if necessary. If you only want to add or remove the requirement
 for a single package, you can also use the non-interactive [`Pkg.add()`](@ref) and [`Pkg.rm()`](@ref)
 commands, which add or remove a single requirement to `REQUIRE` and then call [`Pkg.resolve()`](@ref).
+-->
+```
 
+自分のパッケージ要件は`~/.julia/v0.6/REQUIRE`ファイルにあります。
+このファイルを手作業で編集したら、パッケージのインストールや更新、除去を行うために
+[`Pkg.resolve()`](@ref)を呼び出して要件を最適に満たせます。
+もしくは、[`Pkg.edit()`](@ref)を実行すると（`EDITOR`環境変数か`VISUAL`環境変数で認識されている）エディタで`REQUIRE`が開かれ、その後で必要な場合自動的に[`Pkg.resolve()`](@ref)が呼び出されます。
+１つのパッケージについて要件を追加したり、除去する場合は、
+非対話型の[`Pkg.add()`](@ref)コマンドと[`Pkg.rm()`](@ref)コマンドも使えます。
+このコマンドは`REQUIRE`に要件１つを追加または除去してから[`Pkg.resolve()`](@ref)を呼び出します。
+
+```@raw html
+<!--
 You can add a package to the list of requirements with the [`Pkg.add()`](@ref) function, and the
 package and all the packages that it depends on will be installed:
+-->
+```
+
+`Pkg.add()`関数で要件のリストにパッケージを追加でき、
+その追加したパッケージとそれに依存するすべてのパッケージがインストールされます。
 
 ```julia-repl
 julia> Pkg.status()
@@ -141,17 +175,33 @@ Additional packages:
  - Stats                         0.2.6
 ```
 
+```@raw html
+<!--
 What this is doing is first adding `Distributions` to your `~/.julia/v0.6/REQUIRE` file:
+-->
+```
+
+これがしていることは、まず最初に`Distributions`を`~/.julia/v0.6/REQUIRE`ファイルに追加しています。
 
 ```
 $ cat ~/.julia/v0.6/REQUIRE
 Distributions
 ```
 
+```@raw html
+<!--
 It then runs [`Pkg.resolve()`](@ref) using these new requirements, which leads to the conclusion
 that the `Distributions` package should be installed since it is required but not installed. As
 stated before, you can accomplish the same thing by editing your `~/.julia/v0.6/REQUIRE` file
 by hand and then running [`Pkg.resolve()`](@ref) yourself:
+-->
+```
+
+その次に、この新しい要件を使って[`Pkg.resolve()`](@ref)を実行すると
+`Distributions`パッケージは必要だが、インストールされていないので
+インストールする必要があるという結論に至ります。
+前に述べたように、`~/.julia/v0.6/REQUIRE`を手で編集して、
+[`Pkg.resolve()`](@ref)を実行することで同じことができます。
 
 ```julia-repl
 $ echo SHA >> ~/.julia/v0.6/REQUIRE
@@ -169,14 +219,32 @@ Additional packages:
  - Stats                         0.2.6
 ```
 
+```@raw html
+<!--
 This is functionally equivalent to calling [`Pkg.add("SHA")`](@ref), except that [`Pkg.add()`](@ref)
 doesn't change `REQUIRE` until *after* installation has completed, so if there are problems,
 `REQUIRE` will be left as it was before calling [`Pkg.add()`](@ref). The format of the `REQUIRE`
 file is described in [Requirements Specification](@ref); it allows, among other things, requiring
 specific ranges of versions of packages.
+-->
+```
 
+
+この操作は[`Pkg.add("SHA")`](@ref)を呼び出すのと次の点を除いて機能的に同等です。
+[`Pkg.add()`](@ref)はインストールが完了した**後**になるまで`REQUIRE`を変更しません。
+問題があった場合、`REQUIRE`は[`Pkg.add()`](@ref)を呼び出す前の状態に戻されます。
+`REQUIRE`ファイルの形式については[要件の指定](@ref)を参照してください。
+必要とするパッケージのバージョンの範囲を指定できます。
+
+```@raw html
+<!--
 When you decide that you don't want to have a package around any more, you can use [`Pkg.rm()`](@ref)
 to remove the requirement for it from the `REQUIRE` file:
+-->
+```
+
+パッケージがもう必要ないと思った場合は、
+[`Pkg.rm()`](@ref)を使って`REQUIRE`ファイルから要件を除去できます。
 
 ```julia-repl
 julia> Pkg.rm("Distributions")
@@ -197,6 +265,8 @@ julia> Pkg.status()
 No packages installed.
 ```
 
+```@raw html
+<!--
 Once again, this is equivalent to editing the `REQUIRE` file to remove the line with each package
 name on it then running [`Pkg.resolve()`](@ref) to update the set of installed packages to match.
 While [`Pkg.add()`](@ref) and [`Pkg.rm()`](@ref) are convenient for adding and removing requirements
@@ -204,24 +274,59 @@ for a single package, when you want to add or remove multiple packages, you can 
 to manually change the contents of `REQUIRE` and then update your packages accordingly. [`Pkg.edit()`](@ref)
 does not roll back the contents of `REQUIRE` if [`Pkg.resolve()`](@ref) fails – rather, you
 have to run [`Pkg.edit()`](@ref) again to fix the files contents yourself.
+-->
+```
 
+もう一度、`REQUIRE`ファイルを編集して各パッケージ名の行を削除し、
+[`Pkg.resolve()`](@ref)を実行して、インストールされたパッケージのセットを更新して一致させることと同じです。
+[`Pkg.add()`](@ref)と[`Pkg.rm()`](@ref)は、単一のパッケージに対する要件の追加と削除に便利ですが、
+複数のパッケージを追加または削除する場合は、[`Pkg.edit()`](@ref)を呼び出して`REQUIRE`の内容を手動で変更し、
+それに応じてパッケージを更新します。
+[`Pkg.resolve()`](@ref)が失敗した場合、[`Pkg.edit()`](@ref)は`REQUIRE`の内容をロールバックしません。
+[`Pkg.edit()`](@ref)を再度実行してファイルの内容を修正する必要があります。
+
+```@raw html
+<!--
 Because the package manager uses libgit2 internally to manage the package git repositories, users
 may run into protocol issues (if behind a firewall, for example), when running [`Pkg.add()`](@ref).
 By default, all GitHub-hosted packages wil be accessed via 'https'; this default can be modified
 by calling [`Pkg.setprotocol!()`](@ref). The following command can be run from the command line
 in order to tell git to use 'https' instead of the 'git' protocol when cloning all repositories,
 wherever they are hosted:
+-->
+```
+
+パッケージマネージャはlibgit2を内部的に使用してgitリポジトリパッケージを管理するため、
+[`Pkg.add()`](@ref)を実行しているときにプロトコルの問題（例えば、ファイアウォールの背後にいる場合）が発生する可能性があります。
+デフォルトでは、GitHubでホストされているすべてのパッケージには'https'でアクセスされます。
+このデフォルトは、[`Pkg.setprotocol!()`](@ref)を呼び出して変更できます。
+次のコマンドはコマンドラインから実行して、gitがすべてのレポジトリを複製するときに
+'git'プロトコルの代わりに'https'プロトコルを使うように指定することができます。
 
 ```
 git config --global url."https://".insteadOf git://
 ```
 
+```@raw html
+<!--
 However, this change will be system-wide and thus the use of [`Pkg.setprotocol!()`](@ref) is preferable.
+-->
+```
 
+ただし、この変更はシステム全体に適用されるため、[`Pkg.setprotocol!()`](@ref)を使ったほうが良いでしょう。
+
+```@raw html
+<!--
 !!! note
     The package manager functions also accept the `.jl` suffix on package names, though the suffix is
     stripped internally. For example:
+-->
+```
 
+!!! note
+    パッケージマネージャ関数は`.jl`が接尾についているパッケージ名も使うことができますが、内部的には取り除かれます。
+    例としては次の様な感じです。
+    
     ```julia
     Pkg.add("Distributions.jl")
     Pkg.rm("Distributions.jl")
@@ -1062,7 +1167,9 @@ out in the repo will **not** match the requirements in `METADATA` after such a c
 unavoidable. When you fix the requirements in `METADATA` for a previous version of a package,
 however, you should also fix the `REQUIRE` file in the current version of the package.
 
-## Requirements Specification
+[](## Requirements Specification)
+
+## 要件の指定
 
 The `~/.julia/v0.6/REQUIRE` file, the `REQUIRE` file inside packages, and the `METADATA` package
 `requires` files use a simple line-based format to express the ranges of package versions which
