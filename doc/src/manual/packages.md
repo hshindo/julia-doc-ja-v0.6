@@ -1268,10 +1268,19 @@ a branch at the outset.
 これをするにはgitの知識がもう少し必要です。
 最初にブランチを作成する習慣をつけておいた方がずっと良いでしょう。
 
-### [Squashing and rebasing](@id man-squashing-and-rebasing)
+[](### [Squashing and rebasing](@id man-squashing-and-rebasing))
 
+### [スクワッシュとリベース](@id man-squashing-and-rebasing)
+
+```@raw html
+<!--
 Depending on the tastes of the package owner (s)he may ask you to "squash" your commits. This
 is especially likely if your change is quite simple but your commit history looks like this:
+-->
+```
+
+パッケージ所有者の流儀によっては、コミットを「スクワッシュ」してくれないかとお願いされる場合があります。
+変更が非常に単純ですが、コミットの履歴が次のように見える場合は特にそうです。
 
 ```
 WIP: add new 1-line whizbang function (currently breaks package)
@@ -1283,10 +1292,21 @@ Rats, forgot to export the second function
 ...
 ```
 
+```@raw html
+<!--
 This gets into the territory of more advanced git usage, and you're encouraged to do some reading
 ([https://git-scm.com/book/en/v2/Git-Branching-Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)).
  However, a brief summary of the procedure is as follows:
+-->
+```
 
+これは、より高度なgitの使い方の話なので、gitについて書かれたもの
+（[https://git-scm.com/book/en/v2/Git-Branching-Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)）
+を読むことをお勧めします。
+しかし、手順の簡単な要約は次のとおりです。
+
+```@raw html
+<!--
   * To protect yourself from error, start from your `fixbar` branch and create a new branch with
     `git checkout -b fixbar_backup`.  Since you started from `fixbar`, this will be a copy. Now go
     back to the one you intend to modify with `git checkout fixbar`.
@@ -1294,21 +1314,54 @@ This gets into the territory of more advanced git usage, and you're encouraged t
   * To combine commits, change `pick` to `squash` (for additional options, consult other sources).
     Save the file and close the editor window.
   * Edit the combined commit message.
+-->
+```
 
+  * エラーから守るために、`fixbar`ブランチから始め、`git checkout -b fixbar_backup`で新しいブランチを作成してください。
+    `fixbar`から始めたので、これはコピーになります。
+    `git checkout fixbar`で修正したいものに戻ります。
+  * シェルから、`git rebase -i origin/master`と入力してください。
+  * コミットをまとめるために、`pick`を`squash`に変更してください。
+    ファイルを保存してエディタウィンドウを閉じてください。
+  * まとめたコミットのメッセージを編集してください。
+
+```@raw html
+<!--
 If the rebase goes badly, you can go back to the beginning to try again like this:
+-->
+```
+
+リベースが上手くいかない場合は、初めに戻って次のようにやり直してください。
 
 ```
 git checkout fixbar
 git reset --hard fixbar_backup
 ```
 
+```@raw html
+<!--
 Now let's assume you've rebased successfully. Since your `fixbar` repository has now diverged
 from the one in your GitHub fork, you're going to have to do a *force push*:
+-->
+```
 
+リベースに成功したとしましょう。
+`fixbar`リポジトリはGitHubのフォークから分岐したので、**強制プッシュ**しなければなりません。
+
+```@raw html
+<!--
   * To make it easy to refer to your GitHub fork, create a "handle" for it with `git remote add myfork https://github.com/myaccount/Foo.jl.git`,
     where the URL comes from the "clone URL" on your GitHub fork's page.
   * Force-push to your fork with `git push myfork +fixbar`. The `+` indicates that this should replace
     the `fixbar` branch found at `myfork`.
+-->
+```
+
+  * あなたのGitHubフォークを参照しやすくするために、
+    `git remote add myfork https://github.com/myaccount/Foo.jl.git`でハンドルを作成してください。
+    ここでURLはあなたのGitHubフォークのページの「URL」です。
+  * あなたのフォークを`git push myfork +fixbar`で強制プッシュしてください。
+    `+`は、`myfork`で見つかった`fixbar`ブランチを置き換えるべきであることを示します。
 
 ## Creating a new Package
 
