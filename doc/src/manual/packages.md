@@ -854,13 +854,23 @@ METADATAリポジトリが初期化されたブランチを追跡します。
 ブランチを変更したい場合は、`META_BRANCH`ファイルを直接変更するか（注意してください！）、
 `vX.Y`ディレクトリを取り除いてMETADATAリポジトリを`Pkg.init`コマンドを使って再び初期化する必要があります。
 
-# Package Development
+[](# Package Development)
 
+# パッケージの開発
+
+```@raw html
+<!--
 Julia's package manager is designed so that when you have a package installed, you are already
 in a position to look at its source code and full development history. You are also able to make
 changes to packages, commit them using git, and easily contribute fixes and enhancements upstream.
 Similarly, the system is designed so that if you want to create a new package, the simplest way
 to do so is within the infrastructure provided by the package manager.
+-->
+```
+
+パッケージをインストールした時点で既にソースコードと全ての開発履歴が見れるように、Juliaのパッケージマネージャは設計されています。
+パッケージを変更することもできますし、gitを使ってコミットすることもでき、簡単に修正に貢献したり、上流を向上させることができます。
+新しいパッケージを作りたくなった場合も同様で、パッケージマネージャが提供するインフラを使うのがもっとも簡単です。
 
 ## [Initial Setup](@id man-initial-setup)
 
