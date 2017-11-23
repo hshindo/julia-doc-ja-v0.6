@@ -940,10 +940,16 @@ SSH公開鍵をGitHubに
 後のドキュメントで出てくる`PkgDev.`で始まる関数にアクセスするため
 `Pkg.add("PkgDev"); import PkgDev`を実行する必要があります。
 
-## Making changes to an existing package
+[](## Making changes to an existing package)
 
-### Documentation changes
+## 既存のパッケージを変更する
 
+[](### Documentation changes)
+
+### ドキュメンテーションの変更
+
+```@raw html
+<!--
 If you want to improve the online documentation of a package, the easiest approach (at least for
 small changes) is to use GitHub's online editing functionality. First, navigate to the repository's
 GitHub "home page," find the file (e.g., `README.md`) within the repository's folder structure,
@@ -952,9 +958,29 @@ right hand corner. Clicking that icon opens the file in edit mode. Make your cha
 brief summary describing the changes you want to make (this is your *commit message*), and then
 hit "Propose file change." Your changes will be submitted for consideration by the package owner(s)
 and collaborators.
+-->
+```
 
+パッケージのオンラインドキュメンテーションを改善したいと思ったら、
+もっとも簡単なアプローチ（少なくとも変更が小さな場合）は、
+GitHubのオンライン編集機能を使うことです。
+まず、リポジトリのGitHub「ホームページ」へ行き、
+リポジトリのフォルダ構造の中にあるファイル（例：`README.md`）を探してクリックします。
+すると右上の角の小さな「鉛筆」アイコンとともに内容が表示されます。
+そのアイコンをクリックすると、ファイルが編集モードで開かれます。
+変更したら、変更内容を説明した簡単な要約（これがあなたの**コミットメッセージ**です）を書いてください
+そして "Propose file change" を押してください。
+あなたの変更はパッケージの所有者 (owner) と協力者 (collaborator) が検討するために提出されます。
+
+```@raw html
+<!--
 For larger documentation changes--and especially ones that you expect to have to update in response
 to feedback--you might find it easier to use the procedure for code changes described below.
+-->
+```
+
+より大きなドキュメンテーションの変更、特にフィードバックに応じて更新する必要がある変更については、
+後述のコード変更の手順を使用する方が簡単です。
 
 ### Code changes
 
