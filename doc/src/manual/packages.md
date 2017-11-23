@@ -326,7 +326,7 @@ However, this change will be system-wide and thus the use of [`Pkg.setprotocol!(
 !!! note
     パッケージマネージャ関数は`.jl`が接尾についているパッケージ名も使うことができますが、内部的には取り除かれます。
     例としては次の様な感じです。
-
+    
     ​```julia
     Pkg.add("Distributions.jl")
     Pkg.rm("Distributions.jl")
@@ -463,7 +463,7 @@ the requirements of both registered and unregistered packages.
 -->
 ```
 
-[^1]:
+[^1]: 
     公式パッケージ集は
     [https://github.com/JuliaLang/METADATA.jl](https://github.com/JuliaLang/METADATA.jl)
     にありますが、
@@ -588,13 +588,25 @@ explicitly provided, and their dependencies, as fixed.
 この部分的な更新プロセスでは、新しいバージョンのパッケージをトップレベルの要件と「修正された」パッケージに従って計算しますが、
 さらに、明示的に提供されるもの以外のすべてのパッケージとその依存関係を修正済みとして考慮します。
 
-## Checkout, Pin and Free
+[](## Checkout, Pin and Free)
 
+## チェックアウトとピン留めと解放
+
+```@raw html
+<!--
 You may want to use the `master` version of a package rather than one of its registered versions.
 There might be fixes or functionality on master that you need that aren't yet published in any
 registered versions, or you may be a developer of the package and need to make changes on `master`
 or some other development branch. In such cases, you can do [`Pkg.checkout(pkg)`](@ref) to checkout
 the `master` branch of `pkg` or [`Pkg.checkout(pkg,branch)`](@ref) to checkout some other branch:
+-->
+```
+
+パッケージの登録されたバージョンではなく、`master`バージョンが使いたいときもあります。
+マスターには登録されたバージョンではまだ公開されていない必要な修正や機能があるかもしれません。
+またはパッケージの開発者で`master`や他の開発ブランチを変更する必要があるかもしれません。
+そのような場合、[`Pkg.checkout(pkg)`](@ref)で`pkg`のブランチ`master`をチェックアウトするか、
+[`Pkg.checkout(pkg,branch)`](@ref)で`pkg`の他のブランチ`branch`をチェックアウトできます。
 
 ```julia-repl
 julia> Pkg.add("Distributions")
@@ -622,11 +634,24 @@ Additional packages:
  - Stats                         0.2.7
 ```
 
+```@raw html
+<!--
 Immediately after installing `Distributions` with [`Pkg.add()`](@ref) it is on the current most
 recent registered version – `0.2.9` at the time of writing this. Then after running [`Pkg.checkout("Distributions")`](@ref),
 you can see from the output of [`Pkg.status()`](@ref) that `Distributions` is on an unregistered
 version greater than `0.2.9`, indicated by the "pseudo-version" number `0.2.9+`.
+-->
+```
 
+[`Pkg.add()`](@ref)を使用して`Distribution`をインストールした直後は、
+現在の最新の登録されたバージョン`0.2.9`（これを書いた時点で）になります。
+そして`Pkg.checkout("Distribution")`を実行した後、
+[`Pkg.status()`](@ref)の出力から、
+`Distributions`には「疑似バージョン」の番号`0.2.9+`で表される
+`0.2.9`より大きい未登録バージョンがあることが分かります。
+
+```@raw html
+<!--
 When you checkout an unregistered version of a package, the copy of the `REQUIRE` file in the
 package repo takes precedence over any requirements registered in `METADATA`, so it is important
 that developers keep this file accurate and up-to-date, reflecting the actual requirements of
@@ -634,9 +659,26 @@ the current version of the package. If the `REQUIRE` file in the package repo is
 missing, dependencies may be removed when the package is checked out. This file is also used to
 populate newly published versions of the package if you use the API that `Pkg` provides
 for this (described below).
+-->
+```
 
+パッケージの未登録のバージョンをチェックアウトするときは、
+パッケージレポジトリの`REQUIRE`ファイルのコピーが`METADATA`に登録されている要件よりも優先されるため、
+開発者はこのファイルを正確かつ最新の状態に保つことが重要です。
+現在のバージョンのパッケージのパッケージリポジトリ内の`REQUIRE`ファイルが不正確または不足している場合、
+パッケージがチェックアウトされるときに依存関係が削除されることがあります。
+このファイルは、`Pkg`が提供するAPI（後述）を使用している場合に、
+新しく公開されたバージョンのパッケージを移植するためにも使用されます。
+
+```@raw html
+<!--
 When you decide that you no longer want to have a package checked out on a branch, you can "free"
 it back to the control of the package manager with [`Pkg.free(pkg)`](@ref):
+-->
+```
+
+ブランチでパッケージをチェックアウトする必要がなくなったら、
+[`Pkg.free(pkg)`](@ref)を使ってパッケージマネージャの制御下に「解放 (free) 」することができます：
 
 ```julia-repl
 julia> Pkg.free("Distributions")
@@ -651,11 +693,25 @@ Additional packages:
  - Stats                         0.2.7
 ```
 
+```@raw html
+<!--
 After this, since the package is on a registered version and not on a branch, its version will
 be updated as new registered versions of the package are published.
+-->
+```
 
+その後、パッケージはブランチ上ではなく登録されたバージョン上にあるので、
+パッケージの新しい登録されたバージョンが公開されると更新されます。
+
+```@raw html
+<!--
 If you want to pin a package at a specific version so that calling [`Pkg.update()`](@ref) won't
 change the version the package is on, you can use the [`Pkg.pin()`](@ref) function:
+-->
+```
+
+[`Pkg.update()`](@ref)を呼び出してもパッケージのバージョンが変更されないように、
+特定のバージョンにピン留めしたい場合は、[`Pkg.pin()`](@ref)関数を使用できます。
 
 ```julia-repl
 julia> Pkg.pin("Stats")
@@ -669,11 +725,23 @@ Additional packages:
  - Stats                         0.2.7              pinned.47c198b1.tmp
 ```
 
+```@raw html
+<!--
 After this, the `Stats` package will remain pinned at version `0.2.7` – or more specifically,
 at commit `47c198b1`, but since versions are permanently associated a given git hash, this is
 the same thing. [`Pkg.pin()`](@ref) works by creating a throw-away branch for the commit you want
 to pin the package at and then checking that branch out. By default, it pins a package at the
 current commit, but you can choose a different version by passing a second argument:
+-->
+```
+
+この後でも、`Stats`パッケージはバージョン`0.2.7`に、
+もっと特定していうならば、コミット`47c198b1`にピン留めされ続けたままです。
+バージョンは与えられたgitハッシュに永久に関連付けられているため、この２つは同じことです。
+[`Pkg.pin()`](@ref)はパッケージをピン留めしたいコミットの使い捨てブランチを作成し、
+そのブランチをチェックすることによって動作します。
+デフォルトでは、パッケージを現在のコミットにピン留めしますが、
+２番目の引数に渡すことで別のバージョンを選べます。
 
 ```julia-repl
 julia> Pkg.pin("Stats",v"0.2.5")
@@ -688,9 +756,17 @@ Additional packages:
  - Stats                         0.2.5              pinned.1fd0983b.tmp
 ```
 
+```@raw html
+<!--
 Now the `Stats` package is pinned at commit `1fd0983b`, which corresponds to version `0.2.5`.
 When you decide to "unpin" a package and let the package manager update it again, you can use
 [`Pkg.free()`](@ref) like you would to move off of any branch:
+-->
+```
+
+今、`Stats`パッケージはバージョン`0.2.5`に対応するコミット`1fd0983b`にピン留めされました。
+パッケージを「ピン留めから外し」、再びパッケージマネージャに更新させたいと思った場合は、
+任意のブランチから移動するために[`Pkg.free()`](@ref)を使えます。
 
 ```julia-repl
 julia> Pkg.free("Stats")
@@ -705,15 +781,33 @@ Additional packages:
  - Stats                         0.2.7
 ```
 
+```@raw html
+<!--
 After this, the `Stats` package is managed by the package manager again, and future calls to
 [`Pkg.update()`](@ref) will upgrade it to newer versions when they are published. The throw-away
 `pinned.1fd0983b.tmp` branch remains in your local `Stats` repo, but since git branches are extremely
 lightweight, this doesn't really matter; if you feel like cleaning them up, you can go into the
 repo and delete those branches [^2].
+-->
+```
 
+このあと、`Stats`パッケージは再びパッケージマネージャによって管理されるようになります。
+これから[`Pkg.update()`](@ref)を呼び出すと、新しいバージョンが公開されていた場合はアップグレードされます。
+使い捨てた`pinned.1fd0983b.tmp`ブランチはローカルの`Stats`リポジトリに残されますが、
+gitブランチは非常に軽量なので、これが問題になることはありません。
+もし、これをきれいにしてしまいたいと思った場合は、リポジトリへ行ってそのブランチを削除できます[^2]。
+
+```@raw html
+<!--
 [^2]:
     Packages that aren't on branches will also be marked as dirty if you make changes in the repo,
     but that's a less common thing to do.
+-->
+```
+
+[^2]: 
+    ブランチにないパッケージもまたリポジトリ内を変更した場合は汚れているとしてマークされますが、
+    それはあまり一般的ではありません。
 
 ## Custom METADATA Repository
 
@@ -1136,7 +1230,7 @@ julia> Pkg.clone("git://github.com/StefanKarpinski/FooBar.jl.git")
 INFO: Cloning FooBar from git@github.com:StefanKarpinski/FooBar.jl.git
 ```
 
-[^3]:
+[^3]: 
     Installing and using GitHub's ["hub" tool](https://github.com/github/hub) is highly recommended.
     It allows you to do things like run `hub create` in the package repo and have it automatically
     created via GitHub's API.
@@ -1199,11 +1293,11 @@ INFO: To create a pull-request open:
     ​```
     ERROR: key not found: "token"
     ​```
-
+    
     then you may have encountered an issue from using the GitHub API on multiple systems. The solution
     is to delete the "Julia Package Manager" personal access token [from your Github account](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsettings%2Ftokens)
     and try again.
-
+    
     Other failures may require you to circumvent `PkgDev.publish()` by [creating a pull request on GitHub](https://help.github.com/articles/creating-a-pull-request/).
     See: [Publishing METADATA manually](@ref) below.
 
