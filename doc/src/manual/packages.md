@@ -872,27 +872,48 @@ to do so is within the infrastructure provided by the package manager.
 パッケージを変更することもできますし、gitを使ってコミットすることもでき、簡単に修正に貢献したり、上流を向上させることができます。
 新しいパッケージを作りたくなった場合も同様で、パッケージマネージャが提供するインフラを使うのがもっとも簡単です。
 
-## [Initial Setup](@id man-initial-setup)
+[](## [Initial Setup](@id man-initial-setup))
 
+## [初期セットアップ](@id man-initial-setup)
+
+```@raw html
+<!--
 Since packages are git repositories, before doing any package development you should setup the
 following standard global git configuration settings:
+-->
+```
+
+パッケージはgitリポジトリなので、パッケージを開発し始める前に、まずは次の標準的なgitのグローバル構成設定をしましょう。
 
 ```
 $ git config --global user.name "FULL NAME"
 $ git config --global user.email "EMAIL"
 ```
 
+```@raw html
+<!--
 where `FULL NAME` is your actual full name (spaces are allowed between the double quotes) and
 `EMAIL` is your actual email address. Although it isn't necessary to use [GitHub](https://github.com/)
 to create or publish Julia packages, most Julia packages as of writing this are hosted on GitHub
 and the package manager knows how to format origin URLs correctly and otherwise work with the
 service smoothly. We recommend that you create a [free account](https://github.com/join) on GitHub
 and then do:
+-->
+```
+
+ここで、`FULL NAME`はあなたの実際のフルネームで、`EMAIL`は実際のメールアドレスです。
+Juliaのパッケージを作ったり公開するために[GitHub](https://github.com/)を使う必要はありませんが、
+これを書いている時点でほとんどのJuliaのパッケージはGitHubでホストされています。
+パッケージマネージャは、オリジナルのURLを正しくフォーマットする方法を知っており、そうでなくてもGitHubでスムーズに機能します。
+GitHubで[無料アカウント](https://github.com/join)を作ることをおすすめします。
+アカウントを作ったら次のコマンドを打ちましょう。
 
 ```
 $ git config --global github.user "USERNAME"
 ```
 
+```@raw html
+<!--
 where `USERNAME` is your actual GitHub user name. Once you do this, the package manager knows
 your GitHub user name and can configure things accordingly. You should also [upload](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsettings%2Fssh)
 your public SSH key to GitHub and set up an [SSH agent](https://linux.die.net/man/1/ssh-agent)
@@ -901,6 +922,23 @@ will make this system extensible and support other common git hosting options li
 and allow developers to choose their favorite. Since the package development functions has been
 moved to the [PkgDev](https://github.com/JuliaLang/PkgDev.jl) package, you need to run `Pkg.add("PkgDev"); import PkgDev`
 to access the functions starting with `PkgDev.` in the document below.
+-->
+```
+
+ここで`USERNAME`は実際のGitHubユーザ名です。
+一度これをすると、パッケージマネージャはあなたのGitHubユーザ名を知り、これに従って認識できるようになります。
+また、
+手間をかけずに変更を送れるようにするために、
+SSH公開鍵をGitHubに
+[アップロード](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsettings%2Fssh)
+して、開発マシンで[SSH agent](https://linux.die.net/man/1/ssh-agent)を設定すべきです。
+将来的には、このシステムを拡張して[BitBucket](https://bitbucket.org)のような
+他の一般的なgitホスティングオプションをサポートして、
+開発者が好きなのを選べるようにするつもりです。
+パッケージ開発の関数は
+[PkgDev](https://github.com/JuliaLang/PkgDev.jl)パッケージに移動したため、
+後のドキュメントで出てくる`PkgDev.`で始まる関数にアクセスするため
+`Pkg.add("PkgDev"); import PkgDev`を実行する必要があります。
 
 ## Making changes to an existing package
 
