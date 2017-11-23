@@ -326,7 +326,7 @@ However, this change will be system-wide and thus the use of [`Pkg.setprotocol!(
 !!! note
     パッケージマネージャ関数は`.jl`が接尾についているパッケージ名も使うことができますが、内部的には取り除かれます。
     例としては次の様な感じです。
-    
+
     ​```julia
     Pkg.add("Distributions.jl")
     Pkg.rm("Distributions.jl")
@@ -463,7 +463,7 @@ the requirements of both registered and unregistered packages.
 -->
 ```
 
-[^1]: 
+[^1]:
     公式パッケージ集は
     [https://github.com/JuliaLang/METADATA.jl](https://github.com/JuliaLang/METADATA.jl)
     にありますが、
@@ -805,12 +805,16 @@ gitブランチは非常に軽量なので、これが問題になることは�
 -->
 ```
 
-[^2]: 
+[^2]:
     ブランチにないパッケージもまたリポジトリ内を変更した場合は汚れているとしてマークされますが、
     それはあまり一般的ではありません。
 
-## Custom METADATA Repository
+[](## Custom METADATA Repository)
 
+## カスタムMETADATAリポジトリ
+
+```@raw html
+<!--
 By default, Julia assumes you will be using the [official METADATA.jl](https://github.com/JuliaLang/METADATA.jl)
 repository for downloading and installing packages. You can also provide a different metadata
 repository location. A common approach is to keep your `metadata-v2` branch up to date with the
@@ -818,16 +822,37 @@ Julia official branch and add another branch with your custom packages. You can 
 local metadata repository using that custom location and branch and then periodically rebase your
 custom branch with the official `metadata-v2` branch. In order to use a custom repository and
 branch, issue the following command:
+-->
+```
+
+デフォルトでは、Juliaはパッケージのダウンロードとインストールに
+[公式のMETADATA.jl](https://github.com/JuliaLang/METADATA.jl)リポジトリを使っているとして扱います。
+別のメタデータリポジトリの場所を指定することもできます。
+一般的な方法は、`metadata-v2`ブランチをJuliaの公式ブランチで最新に保ち、
+自分のカスタムパッケージを含んだ別のブランチを加えることです。
+自分のローカルメタデータリポジトリをそのカスタムロケーションとブランチを使って初期化でき、
+定期的にカスタムブランチを公式の`metadata-v2`ブランチでリベースします。
+カスタムリポジトリとカスタムブランチを使うためには次のコマンドを出してください。
 
 ```julia-repl
 julia> Pkg.init("https://me.example.com/METADATA.jl.git", "branch")
 ```
 
+```@raw html
+<!--
 The branch argument is optional and defaults to `metadata-v2`. Once initialized, a file named
 `META_BRANCH` in your `~/.julia/vX.Y/` path will track the branch that your METADATA repository
 was initialized with. If you want to change branches, you will need to either modify the `META_BRANCH`
 file directly (be careful!) or remove the `vX.Y` directory and re-initialize your METADATA repository
 using the `Pkg.init` command.
+-->
+```
+
+ブランチ引数はオプションで、デフォルトは`metadata-v2`になっています。
+一度初期化すると、`~/.julia/vX.Y/`にある`META_BRANCH`という名前のファイルは
+METADATAリポジトリが初期化されたブランチを追跡します。
+ブランチを変更したい場合は、`META_BRANCH`ファイルを直接変更するか（注意してください！）、
+`vX.Y`ディレクトリを取り除いてMETADATAリポジトリを`Pkg.init`コマンドを使って再び初期化する必要があります。
 
 # Package Development
 
@@ -1230,7 +1255,7 @@ julia> Pkg.clone("git://github.com/StefanKarpinski/FooBar.jl.git")
 INFO: Cloning FooBar from git@github.com:StefanKarpinski/FooBar.jl.git
 ```
 
-[^3]: 
+[^3]:
     Installing and using GitHub's ["hub" tool](https://github.com/github/hub) is highly recommended.
     It allows you to do things like run `hub create` in the package repo and have it automatically
     created via GitHub's API.
@@ -1293,11 +1318,11 @@ INFO: To create a pull-request open:
     ​```
     ERROR: key not found: "token"
     ​```
-    
+
     then you may have encountered an issue from using the GitHub API on multiple systems. The solution
     is to delete the "Julia Package Manager" personal access token [from your Github account](https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fsettings%2Ftokens)
     and try again.
-    
+
     Other failures may require you to circumvent `PkgDev.publish()` by [creating a pull request on GitHub](https://help.github.com/articles/creating-a-pull-request/).
     See: [Publishing METADATA manually](@ref) below.
 
