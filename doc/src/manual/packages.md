@@ -982,12 +982,23 @@ to feedback--you might find it easier to use the procedure for code changes desc
 より大きなドキュメンテーションの変更、特にフィードバックに応じて更新する必要がある変更については、
 後述のコード変更の手順を使用する方が簡単です。
 
-### Code changes
+[](### Code changes)
 
-#### Executive summary
+### コードの変更
 
+[](#### Executive summary)
+
+#### 概要
+
+```@raw html
+<!--
 Here we assume you've already set up git on your local machine and have a GitHub account (see
 above). Let's imagine you're fixing a bug in the Images package:
+-->
+```
+
+ここでは既にローカルマシンのgitの設定は完了し、GitHubアカウントを持っているとします（上の項を見てください）。
+あなたはImagesパッケージのバグを直している、ということにしましょう。
 
 ```
 Pkg.checkout("Images")           # check out the master branch
@@ -1001,10 +1012,20 @@ using PkgDev
 PkgDev.submit("Images")
 ```
 
+```@raw html
+<!--
 The last line will present you with a link to submit a pull request to incorporate your changes.
+-->
+```
 
-#### Detailed description
+最後の行には、プルリクエストを送信して変更を組み込むためのリンクが表示されます。
 
+[](#### Detailed description)
+
+#### 詳細説明
+
+```@raw html
+<!--
 If you want to fix a bug or add new functionality, you want to be able to test your changes before
 you submit them for consideration. You also need to have an easy way to update your proposal in
 response to the package owner's feedback. Consequently, in this case the strategy is to work locally
@@ -1013,11 +1034,31 @@ on your own machine; once you are satisfied with your changes, you submit them f
 project's main repository. Because the online repository can't see the code on your private machine,
 you first *push* your changes to a publicly-visible location, your own online *fork* of the package
 (hosted on your own personal GitHub account).
+-->
+```
 
+バグを修正したり、新しい機能を追加したい場合は、変更内容を検討のために提出する前にテストしたいと思うでしょう。
+また、パッケージ所有者のフィードバックに応じて、自分の提案を簡単に更新できるようにする必要があります。
+従って、この場合は自分のローカルマシンで作業をするのが良いでしょう。
+満足するまで変更したら、検討するために提出します。
+この作業は**プルリクエスト**と呼ばれ、変更をプロジェクトのメインリポジトリに「プル」することを要求しています。
+オンラインリポジトリはプライベートマシン上のコードを見ることができないので、
+まず、みんなが見れる場所であるパッケージのオンラインのフォーク（自分の個人のGitHubアカウントにホストされています）に自分の変更を**プッシュ**します。
+
+```@raw html
+<!--
 Let's assume you already have the `Foo` package installed. In the description below, anything
 starting with `Pkg.` or `PkgDev.` is meant to be typed at the Julia prompt; anything starting
 with `git` is meant to be typed in [julia's shell mode](@ref man-shell-mode) (or using the shell that comes with
 your operating system). Within Julia, you can combine these two modes:
+-->
+```
+
+既に`Foo`パッケージをインストールしているとしましょう。
+以下の説明では、`Pkg.`または`PkgDev.`で始まるものはJuliaプロンプトで入力することを意味します。
+`git`で始まるものは、[juliaのシェルモード](@ref man-shell-mode)で（またはオペレーティングシステムのシェルを使う）入力することを意味します。
+。
+Juliaでは、この２つのモードを組み合わせることができます。
 
 ```julia-repl
 julia> cd(Pkg.dir("Foo"))          # go to Foo's folder
@@ -1025,9 +1066,18 @@ julia> cd(Pkg.dir("Foo"))          # go to Foo's folder
 shell> git command arguments...    # command will apply to Foo
 ```
 
+```@raw html
+<!--
 Now suppose you're ready to make some changes to `Foo`. While there are several possible approaches,
 here is one that is widely used:
+-->
+```
 
+`Foo`を変更する準備をしているとしましょう。
+いくつかの可能なアプローチがありますが、広く使われているものとしては次のものがあります。
+
+```@raw html
+<!--
   * From the Julia prompt, type [`Pkg.checkout("Foo")`](@ref). This ensures you're running the latest
     code (the `master` branch), rather than just whatever "official release" version you have installed.
     (If you're planning to fix a bug, at this point it's a good idea to check again whether the bug
@@ -1076,8 +1126,69 @@ here is one that is widely used:
 
     One potential type of change the owner may request is that you squash your commits. See [Squashing](@ref man-squashing-and-rebasing)
     below.
+-->
+```
 
-### Dirty packages
+  * Juliaプロンプトから、[`Pkg.checkout("Foo")`](@ref)と入力してください。
+    これにより、最新のコード（`master`ブランチ）を実行していることを確実にします。
+    （バグを直そうとしている場合は、もう一度、他の人がバグを修正したかどうか確認してみることをおすすめします。
+    既に直されていた場合は、新しい公式リリースにタグを付けて、修正がコミュニティの他の人に配布されるようにリクエストすることができます。）
+    もし、`Foo is dirty, bailing`というエラーを受け取ったら、後述の[汚れているパッケージ](@ref)を見てください。
+
+  * 変更用にブランチを作成します。
+    パッケージフォルダ（Juliaで[`Pkg.dir("Foo")`](@ref)として返ってくる）に移動し
+    （シェルモードで）`git checkout -b <newbranch>`と入力して新しいブランチを作成します。
+    ここで`<newbranch>`は説明的な名前（例：fixbarなど）です。
+    ブランチを作成することで、新しい作業と現在の`master`ブランチの間を容易に行き来できるようになります。
+    ([https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)を見てください。)
+
+    もし、既に変更した後にこれをするのを忘れても心配しないでください。
+    後述の[ブランチングの詳細について](@ref man-branch-post-hoc)を見てください。
+
+  * 変更を加えましょう。
+    バグの修正でも新しい機能の追加でも、大半の場合、変更は`src/`と`test/`の両方の更新を含みます。
+    もし、バグを修正した場合は、（現在のコードで）バグを説明する最小の例をテストスイートに加えましょう。
+    バグのテストに貢献することによってバグが他の変更によって後でまた突然発生したりしないことを確かめてください。
+    もし、新たな機能を加えた場合は、意図した通りにコードが動くことを確認したことをパッケージの所有者に説明するためにテストを作成しましょう。
+
+  * パッケージのテストを実行して、ちゃんと通るかどうか確認しましょう。
+    テストを実行するにはいくつか方法があります。
+
+      * Juliaから、[`Pkg.test("Foo")`](@ref)を実行する：こうすると、テストを別の（新しい）`julia`プロセスで実行します。
+      * Juliaで、パッケージの`test/`フォルダから`include("runtest.jl")`
+        （ファイルは異なった名前をもっても良いです。全てのテストを実行するのを見てください。）で読み込む：
+        パッケージを読み込むにはしばらく時間がかかるますが、
+        こうすることによって、同一セッション中に全てのパッケージを再読み込みすることなく
+        テストを繰り返し実行できるようになり、もっと速くできます。
+        これによってテストを繰り返し同じセッションで再読み込みすることなく。
+        この方法だと、[パッケージのコードを変更する](@ref man-workflow-tips)ためにはエクストラワークをしなければなりません。
+      * シェルで、パッケージの`src/`フォルダ内から`julia ../test/runtests.jl`を実行する。
+    * 変更をコミットする：
+      [https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository)を見てください。
+    * 変更を提出する：
+      Juliaプロンプトから、`PkgDev.submit("Foo")`と入力してください。
+      これにより変更をGitHubのフォークにプッシュし、もしフォークが存在しなければ作られます。
+      （もしエラーが出たら、[SSH鍵を設定したか確認してください](@ref man-initial-setup)。）
+      その時点で、Juliaはハイパーリンクを与えます。そのリンクを開いて、メッセージを編集して、"submit"をクリックしてください。
+      パッケージの所有者には変更が通知され、ディスカッションを開始するでしょう。
+      （もし、gitを使うのが良いならば、このステップをシェルから自分ですることもできます。）
+    * パッケージの所有者は追加の改善を提案してくるかもしれません。
+      提案に応えるために、プルリクエストを簡単に更新できます。（これはまだマージされていない変更だけについて当てはまります。マージされたプルリクエストの場合は、新しいブランチを始めて新しい変更を加えてください。）
+
+      * meantimeにブランチを変更した場合は、
+        （シェルモードから）`git checkout fixbar`か
+        （Juliaプロンプトから）[`Pkg.checkout("Foo", "fixbar")`](@ref)で
+        同じブランチに戻ってきたのを確認してください。
+      * 上のように、変更をしたらテストを実行して、変更をコミットしてください。
+      * シェルから`git push`と入力してください。これにより、あなたの新しいコミットが同じプルリクエストに追加されます。
+        プルリクエストのディスカッションのページに自動的に表示されるはずです。
+
+      所有者がよく要望する変更の１つとして、squash（コミットをまとめること）があります。
+      下記の[Squashing](@ref man-squashing-and-rebasing)を参照してください。
+
+[](### Dirty packages)
+
+### 汚れているパッケージ
 
 If you can't change branches because the package manager complains that your package is dirty,
 it means you have some changes that have not been committed. From the shell, use `git diff` to
