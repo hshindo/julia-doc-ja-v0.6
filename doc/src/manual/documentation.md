@@ -1,23 +1,47 @@
-# Documentation
+[](# Documentation)
+# 説明文の付加
 
+
+```@raw html
+<!--
 Julia enables package developers and users to document functions, types and other objects easily
 via a built-in documentation system since Julia 0.4.
 
 The basic syntax is very simple: any string appearing at the top-level right before an object
 (function, macro, type or instance) will be interpreted as documenting it (these are called *docstrings*).
 Here is a very simple example:
+-->
+```
+
+Juliaではver0.4より、標準装備の説明文付加システムが用意されていて、パッケージの開発者やユーザーが関数や型、その他のオブジェクトに対して説明文を付加できます。
+
+基本的な構文は単純です。オブジェクト（関数、マクロ、型、インスタンスなど）の直前にある最上位にある文字列は説明文（**docstring**と呼ばれます）として解釈されます。
+
 
 ```julia
 "Tell whether there are too foo items in the array."
 foo(xs::Array) = ...
 ```
 
+
+```@raw html
+<!--
 Documentation is interpreted as [Markdown](https://en.wikipedia.org/wiki/Markdown), so you can
 use indentation and code fences to delimit code examples from text. Technically, any object can
 be associated with any other as metadata; Markdown happens to be the default, but one can construct
 other string macros and pass them to the `@doc` macro just as well.
 
 Here is a more complex example, still using Markdown:
+-->
+```
+
+説明文は[Markdown](https://en.wikipedia.org/wiki/Markdown)として解釈されるので、字下げやコード枠を使ってサンプルコードを本文から分離できます。
+技術的には、任意のオブジェクトが他のオブジェクトとメタデータとして関連付けられます。
+Markdownがたまたまデフォルトですが、他の文字列マクロを作って`@doc`マクロに渡すしても構いません。
+
+Markdownを使ってますが、もっと複雑な例を示します。
+
+
 
 ````julia
 """
@@ -35,8 +59,17 @@ julia> bar([1, 2], [1, 2])
 function bar(x, y) ...
 ````
 
-As in the example above, we recommend following some simple conventions when writing documentation:
 
+```@raw html
+<!--
+As in the example above, we recommend following some simple conventions when writing documentation:
+-->
+```
+上記の例のように、説明文を書くときは、以下の単純な慣例に従うことをお勧めします。
+
+
+```@raw html
+<!--
 1. Always show the signature of a function at the top of the documentation, with a four-space indent
    so that it is printed as Julia code.
 
@@ -49,6 +82,18 @@ As in the example above, we recommend following some simple conventions when wri
    accepts many keyword arguments, only include a `<keyword arguments>` placeholder in the signature
    (i.e. `f(x; <keyword arguments>)`), and give the complete list under an `# Arguments` section
    (see point 4 below).
+-->
+```
+1. 常に、関数のシグネチャを説明文の先頭に表示し、空白4文字の字下げを行って、Juliaのコードとして出力する。
+
+    これは、シグネチャを(`mean(x::AbstractArray)`のように)Juliaのコードの中に書いたり、簡略形式で書いたりするのと同等です。
+    可能であれば、オプション引数はデフォルト値と共にJuliaの実際の構文に従って示すべきです（例`f(x, y=1)`）。
+    オプション引数がデフォルト値を持たない場合は、角括弧で囲むべきでしょう（`f(x[, y])`や`f(x[, y[, z]])`など）。
+    
+
+
+```@raw html
+<!--
 2. Include a single one-line sentence describing what the function does or what the object represents
    after the simplified signature block. If needed, provide more details in a second paragraph, after
    a blank line.
@@ -58,11 +103,21 @@ As in the example above, we recommend following some simple conventions when wri
    with a period. If the meaning of a function cannot be summarized easily, splitting it into separate
    composable parts could be beneficial (this should not be taken as an absolute requirement for
    every single case though).
+-->
+```
+
+```@raw html
+<!--
 3. Do not repeat yourself.
 
    Since the function name is given by the signature, there is no need to start the documentation
    with "The function `bar`...": go straight to the point. Similarly, if the signature specifies
    the types of the arguments, mentioning them in the description is redundant.
+-->
+```
+
+```@raw html
+<!--
 4. Only provide an argument list when really necessary.
 
    For simple functions, it is often clearer to mention the role of the arguments directly in the
@@ -71,6 +126,8 @@ As in the example above, we recommend following some simple conventions when wri
    with many arguments (in particular keyword arguments). In that case, insert it after the general
    description of the function, under an `# Arguments` header, with one `-` bullet for each argument.
    The list should mention the types and default values (if any) of the arguments:
+-->
+```
 
    ```julia
    """
@@ -81,6 +138,9 @@ As in the example above, we recommend following some simple conventions when wri
    ...
    """
    ```
+
+```@raw html
+<!--
 5. Include any code examples in an `# Examples` section.
 
    Examples should, whenever possible, be written as *doctests*. A *doctest* is a fenced code block
@@ -89,6 +149,8 @@ As in the example above, we recommend following some simple conventions when wri
 
    For example in the following docstring a variable `a` is defined and the expected result, as printed
    in a Julia REPL, appears afterwards:
+-->
+```
 
    ````julia
    """
@@ -105,6 +167,9 @@ As in the example above, we recommend following some simple conventions when wri
    """
    ````
 
+
+```@raw html
+<!--
    !!! warning
        Calling `rand` and other RNG-related functions should be avoided in doctests since they will not
        produce consistent outputs during different Julia sessions.
@@ -114,7 +179,12 @@ As in the example above, we recommend following some simple conventions when wri
 
        Note that whitespace in your doctest is significant! The doctest will fail if you misalign the
        output of pretty-printing an array, for example.
+-->
+```
 
+
+```@raw html
+<!--
    You can then run `make -C doc doctest` to run all the doctests in the Julia Manual, which will
    ensure that your example works.
 
@@ -124,15 +194,27 @@ As in the example above, we recommend following some simple conventions when wri
    !!! tip
        Wherever possible examples should be **self-contained** and **runnable** so that readers are able
        to try them out without having to include any dependencies.
+-->
+```
+
+```@raw html
+<!--
 6. Use backticks to identify code and equations.
 
    Julia identifiers and code excerpts should always appear between backticks ``` ` ``` to enable
    highlighting. Equations in the LaTeX syntax can be inserted between double backticks ``` `` ```.
    Use Unicode characters rather than their LaTeX escape sequence, i.e. ``` ``α = 1`` ``` rather
    than ``` ``\\alpha = 1`` ```.
+-->
+```
+
+```@raw html
+<!--
 7. Place the starting and ending `"""` characters on lines by themselves.
 
    That is, write:
+-->
+```
 
    ```julia
    """
@@ -143,7 +225,12 @@ As in the example above, we recommend following some simple conventions when wri
    f(x, y) = ...
    ```
 
+
+```@raw html
+<!--
    rather than:
+-->
+```
 
    ```julia
    """...
@@ -152,16 +239,31 @@ As in the example above, we recommend following some simple conventions when wri
    f(x, y) = ...
    ```
 
+
+```@raw html
+<!--
    This makes it more clear where docstrings start and end.
+-->
+```
+
+```@raw html
+<!--
 8. Respect the line length limit used in the surrounding code.
 
    Docstrings are edited using the same tools as code. Therefore, the same conventions should apply.
    It it advised to add line breaks after 92 characters.
+-->
+```
 
-## Accessing Documentation
+[](## Accessing Documentation)
+## 説明文の表示の仕方
 
+```@raw html
+<!--
 Documentation can be accessed at the REPL or in [IJulia](https://github.com/JuliaLang/IJulia.jl)
 by typing `?` followed by the name of a function or macro, and pressing `Enter`. For example,
+-->
+```
 
 ```julia
 ?fft
@@ -169,10 +271,16 @@ by typing `?` followed by the name of a function or macro, and pressing `Enter`.
 ?r""
 ```
 
+
+```@raw html
+<!--
 will bring up docs for the relevant function, macro or string macro respectively. In [Juno](http://junolab.org)
 using `Ctrl-J, Ctrl-D` will bring up documentation for the object under the cursor.
+-->
+```
 
-## Functions & Methods
+[](## Functions & Methods)
+## 関数とメソッド
 
 Functions in Julia may have multiple implementations, known as methods. While it's good practice
 for generic functions to have a single purpose, Julia allows methods to be documented individually
