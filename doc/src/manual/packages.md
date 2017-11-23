@@ -1210,26 +1210,63 @@ Naturally, this deletes any changes you've made.
 最後の手段として、`"Foo"`フォルダ全体を削除して、新しいコピーを[`Pkg.add("Foo")`](@ref)で再インストールしてください。
 もちろん、こうすると今までの変更は全て削除されてしまいます。
 
-### [Making a branch *post hoc*](@id man-branch-post-hoc)
+[](### [Making a branch *post hoc*](@id man-branch-post-hoc))
 
+### [**事後**ブランチの作成](@id man-branch-post-hoc)
+
+```@raw html
+<!--
 Especially for newcomers to git, one often forgets to create a new branch until after some changes
 have already been made. If you haven't yet staged or committed your changes, you can create a
 new branch with `git checkout -b <newbranch>` just as usual--git will kindly show you that some
 files have been modified and create the new branch for you. *Your changes have not yet been committed to this new branch*,
 so the normal work rules still apply.
+-->
+```
 
+特にgitを初めて触る人は、変更する前に新しいブランチを作成することを忘れてしまうことがよくあります。
+まだ変更を行ったり、コミットしたりしていない場合は、
+`git checkout -b <newbranch>`で新しいブランチを作成することができます。
+通常、gitは親切にファイルが変更されたことを表示し、新しいブランチを作成します。
+**あなたの変更はまだこの新しいブランチにコミットされていない**ので、
+通常の作業ルールがそのまま適用されます。
+
+```@raw html
+<!--
 However, if you've already made a commit to `master` but wish to go back to the official `master`
 (called `origin/master`), use the following procedure:
+-->
+```
 
+しかし、既に`master`にコミットしてしまったが、
+公式の`master`（`origin/master`と呼ばれる）に戻る場合は、
+次の手順に従ってください。
+
+```@raw html
+<!--
   * Create a new branch. This branch will hold your changes.
   * Make sure everything is committed to this branch.
   * `git checkout master`. If this fails, *do not* proceed further until you have resolved the problems,
     or you may lose your changes.
   * *Reset*`master` (your current branch) back to an earlier state with `git reset --hard origin/master`
     (see [https://git-scm.com/blog/2011/07/11/reset.html](https://git-scm.com/blog/2011/07/11/reset.html)).
+-->
+```
 
+* 新しいブランチを作る。このブランチに変更を保管しておきます。
+* すべてをこのブランチにコミットしたことを確認する。
+* `git checkout master`を実行する。失敗した場合は、問題が解決するまでこれ以上**先に進まない**でください。変更を失ってしまいます。
+* `git reset --hard origin/master`で`master`(your current branch)を**リセット**して前の状態に戻す（[https://git-scm.com/blog/2011/07/11/reset.html](https://git-scm.com/blog/2011/07/11/reset.html)を見てください）。
+
+```@raw html
+<!--
 This requires a bit more familiarity with git, so it's much better to get in the habit of creating
 a branch at the outset.
+-->
+```
+
+これをするにはgitの知識がもう少し必要です。
+最初にブランチを作成する習慣をつけておいた方がずっと良いでしょう。
 
 ### [Squashing and rebasing](@id man-squashing-and-rebasing)
 
