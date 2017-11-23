@@ -1190,12 +1190,25 @@ here is one that is widely used:
 
 ### 汚れているパッケージ
 
+```@raw html
+<!--
 If you can't change branches because the package manager complains that your package is dirty,
 it means you have some changes that have not been committed. From the shell, use `git diff` to
 see what these changes are; you can either discard them (`git checkout changedfile.jl`) or commit
 them before switching branches.  If you can't easily resolve the problems manually, as a last
 resort you can delete the entire `"Foo"` folder and reinstall a fresh copy with [`Pkg.add("Foo")`](@ref).
 Naturally, this deletes any changes you've made.
+-->
+```
+
+パッケージマネージャが編集したパッケージが汚れているというためにブランチを変えられない場合、
+コミットされていない変更があることを意味します。
+シェルから`git diff`を使ってこの変更を確認してください。
+変更を破棄（`git checkout changedfile.jl`）するか、
+ブランチを切り替える前にコミットすることができます。
+手動で問題を容易に解決できない場合は、
+最後の手段として、`"Foo"`フォルダ全体を削除して、新しいコピーを[`Pkg.add("Foo")`](@ref)で再インストールしてください。
+もちろん、こうすると今までの変更は全て削除されてしまいます。
 
 ### [Making a branch *post hoc*](@id man-branch-post-hoc)
 
