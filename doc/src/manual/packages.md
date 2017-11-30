@@ -1552,7 +1552,7 @@ to follow in naming your package:
 
     * `RandomMatrices`は`RndMat`や`RMT`よりも長い名前ですが、曖昧な名前ではありません。
 
-5. あまり系統ではない名前でも、その領域にたいするいくつかの可能なアプローチのうちの１つを実装するパッケージにアッているかもしれません。
+5. あまり系統ではない名前でも、その領域に対するいくつかの可能なアプローチのうちの１つを実装するパッケージに合っているかもしれません。
 
     * Juliaは１つになった総合的な描写パッケージを持っていません。
       しかし、`Gadfly`や`PyPlot`、`Winston`などのパッケージは
@@ -1670,43 +1670,86 @@ TravisとAppVeyorのWebサイトでパッケージリポジトリのテストを
 これを済ませたらすでに動作テストが行われています。
 もちろん全てのデフォルトのテストはJuliaで`using FooBar`が動くかどうかを確かめています。
 
-### Loading Static Non-Julia Files
+[](### Loading Static Non-Julia Files)
 
+### 静的でJuliaでないファイルの読み込み
+
+```@raw html
+<!--
 If your package code needs to load static files which are not Julia code, e.g. an external library
 or data files, and are located within the package directory, use the `@__DIR__` macro to determine
 the directory of the current source file. For example if `FooBar/src/FooBar.jl` needs to load
 `FooBar/data/foo.csv`, use the following code:
+-->
+```
+
+パッケージのコードがJuliaのコードでない静的なファイル、例えば、外部ライブラリやデータファイルなどを読み込む必要があり、
+パッケージディレクトリ内に位置する場合、
+現在のソースファイルを指定するために`@__DIR__`マクロを使用してください。
+例えば、`FooBar/src/FooBar.jl`は`FooBar/data/foo.csv`を読み込む必要がある場合、次のコードを使ってください。
 
 ```julia
 datapath = joinpath(@__DIR__, "..", "data")
 foo = readcsv(joinpath(datapath, "foo.csv"))
 ```
 
-### Making Your Package Available
+[](### Making Your Package Available)
 
+### パッケージを利用できるようにする
+
+```@raw html
+<!--
 Once you've made some commits and you're happy with how `FooBar` is working, you may want to get
 some other people to try it out. First you'll need to create the remote repository and push your
 code to it; we don't yet automatically do this for you, but we will in the future and it's not
 too hard to figure out [^3]. Once you've done this, letting people try out your code is as simple
 as sending them the URL of the published repo – in this case:
+-->
+```
+
+いくつかコミットをして、`FooBar`が動作に満足したら、
+他の人にそのパッケージを試してもらいたくなるでしょう。
+これをまだ自動ですることはできませんが、将来的にはできるようにするつもりで、
+それを理解するのはそれほど難しくありません[^3]。
+まず、リモートリポジトリを作成して、コードをそこへプッシュする必要があります。
+これが完了したら、他の人に試してもらうのは簡単で、公開したリポジトリのURL、この場合は
 
 ```
 git://github.com/StefanKarpinski/FooBar.jl.git
 ```
 
+を送ればいいだけです。
+
+```@raw html
+<!--
 For your package, it will be your GitHub user name and the name of your package, but you get the
 idea. People you send this URL to can use [`Pkg.clone()`](@ref) to install the package and try
 it out:
+-->
+```
+
+あなたのパッケージでは、あなたのGitHubユーザ名とあなたのパッケージ名が入りますが、
+あなたはそのアイデアを得ます。
+URLを受け取った人は[`Pkg.clone()`](@ref)でパッケージをインストールして試すことができます。
 
 ```julia-repl
 julia> Pkg.clone("git://github.com/StefanKarpinski/FooBar.jl.git")
 INFO: Cloning FooBar from git@github.com:StefanKarpinski/FooBar.jl.git
 ```
 
+```@raw html
+<!--
 [^3]:
     Installing and using GitHub's ["hub" tool](https://github.com/github/hub) is highly recommended.
     It allows you to do things like run `hub create` in the package repo and have it automatically
     created via GitHub's API.
+-->
+```
+
+[^3]:
+    GitHubの["hub"ツール](https://github.com/github/hub)をインストールして使うことを強くおすすめします。
+    これによってパッケージリポジトリ中で`hub create`を実行し、
+    GitHubのAPIを通して自動的に生成することができるようになります。
 
 ### Tagging and Publishing Your Package
 
