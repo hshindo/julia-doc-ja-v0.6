@@ -1565,11 +1565,21 @@ to follow in naming your package:
     * `CPLEX.jl`は`CPLEX`ライブラリをラップしています。このことはウェブで検索すればすぐに分かります。
     * `MATLAB.jl`はMATLABエンジンをJulia内から呼び出すインターフェイスを提供しています。
 
-### Generating the package
+[](### Generating the package)
 
+### パッケージを生成する
+
+```@raw html
+<!--
 Suppose you want to create a new Julia package called `FooBar`. To get started, do `PkgDev.generate(pkg,license)`
 where `pkg` is the new package name and `license` is the name of a license that the package generator
 knows about:
+-->
+```
+
+`FooBar`という名前の新しいJuliaのパッケージを作ろうとしているとしましょう。
+始めるためには、`PkgDev.generate(pkg,license)`を実行してください。
+ここで`pkg`は新しいパッケージの名前で、`license`はパッケージ生成器が知っているライセンス名です。
 
 ```julia-repl
 julia> PkgDev.generate("FooBar","MIT")
@@ -1586,8 +1596,15 @@ INFO: Generating .gitignore
 INFO: Committing FooBar generated files
 ```
 
+```@raw html
+<!--
 This creates the directory `~/.julia/v0.6/FooBar`, initializes it as a git repository, generates
 a bunch of files that all packages should have, and commits them to the repository:
+-->
+```
+
+これによってディレクトリ`~/.julia/v0.6/FooBar`が生成され、gitリポジトリとして初期化し、
+全てのパッケージに必要な一連のファイルが生成されリポジトリにコミットされます。
 
 ```
 $ cd ~/.julia/v0.6/FooBar && git show --stat
@@ -1616,12 +1633,25 @@ Date:   Wed Oct 16 17:57:58 2013 -0400
  8 files changed, 85 insertions(+)
 ```
 
+```@raw html
+<!--
 At the moment, the package manager knows about the MIT "Expat" License, indicated by `"MIT"`,
 the Simplified BSD License, indicated by `"BSD"`, and version 2.0 of the Apache Software License,
 indicated by `"ASL"`. If you want to use a different license, you can ask us to add it to the
 package generator, or just pick one of these three and then modify the `~/.julia/v0.6/PACKAGE/LICENSE.md`
 file after it has been generated.
+-->
+```
 
+現時点では、パッケージマネージャは、
+`"MIT"`と表示されるMIT"Expat"ライセンスと、
+`"BSD"`と表示される簡略化されたBSDライセンスと、
+`"ASL"`と表記されるApache Software Licenseのバージョン2.0について知っています。
+別のライセンスを使用したい場合は、パッケージジェネレータに追加するよう私たちに頼むか、
+単にこれらの３つのうちの１つを選んで、`~/.julia/v0.6/PACKAGE/LICENSE.md`ファイルが生成された後に変更してください。
+
+```@raw html
+<!--
 If you created a GitHub account and configured git to know about it, `PkgDev.generate()` will
 set an appropriate origin URL for you. It will also automatically generate a `.travis.yml` file
 for using the [Travis](https://travis-ci.org) automated testing service, and an `appveyor.yml`
@@ -1629,6 +1659,16 @@ file for using [AppVeyor](https://www.appveyor.com). You will have to enable tes
 and AppVeyor websites for your package repository, but once you've done that, it will already
 have working tests. Of course, all the default testing does is verify that `using FooBar` in Julia
 works.
+-->
+```
+
+GitHubアカウントを作成し、そのアカウントを知るようにgitを設定したら、
+`PkgDev.generate()`で適切なorigin URLを設定できます。
+また、[Travis](https://travis-ci.org)自動テストサービスを使用するための`.travis.yml`ファイルと、
+[AppVeyor](https://www.appveyor.com)を使用するための`appveyor.yml`ファイルも自動的に生成されます。
+TravisとAppVeyorのWebサイトでパッケージリポジトリのテストを有効にする必要がありますが、
+これを済ませたらすでに動作テストが行われています。
+もちろん全てのデフォルトのテストはJuliaで`using FooBar`が動くかどうかを確かめています。
 
 ### Loading Static Non-Julia Files
 
