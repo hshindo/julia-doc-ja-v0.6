@@ -233,7 +233,7 @@ specific ranges of versions of packages.
 この操作は[`Pkg.add("SHA")`](@ref)を呼び出すのと次の点を除いて機能的に同等です。
 [`Pkg.add()`](@ref)はインストールが完了した**後**になるまで`REQUIRE`を変更しません。
 問題があった場合、`REQUIRE`は[`Pkg.add()`](@ref)を呼び出す前の状態に戻されます。
-`REQUIRE`ファイルの形式については[要件の指定](@ref)を参照してください。
+`REQUIRE`ファイルの形式については[要件の仕様](@ref)を参照してください。
 必要とするパッケージのバージョンの範囲を指定できます。
 
 ```@raw html
@@ -1363,45 +1363,110 @@ from the one in your GitHub fork, you're going to have to do a *force push*:
   * あなたのフォークを`git push myfork +fixbar`で強制プッシュしてください。
     `+`は、`myfork`で見つかった`fixbar`ブランチを置き換えるべきであることを示します。
 
-## Creating a new Package
+[](## Creating a new Package)
 
-### REQUIRE speaks for itself
+## 新しいパッケージの作成
 
+[](### REQUIRE speaks for itself)
+
+### REQUIREがパッケージについて話す
+
+```@raw html
+<!--
 You should have a `REQUIRE` file in your package repository, with a bare minimum directive of
 what Julia version you expect your users to be running for the package to work. Putting a floor
 on what Julia version your package supports is done by simply adding `julia 0.x` in this file.
 While this line is partly informational, it also has the consequence of whether `Pkg.update()`
 will update code found in `.julia` version directories. It will not update code found in version
 directories beneath the floor of what's specified in your `REQUIRE`.
+-->
+```
 
+パッケージの動作に最低限必要だと想定されるユーザが実行するJuliaのバージョンを指定するために
+パッケージレポジトリには`REQUIRE`ファイルを置くべきです。
+`REQUIURE`ファイルに`julia 0.x`を追加すれば、
+パッケージがサポートしているJuliaのバージョンを指定できます。
+この行は少し情報をもたらしますが、
+`.julia`バージョンディレクトリにあるコードを`Pkg.update()`が更新するかどうかも決めます。
+`REQUIRE`で指定されたフロアの下のバージョンディレクトリにあるコードは更新されません。
+
+```@raw html
+<!--
 As the development version `0.y` matures, you may find yourself using it more frequently, and
 wanting your package to support it. Be warned, the development branch of Julia is the land of
 breakage, and you can expect things to break. When you go about fixing whatever broke your package
 in the development `0.y` branch, you will likely find that you just broke your package on the
 stable version.
+-->
+```
 
+バージョン`0.y`の開発が進むにつれて、
+もっとそのバージョンを使い、パッケージもサポートするようにしたいと思うかもしれません。
+警告しておきますが、Juliaの開発ブランチは破壊の地であり、ものがこわれると思って良いでしょう。
+開発中の`0.y`ブランチでパッケージの壊れたところを修正すると、今度は安定版でパッケージが動かないことに気づくでしょう。
+
+```@raw html
+<!--
 There is a mechanism found in the [Compat](https://github.com/JuliaLang/Compat.jl) package that
 will enable you to support both the stable version and breaking changes found in the development
 version. Should you decide to use this solution, you will need to add `Compat` to your `REQUIRE`
 file. In this case, you will still have `julia 0.x` in your `REQUIRE`. The `x` is the floor version
 of what your package supports.
+-->
+```
 
+[互換性 (Compat) ](https://github.com/JuliaLang/Compat.jl)パッケージには、
+安定版と開発版の変更点の両方をサポートするためのメカニズムがあります。
+このソリューションを使用する場合は、`REQUIRE`ファイルに`Compat`を追加する必要があります。
+この場合、まだ`REQUIRE`に`julia 0.x`があります。
+`x`はあなたのパッケージがサポートする床バージョンです。
+
+```@raw html
+<!--
 You might also have no interest in supporting the development version of Julia. Just as you can
 add a floor to the version you expect your users to be on, you can set an upper bound. In this
 case, you would put `julia 0.x 0.y-` in your `REQUIRE` file. The `-` at the end of the version
 number means pre-release versions of that specific version from the very first commit. By setting
 it as the ceiling, you mean the code supports everything up to but not including the ceiling version.
+-->
+```
 
+Juliaの開発版をサポートすることに興味がないかもしれません。
+床バージョンを追加できるように、上限を設定できます。
+この場合、REQUIREファイルにjulia 0.x 0.y-を入れます。
+バージョン番号の最後にある`-`は、最初のコミットからのその特定のバージョンのプレリリースバージョンを意味します。
+これを天井として設定すると、天井バージョンを除くすべてのコードをサポートすることを意味します。
+
+```@raw html
+<!--
 Another scenario is that you are writing the bulk of the code for your package with Julia `0.y`
 and do not want to support the current stable version of Julia. If you choose to do this, simply
 add `julia 0.y-` to your `REQUIRE`. Just remember to change the `julia 0.y-` to `julia 0.y` in
 your `REQUIRE` file once `0.y` is officially released. If you don't edit the dash cruft you are
 suggesting that you support both the development and stable versions of the same version number!
 That would be madness. See the [Requirements Specification](@ref) for the full format of `REQUIRE`.
+-->
+```
 
+他に考えられるシナリオとして、パッケージのコードの大部分をJulia `0.y`で記述していて、
+Juliaの現在の安定版をサポートしたくないという場合があります。
+これを行う場合は、`julia 0.y-`を`REQUIRE`に追加するだけです。
+`0.y`が公式にリリースされたら、`REQUIRE`ファイルの`julia 0.y-`を`julia 0.y`に変更することを忘れないでください。
+ダッシュクラフトを編集していない場合は、同じバージョン番号の開発版と安定版の両方をサポートするということになってしまいます！
+それは狂気でしょう。
+`REQUIRE`の全ての形式については、[要件の仕様](@ref)を参照してください。
+
+```@raw html
+<!--
 Lastly, in many cases you may need extra packages for testing. Additional packages which
 are only required for tests should be specified in the `test/REQUIRE` file. This `REQUIRE`
 file has the same specification as the standard `REQUIRE` file.
+-->
+```
+
+最後に、テストのために追加パッケージが必要な場合があります。
+テストにのみ必要な追加パッケージは、`test/REQUIRE`ファイルで指定する必要があります。
+この`REQUIRE`ファイルは、標準の`REQUIRE`ファイルと同じ仕様です。
 
 ### Guidelines for naming a package
 
@@ -1725,7 +1790,7 @@ however, you should also fix the `REQUIRE` file in the current version of the pa
 
 [](## Requirements Specification)
 
-## 要件の指定
+## 要件の仕様
 
 The `~/.julia/v0.6/REQUIRE` file, the `REQUIRE` file inside packages, and the `METADATA` package
 `requires` files use a simple line-based format to express the ranges of package versions which
