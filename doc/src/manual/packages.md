@@ -1468,8 +1468,12 @@ file has the same specification as the standard `REQUIRE` file.
 テストにのみ必要な追加パッケージは、`test/REQUIRE`ファイルで指定する必要があります。
 この`REQUIRE`ファイルは、標準の`REQUIRE`ファイルと同じ仕様です。
 
-### Guidelines for naming a package
+[](### Guidelines for naming a package)
 
+### パッケージに名前をつけるときのガイドライン
+
+```@raw html
+<!--
 Package names should be sensible to most Julia users, *even to those who are not domain experts*.
 When you submit your package to METADATA, you can expect a little back and forth about the package
 name with collaborators, especially if it's ambiguous or can be confused with something other
@@ -1478,7 +1482,22 @@ suggestions. These are only suggestions though, with the intent being to keep a 
 in the curated METADATA repository. Since this repository belongs to the entire community, there
 will likely be a few collaborators who care about your package name. Here are some guidelines
 to follow in naming your package:
+-->
+```
 
+パッケージ名は、**その領域の専門家でない人にとっても**ほとんどのJuliaのユーザーにとって賢明であるべきです。
+パッケージをMETADATAに提出するとき、
+パッケージ名が曖昧であるか、別のパッケージと混同されるおそれがある場合は、
+協力者とパッケージ名についてちょっとした堂々巡りを期待できます。
+この自転車置き場の討議
+（訳注: [パーキンソンの凡俗法則](https://ja.wikipedia.org/wiki/%E3%83%91%E3%83%BC%E3%82%AD%E3%83%B3%E3%82%BD%E3%83%B3%E3%81%AE%E5%87%A1%E4%BF%97%E6%B3%95%E5%89%87)を参照）
+の際に様々な**別の**名前の提案をもらうのは珍しいことではありません。
+しかし、これらの提案は、精選されたMETADATAリポジトリにきちんとした名前空間を維持することを目的としています。
+このリポジトリはコミュニティ全体に属しているので、あなたのパッケージ名を気にする共同作業者がいる可能性があります。
+パッケージに名前を付ける際のガイドラインは次の通りです。
+
+```@raw html
+<!--
 1. Avoid jargon. In particular, avoid acronyms unless there is minimal possibility of confusion.
 
      * It's ok to say `USA` if you're talking about the USA.
@@ -1509,6 +1528,42 @@ to follow in naming your package:
 
      * `CPLEX.jl` wraps the `CPLEX` library, which can be identified easily in a web search.
      * `MATLAB.jl` provides an interface to call the MATLAB engine from within Julia.
+-->
+```
+
+1. 専門用語を避けよう。特に、混乱する可能性がほとんどない場合を除いて、頭字語を避けよう。
+
+    * USAの話をしているときに`USA`と言うのはOKです。
+    * Positive mental attidudeの話をしていても、`PMA`と言うのはよくありません。
+
+2. `Julia`をパッケージ名で使うのを避けよう。
+
+    * 通常、ユーザにとってJuliaのパッケージであることは、内容から明確に分かります。
+    * Juliaを名前に含めると、そのパッケージがJulia言語そのものとつながっている、
+      もしくは承認されている、貢献している、と示唆してしまいます。
+
+3. 提供するほとんどの機能が新しい型に関係するパッケージは、その型名の複数形をパッケージ名にすべきです。
+
+    * `DataFrames`は`DataFrame`型を提供します。
+    * `BloomFilters`は`BloomFilter`型を提供します。
+    * 一方、`JuliaParser`は新しい型を提供しませんが、`JuliaParser.parse()`関数として新しい機能を提供します。
+
+4. たとえ明快さがあなたに長らく残っているように見えても、明快さの面では誤りです。
+
+    * `RandomMatrices`は`RndMat`や`RMT`よりも長い名前ですが、曖昧な名前ではありません。
+
+5. あまり系統ではない名前でも、その領域にたいするいくつかの可能なアプローチのうちの１つを実装するパッケージにアッているかもしれません。
+
+    * Juliaは１つになった総合的な描写パッケージを持っていません。
+      しかし、`Gadfly`や`PyPlot`、`Winston`などのパッケージは
+      それぞれ特定の設計哲学に基いた特有のアプローチを具現化しています。
+    * 対照的に、`SortingAlgorithms`は多くの確立されたソートアルゴリズム (sorting algorithms) を使うための
+      一貫としたインターフェイスを提供しています。
+
+6. 外部ライブラリをラップするパッケージはそのライブラリやプログラムのあとに名前をつけられるべきです。
+
+    * `CPLEX.jl`は`CPLEX`ライブラリをラップしています。このことはウェブで検索すればすぐに分かります。
+    * `MATLAB.jl`はMATLABエンジンをJulia内から呼び出すインターフェイスを提供しています。
 
 ### Generating the package
 
