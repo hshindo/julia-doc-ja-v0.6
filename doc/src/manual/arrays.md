@@ -1,4 +1,5 @@
-# [Multi-dimensional Arrays](@id man-multi-dim-arrays)
+[](# [Multi-dimensional Arrays](@id man-multi-dim-arrays))
+# [多次元配列](@id man-multi-dim-arrays)
 
 Julia, like most technical computing languages, provides a first-class array implementation. Most
 technical computing languages pay a lot of attention to their array implementation at the expense
