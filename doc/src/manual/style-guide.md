@@ -1,5 +1,7 @@
 [](# Style Guide)
 
+# スタイルガイド
+
 ```@raw html
 <!--
 The following sections explain a few aspects of idiomatic Julia coding style. None of these rules
@@ -8,7 +10,12 @@ you choose among alternative designs.
 -->
 ```
 
+このセクションでは、Juliaの慣習的、特徴的ないくつかのコーディングスタイルについて説明します。これから説明するルールを厳守する必要はありません。
+コーディングスタイルはあくまでも多くのコードの書き方から一つを選び取ること、そしてJuliaに慣れることを助けるものにすぎません。
+
 [](## Write functions, not just scripts)
+
+## 関数を使おう
 
 ```@raw html
 <!--
@@ -20,6 +27,11 @@ Julia's compiler works.
 -->
 ```
 
+コードをそのままグローバルスコープに書く方法では迅速に目標に取り掛かることができますが、
+一旦落ち着いてソースコードを関数に小分けにしてみると良いでしょう。関数はより再利用しやすくコードテストにも向いていて、
+かつどの処理が行われ、入出力は何なのかというのも明確にします。加えて、Juliaのコンパイラの働きにより、関数に組み込まれたコードは剥き出しのコードよりも
+速く実行される傾向にあります。
+
 ```@raw html
 <!--
 It is also worth emphasizing that functions should take arguments, instead of operating directly
@@ -27,12 +39,18 @@ on global variables (aside from constants like [`pi`](@ref)).
 -->
 ```
 
+関数は基本的に引数を取るので、グローバル変数（[`pi`](@ref)などの定数は別です）を使う機会が減ることもまたメリットです。
+
 [](## Avoid writing overly-specific types)
+## 型を限定しすぎないようにしよう
 
 ```@raw html
 <!--
 Code should be as generic as possible. Instead of writing:
 -->
+```
+
+コードはなるべく柔軟であるべきです。下のように書くのではなく:
 
 ```julia
 convert(Complex{Float64}, x)
@@ -44,6 +62,8 @@ it's better to use available generic functions:
 -->
 ```
 
+利用可能な汎化関数を使うと良いでしょう。
+
 ```julia
 complex(float(x))
 ```
@@ -53,6 +73,8 @@ complex(float(x))
 The second version will convert `x` to an appropriate type, instead of always the same type.
 -->
 ```
+
+上の2番目の例のコードは`x`を然るべき型に変換してくれます。
 
 ```@raw html
 <!--
@@ -66,6 +88,12 @@ of the requisite operations. (This is known as
 -->
 ```
 
+この全体的であるべきという思想は、特に関数の引数にも当てはまります。例えばある引数がどんな整数にもなり得る場合、
+その引数の型は限定的な`Int`ないし[`Int32`](@ref)型ではなく、より広範的な[`Integer`](@ref)抽象型で宣言してください。
+実のところ他のメゾッドの定義などで引数の型を厳密に指定したい時以外は引数の型は指定しなくても良い場合が多いです。
+というのも、渡されたタイプが必要な演算に対応していない場合は[`MethodError`](@ref)が投げられるからです。
+（これは[ダック・タイピング](https://ja.wikipedia.org/wiki/%E3%83%80%E3%83%83%E3%82%AF%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0)として知られています。）
+
 ```@raw html
 <!--
 For example, consider the following definitions of a function `addone` that returns one plus its
@@ -73,11 +101,13 @@ argument:
 -->
 ```
 
+例として次に示す、引数に1を足した数を返す関数`addone`の定義を見てください:
+
 ```julia
-addone(x::Int) = x + 1                 # works only for Int
-addone(x::Integer) = x + oneunit(x)    # any integer type
-addone(x::Number) = x + oneunit(x)     # any numeric type
-addone(x) = x + oneunit(x)             # any type supporting + and oneunit
+addone(x::Int) = x + 1                 # 引数がIntの時のみ動く
+addone(x::Integer) = x + oneunit(x)    # 引数が抽象型Integerに属する型の時のみ動く
+addone(x::Number) = x + oneunit(x)     # 引数が抽象型Numberに属する型の時のみ動く
+addone(x) = x + oneunit(x)             # 引数が+とoneunitをサポートしている型の時動く
 ```
 
 ```@raw html
