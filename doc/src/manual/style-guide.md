@@ -123,13 +123,22 @@ completely redundant with the fourth definition.
 -->
 ```
 
+最後の`addone`の定義は[`oneunit`](@ref)（`x`と（望まない型プロモーションを避けるために）同じ型での1を返す）
+と[`+`](@ref)関数をサポートする全ての型をよしなに扱ってくれます。ここで知っておくべきことは、全体的な`addone(x) = x + oneunit(x)`だけ定義した時と
+一つの型に特化した定義の`addone`では実行速度に差は **全く** 出ないということです。なぜならJuliaは必要な時に特定化した関数をコンパイルするからです。
+例えば、初めて`addone(12)`を呼び出すと、Juliaは`addone`関数を`x::Int`の引数用にコンパイルします。そのため、上三つの定義は四番目の定義と完全に同じと言えます。
+
 [](## Handle excess argument diversity in the caller)
+
+## 過剰な広範性を排除しよう
 
 ```@raw html
 <!--
 Instead of:
 -->
 ```
+
+次のようにではなく:
 
 ```julia
 function foo(x, y)
@@ -145,6 +154,8 @@ use:
 -->
 ```
 
+このように書きましょう:
+
 ```julia
 function foo(x::Int, y::Int)
     ...
@@ -159,6 +170,9 @@ This is better style because `foo` does not really accept numbers of all types; 
 -->
 ```
 
+処理を見てみると、`foo`は全ての型の数字を受け付ける訳ではないので、
+もともと引数を`Int`型に絞っている上のコードはさらに上のコードよりも良いと言えます。
+
 ```@raw html
 <!--
 One issue here is that if a function inherently requires integers, it might be better to force
@@ -167,13 +181,20 @@ is that declaring more specific types leaves more "space" for future method defi
 -->
 ```
 
+ここでいくつか注意点があります。一つはもし関数が本質的に整数を要求する場合は、関数内で非整数に対する処理（切り上げや切り捨て）を明記するべきかもしれないこと。
+もう一つはより狭い型の指定はメゾッドの定義に空白を齎してしまうということです。
+
 [](## Append `!` to names of functions that modify their arguments)
+
+## 引数に変更を加える関数には最後に`!`を添えよう
 
 ```@raw html
 <!--
 Instead of:
 -->
 ```
+
+こうする代わりに:
 
 ```julia
 function double(a::AbstractArray{<:Number})
@@ -189,6 +210,8 @@ end
 use:
 -->
 ```
+
+このように書くと良いでしょう:
 
 ```julia
 function double!(a::AbstractArray{<:Number})
@@ -208,7 +231,13 @@ is typical for such functions to also return the modified array for convenience.
 -->
 ```
 
+Juliaのスタンダードライブラリでは全体を通してこの慣習に従っていて、コピーするだけの関数と変更を加える関数の実例もいくつかあります
+。[`sort()`](@ref)と[`sort!()`](@ref)、変更を加える関数の例として[`push!()`](@ref)や[`pop!()`](@ref)、[`splice!()`](@ref)などがあります。
+変更された配列を返すような関数にもしばしばこの慣習が適用されます。
+
 [](## Avoid strange type `Union`s)
+
+## おかしな型同士の組み合わせを`Union`にしないようにしよう
 
 ```@raw html
 <!--
@@ -216,13 +245,19 @@ Types such as `Union{Function,AbstractString}` are often a sign that some design
 -->
 ```
 
+`Union{Function,AbstractString}`のような型が出てきた時は、設計に改善点があるサインかもしれません。
+
 [](## Avoid type Unions in fields)
+
+## 合拼型をフィールドに使うのは避けよう
 
 ```@raw html
 <!--
 When creating a type such as:
 -->
 ```
+
+下のような型を作る時:
 
 ```julia
 mutable struct MyType
@@ -246,6 +281,16 @@ some alternatives to consider:
     guarantees type-stability in the code accessing this field (see [Nullable types](@ref man-nullable-types)).
 -->
 ```
+
+`x`が`nothing`（`Void`に属する）になる必要が本当にあるかもう一度自問してみてください。いくつかの検討すべき代替手段を挙げます:
+
+    * `x`を初期化する安全なデフォルト値を探す
+    * `x`を属させるような別の型を考える
+    * `x`に似たフィールドが他にあるなら、まとめて辞書に入れる
+    * どのような条件下で`x`が`nothing`になるか決める。例えば、しばしばフィールドは最初`nothing`だが、何かしらの値で初期化されるなど。
+    例のケースだと最初は未定義のままにしておくのも手です。
+    * もし`x`が何の値も持たないべき時があるなら、それを`::Nullable{T}`と定義すればフィールドにアクセスする時にタイプの安定性が保証されます。
+    （詳しくは[Null許容型](@ref man-nullable-types)を参照してください。）
 
 [](## Avoid elaborate container types)
 
