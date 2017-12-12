@@ -1,36 +1,61 @@
-# Style Guide
+[](# Style Guide)
 
+```@raw html
+<!--
 The following sections explain a few aspects of idiomatic Julia coding style. None of these rules
 are absolute; they are only suggestions to help familiarize you with the language and to help
 you choose among alternative designs.
+-->
+```
 
-## Write functions, not just scripts
+[](## Write functions, not just scripts)
 
+```@raw html
+<!--
 Writing code as a series of steps at the top level is a quick way to get started solving a problem,
 but you should try to divide a program into functions as soon as possible. Functions are more
 reusable and testable, and clarify what steps are being done and what their inputs and outputs
 are. Furthermore, code inside functions tends to run much faster than top level code, due to how
 Julia's compiler works.
+-->
+```
 
+```@raw html
+<!--
 It is also worth emphasizing that functions should take arguments, instead of operating directly
 on global variables (aside from constants like [`pi`](@ref)).
+-->
+```
 
-## Avoid writing overly-specific types
+[](## Avoid writing overly-specific types)
 
+```@raw html
+<!--
 Code should be as generic as possible. Instead of writing:
+-->
 
 ```julia
 convert(Complex{Float64}, x)
 ```
 
+```@raw html
+<!--
 it's better to use available generic functions:
+-->
+```
 
 ```julia
 complex(float(x))
 ```
 
+```@raw html
+<!--
 The second version will convert `x` to an appropriate type, instead of always the same type.
+-->
+```
 
+```@raw html
+<!--
 This style point is especially relevant to function arguments. For example, don't declare an argument
 to be of type `Int` or [`Int32`](@ref) if it really could be any integer, expressed with the abstract
 type [`Integer`](@ref). In fact, in many cases you can omit the argument type altogether,
@@ -38,9 +63,15 @@ unless it is needed to disambiguate from other method definitions, since a
 [`MethodError`](@ref) will be thrown anyway if a type is passed that does not support any
 of the requisite operations. (This is known as
 [duck typing](https://en.wikipedia.org/wiki/Duck_typing).)
+-->
+```
 
+```@raw html
+<!--
 For example, consider the following definitions of a function `addone` that returns one plus its
 argument:
+-->
+```
 
 ```julia
 addone(x::Int) = x + 1                 # works only for Int
@@ -49,6 +80,8 @@ addone(x::Number) = x + oneunit(x)     # any numeric type
 addone(x) = x + oneunit(x)             # any type supporting + and oneunit
 ```
 
+```@raw html
+<!--
 The last definition of `addone` handles any type supporting [`oneunit`](@ref) (which returns 1 in
 the same type as `x`, which avoids unwanted type promotion) and the [`+`](@ref) function with
 those arguments. The key thing to realize is that there is *no performance penalty* to defining
@@ -57,10 +90,16 @@ versions as needed. For example, the first time you call `addone(12)`, Julia wil
 compile a specialized `addone` function for `x::Int` arguments, with the call to `oneunit`
 replaced by its inlined value `1`. Therefore, the first three definitions of `addone` above are
 completely redundant with the fourth definition.
+-->
+```
 
-## Handle excess argument diversity in the caller
+[](## Handle excess argument diversity in the caller)
 
+```@raw html
+<!--
 Instead of:
+-->
+```
 
 ```julia
 function foo(x, y)
@@ -70,7 +109,11 @@ end
 foo(x, y)
 ```
 
+```@raw html
+<!--
 use:
+-->
+```
 
 ```julia
 function foo(x::Int, y::Int)
@@ -79,16 +122,28 @@ end
 foo(Int(x), Int(y))
 ```
 
+```@raw html
+<!--
 This is better style because `foo` does not really accept numbers of all types; it really needs
 `Int` s.
+-->
+```
 
+```@raw html
+<!--
 One issue here is that if a function inherently requires integers, it might be better to force
 the caller to decide how non-integers should be converted (e.g. floor or ceiling). Another issue
 is that declaring more specific types leaves more "space" for future method definitions.
+-->
+```
 
-## Append `!` to names of functions that modify their arguments
+[](## Append `!` to names of functions that modify their arguments)
 
+```@raw html
+<!--
 Instead of:
+-->
+```
 
 ```julia
 function double(a::AbstractArray{<:Number})
@@ -99,7 +154,11 @@ function double(a::AbstractArray{<:Number})
 end
 ```
 
+```@raw html
+<!--
 use:
+-->
+```
 
 ```julia
 function double!(a::AbstractArray{<:Number})
@@ -110,18 +169,30 @@ function double!(a::AbstractArray{<:Number})
 end
 ```
 
+```@raw html
+<!--
 The Julia standard library uses this convention throughout and contains examples of functions
 with both copying and modifying forms (e.g., [`sort()`](@ref) and [`sort!()`](@ref)), and others
 which are just modifying (e.g., [`push!()`](@ref), [`pop!()`](@ref), [`splice!()`](@ref)).  It
 is typical for such functions to also return the modified array for convenience.
+-->
+```
 
-## Avoid strange type `Union`s
+[](## Avoid strange type `Union`s)
 
+```@raw html
+<!--
 Types such as `Union{Function,AbstractString}` are often a sign that some design could be cleaner.
+-->
+```
 
-## Avoid type Unions in fields
+[](## Avoid type Unions in fields)
 
+```@raw html
+<!--
 When creating a type such as:
+-->
+```
 
 ```julia
 mutable struct MyType
@@ -130,6 +201,8 @@ mutable struct MyType
 end
 ```
 
+```@raw html
+<!--
 ask whether the option for `x` to be `nothing` (of type `Void`) is really necessary. Here are
 some alternatives to consider:
 
@@ -141,20 +214,32 @@ some alternatives to consider:
     leaving it undefined at first.
   * If `x` really needs to hold no value at some times, define it as `::Nullable{T}` instead, as this
     guarantees type-stability in the code accessing this field (see [Nullable types](@ref man-nullable-types)).
+-->
+```
 
-## Avoid elaborate container types
+[](## Avoid elaborate container types)
 
+```@raw html
+<!--
 It is usually not much help to construct arrays like the following:
+-->
+```
 
 ```julia
 a = Array{Union{Int,AbstractString,Tuple,Array}}(n)
 ```
 
+```@raw html
+<!--
 In this case `Array{Any}(n)` is better. It is also more helpful to the compiler to annotate specific
 uses (e.g. `a[i]::Int`) than to try to pack many alternatives into one type.
+-->
+```
 
-## Use naming conventions consistent with Julia's `base/`
+[](## Use naming conventions consistent with Julia's `base/`)
 
+```@raw html
+<!--
   * modules and type names use capitalization and camel case: `module SparseArrays`, `struct UnitRange`.
   * functions are lowercase ([`maximum()`](@ref), [`convert()`](@ref)) and, when readable, with multiple
     words squashed together ([`isequal()`](@ref), [`haskey()`](@ref)). When necessary, use underscores
@@ -162,86 +247,152 @@ uses (e.g. `a[i]::Int`) than to try to pack many alternatives into one type.
     as a more efficient implementation of `fetch(remotecall(...))`) or as modifiers ([`sum_kbn()`](@ref)).
   * conciseness is valued, but avoid abbreviation ([`indexin()`](@ref) rather than `indxin()`) as
     it becomes difficult to remember whether and how particular words are abbreviated.
+-->
+```
 
+```@raw html
+<!--
 If a function name requires multiple words, consider whether it might represent more than one
 concept and might be better split into pieces.
+-->
+```
 
-## Don't overuse try-catch
+[](## Don't overuse try-catch)
 
+```@raw html
+<!--
 It is better to avoid errors than to rely on catching them.
+-->
+```
 
-## Don't parenthesize conditions
+[](## Don't parenthesize conditions)
 
+```@raw html
+<!--
 Julia doesn't require parens around conditions in `if` and `while`. Write:
+-->
+```
 
 ```julia
 if a == b
 ```
 
+```@raw html
+<!--
 instead of:
+-->
+```
 
 ```julia
 if (a == b)
 ```
 
-## Don't overuse `...`
+[](## Don't overuse `...`)
 
+```@raw html
+<!--
 Splicing function arguments can be addictive. Instead of `[a..., b...]`, use simply `[a; b]`,
 which already concatenates arrays. [`collect(a)`](@ref) is better than `[a...]`, but since `a`
 is already iterable it is often even better to leave it alone, and not convert it to an array.
+-->
+```
 
-## Don't use unnecessary static parameters
+[](## Don't use unnecessary static parameters)
 
+```@raw html
+<!--
 A function signature:
+-->
+```
 
 ```julia
 foo(x::T) where {T<:Real} = ...
 ```
 
+```@raw html
+<!--
 should be written as:
+-->
+```
 
 ```julia
 foo(x::Real) = ...
 ```
 
+```@raw html
+<!--
 instead, especially if `T` is not used in the function body. Even if `T` is used, it can be replaced
 with [`typeof(x)`](@ref) if convenient. There is no performance difference. Note that this is
 not a general caution against static parameters, just against uses where they are not needed.
+-->
+```
 
+```@raw html
+<!--
 Note also that container types, specifically may need type parameters in function calls. See the
 FAQ [Avoid fields with abstract containers](@ref) for more information.
+-->
+```
 
-## Avoid confusion about whether something is an instance or a type
+[](## Avoid confusion about whether something is an instance or a type)
 
+```@raw html
+<!--
 Sets of definitions like the following are confusing:
+-->
+```
 
 ```julia
 foo(::Type{MyType}) = ...
 foo(::MyType) = foo(MyType)
 ```
 
+```@raw html
+<!--
 Decide whether the concept in question will be written as `MyType` or `MyType()`, and stick to
 it.
+-->
+```
 
+```@raw html
+<!--
 The preferred style is to use instances by default, and only add methods involving `Type{MyType}`
 later if they become necessary to solve some problem.
+-->
+```
 
+```@raw html
+<!--
 If a type is effectively an enumeration, it should be defined as a single (ideally immutable struct or primitive)
 type, with the enumeration values being instances of it. Constructors and conversions can check
 whether values are valid. This design is preferred over making the enumeration an abstract type,
 with the "values" as subtypes.
+-->
+```
 
-## Don't overuse macros
+[](## Don't overuse macros)
 
+```@raw html
+<!--
 Be aware of when a macro could really be a function instead.
+-->
+```
 
+```@raw html
+<!--
 Calling [`eval()`](@ref) inside a macro is a particularly dangerous warning sign; it means the
 macro will only work when called at the top level. If such a macro is written as a function instead,
 it will naturally have access to the run-time values it needs.
+-->
+```
 
-## Don't expose unsafe operations at the interface level
+[](## Don't expose unsafe operations at the interface level)
 
+```@raw html
+<!--
 If you have a type that uses a native pointer:
+-->
+```
 
 ```julia
 mutable struct NativeType
@@ -250,40 +401,68 @@ mutable struct NativeType
 end
 ```
 
+```@raw html
+<!--
 don't write definitions like the following:
+-->
+```
 
 ```julia
 getindex(x::NativeType, i) = unsafe_load(x.p, i)
 ```
 
+```@raw html
+<!--
 The problem is that users of this type can write `x[i]` without realizing that the operation is
 unsafe, and then be susceptible to memory bugs.
+-->
+```
 
+```@raw html
+<!--
 Such a function should either check the operation to ensure it is safe, or have `unsafe` somewhere
 in its name to alert callers.
+-->
+```
 
-## Don't overload methods of base container types
+[](## Don't overload methods of base container types)
 
+```@raw html
+<!--
 It is possible to write definitions like the following:
+-->
+```
 
 ```julia
 show(io::IO, v::Vector{MyType}) = ...
 ```
 
+```@raw html
+<!--
 This would provide custom showing of vectors with a specific new element type. While tempting,
 this should be avoided. The trouble is that users will expect a well-known type like `Vector()`
 to behave in a certain way, and overly customizing its behavior can make it harder to work with.
+-->
+```
 
-## Avoid type piracy
+[](## Avoid type piracy)
 
+```@raw html
+<!--
 "Type piracy" refers to the practice of extending or redefining methods in Base
 or other packages on types that you have not defined. In some cases, you can get away with
 type piracy with little ill effect. In extreme cases, however, you can even crash Julia
 (e.g. if your method extension or redefinition causes invalid input to be passed to a
 `ccall`). Type piracy can complicate reasoning about code, and may introduce
 incompatibilities that are hard to predict and diagnose.
+-->
+```
 
+```@raw html
+<!--
 As an example, suppose you wanted to define multiplication on symbols in a module:
+-->
+```
 
 ```julia
 module A
@@ -292,11 +471,17 @@ import Base.*
 end
 ```
 
+```@raw html
+<!--
 The problem is that now any other module that uses `Base.*` will also see this definition.
 Since `Symbol` is defined in Base and is used by other modules, this can change the
 behavior of unrelated code unexpectedly. There are several alternatives here, including
 using a different function name, or wrapping the `Symbol`s in another type that you define.
+-->
+```
 
+```@raw html
+<!--
 Sometimes, coupled packages may engage in type piracy to separate features from definitions,
 especially when the packages were designed by collaborating authors, and when the
 definitions are reusable. For example, one package might provide some types useful for
@@ -304,26 +489,44 @@ working with colors; another package could define methods for those types that e
 conversions between color spaces. Another example might be a package that acts as a thin
 wrapper for some C code, which another package might then pirate to implement a
 higher-level, Julia-friendly API.
+-->
+```
 
-## Be careful with type equality
+[](## Be careful with type equality)
 
+```@raw html
+<!--
 You generally want to use [`isa()`](@ref) and `<:` ([`issubtype()`](@ref)) for testing types,
 not `==`. Checking types for exact equality typically only makes sense when comparing to a known
 concrete type (e.g. `T == Float64`), or if you *really, really* know what you're doing.
+-->
+```
 
-## Do not write `x->f(x)`
+[](## Do not write `x->f(x)`)
 
+```@raw html
+<!--
 Since higher-order functions are often called with anonymous functions, it is easy to conclude
 that this is desirable or even necessary. But any function can be passed directly, without being
 "wrapped" in an anonymous function. Instead of writing `map(x->f(x), a)`, write [`map(f, a)`](@ref).
+-->
+```
 
-## Avoid using floats for numeric literals in generic code when possible
+[](## Avoid using floats for numeric literals in generic code when possible)
 
+```@raw html
+<!--
 If you write generic code which handles numbers, and which can be expected to run with many different
 numeric type arguments, try using literals of a numeric type that will affect the arguments as
 little as possible through promotion.
+-->
+```
 
+```@raw html
+<!--
 For example,
+-->
+```
 
 ```jldoctest
 julia> f(x) = 2.0 * x
@@ -339,7 +542,11 @@ julia> f(1)
 2.0
 ```
 
+```@raw html
+<!--
 while
+-->
+```
 
 ```jldoctest
 julia> g(x) = 2 * x
@@ -355,10 +562,14 @@ julia> g(1)
 2
 ```
 
+```@raw html
+<!--
 As you can see, the second version, where we used an `Int` literal, preserved the type of the
 input argument, while the first didn't. This is because e.g. `promote_type(Int, Float64) == Float64`,
 and promotion happens with the multiplication. Similarly, [`Rational`](@ref) literals are less type disruptive
 than [`Float64`](@ref) literals, but more disruptive than `Int`s:
+-->
+```
 
 ```jldoctest
 julia> h(x) = 2//1 * x
@@ -374,5 +585,9 @@ julia> h(1)
 2//1
 ```
 
+```@raw html
+<!--
 Thus, use `Int` literals when possible, with `Rational{Int}` for literal non-integer numbers,
 in order to make it easier to use your code.
+-->
+```
