@@ -39,7 +39,7 @@ on global variables (aside from constants like [`pi`](@ref)).
 -->
 ```
 
-関数は基本的に引数を取るので、グローバル変数（[`pi`](@ref)などの定数は別です）を使う機会が減ることもまたメリットです。
+関数は基本的に引数を取るので、グローバル変数（[`pi`](@ref)などの定数は別です）を使う機会が減ることもメリットです。
 
 [](## Avoid writing overly-specific types)
 ## 型を限定しすぎないようにしよう
@@ -237,7 +237,7 @@ Juliaのスタンダードライブラリでは全体を通してこの慣習に
 
 [](## Avoid strange type `Union`s)
 
-## おかしな型同士の組み合わせを`Union`にしないようにしよう
+## 違いすぎる型同士の組み合わせを`Union`にしないようにしよう
 
 ```@raw html
 <!--
@@ -245,7 +245,7 @@ Types such as `Union{Function,AbstractString}` are often a sign that some design
 -->
 ```
 
-`Union{Function,AbstractString}`のような型が出てきた時は、設計に改善点があるサインかもしれません。
+`Union{Function,AbstractString}`のような型は、設計に改善点があるサインかもしれません。
 
 [](## Avoid type Unions in fields)
 
@@ -287,8 +287,8 @@ some alternatives to consider:
     * `x`を初期化する安全なデフォルト値を探す
     * `x`を属させるような別の型を考える
     * `x`に似たフィールドが他にあるなら、まとめて辞書に入れる
-    * どのような条件下で`x`が`nothing`になるか決める。例えば、しばしばフィールドは最初`nothing`だが、何かしらの値で初期化されるなど。
-    例のケースだと最初は未定義のままにしておくのも手です。
+    * どのような条件下で`x`が`nothing`になるか決める。例えば、しばしばフィールドは最初`nothing`ですが、何かしらの値で初期化されるなど。
+    このケースだと最初は未定義のままにしておくのも手です。
     * もし`x`が何の値も持たないべき時があるなら、それを`::Nullable{T}`と定義すればフィールドにアクセスする時にタイプの安定性が保証されます。
     （詳しくは[Null許容型](@ref man-nullable-types)を参照してください。）
 
@@ -299,6 +299,8 @@ some alternatives to consider:
 It is usually not much help to construct arrays like the following:
 -->
 ```
+
+次のように配列を構築するのは推奨されません:
 
 ```julia
 a = Array{Union{Int,AbstractString,Tuple,Array}}(n)
@@ -311,7 +313,12 @@ uses (e.g. `a[i]::Int`) than to try to pack many alternatives into one type.
 -->
 ```
 
+この場合では`Array{Any}(n)`と書いた方が良いでしょう。一つの合拼型にたくさんの型を詰め込むよりも、
+コンパイラに特定の部分だけアノテートする（`a[i]::Int`など）のも良いでしょう。
+
 [](## Use naming conventions consistent with Julia's `base/`)
+
+## Juliaの`base/`に習った名前付けをしよう
 
 ```@raw html
 <!--
@@ -325,6 +332,12 @@ uses (e.g. `a[i]::Int`) than to try to pack many alternatives into one type.
 -->
 ```
 
+  * モジュールと型の名前にはキャピタライゼーションとキャメルケースを使いましょう。例: `module SparseArrays`、`struct UnitRange`。
+  * 関数はローワーケースを使いましょう（[`maximum()`](@ref)、[`convert()`](@ref)）。
+  読みやすさが損なわれない時は、複数の単語を連結しましょう（[`isequal()`](@ref)、[`haskey()`](@ref)）。
+  損なわれる時は、アンダーバーを単語区切りに使ってください。アンダーバーは機能、概念の組み合わせであることを示す時にも使われます
+  （[`remotecall_fetch()`](@ref)）。
+
 ```@raw html
 <!--
 If a function name requires multiple words, consider whether it might represent more than one
@@ -332,7 +345,11 @@ concept and might be better split into pieces.
 -->
 ```
 
+関数名に複数の単語を使わなければいけないような時は、少なくとも一つのコンセプトを表現しているかと一つ一つの単語の関数に落とし込めないかを検討してみましょう。
+
 [](## Don't overuse try-catch)
+
+## try-catchを多用しないようにしよう
 
 ```@raw html
 <!--
@@ -340,13 +357,19 @@ It is better to avoid errors than to rely on catching them.
 -->
 ```
 
+エラーをキャッチすることで対処するよりも、エラー自体を回避した方が良いでしょう。
+
 [](## Don't parenthesize conditions)
+
+## 条件式を丸括弧で囲まないようにしよう
 
 ```@raw html
 <!--
 Julia doesn't require parens around conditions in `if` and `while`. Write:
 -->
 ```
+
+Juliaでは、`if`や`while`で用いる条件式を丸括弧で囲む必要はありません。下の例にように書きましょう：
 
 ```julia
 if a == b
@@ -358,11 +381,15 @@ instead of:
 -->
 ```
 
+下のように書くことはやめましょう：
+
 ```julia
 if (a == b)
 ```
 
 [](## Don't overuse `...`)
+
+## `...`を使いすぎないようにしよう
 
 ```@raw html
 <!--
